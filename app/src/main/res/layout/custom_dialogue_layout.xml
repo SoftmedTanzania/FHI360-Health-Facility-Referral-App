@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app_ms="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorPrimaryDark">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="18sp"
+                    android:id="@+id/patient_name_title"
+                    android:fontFamily="@font/roboto_condensed"
+                    android:textColor="@color/white"
+                    android:text="Rufaa kwa" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="18sp"
+                    android:id="@+id/patient_name"
+                    android:fontFamily="@font/avenir_light"
+                    android:textColor="@color/white"
+                    android:text="Jonh Doe" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/cyan_400"/>
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="70dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_service"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:divider="@null"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:textSize="14sp"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_multiline="false"
+                        app_ms:ms_hint="Chagua Huduma"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_floatingLabelText="Chagua Huduma"
+                        app_ms:ms_baseColor="@color/white"
+                        app_ms:ms_highlightColor="@color/colorPrimary"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_arrowColor="@color/white"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_floatingLabelColor="@color/white"/>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent">
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_to_facility"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:divider="@null"
+                        android:layout_marginLeft="8dp"
+                        android:textSize="14sp"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_multiline="false"
+                        app_ms:ms_hint="Kwenda Kituo"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_floatingLabelText="Kwenda Kituo"
+                        app_ms:ms_baseColor="@color/white"
+                        app_ms:ms_highlightColor="@color/colorPrimary"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_arrowColor="@color/white"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_floatingLabelColor="@color/white"/>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/has_two_weeks_cough_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Two weeks cough"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/two_weeks_cough"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:checked="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="32dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/blood_cough_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Blood Cough"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/blood_cough"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:checked="false"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="32dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/weight_loss_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Weight Loss"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/weight_loss"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:checked="false"
+                        android:layout_alignParentRight="true" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/severe_sweating_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Severe Sweating"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/severe_sweating"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:checked="false"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="32dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fever_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Fever"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/fever"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:checked="false"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="32dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/pregnant_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Pregnant"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/pregnant"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:checked="false"
+                        android:layout_alignParentRight="true"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/cyan_400"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/risky_situation_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Involved in risky situations"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/risky_situation"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:checked="false"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="32dp"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="0.1"
+                    android:layout_height="1dp"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="0.3"
+                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/partner_distrust_title"
+                        android:layout_below="@id/flags_title"
+                        android:layout_marginTop="16dp"
+                        android:text="Does not trust partner"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:textColor="@color/white"/>
+
+                    <CheckBox
+                        android:id="@+id/partner_distrust"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_below="@+id/flags_title"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:checked="false"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="32dp"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/avenir_light"
+                android:layout_marginTop="16dp"
+                android:text="Sababu za Rufaa"
+                android:textColor="@color/white"/>
+
+            <com.rey.material.widget.EditText
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:paddingTop="4dp"
+                android:background="@drawable/border_three"
+                android:paddingBottom="4dp"
+                android:id="@+id/referal_reasons_text"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:et_supportTextSize="24sp"
+                app:et_supportLines="5"
+                app:et_dividerColor="@color/white"
+                app:et_labelTextColor="@color/white"
+                app:et_supportTextColor="@color/white"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/cyan_900"
+                android:paddingBottom="4dp">
+
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:id="@+id/tuma_button"
+                    android:background="@drawable/border_four"
+                    android:text="Tuma"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/rosario_regular"
+                    android:layout_marginTop="32dp"/>
+
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@id/tuma_button"
+                    android:id="@+id/cancel_button"
+                    android:background="@drawable/border_four"
+                    android:text="Cancel"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/rosario_regular"
+                    android:layout_marginTop="32dp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
