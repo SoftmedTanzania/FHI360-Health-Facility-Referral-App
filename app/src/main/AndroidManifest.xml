@@ -53,7 +53,7 @@
             android:parentActivityName=".HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".TbClientDetailsActivity"
+        <activity android:name=".TbReferralDetailsActivity"
             android:parentActivityName=".TbReferalListActivity"
             android:windowSoftInputMode="stateHidden"/>
 
@@ -72,7 +72,9 @@
             </intent-filter>
         </service>
 
-
+        <activity android:name=".TbClientListActivity"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden"/>
 
     </application>
 

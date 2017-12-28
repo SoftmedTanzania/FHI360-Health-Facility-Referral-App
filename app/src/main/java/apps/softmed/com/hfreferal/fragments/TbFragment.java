@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import apps.softmed.com.hfreferal.NewReferalsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.ReferedClientsActivity;
+import apps.softmed.com.hfreferal.TbClientListActivity;
 import apps.softmed.com.hfreferal.TbReferalListActivity;
 import apps.softmed.com.hfreferal.TbRegisterActivity;
 import apps.softmed.com.hfreferal.utils.constants;
@@ -50,7 +51,7 @@ public class TbFragment extends Fragment {
         newReferalsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(TbFragment.this.getActivity(), NewReferalsActivity.class));
+                startActivity(new Intent(TbFragment.this.getActivity(), TbClientListActivity.class));
             }
         });
 

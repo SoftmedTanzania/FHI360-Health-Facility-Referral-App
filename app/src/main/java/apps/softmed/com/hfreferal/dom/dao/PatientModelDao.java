@@ -25,6 +25,9 @@ public interface PatientModelDao {
     @Query("select * from Patient")
     LiveData<List<Patient>> getAllPatients();
 
+    @Query("select * from Patient where currentOnTbTreatment = :flag")
+    LiveData<List<Patient>> getTbPatients(boolean flag);
+
     @Query("select * from Patient where patientId = :id")
     Patient getPatientById(String id);
 

@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import apps.softmed.com.hfreferal.ClientsDetailsActivity;
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.TbClientDetailsActivity;
+import apps.softmed.com.hfreferal.TbReferralDetailsActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 
@@ -76,7 +75,7 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, TbClientDetailsActivity.class);
+                Intent intent = new Intent(context, TbReferralDetailsActivity.class);
                 intent.putExtra("referal", referal);
                 context.startActivity(intent);
             }

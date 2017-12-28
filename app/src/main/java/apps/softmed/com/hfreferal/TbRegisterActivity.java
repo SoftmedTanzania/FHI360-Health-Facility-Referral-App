@@ -215,7 +215,7 @@ public class TbRegisterActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Intent intent = new Intent(TbRegisterActivity.this, NewReferalsActivity.class);
+            Intent intent = new Intent(TbRegisterActivity.this, TbClientListActivity.class);
             startActivity(intent);
             finish();
 

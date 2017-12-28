@@ -19,7 +19,7 @@ import apps.softmed.com.hfreferal.dom.objects.Patient;
 
 public class PatientsListViewModel extends AndroidViewModel{
 
-    private final LiveData<List<Patient>> patientsList;
+    private final LiveData<List<Patient>> patientsList, tbPatientsOnly;
 
     private AppDatabase appDatabase;
 
@@ -27,10 +27,15 @@ public class PatientsListViewModel extends AndroidViewModel{
         super(application);
         appDatabase = AppDatabase.getDatabase(this.getApplication());
         patientsList = appDatabase.patientModel().getAllPatients();
+        tbPatientsOnly = appDatabase.patientModel().getTbPatients(true);
     }
 
     public LiveData<List<Patient>> getPatientsList() {
         return patientsList;
+    }
+
+    public LiveData<List<Patient>> getTbPatientsOnly(){
+        return tbPatientsOnly;
     }
 
     public void deleteItem(Patient patient) {
