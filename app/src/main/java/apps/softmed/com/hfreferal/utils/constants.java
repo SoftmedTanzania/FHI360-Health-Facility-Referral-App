@@ -15,6 +15,25 @@ public class constants {
     public static final String MALE = "Male";
     public static final String FEMALE = "Female";
 
+    public static final String TREATMENT_TYPE_1 = "2RHZE/4RH";
+    public static final String TREATMENT_TYPE_2 = "2RHZ/4RH";
+    public static final String TREATMENT_TYPE_3 = "2SRHZE/1RHZE/5RHE";
+    public static final String TREATMENT_TYPE_4 = "2HRZE/10RH";
+    public static final String TREATMENT_TYPE_5 = "3RHZE/5RHE";
+
+    public static final String TB_NEGATIVE = "Negative";
+    public static final String TB_SCANTY = "Scanty";
+    public static final String TB_1_PLUS = "1+";
+    public static final String TB_2_PLUS = "2+";
+    public static final String TB_3_PLUS = "3+";
+
+    public static final String MATOKEO_AMEPONA = "Amepona";
+    public static final String MATOKEO_AMEMALIZA_TIBA = "Amemaliza tiba";
+    public static final String MATOKEO_AMEFARIKI = "Amefariki";
+    public static final String MATOKEO_AMEHAMA = "Amehama";
+    public static final String MATOKEO_AMETOROKA = "Ametoroka";
+    public static final String MATOKEO_HAKUPONA = "Hakupona (Failure)";
+
     /** Database Names **/
     public static final String DEVICE_REGISTRATION_ID = "device_registration_id";
 

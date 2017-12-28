@@ -57,7 +57,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tb_client_details);
+        setContentView(R.layout.activity_tb_referral_details);
         setupviews();
 
         if (getIntent().getExtras() != null){

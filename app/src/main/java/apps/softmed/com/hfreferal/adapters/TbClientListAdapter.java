@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.R;
+import apps.softmed.com.hfreferal.TbClientDetailsActivity;
 import apps.softmed.com.hfreferal.TbReferralDetailsActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -67,7 +68,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
             @Override
             public void onClick(View view) {
                 //refer client popup
-                context.startActivity(new Intent(context, TbReferralDetailsActivity.class));
+                context.startActivity(new Intent(context, TbClientDetailsActivity.class));
             }
         });
 
