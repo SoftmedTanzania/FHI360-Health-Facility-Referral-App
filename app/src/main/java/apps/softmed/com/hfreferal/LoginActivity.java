@@ -117,7 +117,10 @@ public class LoginActivity extends BaseActivity {
                     LoginResponse loginResponse = response.body();
                     Log.d("BTC", "responce is : "+loginResponse.getUser().getUsername());
 
-                    session.createLoginSession(loginResponse.getUser().getUsername(), loginResponse.getUser().getAttributes().getPersonUUID(), passwordValue);
+                    session.createLoginSession(
+                            loginResponse.getUser().getUsername(),
+                            loginResponse.getUser().getAttributes().getPersonUUID(),
+                            passwordValue);
                     callReferralList();
 
                 } else {

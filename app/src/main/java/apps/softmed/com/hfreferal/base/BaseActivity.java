@@ -44,10 +44,11 @@ public class BaseActivity extends AppCompatActivity {
     public AppDatabase baseDatabase;
 
     // Session Manager Class
-    public SessionManager session;
+    public static SessionManager session;
 
     final public static DatePickerDialog toDatePicker = new DatePickerDialog();
     final public static DatePickerDialog fromDatePicker = new DatePickerDialog();
+    final public static DatePickerDialog datePickerDialog = new DatePickerDialog();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class BaseActivity extends AppCompatActivity {
 
         fromDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
         toDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
+        datePickerDialog.setAccentColor(getResources().getColor(R.color.colorPrimary));
 
 //        retrofit = new Retrofit.Builder()
 //                .baseUrl(BASE_URL)
