@@ -68,7 +68,10 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
             @Override
             public void onClick(View view) {
                 //refer client popup
-                context.startActivity(new Intent(context, TbClientDetailsActivity.class));
+                Intent intent = new Intent(context, TbClientDetailsActivity.class);
+                intent.putExtra("patient", patient);
+                intent.putExtra("isPatientNew", false);
+                context.startActivity(intent);
             }
         });
 

@@ -45,7 +45,7 @@ public class Patient implements Serializable{
 
     @SerializedName("dateOfBirth")
     //@TypeConverters(DateConverter.class)
-    private String dateOfBirth;
+    private long dateOfBirth;
 
     @SerializedName("gender")
     private String gender;
@@ -54,12 +54,6 @@ public class Patient implements Serializable{
     private long dateOfDeath;
 
     private boolean currentOnTbTreatment;
-
-    private boolean currentlyPregnant;
-
-    private String drugAlergies;
-
-    private String otherRelevantClinicalNotes;
 
     /*
     @SerializedName("createdAt")
@@ -141,11 +135,11 @@ public class Patient implements Serializable{
         this.hamlet = hamlet;
     }
 
-    public String getDateOfBirth() {
+    public long getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -197,27 +191,4 @@ public class Patient implements Serializable{
         this.currentOnTbTreatment = currentOnTbTreatment;
     }
 
-    public boolean isCurrentlyPregnant() {
-        return currentlyPregnant;
-    }
-
-    public void setCurrentlyPregnant(boolean currentlyPregnant) {
-        this.currentlyPregnant = currentlyPregnant;
-    }
-
-    public String getDrugAlergies() {
-        return drugAlergies;
-    }
-
-    public void setDrugAlergies(String drugAlergies) {
-        this.drugAlergies = drugAlergies;
-    }
-
-    public String getOtherRelevantClinicalNotes() {
-        return otherRelevantClinicalNotes;
-    }
-
-    public void setOtherRelevantClinicalNotes(String otherRelevantClinicalNotes) {
-        this.otherRelevantClinicalNotes = otherRelevantClinicalNotes;
-    }
 }

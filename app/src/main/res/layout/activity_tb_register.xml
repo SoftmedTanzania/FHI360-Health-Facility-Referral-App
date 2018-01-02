@@ -291,6 +291,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_gravity="bottom"
                         android:layout_marginTop="32dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp">
@@ -303,6 +304,7 @@
                             android:textColor="@color/card_title_text"
                             android:textColorHint="@color/card_grid_tex"
                             android:textSize="16sp"
+                            android:layout_gravity="bottom"
                             android:fontFamily="@font/roboto_bold"
                             android:drawableRight="@mipmap/ic_date"
                             android:layout_marginRight="8dp"/>
@@ -338,6 +340,41 @@
 
                         </RelativeLayout>
 
+                        <com.rey.material.widget.EditText
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:hint="Uzito"
+                            android:id="@+id/weight"
+                            android:textColor="@color/card_title_text"
+                            android:textColorHint="@color/card_separator"
+                            android:textSize="20sp"
+                            android:layout_gravity="bottom"
+                            android:fontFamily="@font/roboto_bold"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="8dp"
+                            android:inputType="numberDecimal"
+                            app:et_dividerHeight="1dp"
+                            app:et_dividerColor="@color/card_grid_text"
+                            app:et_labelEnable="true"
+                            app:et_labelTextColor="@color/card_grid_text" />
+
+
+                        <com.rey.material.widget.EditText
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:hint="Mwenyekiti"
+                            android:id="@+id/mwenyekiti"
+                            android:textColor="@color/card_title_text"
+                            android:textColorHint="@color/card_separator"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="8dp"
+                            android:inputType="textCapWords"
+                            app:et_dividerHeight="1dp"
+                            app:et_dividerColor="@color/card_grid_text"
+                            app:et_labelEnable="true"
+                            app:et_labelTextColor="@color/card_grid_text" />
 
                     </LinearLayout>
 

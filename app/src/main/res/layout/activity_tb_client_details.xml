@@ -475,6 +475,7 @@
                                                     android:id="@+id/xray_value"
                                                     android:gravity="start"
                                                     android:padding="4dp"
+                                                    android:textColor="@color/card_grid_text"
                                                     android:background="@drawable/border_one"
                                                     android:layout_below="@id/x_ray_title"
                                                     android:layout_marginTop="8dp"/>
@@ -506,6 +507,7 @@
                                                     android:gravity="start"
                                                     android:padding="4dp"
                                                     android:textSize="16sp"
+                                                    android:textColor="@color/card_grid_text"
                                                     android:layout_marginLeft="32dp"
                                                     android:id="@+id/other_tests_value"
                                                     android:background="@drawable/border_one"
@@ -559,6 +561,124 @@
                                         android:layout_weight="0.7"
                                         android:layout_marginTop="32dp"
                                         android:layout_height="match_parent"
+                                        android:orientation="horizontal">
+
+                                        <fr.ganfra.materialspinner.MaterialSpinner
+                                            android:id="@+id/spin_encounter_month"
+                                            android:layout_width="150dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerVertical="true"
+                                            android:divider="@null"
+                                            android:textSize="14sp"
+                                            android:layout_marginLeft="32dp"
+                                            android:layout_marginTop="32dp"
+                                            app_ms:ms_hintTextSize="14sp"
+                                            app_ms:ms_alwaysShowFloatingLabel="true"
+                                            app_ms:ms_multiline="false"
+                                            app_ms:ms_hint="Mwezi"
+                                            app_ms:ms_enableFloatingLabel="true"
+                                            app_ms:ms_enableErrorLabel="false"
+                                            app_ms:ms_floatingLabelText="Mwezi"
+                                            app_ms:ms_baseColor="@color/card_grid_tex"
+                                            app_ms:ms_highlightColor="@color/card_grid_text"
+                                            app_ms:ms_errorColor="@color/red_500"
+                                            app_ms:ms_hintColor="#b3b3b3"
+                                            app_ms:ms_arrowColor="@color/black"
+                                            app_ms:ms_arrowSize="12dp"
+                                            app_ms:ms_alignLabels="false"
+                                            app_ms:ms_floatingLabelColor="@color/white"/>
+
+                                        <LinearLayout
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical"
+                                            android:layout_margin="32dp"
+                                            android:layout_weight="1">
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_centerVertical="true"
+                                                    android:textColor="@color/card_grid_text"
+                                                    android:fontFamily="@font/roboto_bold"
+                                                    android:id="@+id/makohozi_title"
+                                                    android:textSize="16dp"
+                                                    android:text="Makohozi"/>
+
+                                                <fr.ganfra.materialspinner.MaterialSpinner
+                                                    android:id="@+id/spin_makohozi"
+                                                    android:layout_width="70dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_centerVertical="true"
+                                                    android:layout_toRightOf="@id/makohozi_title"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_marginLeft="32dp"
+                                                    android:divider="@null"
+                                                    android:textSize="14sp"
+                                                    app_ms:ms_hintTextSize="14sp"
+                                                    app_ms:ms_alwaysShowFloatingLabel="true"
+                                                    app_ms:ms_multiline="false"
+                                                    app_ms:ms_hint="Makohozi"
+                                                    app_ms:ms_enableFloatingLabel="true"
+                                                    app_ms:ms_enableErrorLabel="false"
+                                                    app_ms:ms_floatingLabelText="Aina"
+                                                    app_ms:ms_baseColor="@color/card_grid_tex"
+                                                    app_ms:ms_highlightColor="@color/card_grid_text"
+                                                    app_ms:ms_errorColor="@color/red_500"
+                                                    app_ms:ms_hintColor="#b3b3b3"
+                                                    app_ms:ms_arrowColor="@color/black"
+                                                    app_ms:ms_arrowSize="12dp"
+                                                    app_ms:ms_alignLabels="false"
+                                                    app_ms:ms_floatingLabelColor="@color/card_grid_tex"/>
+
+                                            </RelativeLayout>
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/finished_previous_month_layout"
+                                                android:layout_marginTop="16dp">
+
+                                                <TextView
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:id="@+id/medication_status_title"
+                                                    android:layout_below="@id/flags_title"
+                                                    android:layout_marginTop="16dp"
+                                                    android:text="Amemaliza Dawa Za Mwezi Uliopita Kikamilifu"
+                                                    android:textSize="14sp"
+                                                    android:fontFamily="@font/avenir_light"
+                                                    android:textColor="@color/card_grid_text"/>
+
+                                                <CheckBox
+                                                    android:id="@+id/medication_status"
+                                                    android:layout_width="55dp"
+                                                    android:layout_height="55dp"
+                                                    android:layout_below="@+id/flags_title"
+                                                    android:layout_marginTop="8dp"
+                                                    android:layout_marginLeft="16dp"
+                                                    android:checked="false"
+                                                    android:background="@drawable/checkbox"
+                                                    android:layout_alignParentRight="true" />
+
+                                            </RelativeLayout>
+
+
+                                        </LinearLayout>
+
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:visibility="gone"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="0.7"
+                                        android:layout_marginTop="32dp"
+                                        android:layout_height="match_parent"
                                         android:orientation="vertical"
                                         android:layout_below="@id/contact_wrap">
 
@@ -604,6 +724,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="32dp"
+                                    android:id="@+id/matokep_ll"
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal">
 
@@ -683,7 +804,7 @@
                                                     android:fontFamily="@font/avenir_light"
                                                     android:layout_marginLeft="32dp"
                                                     android:textSize="16dp"
-                                                    android:text="Aina ya Matibabu"/>
+                                                    android:text="Matokeo"/>
 
 
                                             </RelativeLayout>

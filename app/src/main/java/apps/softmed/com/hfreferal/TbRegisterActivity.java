@@ -1,5 +1,6 @@
 package apps.softmed.com.hfreferal;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +26,9 @@ import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import fr.ganfra.materialspinner.MaterialSpinner;
+import retrofit2.http.PATCH;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
 import static apps.softmed.com.hfreferal.utils.constants.FEMALE;
@@ -44,14 +47,16 @@ public class TbRegisterActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private MaterialSpinner genderSpinner;
-    private EditText firstName, middleName, surname, phone, ward, village, hamlet;
+    private EditText firstName, middleName, surname, phone, ward, village, hamlet, weight, mwenyekiti;
     private Button btnSave;
     private TextView dateOfBirth;
     private CheckBox pregnant;
+    private ProgressDialog dialog;
 
     private Date dob;
-    private String strFname, strMname, strSurname, strGender, strPhone, strWard, strVillage, strHamlet, strDateOfBirth;
+    private String strFname, strMname, strSurname, strGender, strPhone, strWard, strVillage, strHamlet, strDateOfBirth, strWeight, strMwenyekiti;
     private boolean isPregnant;
+    private Calendar dobCalendar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +68,13 @@ public class TbRegisterActivity extends BaseActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        dialog = new ProgressDialog(TbRegisterActivity.this, 0);
+        dialog.setTitle("Saving");
+        dialog.setMessage("Loading. Please wait...");
+
+        //dialog = ProgressDialog.show(TbRegisterActivity.this, "Saving",
+        //        "Loading. Please wait...", true);
 
         final String[] genders = {MALE, FEMALE};
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, genders);
@@ -78,9 +90,9 @@ public class TbRegisterActivity extends BaseActivity {
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
                         dateOfBirth.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
-                        Calendar fromCalendar = Calendar.getInstance();
-                        fromCalendar.set(year, monthOfYear, dayOfMonth);
-                        dob = fromCalendar.getTime();
+                        dobCalendar = Calendar.getInstance();
+                        dobCalendar.set(year, monthOfYear, dayOfMonth);
+                        dob = dobCalendar.getTime();
                     }
 
                 });
@@ -133,19 +145,23 @@ public class TbRegisterActivity extends BaseActivity {
 
         isPregnant = pregnant.isChecked();
 
+        strWeight = weight.getText().toString().isEmpty()? "0.0" : weight.getText().toString();
+
+        strMwenyekiti = mwenyekiti.getText().toString();
+
         return true;
     }
 
     private void saveData(){
         Patient patient = new Patient();
+        TbPatient tbPatient = new TbPatient();
 
         long range = 1234567L;
         Random r = new Random();
         long number = (long)(r.nextDouble()*range);
 
         patient.setId(number);
-        patient.setPatientId("Temporary "+number);
-
+        patient.setPatientId(number+"");
         patient.setGender(strGender);
         patient.setHamlet(strHamlet);
         patient.setVillage(strVillage);
@@ -154,16 +170,17 @@ public class TbRegisterActivity extends BaseActivity {
         patient.setPatientFirstName(strFname);
         patient.setPatientMiddleName(strMname);
         patient.setPatientSurname(strSurname);
-        patient.setDateOfBirth(strDateOfBirth);
-        patient.setCurrentlyPregnant(isPregnant);
         patient.setCurrentOnTbTreatment(true);
+        patient.setDateOfBirth(dobCalendar.getTimeInMillis());
+        patient.setCreatedAt(Calendar.getInstance().getTimeInMillis());
+        patient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
 
-        Date today = new Date();
-        long now = today.getTime();
+        tbPatient.setTempID(number);
+        tbPatient.setPatientId(number);
+        tbPatient.setWeight(Double.parseDouble(strWeight));
+        tbPatient.setVeo(strMwenyekiti);
 
-        patient.setUpdatedAt(now);
-
-        AddNewPatient addNewPatient = new AddNewPatient(patient, baseDatabase);
+        AddNewPatient addNewPatient = new AddNewPatient(tbPatient, patient, baseDatabase);
         addNewPatient.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
@@ -181,6 +198,8 @@ public class TbRegisterActivity extends BaseActivity {
         ward = (EditText) findViewById(R.id.ward);
         village = (EditText) findViewById(R.id.village);
         hamlet = (EditText) findViewById(R.id.hamlet);
+        weight = (EditText) findViewById(R.id.weight);
+        mwenyekiti = (EditText) findViewById(R.id.mwenyekiti);
 
         pregnant = (CheckBox) findViewById(R.id.is_pregnant);
 
@@ -190,11 +209,14 @@ public class TbRegisterActivity extends BaseActivity {
     class AddNewPatient extends AsyncTask<Void, Void, Void> {
 
         Patient p;
+        TbPatient tp;
         AppDatabase database;
 
-        AddNewPatient(Patient patient, AppDatabase db){
+        AddNewPatient(TbPatient tbPatient, Patient patient,  AppDatabase db){
             this.p = patient;
+            this.tp = tbPatient;
             this.database = db;
+            dialog.show();
         }
 
         @Override
@@ -206,6 +228,7 @@ public class TbRegisterActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
 
             database.patientModel().addPatient(p);
+            database.tbPatientModelDao().addPatient(tp);
 
             //TODO: Add patient to PostOffice and set Sync Status
 
@@ -215,7 +238,10 @@ public class TbRegisterActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Intent intent = new Intent(TbRegisterActivity.this, TbClientListActivity.class);
+            dialog.dismiss();
+            Intent intent = new Intent(TbRegisterActivity.this, TbClientDetailsActivity.class);
+            intent.putExtra("patient", p);
+            intent.putExtra("isPatientNew", true);
             startActivity(intent);
             finish();
 
