@@ -6,6 +6,7 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import apps.softmed.com.hfreferal.dom.dao.AppDataModelDao;
+import apps.softmed.com.hfreferal.dom.dao.PatientAppointmentModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PatientModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PatientNotificationModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PostOfficeModelDao;
@@ -14,6 +15,7 @@ import apps.softmed.com.hfreferal.dom.dao.TbEncounterModelDao;
 import apps.softmed.com.hfreferal.dom.dao.TbPatientModelDao;
 import apps.softmed.com.hfreferal.dom.objects.AppData;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.PatientsNotification;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
@@ -24,7 +26,19 @@ import apps.softmed.com.hfreferal.dom.objects.TbPatient;
  * Created by issy on 11/28/17.
  */
 
-@Database(entities = {Patient.class, Referal.class, PatientsNotification.class, PostOffice.class, AppData.class, TbPatient.class, TbEncounters.class}, version = 2)
+@Database(
+        entities = {
+                Patient.class,
+                Referal.class,
+                PatientsNotification.class,
+                PostOffice.class,
+                AppData.class,
+                TbPatient.class,
+                TbEncounters.class,
+                PatientAppointment.class
+        },
+        version = 2)
+
 public abstract class AppDatabase extends RoomDatabase{
 
     private static AppDatabase INSTANCE;
@@ -51,5 +65,7 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract TbPatientModelDao tbPatientModelDao();
 
     public abstract TbEncounterModelDao tbEncounterModelDao();
+
+    public abstract PatientAppointmentModelDao appointmentModelDao();
 
 }

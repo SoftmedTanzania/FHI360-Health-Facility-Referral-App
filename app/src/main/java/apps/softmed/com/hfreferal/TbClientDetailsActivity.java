@@ -22,11 +22,13 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.WrapContentHeightViewPager;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -459,6 +461,7 @@ public class TbClientDetailsActivity extends BaseActivity {
     class SaveEncounters extends AsyncTask<TbEncounters, Void, Void> {
 
         AppDatabase database;
+        TbEncounters currentEncounter;
 
         SaveEncounters(AppDatabase db){
             this.database = db;
@@ -473,6 +476,8 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(TbEncounters... encounters) {
+
+            currentEncounter = encounters[0];
 
             //Save current encounter
             Log.d("Billions", "Saving current Encounter for month "+encounters[0].getEncounterMonth());
@@ -505,12 +510,97 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            new RegenerateAppointments(baseDatabase).execute(Integer.parseInt(currentEncounter.getEncounterMonth()));
+        }
+
+    }
+
+    class RegenerateAppointments extends AsyncTask<Integer, Void, Void>{
+
+        int encMonth;
+        long now;
+        AppDatabase database;
+
+        RegenerateAppointments(AppDatabase db){
+            this.database = db;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
             dialog.dismiss();
             Intent intent = new Intent(context, TbClientListActivity.class);
             startActivity(intent);
             finish();
             super.onPostExecute(aVoid);
+
         }
+
+        @Override
+        protected Void doInBackground(Integer... encounterMonth) {
+
+            encMonth = encounterMonth[0];
+
+            /**
+             * Delete Appointments From encMonth to month 8
+             */
+            Date date = new Date();
+            String todayDate = simpleDateFormat.format(date);
+
+            //List<PatientAppointment> remainingAppointments = database.appointmentModelDao().getRemainingAppointments(currentPatient.getPatientId(), todayDate);
+            List<PatientAppointment> remainingAppointments = database.appointmentModelDao().getThisPatientAppointments(currentPatient.getPatientId());
+            if (remainingAppointments.size() > 0){
+                Log.d("Billion", "Remaining appointments size is "+remainingAppointments.size());
+                for (int i=0;i<remainingAppointments.size();i++){
+                    if (remainingAppointments.get(i).getAppointmentDate().after(new Date())){
+                        database.appointmentModelDao().deleteAppointment(remainingAppointments.get(i));
+                        Log.d("Billion", "Deleted for "+remainingAppointments.get(i).getAppointmentDate());
+                    }
+                }
+            }else {
+                Log.d("Billion", "Remaining appointments size is "+remainingAppointments.size());
+            }
+
+            /**
+             * Get the current visit month
+             * Generate appointments from this month to month 8
+             */
+
+            Calendar calendar = Calendar.getInstance();
+            now = calendar.getTimeInMillis();
+            for (int i = encMonth; i<=8; i++){
+
+                PatientAppointment appointment = new PatientAppointment();
+                calendar.add(Calendar.DATE, 30);//Adding 30 days to the next Appointment
+                Date nextAppointment = calendar.getTime();
+
+                appointment.setAppointmentDate(nextAppointment);
+                appointment.setAppointmentEncounterMonth((i+1)+"");
+                appointment.setCreatedAt(new Date());
+                appointment.setUpdatedAt(new Date());
+
+                long range = 1234567L;
+                Random r = new Random();
+                long number = (long)(r.nextDouble()*range);
+
+                appointment.setAppointmentID(number);
+                appointment.setPatientID(currentPatient.getPatientId());
+
+                database.appointmentModelDao().addAppointment(appointment);
+
+                Log.d("Billions", "Saving appointment for "+simpleDateFormat.format(appointment.getAppointmentDate()));
+
+            }
+
+            return null;
+        }
+
     }
 
 }

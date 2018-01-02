@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.HomeActivity;
@@ -49,6 +50,8 @@ public class BaseActivity extends AppCompatActivity {
     final public static DatePickerDialog toDatePicker = new DatePickerDialog();
     final public static DatePickerDialog fromDatePicker = new DatePickerDialog();
     final public static DatePickerDialog datePickerDialog = new DatePickerDialog();
+
+    final public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
