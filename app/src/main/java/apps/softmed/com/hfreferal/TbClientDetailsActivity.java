@@ -29,16 +29,19 @@ import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.WrapContentHeightViewPager;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
+import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMEFARIKI;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMEHAMA;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMEMALIZA_TIBA;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMEPONA;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMETOROKA;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_HAKUPONA;
+import static apps.softmed.com.hfreferal.utils.constants.STATUS_PENDING;
 import static apps.softmed.com.hfreferal.utils.constants.TB_1_PLUS;
 import static apps.softmed.com.hfreferal.utils.constants.TB_2_PLUS;
 import static apps.softmed.com.hfreferal.utils.constants.TB_3_PLUS;
@@ -545,7 +548,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Integer... encounterMonth) {
 
-            encMonth = encounterMonth[0];
+            encMonth = encounterMonth[0] == null ? 0 : encounterMonth[0];
 
             /**
              * Delete Appointments From encMonth to month 8
@@ -584,6 +587,7 @@ public class TbClientDetailsActivity extends BaseActivity {
                 appointment.setAppointmentEncounterMonth((i+1)+"");
                 appointment.setCreatedAt(new Date());
                 appointment.setUpdatedAt(new Date());
+                appointment.setStatus(STATUS_PENDING);
 
                 long range = 1234567L;
                 Random r = new Random();
@@ -597,6 +601,15 @@ public class TbClientDetailsActivity extends BaseActivity {
                 Log.d("Billions", "Saving appointment for "+simpleDateFormat.format(appointment.getAppointmentDate()));
 
             }
+
+            /*
+            Appointment is the last thing so send data to PostOffice
+             */
+            PostOffice postOffice = new PostOffice();
+            postOffice.setPatient_id(currentPatient.getPatientId());
+            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+            database.postOfficeModelDao().addPostEntry(postOffice);
 
             return null;
         }

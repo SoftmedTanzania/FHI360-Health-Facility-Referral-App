@@ -11,6 +11,8 @@ public class constants {
 
     public static final String STATUS_COMPLETED = "Tayari";
     public static final String STATUS_NEW = "Mpya";
+    public static final String STATUS_PENDING = "Bado";
+    public static final String STATUS_CANCELLED = "Imefutwa";
 
     public static final String MALE = "Male";
     public static final String FEMALE = "Female";

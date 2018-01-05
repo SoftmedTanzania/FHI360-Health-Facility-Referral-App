@@ -210,7 +210,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
             database.referalModel().updateReferral(referal);
 
             PostOffice postOffice = new PostOffice();
-            postOffice.setReferral_id(referal.getReferral_id());
+            postOffice.setPatient_id(referal.getPatient_id());
             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
             database.postOfficeModelDao().addPostEntry(postOffice);

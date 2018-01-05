@@ -20,7 +20,7 @@ import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 @Dao
 public interface PatientAppointmentModelDao {
 
-    @Query("select * from PatientAppointment")
+    @Query("select * from PatientAppointment order by appointmentDate asc")
     List<PatientAppointment> getAllAppointments();
 
     @Query("select * from PatientAppointment where patientID = :patientId")

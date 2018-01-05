@@ -120,7 +120,8 @@ public class LoginActivity extends BaseActivity {
                     session.createLoginSession(
                             loginResponse.getUser().getUsername(),
                             loginResponse.getUser().getAttributes().getPersonUUID(),
-                            passwordValue);
+                            passwordValue,
+                            loginResponse.getTeam().getTeam().getLocation().getUuid());
                     callReferralList();
 
                 } else {

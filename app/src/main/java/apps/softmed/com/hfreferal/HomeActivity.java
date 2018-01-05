@@ -1,10 +1,8 @@
 package apps.softmed.com.hfreferal;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -29,14 +27,10 @@ import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.fragments.HivFragment;
 import apps.softmed.com.hfreferal.fragments.MalariaFragment;
 import apps.softmed.com.hfreferal.fragments.TbFragment;
 import apps.softmed.com.hfreferal.viewmodels.PostOfficeListViewModel;
-import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
-
-import static apps.softmed.com.hfreferal.utils.SessionManager.KEY_NAME;
 
 /**
  * Created by issy on 12/4/17.
@@ -134,7 +128,7 @@ public class HomeActivity extends BaseActivity {
 
         if (id == R.id.reminder){
             //Open Reminder Activity
-            startActivity(new Intent(this, ReminderActivity.class));
+            startActivity(new Intent(this, AppointmentActivity.class));
         }
 
         return true;

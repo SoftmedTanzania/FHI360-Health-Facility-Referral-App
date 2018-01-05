@@ -45,13 +45,17 @@ public class SessionManager {
     // Email address (make variable public to access from outside)
     public static final String KEY_UUID = "uuid";
 
+    //Health Facility ID (All the server calls require this
+    public static final String KEY_HFID = "hfid";
+
     //Change this
     public static final String USER_PASS = "userPassword";
+
 
     /**
      * Create login session
      * */
-    public void createLoginSession(String name, String personUUID, String pass){
+    public void createLoginSession(String name, String personUUID, String pass, String health_facility_uuid){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -63,6 +67,9 @@ public class SessionManager {
 
         //Storing user password
         editor.putString(USER_PASS, pass);
+
+        //Storing health Facility ID
+        editor.putString(KEY_HFID, health_facility_uuid);
 
         // commit changes
         editor.commit();

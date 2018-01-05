@@ -18,7 +18,9 @@ public class PostOffice implements Serializable{
 
     @NonNull
     @PrimaryKey(autoGenerate = false)
-    private String referral_id;
+    private String patient_id;
+
+    private String type;
 
     /**
      *  1 == POSTED
@@ -26,12 +28,21 @@ public class PostOffice implements Serializable{
      */
     private int syncStatus;
 
-    public String getReferral_id() {
-        return referral_id;
+    @NonNull
+    public String getPatient_id() {
+        return patient_id;
     }
 
-    public void setReferral_id(String referral_id) {
-        this.referral_id = referral_id;
+    public void setPatient_id(@NonNull String patient_id) {
+        this.patient_id = patient_id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getSyncStatus() {
