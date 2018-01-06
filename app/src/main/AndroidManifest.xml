@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -71,6 +75,20 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
+        <receiver
+            android:name=".utils.AlarmReceiver"
+            android:process=":remote">
+        </receiver>
+
+        <service android:name=".services.PostOfficeService"
+            android:exported="false"/>
+
+        <receiver android:name=".services.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".TbClientListActivity"
             android:parentActivityName=".MainActivity"

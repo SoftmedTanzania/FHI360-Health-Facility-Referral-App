@@ -31,6 +31,7 @@ import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_COMPLETED;
 
 /**
@@ -204,7 +205,8 @@ public class TbReferralDetailsActivity extends BaseActivity {
             database.referalModel().updateReferral(referal);
 
             PostOffice postOffice = new PostOffice();
-            postOffice.setPatient_id(referal.getPatient_id());
+            postOffice.setPost_id(referal.getReferral_id());
+            postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
             database.postOfficeModelDao().addPostEntry(postOffice);

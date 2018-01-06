@@ -24,13 +24,17 @@ import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE;
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE;
 import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE_ID;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_ENCOUNTER;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_NEW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE;
@@ -311,7 +315,16 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         @Override
         protected Void doInBackground(Referal... referrals) {
+
             database.referalModel().addReferal(referrals[0]);
+
+            PostOffice postOffice = new PostOffice();
+            postOffice.setPost_id(referrals[0].getReferral_id());
+            postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
+            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+            database.postOfficeModelDao().addPostEntry(postOffice);
+
             return null;
         }
     }

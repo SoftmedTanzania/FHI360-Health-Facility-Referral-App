@@ -28,7 +28,7 @@ public class PostOfficeListViewModel extends AndroidViewModel {
     public PostOfficeListViewModel(Application application){
         super(application);
         appDatabase = AppDatabase.getDatabase(this.getApplication());
-        unpostedDataList = appDatabase.postOfficeModelDao().getUnpostedData();
+        unpostedDataList = appDatabase.postOfficeModelDao().getUnpostedLiveData();
         postedDataList = appDatabase.postOfficeModelDao().getPostedData();
     }
 

@@ -41,6 +41,8 @@ import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMEMALIZA_TIBA;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMEPONA;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_AMETOROKA;
 import static apps.softmed.com.hfreferal.utils.constants.MATOKEO_HAKUPONA;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_ENCOUNTER;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_PATIENT;
 import static apps.softmed.com.hfreferal.utils.constants.STATUS_PENDING;
 import static apps.softmed.com.hfreferal.utils.constants.TB_1_PLUS;
 import static apps.softmed.com.hfreferal.utils.constants.TB_2_PLUS;
@@ -327,6 +329,8 @@ public class TbClientDetailsActivity extends BaseActivity {
         tbEncounter.setCreatedAt(today+"");
         tbEncounter.setUpdatedAt(today+"");
 
+        tbEncounter.setId(currentPatient.getPatientId()+"_"+encouterMonthSpinner.getSelectedItemPosition());
+
         SaveEncounters saveEncounters = new SaveEncounters(baseDatabase);
         saveEncounters.execute(tbEncounter);
 
@@ -486,6 +490,13 @@ public class TbClientDetailsActivity extends BaseActivity {
             Log.d("Billions", "Saving current Encounter for month "+encounters[0].getEncounterMonth());
             database.tbEncounterModelDao().addEncounter(encounters[0]);
 
+            PostOffice postOffice = new PostOffice();
+            postOffice.setPost_id(encounters[0].getId());
+            postOffice.setPost_data_type(POST_DATA_TYPE_ENCOUNTER);
+            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+            database.postOfficeModelDao().addPostEntry(postOffice);
+
             //Save previous month medication status
             int previousmonth = Integer.parseInt(encounters[0].getEncounterMonth()) - 1;
             List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousmonth+"", currentTbPatient.getTempID()+"");
@@ -603,10 +614,11 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
 
             /*
-            Appointment is the last thing so send data to PostOffice
+            Appointment is the last thing so send patient data to PostOffice
              */
             PostOffice postOffice = new PostOffice();
-            postOffice.setPatient_id(currentPatient.getPatientId());
+            postOffice.setPost_id(currentPatient.getPatientId());
+            postOffice.setPost_data_type(POST_DATA_TYPE_PATIENT);
             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
             database.postOfficeModelDao().addPostEntry(postOffice);

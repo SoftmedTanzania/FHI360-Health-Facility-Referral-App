@@ -33,7 +33,10 @@ public interface PostOfficeModelDao {
     int getPostedDataCount();
 
     @Query("select * from PostOffice where syncStatus = 0 ")
-    LiveData<List<PostOffice>> getUnpostedData();
+    List<PostOffice> getUnpostedData();
+
+    @Query("select * from PostOffice where syncStatus = 0 ")
+    LiveData<List<PostOffice>> getUnpostedLiveData();
 
     @Query("select * from PostOffice where syncStatus = 1")
     LiveData<List<PostOffice>> getPostedData();

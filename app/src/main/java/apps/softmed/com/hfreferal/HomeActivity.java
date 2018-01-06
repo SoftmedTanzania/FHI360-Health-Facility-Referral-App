@@ -1,7 +1,10 @@
 package apps.softmed.com.hfreferal;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,6 +33,7 @@ import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.fragments.HivFragment;
 import apps.softmed.com.hfreferal.fragments.MalariaFragment;
 import apps.softmed.com.hfreferal.fragments.TbFragment;
+import apps.softmed.com.hfreferal.utils.AlarmReceiver;
 import apps.softmed.com.hfreferal.viewmodels.PostOfficeListViewModel;
 
 /**
@@ -198,6 +202,21 @@ public class HomeActivity extends BaseActivity {
 //            return mFragmentTitleList.get(position);
             return null;
         }
+    }
+
+    public void scheduleAlarm() {
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, AlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every every half hour from this point onwards
+        long firstMillis = System.currentTimeMillis(); // alarm is set right away
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
+        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
+                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pIntent);
     }
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 import apps.softmed.com.hfreferal.ClientsDetailsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
+import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Client;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
@@ -71,6 +72,8 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
         holder.ctcNumber.setText(referal.getCtcNumber());
         holder.referralReasons.setText(referal.getReferralReason());
 
+        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referal.getReferralDate()));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +102,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientsNames, newFlag, attendedFlag, ctcNumber, referralReasons;
+        TextView clientsNames, attendedFlag, ctcNumber, referralReasons, referralDate;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
@@ -108,9 +111,9 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
             clientsNames = (TextView) itemView.findViewById(R.id.client_name);
             attendedFlag = (TextView) itemView.findViewById(R.id.attended_flag);
-
             ctcNumber = (TextView) itemView.findViewById(R.id.ctc_number);
             referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
+            referralDate = (TextView) itemView.findViewById(R.id.ref_date);
 
         }
 

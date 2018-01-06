@@ -37,7 +37,7 @@ import apps.softmed.com.hfreferal.dom.objects.TbPatient;
                 TbEncounters.class,
                 PatientAppointment.class
         },
-        version = 2)
+        version = 1)
 
 public abstract class AppDatabase extends RoomDatabase{
 

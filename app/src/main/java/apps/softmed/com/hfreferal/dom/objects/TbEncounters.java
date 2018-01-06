@@ -19,6 +19,8 @@ import java.util.Date;
 @Entity(primaryKeys = { "tbPatientID", "encounterMonth" })
 public class TbEncounters implements Serializable {
 
+    private String id;
+
     @NonNull
     @SerializedName("tb_patient_id")
     private String tbPatientID;
@@ -130,5 +132,13 @@ public class TbEncounters implements Serializable {
 
     public void setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
