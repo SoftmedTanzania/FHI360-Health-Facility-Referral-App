@@ -1,10 +1,12 @@
 package apps.softmed.com.hfreferal;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
@@ -44,14 +48,14 @@ public class TbReferralDetailsActivity extends BaseActivity {
     public TextView clientName, ctcNumber, referalReasons, villageLeaderValue, referrerName;
     private EditText servicesOfferedEt, otherInformationEt;
     public ProgressView saveProgress;
-    private CheckBox hivStatus;
+    private CheckBox tbStatus;
 
     public TextView clientNames, wardText, villageText, hamletText, patientGender;
 
     public Dialog referalDialogue;
 
     private Referal currentReferral;
-
+    private Patient currentPatient;
     private AppDatabase database;
 
     @Override
@@ -73,7 +77,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
                     saveButton.setEnabled(false);
                     referButton.setEnabled(false);
-                    hivStatus.setEnabled(false);
+                    tbStatus.setEnabled(false);
 
                 }
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
@@ -90,6 +94,17 @@ public class TbReferralDetailsActivity extends BaseActivity {
         referalDialogue = new Dialog(this);
         referalDialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        tbStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    saveButton.setText("Ingiza : Kliniki ya TB");
+                }else {
+                    saveButton.setText("Hifadhi");
+                }
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +115,10 @@ public class TbReferralDetailsActivity extends BaseActivity {
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                referalDialogueEvents();
+                if (currentPatient!=null){
+                    callReferralFragmentDialogue(currentPatient);
+                }
+
             }
         });
 
@@ -129,42 +147,18 @@ public class TbReferralDetailsActivity extends BaseActivity {
         }
     }
 
-    private void referalDialogueEvents(){
+    private void callReferralFragmentDialogue(Patient patient){
 
-        final View mView = LayoutInflater.from(TbReferralDetailsActivity.this).inflate(R.layout.custom_dialogue_layout, null);
-        referalDialogue.setContentView(mView);
+        FragmentManager fm = getSupportFragmentManager();
 
-        servicesSpinner = (MaterialSpinner) mView.findViewById(R.id.spin_service);
-        healthFacilitySpinner = (MaterialSpinner) mView.findViewById(R.id.spin_to_facility);
-
-        String[] servicesList = {"TB", "HIV", "MALARIA" };
-        String[] hflist = {"Lugalo Hospital", "Kaloleni Dispensary", "Mount Meru Hospital" };
-
-        Button tumaButton = (Button) mView.findViewById(R.id.tuma_button);
-        tumaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                referalDialogue.dismiss();
-            }
-        });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, servicesList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        servicesSpinner.setAdapter(adapter);
-
-        ArrayAdapter<String> hfAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hflist);
-        hfAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        healthFacilitySpinner.setAdapter(hfAdapter);
-
-        referalDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        referalDialogue.setCancelable(false);
-        referalDialogue.show();
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
 
     private void setupviews(){
 
-        hivStatus = (CheckBox) findViewById(R.id.hiv_status);
+        tbStatus = (CheckBox) findViewById(R.id.tb_status);
 
         saveProgress = (ProgressView) findViewById(R.id.save_progress);
 
@@ -224,6 +218,12 @@ public class TbReferralDetailsActivity extends BaseActivity {
             super.onPostExecute(aVoid);
             saveProgress.setVisibility(View.GONE);
             saveButton.setVisibility(View.VISIBLE);
+            if (tbStatus.isChecked()){
+                Intent intent = new Intent(TbReferralDetailsActivity.this, TbClientDetailsActivity.class);
+                intent.putExtra("patient", currentPatient);
+                intent.putExtra("isPatientNew", true);
+                startActivity(intent);
+            }
             finish();
         }
     }
@@ -243,6 +243,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
+            currentPatient = patient;
             Log.d("", "PATIENT : "+patient.getPatientId());
             return null;
         }
@@ -262,6 +263,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
         }
 
     }
+
 
 
 }

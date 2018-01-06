@@ -146,39 +146,6 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     }
 
-    private void referalDialogueEvents(){
-
-        final View mView = LayoutInflater.from(ClientsDetailsActivity.this).inflate(R.layout.custom_dialogue_layout, null);
-        referalDialogue.setContentView(mView);
-
-        servicesSpinner = (MaterialSpinner) mView.findViewById(R.id.spin_service);
-        healthFacilitySpinner = (MaterialSpinner) mView.findViewById(R.id.spin_to_facility);
-
-        String[] servicesList = {"TB", "HIV", "MALARIA" };
-        String[] hflist = {"Lugalo Hospital", "Kaloleni Dispensary", "Mount Meru Hospital" };
-
-        Button tumaButton = (Button) mView.findViewById(R.id.tuma_button);
-        tumaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                referalDialogue.dismiss();
-            }
-        });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, servicesList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        servicesSpinner.setAdapter(adapter);
-
-        ArrayAdapter<String> hfAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hflist);
-        hfAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        healthFacilitySpinner.setAdapter(hfAdapter);
-
-        referalDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        referalDialogue.setCancelable(false);
-        referalDialogue.show();
-
-    }
-
     private void setupviews(){
 
         hivStatus = (CheckBox) findViewById(R.id.hiv_status);
