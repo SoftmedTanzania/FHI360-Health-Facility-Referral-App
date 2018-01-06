@@ -20,11 +20,10 @@ import java.util.List;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager;
-import apps.softmed.com.hfreferal.fragments.ChwReferalListFragment;
-import apps.softmed.com.hfreferal.fragments.HfReferralListFragment;
-import apps.softmed.com.hfreferal.fragments.HivFragment;
-import apps.softmed.com.hfreferal.fragments.MalariaFragment;
-import apps.softmed.com.hfreferal.fragments.TbFragment;
+import apps.softmed.com.hfreferal.fragments.ReferralListFragment;
+
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 
 /**
  * Created by issy on 12/10/17.
@@ -95,9 +94,12 @@ public class ReferralListActivity extends BaseActivity {
     }
 
     public void setupViewPager(ViewPager viewPager) {
+
         ReferralListActivity.ViewPagerAdapter adapter = new ReferralListActivity.ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HfReferralListFragment(), "hf");
-        adapter.addFragment(new ChwReferalListFragment(), "chw");
+        
+        adapter.addFragment(ReferralListFragment.newInstance(SOURCE_HF), "hf");
+        adapter.addFragment(ReferralListFragment.newInstance(SOURCE_CHW), "chw");
+
         viewPager.setAdapter(adapter);
     }
 

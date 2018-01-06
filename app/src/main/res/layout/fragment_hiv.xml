@@ -80,7 +80,7 @@
                                 android:layout_marginRight="16dp"
                                 android:fontFamily="@font/roboto_regular"
                                 android:textColor="@color/card_grid_tex"
-                                android:text="Chw : 15"/>
+                                android:text=""/>
 
                             <View
                                 android:layout_width="1dp"
@@ -96,7 +96,7 @@
                                 android:fontFamily="@font/roboto_regular"
                                 android:layout_marginRight="16dp"
                                 android:textColor="@color/card_grid_tex"
-                                android:text="Health Facility : 15"/>
+                                android:text=""/>
 
                         </LinearLayout>
 

@@ -1,8 +1,5 @@
 package apps.softmed.com.hfreferal;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,44 +7,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.rey.material.widget.ProgressView;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import apps.softmed.com.hfreferal.adapters.ReferalListRecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager;
-import apps.softmed.com.hfreferal.dom.objects.Client;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.fragments.ChwReferalListFragment;
-import apps.softmed.com.hfreferal.fragments.HfReferralListFragment;
 import apps.softmed.com.hfreferal.fragments.TbReferralListFragment;
-import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
-import fr.ganfra.materialspinner.MaterialSpinner;
-
-import static apps.softmed.com.hfreferal.utils.constants.STATUS_COMPLETED;
-import static apps.softmed.com.hfreferal.utils.constants.STATUS_NEW;
-import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
-import static apps.softmed.com.hfreferal.utils.constants.getReferralStatusValue;
 
 /**
  * Created by issy on 12/6/17.

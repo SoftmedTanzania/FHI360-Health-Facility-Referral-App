@@ -13,8 +13,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.ClientsDetailsActivity;
+import apps.softmed.com.hfreferal.FeedbackDetailsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
+import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 
 /**
@@ -71,11 +73,14 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
         holder.ctcNumber.setText(referal.getCtcNumber());
         holder.referralReasons.setText(referal.getReferralReason());
+        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referal.getReferralDate()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, ClientsDetailsActivity.class));
+                Intent intent = new Intent(context, FeedbackDetailsActivity.class);
+                intent.putExtra("referal", referal);
+                context.startActivity(intent);
             }
         });
 
@@ -98,7 +103,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientsNames, feedbackStatus, ctcNumber, referralReasons;
+        TextView clientsNames, feedbackStatus, ctcNumber, referralReasons, referralDate;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
@@ -109,6 +114,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
             feedbackStatus = (TextView) itemView.findViewById(R.id.feedback_status);
             ctcNumber = (TextView) itemView.findViewById(R.id.ctc_number);
             referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
+            referralDate = (TextView) itemView.findViewById(R.id.ref_date);
 
         }
 

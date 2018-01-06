@@ -51,7 +51,7 @@ public class BaseActivity extends AppCompatActivity {
     final public static DatePickerDialog fromDatePicker = new DatePickerDialog();
     final public static DatePickerDialog datePickerDialog = new DatePickerDialog();
 
-    final public SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    final public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

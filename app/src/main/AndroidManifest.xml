@@ -80,6 +80,10 @@
             android:parentActivityName=".TbClientListActivity"
             android:windowSoftInputMode="stateHidden"/>
 
+        <activity android:name=".FeedbackDetailsActivity"
+            android:parentActivityName=".ReferedClientsActivity"
+            android:windowSoftInputMode="stateHidden"/>
+
     </application>
 
 </manifest>

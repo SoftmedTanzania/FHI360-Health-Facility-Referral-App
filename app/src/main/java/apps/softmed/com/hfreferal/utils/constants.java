@@ -46,13 +46,16 @@ public class constants {
     public static final int ENTRY_NOT_SYNCED = 0;
     public static final int ENTRY_SYNCED = 1;
 
-    public static final int TB_SERVICE_ID = 2;
+    public static final String HIV_SERVICE = "CTC";
+    public static final String TB_SERVICE = "Kifua Kikuu";
+    public static final String MALARIA_SERVICE = "Malaria";
+
     public static final int HIV_SERVICE_ID = 1;
+    public static final int TB_SERVICE_ID = 2;
     public static final int MALARIA_SERVICE_ID = 3;
 
-    public static final String TB_SERVICE = "Kifua Kikuu";
-    public static final String HIV_SERVICE = "CTC";
-    public static final String MALARIA_SERVICE = "Malaria";
+    public static final int SOURCE_CHW = 1;
+    public static final int SOURCE_HF = 2;
 
 
     public static int getReferralStatusValue(String statusString){

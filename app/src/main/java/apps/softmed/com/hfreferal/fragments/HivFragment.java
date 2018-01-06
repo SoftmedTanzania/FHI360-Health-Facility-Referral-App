@@ -22,6 +22,8 @@ import apps.softmed.com.hfreferal.base.AppDatabase;
 import static apps.softmed.com.hfreferal.base.BaseActivity.Avenir;
 import static apps.softmed.com.hfreferal.base.BaseActivity.Julius;
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 
 /**
  * Created by issy on 12/4/17.
@@ -91,17 +93,12 @@ public class HivFragment extends Fragment {
     private void setupviews(View view){
 
         chwReferralCounts = (TextView) view.findViewById(R.id.chw_referal_count_text);
-
         hfReferralCount = (TextView) view.findViewById(R.id.hf_referal_count_text);
-
         referalCountText = (TextView) view.findViewById(R.id.referal_count_text);
-
         referalFeedbackCount = (TextView) view.findViewById(R.id.referal_feedback_count);
-
         referalListText = (TextView) view.findViewById(R.id.referal_list_text);
         referedClientsText = (TextView) view.findViewById(R.id.refered_clients_text);
         newReferalText = (TextView) view.findViewById(R.id.new_referals_text);
-
         referedClientsCard = (CardView) view.findViewById(R.id.refered_clients_card);
         referalListCard = (CardView) view.findViewById(R.id.referal_list_card);
         newReferalsCard = (CardView) view.findViewById(R.id.new_referals_card);
@@ -111,16 +108,22 @@ public class HivFragment extends Fragment {
     private class ReferalCountsTask extends AsyncTask<Void, Void, Void> {
 
         String referralCounts = "";
+        String chwCount = "";
+        String hfCount = "";
 
         @Override
         protected Void doInBackground(Void... voids) {
             referralCounts = database.referalModel().geCounttUnattendedReferals(HIV_SERVICE_ID)+" New referrals unattended";
+            chwCount = "CHW : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_CHW);
+            hfCount = "Health Facility : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_HF);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             referalCountText.setText(referralCounts);
+            chwReferralCounts.setText(chwCount);
+            hfReferralCount.setText(hfCount);
             super.onPostExecute(aVoid);
         }
 

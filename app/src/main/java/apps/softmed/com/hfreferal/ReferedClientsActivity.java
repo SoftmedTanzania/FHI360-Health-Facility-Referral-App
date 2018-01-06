@@ -76,6 +76,7 @@ public class ReferedClientsActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null){
             serviceID = getIntent().getIntExtra("service_id", 0);
+            Log.d("MIMI", serviceID+"" );
         }
 
         final String[] status = {STATUS_COMPLETED, STATUS_NEW};
@@ -188,6 +189,7 @@ public class ReferedClientsActivity extends BaseActivity {
                 }
             });
         }else if (serviceID == HIV_SERVICE_ID){
+            Log.d("MIMI", "Calling Hiv referred list of referrals");
             listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referal>>() {
                 @Override
                 public void onChanged(@Nullable List<Referal> referals) {

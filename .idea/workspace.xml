@@ -13,13 +13,15 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="IssueReferral" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="MIMI" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e64e6164-d795-43a1-8400-e8327b364fbe" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/FeedbackDetailsActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_referral_feedback.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/HfReferralListFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/ReferralListFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/javaCompile/classAnalysis.bin" />
@@ -28,15 +30,19 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ClientsDetailsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ClientsDetailsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/LoaderActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/LoaderActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/PatientsListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/PatientsListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/Referal.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/Referal.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/SessionManager.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/SessionManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferedClientsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferedClientsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferralListActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferralListActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/TbReferalListActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/TbReferalListActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/ReferredClientsrecyclerAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/ReferredClientsrecyclerAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/BaseActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/ReferalModelDao.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/ReferalModelDao.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/HivFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/HivFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_dialogue_layout.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_dialogue_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/viewmodels/ReferalListViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/viewmodels/ReferalListViewModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_hiv.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_hiv.xml" />
     </list>
     <ignored path="HFReferal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -80,158 +86,127 @@
     <favorites_list name="HFReferal" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="custom_dialogue_layout.xml" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/custom_dialogue_layout.xml">
-              <provider editor-type-id="android-designer2">
-                <state />
-              </provider>
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="376">
-                  <caret line="440" column="33" lean-forward="false" selection-start-line="440" selection-start-column="33" selection-end-line="440" selection-end-column="33" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="IssueReferralDialogueFragment.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="313">
-                  <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#4591#4737#0" expanded="true" />
-                    <element signature="e#4736#4737#0" expanded="true" />
-                    <element signature="e#4780#5002#0" expanded="true" />
-                    <element signature="e#5001#5002#0" expanded="true" />
-                    <element signature="method#getServiceID#0;class#IssueReferralDialogueFragment#0" expanded="false" />
-                    <element signature="method#toastThis#0;class#IssueReferralDialogueFragment#0" expanded="false" />
-                    <element signature="e#12092#12093#0" expanded="true" />
-                    <element signature="e#12134#12135#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="TbRegisterActivity.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/TbRegisterActivity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="815">
-                  <caret line="160" column="51" lean-forward="false" selection-start-line="160" selection-start-column="51" selection-end-line="160" selection-end-column="51" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="AppointmentActivity.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/AppointmentActivity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="481">
-                  <caret line="39" column="21" lean-forward="false" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="TbReferralDetailsActivity.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/TbReferralDetailsActivity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="370">
-                  <caret line="140" column="72" lean-forward="false" selection-start-line="140" selection-start-column="72" selection-end-line="140" selection-end-column="72" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="constants.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="623">
-                  <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Referal.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/Referal.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="177">
-                  <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-                  <folding>
-                    <element signature="e#2914#2915#0" expanded="true" />
-                    <element signature="e#2948#2949#0" expanded="true" />
-                    <element signature="e#2993#2994#0" expanded="true" />
-                    <element signature="e#3030#3031#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="PatientsListAdapter.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/PatientsListAdapter.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="268">
-                  <caret line="84" column="63" lean-forward="true" selection-start-line="84" selection-start-column="63" selection-end-line="84" selection-end-column="63" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ClientsDetailsActivity.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ClientsDetailsActivity.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="382">
-                  <caret line="107" column="30" lean-forward="false" selection-start-line="107" selection-start-column="30" selection-end-line="107" selection-end-column="30" />
-                  <folding>
-                    <element signature="e#4056#4349#0" expanded="true" />
-                    <element signature="e#4348#4349#0" expanded="true" />
-                    <element signature="method#saveReferalInformation#0;class#ClientsDetailsActivity#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="SessionManager.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/SessionManager.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="810">
-                  <caret line="92" column="28" lean-forward="false" selection-start-line="92" selection-start-column="28" selection-end-line="92" selection-end-column="28" />
-                  <folding>
-                    <element signature="e#2367#2368#0" expanded="true" />
-                    <element signature="e#2421#2422#0" expanded="true" />
-                    <element signature="e#2455#2456#0" expanded="true" />
-                    <element signature="e#2508#2509#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="Referal.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/Referal.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="499">
-                  <caret line="83" column="26" lean-forward="false" selection-start-line="83" selection-start-column="26" selection-end-line="83" selection-end-column="26" />
-                  <folding>
-                    <element signature="e#4410#4411#0" expanded="true" />
-                    <element signature="e#4447#4448#0" expanded="true" />
-                    <element signature="e#4504#4505#0" expanded="true" />
-                    <element signature="e#4556#4557#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="ReferredClientsrecyclerAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/ReferredClientsrecyclerAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="413">
+              <caret line="75" column="49" lean-forward="false" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HivFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/HivFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="419">
+              <caret line="69" column="82" lean-forward="false" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReferralListActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferralListActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="99" column="55" lean-forward="false" selection-start-line="99" selection-start-column="55" selection-end-line="99" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="constants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="484">
+              <caret line="57" column="37" lean-forward="false" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReferralListFragment.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/ReferralListFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="526">
+              <caret line="104" column="40" lean-forward="false" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
+              <folding>
+                <element signature="e#9377#9588#0" expanded="true" />
+                <element signature="e#9587#9588#0" expanded="true" />
+                <element signature="e#9728#9939#0" expanded="true" />
+                <element signature="e#9938#9939#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReferalListViewModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/viewmodels/ReferalListViewModel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="386">
+              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+              <folding>
+                <element signature="e#2192#2193#0" expanded="true" />
+                <element signature="e#2228#2229#0" expanded="true" />
+                <element signature="e#2291#2292#0" expanded="true" />
+                <element signature="e#2333#2334#0" expanded="true" />
+                <element signature="e#2397#2398#0" expanded="true" />
+                <element signature="e#2440#2441#0" expanded="true" />
+                <element signature="e#2494#2495#0" expanded="true" />
+                <element signature="e#2528#2529#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReferalModelDao.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/ReferalModelDao.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="29" column="80" lean-forward="false" selection-start-line="29" selection-start-column="80" selection-end-line="29" selection-end-column="80" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IssueReferralDialogueFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="502">
+              <caret line="65" column="56" lean-forward="false" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
+              <folding>
+                <element signature="method#getServiceID#0;class#IssueReferralDialogueFragment#0" expanded="false" />
+                <element signature="method#toastThis#0;class#IssueReferralDialogueFragment#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientsDetailsActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ClientsDetailsActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="143" column="71" lean-forward="false" selection-start-line="143" selection-start-column="71" selection-end-line="143" selection-end-column="71" />
+              <folding>
+                <element signature="method#saveReferalInformation#0;class#ClientsDetailsActivity#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/BaseActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="53" column="23" lean-forward="false" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -260,6 +235,7 @@
       <find>Treatment type</find>
       <find>spin_encounter_month</find>
       <find>clear</find>
+      <find>chw_referal_count_text</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -2077,18 +2053,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthTwo.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_month_seven.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthSeven.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_month_eight.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthEight.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/customviews/WrapContentHeightViewPager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_tab_white.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthTwoToSix.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_month_one.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/TbMedicines.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/viewmodels/TbPatientListViewModel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_tb_register.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthOne.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_month_two.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthFourEncounters.java" />
@@ -2109,7 +2073,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_tb_client_details.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/AppDatabase.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/PatientAppointment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/BaseActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/appointment_recycler_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/PostOffice.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/TbReferralDetailsActivity.java" />
@@ -2121,13 +2084,26 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/patient_appointment_list_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_appointment.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/AppointmentActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/SessionManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/PatientsListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_dialogue_layout.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ClientsDetailsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/Referal.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_hiv.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/HivFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferedClientsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_referral_feedback.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/FeedbackDetailsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/BaseActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/ReferredClientsrecyclerAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/ReferalModelDao.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/viewmodels/ReferalListViewModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/HfReferralListFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferralListActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/ReferralListFragment.java" />
       </list>
     </option>
   </component>
@@ -2587,47 +2563,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HFReferralApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HFReferralApp" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hfreferal" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="adapters" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Development/Android/HFReferralApp/app/src/main/java/apps/softmed/com/hfreferal/ClientsDetailsActivity.java&#10;split&#9;ACTION&#9;SplitVertically&#10;tbencounter&#9;FILE&#9;file:///Development/Android/HFReferralApp/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/TbEncounterModelDao.java&#10;spin&#9;PSI&#9;JAVA://apps.softmed.com.hfreferal.R.id#spin_status&#10;Referal&#9;FILE&#9;file:///Development/Android/HFReferralApp/app/src/main/java/apps/softmed/com/hfreferal/ReferalListActivity.java&#10;spli&#9;ACTION&#9;SplitVertically&#10;load&#9;PSI&#9;JAVA://apps.softmed.com.hfreferal.LoaderActivity&#10;c&#9;FILE&#9;file:///Development/Android/OpenSRP/HFReferal/app/src/main/java/apps/softmed/com/hfreferal/ReferalListActivity.java" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Development/Android/HFReferralApp/app/src/main/java/apps/softmed/com/hfreferal/ReferralListActivity.java&#10;simple&#9;PSI&#9;JAVA://apps.softmed.com.hfreferal.base.BaseActivity#simpleDateFormat&#10;split&#9;ACTION&#9;SplitVertically&#10;tbencounter&#9;FILE&#9;file:///Development/Android/HFReferralApp/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/TbEncounterModelDao.java&#10;spin&#9;PSI&#9;JAVA://apps.softmed.com.hfreferal.R.id#spin_status&#10;Referal&#9;FILE&#9;file:///Development/Android/HFReferralApp/app/src/main/java/apps/softmed/com/hfreferal/ReferalListActivity.java&#10;spli&#9;ACTION&#9;SplitVertically&#10;load&#9;PSI&#9;JAVA://apps.softmed.com.hfreferal.LoaderActivity&#10;c&#9;FILE&#9;file:///Development/Android/OpenSRP/HFReferal/app/src/main/java/apps/softmed/com/hfreferal/ReferalListActivity.java" />
     <property name="UI_DESIGNER_EDITOR_MODE.NlPaletteManager-NlPreviewForm.SHOW" value="false" />
     <property name="android.project.structure.last.selected" value="app" />
     <property name="android.project.structure.proportion" value="0.15" />
@@ -2737,7 +2679,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515198755518" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515204386259" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2785,7 +2727,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515198755518" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515204386259" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2977,7 +2919,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515198755519" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515204386260" />
       </method>
     </configuration>
     <list size="1">
@@ -3072,7 +3014,7 @@
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32871288" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39009902" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11584158" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -3162,70 +3104,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/TbPatient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="26" column="0" lean-forward="false" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/ReferalModelDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/TbPatientModelDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="34" column="0" lean-forward="false" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/android.arch.persistence.room/common/1.0.0/5c5c59f3f0aeb14d82aae5bd98cbbbe607d58297/common-1.0.0-sources.jar!/android/arch/persistence/room/Insert.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="36" column="46" lean-forward="false" selection-start-line="36" selection-start-column="46" selection-end-line="36" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthOneEncounters.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthThreeEncounters.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/tb/MonthTwoEncounters.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/TbEncounterModelDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="699">
-          <caret line="38" column="54" lean-forward="false" selection-start-line="38" selection-start-column="54" selection-end-line="38" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/TbEncounters.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="580">
-          <caret line="36" column="50" lean-forward="false" selection-start-line="36" selection-start-column="50" selection-end-line="36" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_tb_client_details.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12920">
-          <caret line="646" column="54" lean-forward="false" selection-start-line="646" selection-start-column="54" selection-end-line="646" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/PatientModelDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/DateConverter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -3326,17 +3204,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/HomeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -3393,18 +3260,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/BaseActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="50" column="31" lean-forward="false" selection-start-line="50" selection-start-column="31" selection-end-line="50" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2870#2871#0" expanded="false" />
-            <element signature="e#2898#2899#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/NewReferalsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="880">
@@ -3452,17 +3307,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_hiv.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="20" column="27" lean-forward="false" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_monthly_encounters.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_month_seven.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_month_one.xml" />
@@ -3502,17 +3346,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-land/activity_client_details.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/PostOffice.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -3529,35 +3362,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_client_details.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="572" column="49" lean-forward="false" selection-start-line="572" selection-start-column="49" selection-end-line="572" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/SessionManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="810">
           <caret line="92" column="28" lean-forward="false" selection-start-line="92" selection-start-column="28" selection-end-line="92" selection-end-column="28" />
           <folding>
-            <element signature="e#2367#2368#0" expanded="true" />
-            <element signature="e#2421#2422#0" expanded="true" />
-            <element signature="e#2455#2456#0" expanded="true" />
-            <element signature="e#2508#2509#0" expanded="true" />
+            <element signature="e#2367#2368#0" expanded="false" />
+            <element signature="e#2421#2422#0" expanded="false" />
+            <element signature="e#2455#2456#0" expanded="false" />
+            <element signature="e#2508#2509#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3577,14 +3391,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/TbRegisterActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="815">
-          <caret line="160" column="51" lean-forward="false" selection-start-line="160" selection-start-column="51" selection-end-line="160" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/custom_dialogue_layout.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -3596,24 +3402,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="88" column="0" lean-forward="true" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4591#4737#0" expanded="true" />
-            <element signature="e#4736#4737#0" expanded="true" />
-            <element signature="e#4780#5002#0" expanded="true" />
-            <element signature="e#5001#5002#0" expanded="true" />
-            <element signature="method#getServiceID#0;class#IssueReferralDialogueFragment#0" expanded="false" />
-            <element signature="method#toastThis#0;class#IssueReferralDialogueFragment#0" expanded="false" />
-            <element signature="e#12092#12093#0" expanded="true" />
-            <element signature="e#12134#12135#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/PatientsListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="268">
@@ -3622,27 +3410,220 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/TbRegisterActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="815">
+          <caret line="160" column="51" lean-forward="false" selection-start-line="160" selection-start-column="51" selection-end-line="160" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_hiv.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="82" column="49" lean-forward="false" selection-start-line="82" selection-start-column="49" selection-end-line="82" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_refered_clients.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="297" column="48" lean-forward="false" selection-start-line="297" selection-start-column="48" selection-end-line="297" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/Referal.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state relative-caret-position="539">
+          <caret line="74" column="38" lean-forward="false" selection-start-line="74" selection-start-column="38" selection-end-line="74" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_client_details.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="569" column="27" lean-forward="false" selection-start-line="569" selection-start-column="27" selection-end-line="569" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-land/activity_client_details.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="27" column="41" lean-forward="false" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_referral_feedback.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="347">
+          <caret line="182" column="66" lean-forward="false" selection-start-line="182" selection-start-column="66" selection-end-line="182" selection-end-column="66" />
           <folding>
-            <element signature="e#2914#2915#0" expanded="true" />
-            <element signature="e#2948#2949#0" expanded="true" />
-            <element signature="e#2993#2994#0" expanded="true" />
-            <element signature="e#3030#3031#0" expanded="true" />
+            <element signature="e#14823#28798#0" expanded="false" />
+            <element signature="e#29895#40640#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="559">
+          <caret line="72" column="18" lean-forward="false" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/FeedbackDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="74" column="39" lean-forward="false" selection-start-line="74" selection-start-column="39" selection-end-line="74" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferedClientsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="192" column="42" lean-forward="false" selection-start-line="192" selection-start-column="42" selection-end-line="192" selection-end-column="42" />
+          <folding>
+            <element signature="e#8107#8318#0" expanded="true" />
+            <element signature="e#8317#8318#0" expanded="true" />
+            <element signature="method#getInputs#0;class#ReferedClientsActivity#0" expanded="false" />
+            <element signature="class#QueryReferals#0;class#ReferedClientsActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/referred_clients_list_item.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="70" column="45" lean-forward="false" selection-start-line="70" selection-start-column="45" selection-end-line="70" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/base/BaseActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="53" column="23" lean-forward="false" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/adapters/ReferredClientsrecyclerAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="413">
+          <caret line="75" column="49" lean-forward="false" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/HivFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="419">
+          <caret line="69" column="82" lean-forward="false" selection-start-line="69" selection-start-column="82" selection-end-line="69" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/IssueReferralDialogueFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="65" column="56" lean-forward="false" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
+          <folding>
+            <element signature="method#getServiceID#0;class#IssueReferralDialogueFragment#0" expanded="false" />
+            <element signature="method#toastThis#0;class#IssueReferralDialogueFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ClientsDetailsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="107" column="30" lean-forward="false" selection-start-line="107" selection-start-column="30" selection-end-line="107" selection-end-column="30" />
+        <state relative-caret-position="288">
+          <caret line="143" column="71" lean-forward="false" selection-start-line="143" selection-start-column="71" selection-end-line="143" selection-end-column="71" />
           <folding>
-            <element signature="e#4056#4349#0" expanded="true" />
-            <element signature="e#4348#4349#0" expanded="true" />
             <element signature="method#saveReferalInformation#0;class#ClientsDetailsActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/utils/constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="484">
+          <caret line="57" column="37" lean-forward="false" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/ReferalModelDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="29" column="80" lean-forward="false" selection-start-line="29" selection-start-column="80" selection-end-line="29" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/viewmodels/ReferalListViewModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="386">
+          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding>
+            <element signature="e#2192#2193#0" expanded="true" />
+            <element signature="e#2228#2229#0" expanded="true" />
+            <element signature="e#2291#2292#0" expanded="true" />
+            <element signature="e#2333#2334#0" expanded="true" />
+            <element signature="e#2397#2398#0" expanded="true" />
+            <element signature="e#2440#2441#0" expanded="true" />
+            <element signature="e#2494#2495#0" expanded="true" />
+            <element signature="e#2528#2529#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/ReferralListActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="99" column="55" lean-forward="false" selection-start-line="99" selection-start-column="55" selection-end-line="99" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/fragments/ReferralListFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="526">
+          <caret line="104" column="40" lean-forward="false" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
+          <folding>
+            <element signature="e#9377#9588#0" expanded="true" />
+            <element signature="e#9587#9588#0" expanded="true" />
+            <element signature="e#9728#9939#0" expanded="true" />
+            <element signature="e#9938#9939#0" expanded="true" />
           </folding>
         </state>
       </provider>

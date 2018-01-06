@@ -26,14 +26,20 @@ public interface ReferalModelDao {
     @Query("select * from Referal where serviceId = :serviceId")
     LiveData<List<Referal>> getAllReferals(int serviceId);
 
-    @Query("select * from Referal where serviceId = :serviceId and facilityId = :fromFacilityId")
-    LiveData<List<Referal>> getHivReferredClients(int serviceId, String fromFacilityId);
+    @Query("select * from Referal where serviceId = :serviceId and referralSource = :SourceID")
+    LiveData<List<Referal>> getReferralsBySourceId(int serviceId, int SourceID);
+
+    @Query("select * from Referal where serviceId = :serviceId and fromFacilityId = :fromFacilityId order by referralStatus desc")
+    LiveData<List<Referal>> getReferredClients(int serviceId, String fromFacilityId);
 
     @Query("select * from Referal where referralStatus = 0 and serviceId = :serviceId")
     LiveData<List<Referal>> getUnattendedReferals(int serviceId);
 
     @Query("select count(*) from Referal where referralStatus = 0 and serviceId = :serviceId")
     int geCounttUnattendedReferals(int serviceId);
+
+    @Query("select count(*) from Referal where referralStatus = 0 and serviceId = :serviceId and referralSource = :sourceID")
+    int getCountSourceReferrals(int serviceId, int sourceID);
 
     @Query("select * from Referal where patient_id = :id")
     LiveData<List<Referal>> getReferalsByPatientId(String id);

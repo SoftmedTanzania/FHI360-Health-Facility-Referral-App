@@ -32,6 +32,7 @@ import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE;
 import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_NEW;
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 
@@ -193,8 +194,10 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referal.setVillageLeader("");
         referal.setReferralDate(new Date());
         referal.setFacilityId(toHealthFacilityID);
-        referal.setFromFacilityId(BaseActivity.session.getKeyHfid());
+//        referal.setFromFacilityId(BaseActivity.session.getKeyHfid());
+        referal.setFromFacilityId("001"); //This is a fake facility ID for this logged in user
         referal.setReferralStatus(REFERRAL_STATUS_NEW);
+        referal.setReferralSource(SOURCE_HF);
         referal.setCreatedAt(new Date());
         referal.setUpdatedAt(new Date());
 
