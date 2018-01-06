@@ -31,6 +31,9 @@ public class ReferalListViewModel extends AndroidViewModel{
     private final LiveData<List<Referal>> referalListHfSource;
     private final LiveData<List<Referal>> referalListChwSource;
 
+    private final LiveData<List<Referal>> referalListHfSourceTb;
+    private final LiveData<List<Referal>> referalListChwSourceTb;
+
     private AppDatabase appDatabase;
 
     public ReferalListViewModel(Application application){
@@ -44,6 +47,9 @@ public class ReferalListViewModel extends AndroidViewModel{
 
         referalListHfSource = appDatabase.referalModel().getReferralsBySourceId(HIV_SERVICE_ID, SOURCE_HF);
         referalListChwSource = appDatabase.referalModel().getReferralsBySourceId(HIV_SERVICE_ID, SOURCE_CHW);
+
+        referalListHfSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, SOURCE_HF);
+        referalListChwSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, SOURCE_CHW);
 
     }
 
@@ -81,6 +87,14 @@ public class ReferalListViewModel extends AndroidViewModel{
 
     public LiveData<List<Referal>> getTbReferralList(){
         return tbReferalList;
+    }
+
+    public LiveData<List<Referal>> getReferalListHfSourceTb() {
+        return referalListHfSourceTb;
+    }
+
+    public LiveData<List<Referal>> getReferalListChwSourceTb() {
+        return referalListChwSourceTb;
     }
 
     private static class deleteAsyncTask extends AsyncTask<Referal, Void, Void>{

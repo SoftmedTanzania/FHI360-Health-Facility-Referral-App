@@ -55,14 +55,11 @@ public class ReferralListFragment extends Fragment {
     private ReferalListViewModel listViewModel;
 
     private Toolbar toolbar;
-    private RecyclerView clientRecyclerView, oldClientsRecycler;
+    private RecyclerView clientRecyclerView;
     private MaterialSpinner statusSpinner;
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
     private ProgressView progressView;
     private Button filterButton;
-
-    private List<Client> mClientList = new ArrayList<>();
-    private List<Client> mOldClientList = new ArrayList<>();
 
     private ReferalListRecyclerAdapter adapter;
 
@@ -158,14 +155,6 @@ public class ReferralListFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
-
                         fromDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar fromCalendar = Calendar.getInstance();
                         fromCalendar.set(year, monthOfYear, dayOfMonth);
@@ -186,14 +175,6 @@ public class ReferralListFragment extends Fragment {
                 toDatePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
 
                         toDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar toCalendar = Calendar.getInstance();

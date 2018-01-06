@@ -23,6 +23,9 @@ import apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager;
 import apps.softmed.com.hfreferal.fragments.ChwReferalListFragment;
 import apps.softmed.com.hfreferal.fragments.TbReferralListFragment;
 
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
+
 /**
  * Created by issy on 12/6/17.
  *
@@ -87,8 +90,8 @@ public class TbReferalListActivity extends BaseActivity {
 
     public void setupViewPager(ViewPager viewPager) {
         TbReferalListActivity.ViewPagerAdapter adapter = new TbReferalListActivity.ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TbReferralListFragment(), "hf");
-        adapter.addFragment(new ChwReferalListFragment(), "chw");
+        adapter.addFragment(TbReferralListFragment.newInstance(SOURCE_HF), "hf");
+        adapter.addFragment(TbReferralListFragment.newInstance(SOURCE_CHW), "chw");
         viewPager.setAdapter(adapter);
     }
 

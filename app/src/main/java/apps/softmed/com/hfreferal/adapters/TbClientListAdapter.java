@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import apps.softmed.com.hfreferal.NewReferalsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.TbClientDetailsActivity;
+import apps.softmed.com.hfreferal.TbClientListActivity;
 import apps.softmed.com.hfreferal.TbReferralDetailsActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
@@ -78,48 +82,18 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         holder.rufaaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                referalDialogueEvents(patient);
+                callReferralFragmentDialogue(patient);
             }
         });
 
     }
 
-    private void referalDialogueEvents(Patient patient){
+    private void callReferralFragmentDialogue(Patient patient){
+        TbClientListActivity activity = (TbClientListActivity) context;
+        FragmentManager fm = activity.getSupportFragmentManager();
 
-        referalDialogue = new Dialog(context);
-        referalDialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        final View mView = LayoutInflater.from(context).inflate(R.layout.custom_dialogue_layout, null);
-        referalDialogue.setContentView(mView);
-
-        TextView patientName = (TextView) mView.findViewById(R.id.patient_name);
-        patientName.setText(patient.getPatientFirstName()+ " "+patient.getPatientSurname());
-
-        MaterialSpinner servicesSpinner = (MaterialSpinner) mView.findViewById(R.id.spin_service);
-        MaterialSpinner healthFacilitySpinner = (MaterialSpinner) mView.findViewById(R.id.spin_to_facility);
-
-        String[] servicesList = {"TB", "HIV", "MALARIA" };
-        String[] hflist = {"Lugalo Hospital", "Kaloleni Dispensary", "Mount Meru Hospital" };
-
-        Button tumaButton = (Button) mView.findViewById(R.id.tuma_button);
-        tumaButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                referalDialogue.dismiss();
-            }
-        });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, servicesList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        servicesSpinner.setAdapter(adapter);
-
-        ArrayAdapter<String> hfAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, hflist);
-        hfAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        healthFacilitySpinner.setAdapter(hfAdapter);
-
-        referalDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        referalDialogue.setCancelable(false);
-        referalDialogue.show();
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
 

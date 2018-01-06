@@ -39,6 +39,8 @@ import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
+import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 import static apps.softmed.com.hfreferal.utils.constants.STATUS_COMPLETED;
 import static apps.softmed.com.hfreferal.utils.constants.STATUS_NEW;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
@@ -57,7 +59,7 @@ public class TbReferralListFragment extends Fragment {
     private ReferalListViewModel listViewModel;
 
     private Toolbar toolbar;
-    private RecyclerView clientRecyclerView, oldClientsRecycler;
+    private RecyclerView clientRecyclerView;
     private MaterialSpinner statusSpinner;
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
     private ProgressView progressView;
@@ -67,8 +69,17 @@ public class TbReferralListFragment extends Fragment {
 
     private Date fromDate, toDate;
     private String clientName, clientCtcNumber, lastName;
-    private int selectedStatus;
+    private int selectedStatus, source;
     private boolean notSelectedStatus, notSelectedFromDate, notSelectedTodate;
+
+    public static TbReferralListFragment newInstance(int source) {
+        Bundle args = new Bundle();
+        TbReferralListFragment fragment = new TbReferralListFragment();
+        args.putInt("source", source);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,8 +93,15 @@ public class TbReferralListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView;
-        rootView    = inflater.inflate(R.layout.fragment_referal_list, container, false);
-        setupviews(rootView);
+        rootView = inflater.inflate(R.layout.fragment_referal_list, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        source = getArguments().getInt("source");
+        setupviews(view);
 
         database = AppDatabase.getDatabase(this.getActivity());
 
@@ -138,14 +156,6 @@ public class TbReferralListFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
-
                         fromDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar fromCalendar = Calendar.getInstance();
                         fromCalendar.set(year, monthOfYear, dayOfMonth);
@@ -167,14 +177,6 @@ public class TbReferralListFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
-
                         toDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar toCalendar = Calendar.getInstance();
                         toCalendar.set(year, monthOfYear, dayOfMonth);
@@ -188,23 +190,25 @@ public class TbReferralListFragment extends Fragment {
 
         adapter = new TbReferralListRecyclerAdapter(new ArrayList<Referal>(), TbReferralListFragment.this.getActivity());
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
-        /*listViewModel.getTbReferralList().observe(TbReferralListFragment.this, new Observer<List<Referal>>() {
-            @Override
-            public void onChanged(@Nullable List<Referal> referals) {
-                adapter.addItems(referals);
-            }
-        });*/
+        if (source == SOURCE_CHW){
+            listViewModel.getReferalListChwSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referal>>() {
+                @Override
+                public void onChanged(@Nullable List<Referal> referals) {
+                    adapter.addItems(referals);
+                }
+            });
+        }else if (source == SOURCE_HF){
+            listViewModel.getReferalListHfSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referal>>() {
+                @Override
+                public void onChanged(@Nullable List<Referal> referals) {
+                    adapter.addItems(referals);
+                }
+            });
+        }
 
-        listViewModel.getReferalList().observe(TbReferralListFragment.this, new Observer<List<Referal>>() {
-            @Override
-            public void onChanged(@Nullable List<Referal> referals) {
-                adapter.addItems(referals);
-            }
-        });
 
         clientRecyclerView.setAdapter(adapter);
 
-        return rootView;
     }
 
     private boolean getInputs(){
