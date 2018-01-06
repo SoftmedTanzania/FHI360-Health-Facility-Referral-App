@@ -38,7 +38,6 @@ public class HivFragment extends Fragment {
     private TextView referalListText, referedClientsText, newReferalText, hivText, tbText, tbReferalListText, tbReferedClientsText, tbReferNewClientsText;
     private TextView referalCountText, referalFeedbackCount, toolbarTitle, chwReferralCounts, hfReferralCount;
     private CardView referalListCard, referedClientsCard, newReferalsCard;
-    private ImageView tbReferalListIcon, tbReferedClientsIcon, tbNewReferalsIcon;
 
     private Context context;
 
@@ -62,8 +61,7 @@ public class HivFragment extends Fragment {
 
         setupviews(rootView);
 
-        ReferalCountsTask referalCountsTask = new ReferalCountsTask();
-        referalCountsTask.execute();
+        new ReferalCountsTask().execute();
 
         referalListCard.setOnClickListener(new View.OnClickListener() {
             @Override
