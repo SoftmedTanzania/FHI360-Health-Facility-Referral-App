@@ -32,6 +32,9 @@ public interface ReferalModelDao {
     @Query("select * from Referal where serviceId = :serviceId and fromFacilityId = :fromFacilityId order by referralStatus desc")
     LiveData<List<Referal>> getReferredClients(int serviceId, String fromFacilityId);
 
+    @Query("select count(*) from Referal where referralStatus = 0 and serviceId = :serviceId and fromFacilityId = :fromFacilityId")
+    int geCountPendingReferalFeedback(int serviceId, String fromFacilityId);
+
     @Query("select * from Referal where referralStatus = 0 and serviceId = :serviceId")
     LiveData<List<Referal>> getUnattendedReferals(int serviceId);
 

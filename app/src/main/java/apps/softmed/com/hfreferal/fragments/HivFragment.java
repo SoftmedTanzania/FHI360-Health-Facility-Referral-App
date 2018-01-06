@@ -18,6 +18,7 @@ import apps.softmed.com.hfreferal.ReferalListActivityOld;
 import apps.softmed.com.hfreferal.ReferedClientsActivity;
 import apps.softmed.com.hfreferal.ReferralListActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
+import apps.softmed.com.hfreferal.base.BaseActivity;
 
 import static apps.softmed.com.hfreferal.base.BaseActivity.Avenir;
 import static apps.softmed.com.hfreferal.base.BaseActivity.Julius;
@@ -110,12 +111,14 @@ public class HivFragment extends Fragment {
         String referralCounts = "";
         String chwCount = "";
         String hfCount = "";
+        String feedbackCount = "";
 
         @Override
         protected Void doInBackground(Void... voids) {
             referralCounts = database.referalModel().geCounttUnattendedReferals(HIV_SERVICE_ID)+" New referrals unattended";
             chwCount = "CHW : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_CHW);
             hfCount = "Health Facility : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_HF);
+            feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.getThisFacilityId());
             return null;
         }
 
@@ -124,6 +127,7 @@ public class HivFragment extends Fragment {
             referalCountText.setText(referralCounts);
             chwReferralCounts.setText(chwCount);
             hfReferralCount.setText(hfCount);
+            referalFeedbackCount.setText(feedbackCount);
             super.onPostExecute(aVoid);
         }
 
