@@ -137,105 +137,219 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/tb_indicators_wrapper">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginLeft="16dp"
+                <LinearLayout
+                    android:layout_marginTop="16dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/has_two_weeks_cough_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Two weeks cough"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
-
-                    <CheckBox
-                        android:id="@+id/two_weeks_cough"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
-                        android:checked="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="32dp"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/blood_cough_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Blood Cough"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
-
-                    <CheckBox
-                        android:id="@+id/blood_cough"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
                         android:layout_marginLeft="16dp"
-                        android:checked="false"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="32dp"/>
+                        android:layout_height="wrap_content">
 
-                </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/has_two_weeks_cough_title"
+                            android:layout_below="@id/flags_title"
+                            android:layout_marginTop="16dp"
+                            android:text="Kifua cha Wiki mbili"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/avenir_light"
+                            android:textColor="@color/white"/>
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginRight="16dp"
-                    android:layout_height="wrap_content">
+                        <CheckBox
+                            android:id="@+id/two_weeks_cough"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_below="@+id/flags_title"
+                            android:layout_marginTop="8dp"
+                            android:checked="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="32dp"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/weight_loss_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Weight Loss"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
+                    </RelativeLayout>
 
-                    <CheckBox
-                        android:id="@+id/weight_loss"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/blood_cough_title"
+                            android:layout_below="@id/flags_title"
+                            android:layout_marginTop="16dp"
+                            android:text="Kukohoa damu"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/avenir_light"
+                            android:textColor="@color/white"/>
+
+                        <CheckBox
+                            android:id="@+id/blood_cough"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_below="@+id/flags_title"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:checked="false"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="32dp"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:layout_marginRight="16dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/weight_loss_title"
+                            android:layout_below="@id/flags_title"
+                            android:layout_marginTop="16dp"
+                            android:text="Kupungua Uzito"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/avenir_light"
+                            android:textColor="@color/white"/>
+
+                        <CheckBox
+                            android:id="@+id/weight_loss"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_below="@+id/flags_title"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:checked="false"
+                            android:layout_alignParentRight="true" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
                         android:layout_marginLeft="16dp"
-                        android:checked="false"
-                        android:layout_alignParentRight="true" />
+                        android:layout_height="wrap_content">
 
-                </RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/severe_sweating_title"
+                            android:layout_below="@id/flags_title"
+                            android:layout_marginTop="16dp"
+                            android:text="Kutokwa Jasho"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/avenir_light"
+                            android:textColor="@color/white"/>
+
+                        <CheckBox
+                            android:id="@+id/severe_sweating"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_below="@+id/flags_title"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:checked="false"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="32dp"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/fever_title"
+                            android:layout_below="@id/flags_title"
+                            android:layout_marginTop="16dp"
+                            android:text="Homa"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/avenir_light"
+                            android:textColor="@color/white"/>
+
+                        <CheckBox
+                            android:id="@+id/fever"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_below="@+id/flags_title"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:checked="false"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="32dp"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="0.3"
+                        android:layout_marginRight="16dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/pregnant_title"
+                            android:layout_below="@id/flags_title"
+                            android:layout_marginTop="16dp"
+                            android:text="Mjamzito"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/avenir_light"
+                            android:textColor="@color/white"/>
+
+                        <CheckBox
+                            android:id="@+id/pregnant"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_below="@+id/flags_title"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:checked="false"
+                            android:layout_alignParentRight="true"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/tb_separator"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/cyan_400"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="16dp"
+                android:id="@+id/hiv_indicators_wrapper">
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -246,16 +360,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/severe_sweating_title"
+                        android:id="@+id/risky_situation_title"
                         android:layout_below="@id/flags_title"
                         android:layout_marginTop="16dp"
-                        android:text="Severe Sweating"
+                        android:text="Mazingira Hatarishi"
                         android:textSize="14sp"
                         android:fontFamily="@font/avenir_light"
                         android:textColor="@color/white"/>
 
                     <CheckBox
-                        android:id="@+id/severe_sweating"
+                        android:id="@+id/risky_situation"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_below="@+id/flags_title"
@@ -270,21 +384,22 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_weight="0.3"
+                    android:layout_marginLeft="16dp"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/fever_title"
+                        android:id="@+id/partner_distrust_title"
                         android:layout_below="@id/flags_title"
                         android:layout_marginTop="16dp"
-                        android:text="Fever"
+                        android:text="Kukosa Uaminifu"
                         android:textSize="14sp"
                         android:fontFamily="@font/avenir_light"
                         android:textColor="@color/white"/>
 
                     <CheckBox
-                        android:id="@+id/fever"
+                        android:id="@+id/partner_distrust"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_below="@+id/flags_title"
@@ -305,16 +420,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/pregnant_title"
+                        android:id="@+id/hiv_pregnant_title"
                         android:layout_below="@id/flags_title"
                         android:layout_marginTop="16dp"
-                        android:text="Pregnant"
+                        android:text="Mjamzito"
                         android:textSize="14sp"
                         android:fontFamily="@font/avenir_light"
                         android:textColor="@color/white"/>
 
                     <CheckBox
-                        android:id="@+id/pregnant"
+                        android:id="@+id/hiv_pregnant"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_below="@+id/flags_title"
@@ -333,81 +448,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
+                android:id="@+id/hiv_separator"
                 android:background="@color/cyan_400"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginLeft="16dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/risky_situation_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Involved in risky situations"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
-
-                    <CheckBox
-                        android:id="@+id/risky_situation"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:checked="false"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="32dp"/>
-
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_weight="0.1"
-                    android:layout_height="1dp"/>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginLeft="16dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/partner_distrust_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Does not trust partner"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
-
-                    <CheckBox
-                        android:id="@+id/partner_distrust"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:checked="false"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="32dp"/>
-
-                </RelativeLayout>
-
-
-            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -419,21 +461,45 @@
                 android:text="Sababu za Rufaa"
                 android:textColor="@color/white"/>
 
-            <com.rey.material.widget.EditText
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:paddingTop="4dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/border_three"
-                android:paddingBottom="4dp"
                 android:id="@+id/referal_reasons_text"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                app:et_supportTextSize="24sp"
-                app:et_supportLines="5"
-                app:et_dividerColor="@color/white"
-                app:et_labelTextColor="@color/white"
-                app:et_supportTextColor="@color/white"/>
+                android:paddingLeft="8dp"
+                android:textSize="24sp"
+                android:gravity="start"
+                android:textColor="@color/white"
+                android:paddingStart="4dp"
+                android:minLines="4"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:fontFamily="@font/avenir_light"
+                android:layout_marginTop="16dp"
+                android:text="Taarifa zingine za Kliniki"
+                android:textColor="@color/white"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_three"
+                android:id="@+id/other_clinical_information_text"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:paddingLeft="8dp"
+                android:textSize="24sp"
+                android:gravity="start"
+                android:textColor="@color/white"
+                android:paddingStart="4dp"
+                android:minLines="4"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

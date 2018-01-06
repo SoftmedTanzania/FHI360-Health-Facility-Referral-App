@@ -5,6 +5,8 @@ import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +19,12 @@ import android.widget.TextView;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.ClientsDetailsActivity;
+import apps.softmed.com.hfreferal.NewReferalsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
@@ -71,9 +75,19 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
             @Override
             public void onClick(View view) {
                 //refer client popup
-                referalDialogueEvents(patient);
+//                referalDialogueEvents(patient);
+                callReferralFragmentDialogue(patient);
             }
         });
+
+    }
+
+    private void callReferralFragmentDialogue(Patient patient){
+        NewReferalsActivity activity = (NewReferalsActivity) context;
+        FragmentManager fm = activity.getSupportFragmentManager();
+
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
 

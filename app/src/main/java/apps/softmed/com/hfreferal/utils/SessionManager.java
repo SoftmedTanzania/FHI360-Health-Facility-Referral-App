@@ -90,6 +90,10 @@ public class SessionManager {
         return user;
     }
 
+    public String getKeyHfid(){
+        return pref.getString(KEY_HFID, null );
+    }
+
     public String getUserName(){
         return pref.getString(KEY_NAME, null);
     }

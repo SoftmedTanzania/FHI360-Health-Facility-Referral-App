@@ -50,6 +50,10 @@ public class constants {
     public static final int HIV_SERVICE_ID = 1;
     public static final int MALARIA_SERVICE_ID = 3;
 
+    public static final String TB_SERVICE = "Kifua Kikuu";
+    public static final String HIV_SERVICE = "CTC";
+    public static final String MALARIA_SERVICE = "Malaria";
+
 
     public static int getReferralStatusValue(String statusString){
         if (statusString.equals(STATUS_NEW)){

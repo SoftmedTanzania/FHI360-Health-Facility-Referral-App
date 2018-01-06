@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
@@ -52,7 +54,7 @@ public class ClientsDetailsActivity extends BaseActivity {
     public Dialog referalDialogue;
 
     private Referal currentReferral;
-
+    private Patient currentPatient;
     private AppDatabase database;
 
     @Override
@@ -101,7 +103,12 @@ public class ClientsDetailsActivity extends BaseActivity {
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                referalDialogueEvents();
+//                referalDialogueEvents();
+
+                if (currentPatient != null){
+                    callReferralFragmentDialogue(currentPatient);
+                }
+
             }
         });
 
@@ -128,6 +135,15 @@ public class ClientsDetailsActivity extends BaseActivity {
 
 
         }
+    }
+
+    private void callReferralFragmentDialogue(Patient patient){
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
+
     }
 
     private void referalDialogueEvents(){
@@ -244,6 +260,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
+            currentPatient = patient;
             Log.d("", "PATIENT : "+patient.getPatientId());
             return null;
         }

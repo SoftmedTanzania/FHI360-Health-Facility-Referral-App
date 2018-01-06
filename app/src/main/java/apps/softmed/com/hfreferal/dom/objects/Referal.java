@@ -13,7 +13,7 @@ import java.util.Date;
 import apps.softmed.com.hfreferal.utils.DateConverter;
 
 /**
- * Created by issy on 11/28/17.
+ *  Created by issy on 11/28/17.
  */
 
 @Entity
@@ -69,13 +69,22 @@ public class Referal implements Serializable{
     private String villageLeader;
 
     @SerializedName("referralDate")
-    //@TypeConverters(DateConverter.class)
-    private String referralDate;
+    @TypeConverters(DateConverter.class)
+    private Date referralDate;
 
+    //This is the facility ID the referral is going
     @SerializedName("facilityId")
     private String facilityId;
 
-    private String referralToFacilityId;
+    @SerializedName("fromFacilityId")
+    private String fromFacilityId;
+
+    /*
+     * 1 = CHW
+     * 2 = Health facility
+     */
+    @SerializedName("referralSource")
+    private int referralSource;
 
     /*
      *  0 = new
@@ -86,10 +95,12 @@ public class Referal implements Serializable{
     private int referralStatus;
 
     @SerializedName("createdAt")
-    private long createdAt;
+    @TypeConverters(DateConverter.class)
+    private Date createdAt;
 
     @SerializedName("updatedAt")
-    private long updatedAt;
+    @TypeConverters(DateConverter.class)
+    private Date updatedAt;
 
     /*
     The following two are the feedback portion of a referal
@@ -118,8 +129,8 @@ public class Referal implements Serializable{
         return referral_id;
     }
 
-    public void setReferral_id(String referral_id) {
-        this.referral_id = referral_id;
+    public void setReferral_id(String id) {
+        this.referral_id = id;
     }
 
     public String getCommunityBasedHivService() {
@@ -178,6 +189,14 @@ public class Referal implements Serializable{
         this.hasSevereSweating = hasSevereSweating;
     }
 
+    public int getReferralSource() {
+        return referralSource;
+    }
+
+    public void setReferralSource(int referralSource) {
+        this.referralSource = referralSource;
+    }
+
     public Boolean getHasFever() {
         return hasFever;
     }
@@ -218,11 +237,11 @@ public class Referal implements Serializable{
         this.villageLeader = villageLeader;
     }
 
-    public String getReferralDate() {
+    public Date getReferralDate() {
         return referralDate;
     }
 
-    public void setReferralDate(String referralDate) {
+    public void setReferralDate(Date referralDate) {
         this.referralDate = referralDate;
     }
 
@@ -242,28 +261,28 @@ public class Referal implements Serializable{
         this.referralStatus = referralStatus;
     }
 
-    public long getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public long getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(long updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getReferralToFacilityId() {
-        return referralToFacilityId;
+    public String getFromFacilityId() {
+        return fromFacilityId;
     }
 
-    public void setReferralToFacilityId(String referralToFacilityId) {
-        this.referralToFacilityId = referralToFacilityId;
+    public void setFromFacilityId(String fromFacilityId) {
+        this.fromFacilityId = fromFacilityId;
     }
 
     public String getServiceGivenToPatient() {

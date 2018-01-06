@@ -1,26 +1,12 @@
 package apps.softmed.com.hfreferal;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import java.util.Date;
-import java.util.List;
-
-import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
-import apps.softmed.com.hfreferal.dom.responces.InitialSyncResponce;
-import apps.softmed.com.hfreferal.dom.responces.ReferalResponce;
-import apps.softmed.com.hfreferal.utils.ServiceGenerator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by issy on 12/3/17.
@@ -99,7 +85,7 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral.setVillageLeader("Baraka");
 //        dummyReferral.setReferralDate(new Date());
         dummyReferral.setFacilityId("001");
-        dummyReferral.setReferralToFacilityId("002");
+        dummyReferral.setFromFacilityId("002");
         dummyReferral.setReferralStatus(0);
 //        dummyReferral.setCreatedAt(new Date());
 //        dummyReferral.setUpdatedAt(new Date());
@@ -122,7 +108,7 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral2.setVillageLeader("Mugezwa");
 //        dummyReferral2.setReferralDate(new Date());
         dummyReferral2.setFacilityId("001");
-        dummyReferral2.setReferralToFacilityId("002");
+        dummyReferral2.setFromFacilityId("002");
         dummyReferral2.setReferralStatus(0);
 //        dummyReferral2.setCreatedAt(new Date());
 //        dummyReferral2.setUpdatedAt(new Date());
@@ -145,7 +131,7 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral3.setVillageLeader("Maheba");
 //        dummyReferral3.setReferralDate(new Date());
         dummyReferral3.setFacilityId("002");
-        dummyReferral3.setReferralToFacilityId("001");
+        dummyReferral3.setFromFacilityId("001");
         dummyReferral3.setReferralStatus(1);
 //        dummyReferral3.setCreatedAt(new Date());
 //        dummyReferral3.setUpdatedAt(new Date());
@@ -168,7 +154,7 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral4.setVillageLeader("Maheba");
 //        dummyReferral4.setReferralDate(new Date());
         dummyReferral4.setFacilityId("002");
-        dummyReferral4.setReferralToFacilityId("001");
+        dummyReferral4.setFromFacilityId("001");
         dummyReferral4.setReferralStatus(1);
 //        dummyReferral4.setCreatedAt(new Date());
 //        dummyReferral4.setUpdatedAt(new Date());
