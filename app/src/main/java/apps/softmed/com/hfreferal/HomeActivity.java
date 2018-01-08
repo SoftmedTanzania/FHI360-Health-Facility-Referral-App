@@ -4,8 +4,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -15,13 +17,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ import apps.softmed.com.hfreferal.fragments.HivFragment;
 import apps.softmed.com.hfreferal.fragments.MalariaFragment;
 import apps.softmed.com.hfreferal.fragments.TbFragment;
 import apps.softmed.com.hfreferal.utils.AlarmReceiver;
+import apps.softmed.com.hfreferal.utils.Config;
 import apps.softmed.com.hfreferal.viewmodels.PostOfficeListViewModel;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
@@ -47,13 +53,15 @@ import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 
 public class HomeActivity extends BaseActivity {
 
+    private final String TAG = HomeActivity.class.getSimpleName();
+
     private TabLayout tabLayout;
     public static NonSwipeableViewPager viewPager;
     private Toolbar toolbar;
     private TextView toolbarTitle, unsynced;
 
     private PostOfficeListViewModel viewModel;
-
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
     private AppDatabase database;
 
     @Override
@@ -94,6 +102,33 @@ public class HomeActivity extends BaseActivity {
                 setupTabIcons();
             }
         });
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+                    String regId = pref.getString("regId", null);
+                    Log.d(TAG, "Registration ID broadcasted in HomeActivity : "+regId);
+
+                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                    Log.d(TAG, "Message received in HomeActivity : "+message);
+
+                }
+            }
+        };
+
 
         scheduleAlarm();
 

@@ -17,6 +17,7 @@ import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
+import apps.softmed.com.hfreferal.dom.objects.UserData;
 import apps.softmed.com.hfreferal.dom.responces.PatientResponce;
 import apps.softmed.com.hfreferal.utils.ServiceGenerator;
 import apps.softmed.com.hfreferal.utils.SessionManager;
@@ -76,8 +77,9 @@ public class PostOfficeService extends IntentService {
 
                     final Patient patient = database.patientModel().getPatientById(data.getPost_id());
                     final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(getPatientRequestBody(patient, tbPatient));
+                    Call call = patientServices.postPatient(getPatientRequestBody(patient, tbPatient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -200,7 +202,7 @@ public class PostOfficeService extends IntentService {
 
     }
 
-    private RequestBody getPatientRequestBody(Patient patient, TbPatient tbPatient){
+    private RequestBody getPatientRequestBody(Patient patient, TbPatient tbPatient, UserData userData){
 
         RequestBody body;
         String datastream = "";
@@ -213,12 +215,11 @@ public class PostOfficeService extends IntentService {
             object.put("ward", patient.getWard());
             object.put("village", patient.getVillage());
             object.put("hamlet", patient.getHamlet());
-//            object.put("dateOfBirth", patient.getDateOfBirth());
-            object.put("dateOfBirth", Long.parseLong("316436725713"));
+            object.put("dateOfBirth", patient.getDateOfBirth());
             object.put("surname", patient.getPatientSurname());
             object.put("gender", patient.getGender());
-//            object.put("healthFacilityCode", sess.getKeyHfid());
-            object.put("healthFacilityCode", "2ff3e6fb-eb85-49eb-b7b3-564ddc26b9d4");
+            //object.put("healthFacilityCode", "2ff3e6fb-eb85-49eb-b7b3-564ddc26b9d4");
+            object.put("healthFacilityCode", userData.getUserFacilityId());
 
             object.put("patientType", tbPatient.getPatientType());
             object.put("transferType", tbPatient.getTransferType());

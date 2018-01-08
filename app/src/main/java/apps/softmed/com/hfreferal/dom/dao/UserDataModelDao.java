@@ -24,6 +24,9 @@ public interface UserDataModelDao {
     @Query("select * from UserData")
     LiveData<List<UserData>> getUserData();
 
+    @Query("select * from UserData where UserUIID = :useruiid")
+    UserData getUserDataByUserUIID(String useruiid);
+
     @Insert(onConflict = REPLACE)
     void addUserData(UserData data);
 
