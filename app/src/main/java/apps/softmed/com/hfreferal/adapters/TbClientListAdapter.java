@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +22,9 @@ import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.TbClientDetailsActivity;
 import apps.softmed.com.hfreferal.TbClientListActivity;
 import apps.softmed.com.hfreferal.TbReferralDetailsActivity;
+import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -36,7 +39,6 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     List<Patient> items;
     private Context context;
-    public Dialog referalDialogue;
 
     public TbClientListAdapter(List<Patient> mItems, Context context){
         this.items = mItems;
@@ -67,6 +69,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         holder.clientLastName.setText(patient.getPatientSurname());
         holder.clientVillage.setText(patient.getVillage());
         holder.clientPhoneNumber.setText(patient.getPhone_number());
+        holder.clientGender.setText(patient.getGender());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +88,8 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
                 callReferralFragmentDialogue(patient);
             }
         });
+
+        new GetTbDetails(AppDatabase.getDatabase(context), holder).execute(patient.getPatientId());
 
     }
 
@@ -105,7 +110,6 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
     @Override
     public int getItemCount(){
         return items.size();
-//        return 10;
     }
 
     private Patient getItem(int position){
@@ -114,7 +118,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientFirstName, clientLastName, clientVillage, clientPhoneNumber;
+        TextView clientFirstName, clientLastName, clientVillage, clientPhoneNumber, clientGender, clientTreatment;
         View viewItem;
         Button rufaaButton;
 
@@ -128,8 +132,36 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
             clientLastName = (TextView) itemView.findViewById(R.id.client_l_name);
             clientVillage = (TextView) itemView.findViewById(R.id.client_village);
             clientPhoneNumber = (TextView) itemView.findViewById(R.id.client_phone_number);
+            clientGender =  (TextView) itemView.findViewById(R.id.client_gender);
+            clientTreatment = (TextView) itemView.findViewById(R.id.client_treatment);
 
         }
 
     }
+
+    class GetTbDetails extends AsyncTask<String, Void, Void>{
+
+        TbPatient tbPatient;
+        AppDatabase database;
+        TbClientListAdapter.ListViewItemViewHolder holder;
+                //= (TbClientListAdapter.ListViewItemViewHolder) viewHolder;
+
+        GetTbDetails(AppDatabase db, TbClientListAdapter.ListViewItemViewHolder vh){
+            this.database = db;
+            this.holder = vh;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            holder.clientTreatment.setText(tbPatient.getTreatment_type());
+        }
+
+        @Override
+        protected Void doInBackground(String... args) {
+            tbPatient = database.tbPatientModelDao().getTbPatientById(args[0]);
+            return null;
+        }
+    }
+
 }
