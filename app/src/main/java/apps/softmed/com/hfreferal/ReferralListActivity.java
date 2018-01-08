@@ -20,7 +20,7 @@ import java.util.List;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager;
-import apps.softmed.com.hfreferal.fragments.ReferralListFragment;
+import apps.softmed.com.hfreferal.fragments.HealthFacilityReferralListFragment;
 
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
@@ -97,8 +97,8 @@ public class ReferralListActivity extends BaseActivity {
 
         ReferralListActivity.ViewPagerAdapter adapter = new ReferralListActivity.ViewPagerAdapter(getSupportFragmentManager());
         
-        adapter.addFragment(ReferralListFragment.newInstance(SOURCE_HF), "hf");
-        adapter.addFragment(ReferralListFragment.newInstance(SOURCE_CHW), "chw");
+        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(SOURCE_HF), "hf");
+        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(SOURCE_CHW), "chw");
 
         viewPager.setAdapter(adapter);
     }

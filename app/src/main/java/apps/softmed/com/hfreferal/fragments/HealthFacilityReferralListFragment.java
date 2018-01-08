@@ -31,7 +31,6 @@ import java.util.List;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.adapters.ReferalListRecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
-import apps.softmed.com.hfreferal.dom.objects.Client;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
@@ -50,7 +49,7 @@ import static apps.softmed.com.hfreferal.utils.constants.getReferralStatusValue;
  * On Project HFReferralApp
  */
 
-public class ReferralListFragment extends Fragment {
+public class HealthFacilityReferralListFragment extends Fragment {
 
     private ReferalListViewModel listViewModel;
 
@@ -73,9 +72,9 @@ public class ReferralListFragment extends Fragment {
 
     private AppDatabase database;
 
-    public static ReferralListFragment newInstance(int source) {
+    public static HealthFacilityReferralListFragment newInstance(int source) {
         Bundle args = new Bundle();
-        ReferralListFragment fragment = new ReferralListFragment();
+        HealthFacilityReferralListFragment fragment = new HealthFacilityReferralListFragment();
         args.putInt("source", source);
         fragment.setArguments(args);
 
@@ -85,7 +84,7 @@ public class ReferralListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        database = AppDatabase.getDatabase(ReferralListFragment.this.getActivity());
+        database = AppDatabase.getDatabase(HealthFacilityReferralListFragment.this.getActivity());
         fromDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
         toDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
     }
@@ -105,7 +104,7 @@ public class ReferralListFragment extends Fragment {
         setupviews(view);
 
         final String[] status = {STATUS_COMPLETED, STATUS_NEW};
-        ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(ReferralListFragment.this.getActivity(), android.R.layout.simple_spinner_item, status);
+        ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(HealthFacilityReferralListFragment.this.getActivity(), android.R.layout.simple_spinner_item, status);
         spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(spinAdapter);
 
@@ -137,11 +136,11 @@ public class ReferralListFragment extends Fragment {
                     filterButton.setVisibility(View.INVISIBLE);
                     progressView.setVisibility(View.VISIBLE);
 
-                    ReferralListFragment.QueryReferals queryReferals = new ReferralListFragment.QueryReferals(clientName, lastName, clientCtcNumber, fromDate, toDate, selectedStatus, database);
+                    HealthFacilityReferralListFragment.QueryReferals queryReferals = new HealthFacilityReferralListFragment.QueryReferals(clientName, lastName, clientCtcNumber, fromDate, toDate, selectedStatus, database);
                     queryReferals.execute();
 
                 }else {
-                    Toast.makeText(ReferralListFragment.this.getActivity(),"Please Fill in any field ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HealthFacilityReferralListFragment.this.getActivity(),"Please Fill in any field ", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -150,7 +149,7 @@ public class ReferralListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Open Date Picker
-                fromDatePicker.show(ReferralListFragment.this.getActivity().getFragmentManager(),"fromDate");
+                fromDatePicker.show(HealthFacilityReferralListFragment.this.getActivity().getFragmentManager(),"fromDate");
                 fromDatePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -171,7 +170,7 @@ public class ReferralListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //Open Date Picker
-                toDatePicker.show(ReferralListFragment.this.getActivity().getFragmentManager(),"toDate");
+                toDatePicker.show(HealthFacilityReferralListFragment.this.getActivity().getFragmentManager(),"toDate");
                 toDatePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -188,11 +187,11 @@ public class ReferralListFragment extends Fragment {
         });
 
 
-        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referal>(), ReferralListFragment.this.getActivity());
+        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referal>(), HealthFacilityReferralListFragment.this.getActivity());
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
 
         if (source == SOURCE_HF){
-            listViewModel.getReferalListHfSource().observe(ReferralListFragment.this, new Observer<List<Referal>>() {
+            listViewModel.getReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referal>>() {
                 @Override
                 public void onChanged(@Nullable List<Referal> referals) {
                     adapter.addItems(referals);
@@ -200,7 +199,7 @@ public class ReferralListFragment extends Fragment {
             });
         }
         else if (source == SOURCE_CHW){
-            listViewModel.getReferalListChwSource().observe(ReferralListFragment.this, new Observer<List<Referal>>() {
+            listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referal>>() {
                 @Override
                 public void onChanged(@Nullable List<Referal> referals) {
                     adapter.addItems(referals);
@@ -285,7 +284,7 @@ public class ReferralListFragment extends Fragment {
         toolbar = (Toolbar) v.findViewById(R.id.toolbar);
 
         clientRecyclerView = (RecyclerView) v.findViewById(R.id.clients_recycler);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ReferralListFragment.this.getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HealthFacilityReferralListFragment.this.getActivity());
         clientRecyclerView.setLayoutManager(layoutManager);
         clientRecyclerView.setHasFixedSize(true);
 
