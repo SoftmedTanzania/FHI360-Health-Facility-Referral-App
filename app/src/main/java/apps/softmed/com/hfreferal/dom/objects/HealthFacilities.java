@@ -42,12 +42,6 @@ public class HealthFacilities implements Serializable {
     @SerializedName("hfrCode")
     private String hfrCode;
 
-    @SerializedName("createdAt")
-    private long createdAt;
-
-    @SerializedName("updatedAt")
-    private long updatedAt;
-
     @NonNull
     public int getID() {
         return ID;
@@ -105,19 +99,4 @@ public class HealthFacilities implements Serializable {
         this.hfrCode = hfrCode;
     }
 
-    public Long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Long createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Long updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

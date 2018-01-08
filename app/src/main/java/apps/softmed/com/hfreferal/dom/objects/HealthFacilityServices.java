@@ -33,14 +33,6 @@ public class HealthFacilityServices implements Serializable {
     @SerializedName("isActive")
     private boolean isActive;
 
-    @TypeConverters(DateConverter.class)
-    @SerializedName("createdAt")
-    private Date createdAt;
-
-    @TypeConverters(DateConverter.class)
-    @SerializedName("updatedAt")
-    private Date updatedAt;
-
     public int getId() {
         return id;
     }
@@ -65,19 +57,4 @@ public class HealthFacilityServices implements Serializable {
         isActive = active;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

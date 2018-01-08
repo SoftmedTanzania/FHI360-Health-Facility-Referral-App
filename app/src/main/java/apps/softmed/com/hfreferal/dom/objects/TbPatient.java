@@ -26,13 +26,13 @@ public class TbPatient implements Serializable{
     This is the ID of tbPatient table
      */
     @NonNull
-    private Long tempID;
+    private long tempID;
 
     @PrimaryKey(autoGenerate = false)
-    private Long patientId;
+    private long patientId;
 
     @SerializedName("tbPatientId")
-    private Long tbPatientId;
+    private long tbPatientId;
 
     @SerializedName("patient_type")
     private int patientType;
@@ -73,14 +73,6 @@ public class TbPatient implements Serializable{
 
     @SerializedName("isPregnant")
     private boolean isPregnant;
-
-    @SerializedName("created_at")
-    @TypeConverters(DateConverter.class)
-    private long createdAt;
-
-    @SerializedName("updated_at")
-    @TypeConverters(DateConverter.class)
-    private long updatedAt;
 
     public void setTempID(@NonNull Long id) {
         this.tempID = id;
@@ -193,22 +185,6 @@ public class TbPatient implements Serializable{
 
     public void setOutcomeDetails(String outcomeDetails) {
         this.outcomeDetails = outcomeDetails;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public Long getTbPatientId() {

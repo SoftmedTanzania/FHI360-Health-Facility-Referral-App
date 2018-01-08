@@ -94,14 +94,6 @@ public class Referal implements Serializable{
     @SerializedName("referralStatus")
     private int referralStatus;
 
-    @SerializedName("createdAt")
-    @TypeConverters(DateConverter.class)
-    private long createdAt;
-
-    @SerializedName("updatedAt")
-    @TypeConverters(DateConverter.class)
-    private long updatedAt;
-
     /*
     The following two are the feedback portion of a referal
      */
@@ -259,22 +251,6 @@ public class Referal implements Serializable{
 
     public void setReferralStatus(int referralStatus) {
         this.referralStatus = referralStatus;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public String getFromFacilityId() {

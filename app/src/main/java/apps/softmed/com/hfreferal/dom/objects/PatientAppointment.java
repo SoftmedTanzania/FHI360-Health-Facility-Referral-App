@@ -39,14 +39,6 @@ public class PatientAppointment implements Serializable{
     @SerializedName("status")
     private String status;
 
-    @SerializedName("created_at")
-    @TypeConverters(DateConverter.class)
-    private long createdAt;
-
-    @SerializedName("updated_at")
-    @TypeConverters(DateConverter.class)
-    private long updatedAt;
-
     private String appointmentEncounterMonth;
 
     @NonNull
@@ -88,22 +80,6 @@ public class PatientAppointment implements Serializable{
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public String getAppointmentEncounterMonth() {

@@ -62,14 +62,6 @@ public class Patient implements Serializable{
 
     private boolean currentOnTbTreatment;
 
-    @SerializedName("createdAt")
-    @TypeConverters(DateConverter.class)
-    private long createdAt;
-
-    @SerializedName("updatedAt")
-    @TypeConverters(DateConverter.class)
-    private long updatedAt;
-
     public Long getId() {
         return id;
     }
@@ -156,22 +148,6 @@ public class Patient implements Serializable{
 
     public void setDateOfDeath(long dateOfDeath) {
         this.dateOfDeath = dateOfDeath;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public long getUpdatedAt() {
-        return updatedAt;
     }
 
     public String getPatientMiddleName() {

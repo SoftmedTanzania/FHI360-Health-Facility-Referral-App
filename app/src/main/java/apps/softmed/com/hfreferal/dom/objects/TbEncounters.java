@@ -36,12 +36,6 @@ public class TbEncounters implements Serializable {
     @SerializedName("has_finished_previous_month_medication")
     private int hasFinishedPreviousMonthMedication;
 
-    @SerializedName("created_at")
-    private String createdAt;
-
-    @SerializedName("updated_at")
-    private String updatedAt;
-
     @SerializedName("medication_status")
     private boolean medicationStatus;
 
@@ -90,22 +84,6 @@ public class TbEncounters implements Serializable {
 
     public void setHasFinishedPreviousMonthMedication(int hasFinishedPreviousMonthMedication) {
         this.hasFinishedPreviousMonthMedication = hasFinishedPreviousMonthMedication;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public boolean isMedicationStatus() {
