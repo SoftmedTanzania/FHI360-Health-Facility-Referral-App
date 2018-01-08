@@ -19,11 +19,14 @@ import com.rey.material.widget.ProgressView;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.api.Endpoints;
+import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.LargeDiagonalCutPathDrawable;
+import apps.softmed.com.hfreferal.dom.objects.AppData;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.UserData;
 import apps.softmed.com.hfreferal.dom.responces.LoginResponse;
 import apps.softmed.com.hfreferal.dom.responces.ReferalResponce;
 import apps.softmed.com.hfreferal.utils.ServiceGenerator;
@@ -116,7 +119,14 @@ public class LoginActivity extends BaseActivity {
                     loginMessages.setText("Success..");
 
                     LoginResponse loginResponse = response.body();
-                    Log.d("BTC", "responce is : "+loginResponse.getUser().getUsername());
+                    Log.d("BTC", "responce is : "+loginResponse.getTeam().getTeam().getLocation().getUuid());
+
+                    UserData userData = new UserData();
+                    userData.setUserUIID(loginResponse.getUser().getAttributes().getPersonUUID());
+                    userData.setUserName(loginResponse.getUser().getUsername());
+                    userData.setUserFacilityId(loginResponse.getTeam().getTeam().getLocation().getUuid());
+
+                    new AddUserData(baseDatabase).execute(userData);
 
                     session.createLoginSession(
                             loginResponse.getUser().getUsername(),
@@ -280,6 +290,26 @@ public class LoginActivity extends BaseActivity {
 
             startActivity(intent);
 
+        }
+    }
+
+    class AddUserData extends AsyncTask<UserData, Void, Void>{
+
+        AppDatabase database;
+
+        AddUserData(AppDatabase db){
+            this.database = db;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Void doInBackground(UserData... userData) {
+            database.userDataModelDao().addUserData(userData[0]);
+            return null;
         }
     }
 

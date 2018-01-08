@@ -15,6 +15,7 @@ import apps.softmed.com.hfreferal.dom.dao.PostOfficeModelDao;
 import apps.softmed.com.hfreferal.dom.dao.ReferalModelDao;
 import apps.softmed.com.hfreferal.dom.dao.TbEncounterModelDao;
 import apps.softmed.com.hfreferal.dom.dao.TbPatientModelDao;
+import apps.softmed.com.hfreferal.dom.dao.UserDataModelDao;
 import apps.softmed.com.hfreferal.dom.objects.AppData;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
@@ -25,6 +26,7 @@ import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
+import apps.softmed.com.hfreferal.dom.objects.UserData;
 
 /**
  * Created by issy on 11/28/17.
@@ -41,7 +43,8 @@ import apps.softmed.com.hfreferal.dom.objects.TbPatient;
                 TbEncounters.class,
                 PatientAppointment.class,
                 HealthFacilityServices.class,
-                HealthFacilities.class
+                HealthFacilities.class,
+                UserData.class
         },
         version = 1)
 
@@ -77,5 +80,7 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract PatientServicesModelDao servicesModelDao();
 
     public abstract HealthFacilitiesModelDao healthFacilitiesModelDao();
+
+    public abstract UserDataModelDao userDataModelDao();
 
 }
