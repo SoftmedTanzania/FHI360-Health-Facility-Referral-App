@@ -2,11 +2,15 @@ package apps.softmed.com.hfreferal.dom.objects;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
+
+import apps.softmed.com.hfreferal.utils.DateConverter;
 
 /**
  * Created by issy on 11/28/17.
@@ -44,31 +48,26 @@ public class Patient implements Serializable{
     private String hamlet;
 
     @SerializedName("dateOfBirth")
-    //@TypeConverters(DateConverter.class)
     private long dateOfBirth;
 
     @SerializedName("gender")
     private String gender;
 
     @SerializedName("dateOfDeath")
+    @TypeConverters(DateConverter.class)
     private long dateOfDeath;
+
+    @SerializedName("hivStatus")
+    private boolean hivStatus = false;
 
     private boolean currentOnTbTreatment;
 
-    /*
     @SerializedName("createdAt")
     @TypeConverters(DateConverter.class)
-    private Date createdAt;
-
-    @SerializedName("updatedAt")
-    @TypeConverters(DateConverter.class)
-    private Date updatedAt;
-    */
-
-    @SerializedName("createdAt")
     private long createdAt;
 
     @SerializedName("updatedAt")
+    @TypeConverters(DateConverter.class)
     private long updatedAt;
 
     public Long getId() {
@@ -191,4 +190,11 @@ public class Patient implements Serializable{
         this.currentOnTbTreatment = currentOnTbTreatment;
     }
 
+    public boolean isHivStatus() {
+        return hivStatus;
+    }
+
+    public void setHivStatus(boolean hivStatus) {
+        this.hivStatus = hivStatus;
+    }
 }

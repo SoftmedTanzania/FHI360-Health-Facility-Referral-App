@@ -31,8 +31,8 @@ public class TbPatient implements Serializable{
     @PrimaryKey(autoGenerate = false)
     private Long patientId;
 
-    @SerializedName("health_facility_patient_id")
-    private Long healthFacilityPatientId;
+    @SerializedName("tbPatientId")
+    private Long tbPatientId;
 
     @SerializedName("patient_type")
     private int patientType;
@@ -66,16 +66,21 @@ public class TbPatient implements Serializable{
 
     @SerializedName("outcome_date")
     @TypeConverters(DateConverter.class)
-    private Date outcomeDate;
+    private long outcomeDate;
 
     @SerializedName("outcome_details")
     private String outcomeDetails;
 
+    @SerializedName("isPregnant")
+    private boolean isPregnant;
+
     @SerializedName("created_at")
-    private String createdAt;
+    @TypeConverters(DateConverter.class)
+    private long createdAt;
 
     @SerializedName("updated_at")
-    private String updatedAt;
+    @TypeConverters(DateConverter.class)
+    private long updatedAt;
 
     public void setTempID(@NonNull Long id) {
         this.tempID = id;
@@ -100,14 +105,6 @@ public class TbPatient implements Serializable{
 
     public void setPatientId(Long patientId) {
         this.patientId = patientId;
-    }
-
-    public Long getHealthFacilityPatientId() {
-        return healthFacilityPatientId;
-    }
-
-    public void setHealthFacilityPatientId(Long healthFacilityPatientId) {
-        this.healthFacilityPatientId = healthFacilityPatientId;
     }
 
     public int getPatientType() {
@@ -182,11 +179,11 @@ public class TbPatient implements Serializable{
         this.outcome = outcome;
     }
 
-    public Date getOutcomeDate() {
+    public long getOutcomeDate() {
         return outcomeDate;
     }
 
-    public void setOutcomeDate(Date outcomeDate) {
+    public void setOutcomeDate(long outcomeDate) {
         this.outcomeDate = outcomeDate;
     }
 
@@ -198,19 +195,35 @@ public class TbPatient implements Serializable{
         this.outcomeDetails = outcomeDetails;
     }
 
-    public String getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getTbPatientId() {
+        return tbPatientId;
+    }
+
+    public void setTbPatientId(Long tbPatientId) {
+        this.tbPatientId = tbPatientId;
+    }
+
+    public boolean isPregnant() {
+        return isPregnant;
+    }
+
+    public void setPregnant(boolean pregnant) {
+        isPregnant = pregnant;
     }
 }

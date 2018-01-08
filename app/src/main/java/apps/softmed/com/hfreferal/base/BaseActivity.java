@@ -76,7 +76,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public static String getThisFacilityId(){
-        return "001";
+        return "669c642f-20e9-452b-97d3-73d74ae4ba00";
     }
 
 

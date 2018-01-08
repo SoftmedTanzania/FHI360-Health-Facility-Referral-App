@@ -1,6 +1,8 @@
 package apps.softmed.com.hfreferal.fragments;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.ArrayRes;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,12 +19,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import apps.softmed.com.hfreferal.R;
+import apps.softmed.com.hfreferal.adapters.HealthFacilitiesAdapter;
+import apps.softmed.com.hfreferal.adapters.ServicesAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
+import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
+import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
@@ -65,6 +74,12 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     private AppDatabase database;
 
+    private HealthFacilitiesAdapter healthFacilitiesAdapter;
+    List<HealthFacilities> healthFacilities = new ArrayList<>();
+
+    private ServicesAdapter servicesAdapter;
+    List<HealthFacilityServices> healthFacilityServices = new ArrayList<>();
+
     public IssueReferralDialogueFragment() {}
 
     public static IssueReferralDialogueFragment newInstance(Patient patient) {
@@ -99,8 +114,19 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     currentPatient.getPatientSurname());
         }
 
+
+        healthFacilitiesAdapter = new HealthFacilitiesAdapter(this.getContext(),R.layout.subscription_plan_items_drop_down, healthFacilities);
+        spinnerToHealthFacility.setAdapter(healthFacilitiesAdapter);
+
+        servicesAdapter = new ServicesAdapter(this.getContext(), R.layout.subscription_plan_items_drop_down ,healthFacilityServices);
+        spinnerService.setAdapter(servicesAdapter);
+
+        new getFacilitiesAndServices(this.getContext()).execute();
+
+
         String[] servicesList = {HIV_SERVICE, TB_SERVICE, MALARIA_SERVICE };
-        String[] hflist = {"Lugalo Hospital", "Kaloleni Dispensary", "Mount Meru Hospital" };
+        String[] hflist = {"Agha Khan" };
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, servicesList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -181,6 +207,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         Random r = new Random();
         long number = (long)(r.nextDouble()*range);
 
+        long today = Calendar.getInstance().getTimeInMillis();
+
         referal.setReferral_id(number+"");
         referal.setId(number);
         referal.setPatient_id(currentPatient.getPatientId());
@@ -196,14 +224,14 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referal.setServiceProviderUIID("");
         referal.setServiceProviderGroup("");
         referal.setVillageLeader("");
-        referal.setReferralDate(new Date());
+        referal.setReferralDate(today);
         referal.setFacilityId(toHealthFacilityID);
-//        referal.setFromFacilityId(BaseActivity.session.getKeyHfid());
-        referal.setFromFacilityId("001"); //This is a fake facility ID for this logged in user
+//      referal.setFromFacilityId(BaseActivity.session.getKeyHfid());
+        referal.setFromFacilityId(BaseActivity.getThisFacilityId());
         referal.setReferralStatus(REFERRAL_STATUS_NEW);
         referal.setReferralSource(SOURCE_HF);
-        referal.setCreatedAt(new Date());
-        referal.setUpdatedAt(new Date());
+        referal.setCreatedAt(today);
+        referal.setUpdatedAt(today);
 
         SaveReferral saveReferral = new SaveReferral(database);
         saveReferral.execute(referal);
@@ -299,6 +327,35 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     }
 
+    class getFacilitiesAndServices extends AsyncTask<Void, Void, Void>{
+
+        List<HealthFacilities> healthFacilities = new ArrayList<>();
+        List<HealthFacilityServices> services = new ArrayList<>();
+        Context context;
+
+        getFacilitiesAndServices(Context ctx){
+            this.context = ctx;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            healthFacilitiesAdapter.updateItems(healthFacilities);
+            servicesAdapter.updateItems(services);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            healthFacilities = database.healthFacilitiesModelDao().getAllHealthFacilities();
+            services = database.servicesModelDao().getAllServices();
+
+            return null;
+        }
+    }
+
     class SaveReferral extends AsyncTask<Referal, Void, Void>{
 
         AppDatabase database;
@@ -311,6 +368,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             toastThis("Referral Stored Successfully");
+            dismiss();
         }
 
         @Override

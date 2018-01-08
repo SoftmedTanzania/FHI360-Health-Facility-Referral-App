@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,11 +21,11 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.customviews.WrapContentHeightViewPager;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
@@ -54,6 +53,9 @@ import static apps.softmed.com.hfreferal.utils.constants.TREATMENT_TYPE_2;
 import static apps.softmed.com.hfreferal.utils.constants.TREATMENT_TYPE_3;
 import static apps.softmed.com.hfreferal.utils.constants.TREATMENT_TYPE_4;
 import static apps.softmed.com.hfreferal.utils.constants.TREATMENT_TYPE_5;
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
 
 /**
  * Created by issy on 12/28/17.
@@ -110,7 +112,11 @@ public class TbClientDetailsActivity extends BaseActivity {
 
                 patientNames.setText(names);
                 patientGender.setText(currentPatient.getGender());
-                patientAge.setText(currentPatient.getDateOfBirth()+"");
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(currentPatient.getDateOfBirth());
+
+                patientAge.setText(getDiffYears(calendar.getTime(), new Date())+"");
                 patientWeight.setText("");
                 phoneNumber.setText(currentPatient.getPhone_number()==""? "" : currentPatient.getPhone_number());
                 ward.setText(currentPatient.getWard()==""? "" : currentPatient.getWard());
@@ -315,12 +321,12 @@ public class TbClientDetailsActivity extends BaseActivity {
         tbEncounter.setHasFinishedPreviousMonthMedication(hasFinishedPreviousMonth);
 
         //This is the medication Status of this encounter to be set on the next visit
-        tbEncounter.setMedicationDate("");
+        tbEncounter.setMedicationDate(Calendar.getInstance().getTimeInMillis());
         tbEncounter.setMedicationStatus(false);
 
         //Generate Appointment Schedule and assign temporary appointment ID
         tbEncounter.setAppointmentId("");
-        tbEncounter.setAppointmentDate("");
+        tbEncounter.setScheduledDate(Calendar.getInstance().getTimeInMillis());
         tbEncounter.setTbPatientID(currentTbPatient.getTempID()+"");
 
         Calendar calendar = Calendar.getInstance();
@@ -513,7 +519,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
                 Calendar calendar = Calendar.getInstance();
                 long today = calendar.getTimeInMillis();
-                encounters1.get(0).setMedicationDate(today+"");
+                encounters1.get(0).setMedicationDate(today);
 
                 Log.d("Billions", "Saving Previous Encounter Medication Status");
                 database.tbEncounterModelDao().updatePreviousMonthMedicationStatus(encounters1.get(0));
@@ -572,7 +578,9 @@ public class TbClientDetailsActivity extends BaseActivity {
             if (remainingAppointments.size() > 0){
                 Log.d("Billion", "Remaining appointments size is "+remainingAppointments.size());
                 for (int i=0;i<remainingAppointments.size();i++){
-                    if (remainingAppointments.get(i).getAppointmentDate().after(new Date())){
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(remainingAppointments.get(i).getAppointmentDate());
+                    if (calendar.getTime().after(new Date())){
                         database.appointmentModelDao().deleteAppointment(remainingAppointments.get(i));
                         Log.d("Billion", "Deleted for "+remainingAppointments.get(i).getAppointmentDate());
                     }
@@ -591,13 +599,12 @@ public class TbClientDetailsActivity extends BaseActivity {
             for (int i = encMonth; i<=8; i++){
 
                 PatientAppointment appointment = new PatientAppointment();
-                calendar.add(Calendar.DATE, 30);//Adding 30 days to the next Appointment
-                Date nextAppointment = calendar.getTime();
+                calendar.add(DATE, 30);//Adding 30 days to the next Appointment
 
-                appointment.setAppointmentDate(nextAppointment);
+                appointment.setAppointmentDate(calendar.getTimeInMillis());
                 appointment.setAppointmentEncounterMonth((i+1)+"");
-                appointment.setCreatedAt(new Date());
-                appointment.setUpdatedAt(new Date());
+                appointment.setCreatedAt(Calendar.getInstance().getTimeInMillis());
+                appointment.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                 appointment.setStatus(STATUS_PENDING);
 
                 long range = 1234567L;
@@ -626,6 +633,23 @@ public class TbClientDetailsActivity extends BaseActivity {
             return null;
         }
 
+    }
+
+    public static int getDiffYears(Date first, Date last) {
+        Calendar a = getCalendar(first);
+        Calendar b = getCalendar(last);
+        int diff = b.get(YEAR) - a.get(YEAR);
+        if (a.get(MONTH) > b.get(MONTH) ||
+                (a.get(MONTH) == b.get(MONTH) && a.get(DATE) > b.get(DATE))) {
+            diff--;
+        }
+        return diff;
+    }
+
+    public static Calendar getCalendar(Date date) {
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.setTime(date);
+        return cal;
     }
 
 }

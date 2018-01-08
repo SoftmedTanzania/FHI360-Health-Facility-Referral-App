@@ -70,7 +70,7 @@ public class Referal implements Serializable{
 
     @SerializedName("referralDate")
     @TypeConverters(DateConverter.class)
-    private Date referralDate;
+    private long referralDate;
 
     //This is the facility ID the referral is going
     @SerializedName("facilityId")
@@ -96,11 +96,11 @@ public class Referal implements Serializable{
 
     @SerializedName("createdAt")
     @TypeConverters(DateConverter.class)
-    private Date createdAt;
+    private long createdAt;
 
     @SerializedName("updatedAt")
     @TypeConverters(DateConverter.class)
-    private Date updatedAt;
+    private long updatedAt;
 
     /*
     The following two are the feedback portion of a referal
@@ -237,11 +237,11 @@ public class Referal implements Serializable{
         this.villageLeader = villageLeader;
     }
 
-    public Date getReferralDate() {
+    public long getReferralDate() {
         return referralDate;
     }
 
-    public void setReferralDate(Date referralDate) {
+    public void setReferralDate(long referralDate) {
         this.referralDate = referralDate;
     }
 
@@ -261,19 +261,19 @@ public class Referal implements Serializable{
         this.referralStatus = referralStatus;
     }
 
-    public Date getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
     }
 

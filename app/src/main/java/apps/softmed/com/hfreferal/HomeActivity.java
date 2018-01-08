@@ -36,6 +36,8 @@ import apps.softmed.com.hfreferal.fragments.TbFragment;
 import apps.softmed.com.hfreferal.utils.AlarmReceiver;
 import apps.softmed.com.hfreferal.viewmodels.PostOfficeListViewModel;
 
+import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+
 /**
  * Created by issy on 12/4/17.
  *
@@ -92,6 +94,8 @@ public class HomeActivity extends BaseActivity {
                 setupTabIcons();
             }
         });
+
+        scheduleAlarm();
 
     }
 
@@ -216,7 +220,7 @@ public class HomeActivity extends BaseActivity {
         // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
         // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES, pIntent);
+                INTERVAL_FIFTEEN_MINUTES, pIntent);
     }
 
 }

@@ -6,16 +6,20 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import apps.softmed.com.hfreferal.dom.dao.AppDataModelDao;
+import apps.softmed.com.hfreferal.dom.dao.HealthFacilitiesModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PatientAppointmentModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PatientModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PatientNotificationModelDao;
+import apps.softmed.com.hfreferal.dom.dao.PatientServicesModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PostOfficeModelDao;
 import apps.softmed.com.hfreferal.dom.dao.ReferalModelDao;
 import apps.softmed.com.hfreferal.dom.dao.TbEncounterModelDao;
 import apps.softmed.com.hfreferal.dom.dao.TbPatientModelDao;
 import apps.softmed.com.hfreferal.dom.objects.AppData;
+import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
+import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.PatientsNotification;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
@@ -35,7 +39,9 @@ import apps.softmed.com.hfreferal.dom.objects.TbPatient;
                 AppData.class,
                 TbPatient.class,
                 TbEncounters.class,
-                PatientAppointment.class
+                PatientAppointment.class,
+                HealthFacilityServices.class,
+                HealthFacilities.class
         },
         version = 1)
 
@@ -46,7 +52,7 @@ public abstract class AppDatabase extends RoomDatabase{
     public static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE =
-                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "hfreferal_db")
+                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "htmr_db")
                             .build();
         }
         return INSTANCE;
@@ -67,5 +73,9 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract TbEncounterModelDao tbEncounterModelDao();
 
     public abstract PatientAppointmentModelDao appointmentModelDao();
+
+    public abstract PatientServicesModelDao servicesModelDao();
+
+    public abstract HealthFacilitiesModelDao healthFacilitiesModelDao();
 
 }

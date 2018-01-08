@@ -13,19 +13,30 @@ import okhttp3.Response;
 public class AuthenticationInterceptor implements Interceptor {
 
     private String authToken;
+    private String hfuuid;
 
-    public AuthenticationInterceptor(String token) {
+    public AuthenticationInterceptor(String token, String hfid) {
         this.authToken = token;
+        this.hfuuid   = hfid;
     }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
 
-        Request.Builder builder = original.newBuilder()
-                .header("Authorization", authToken);
+        if (hfuuid!=null){
+            Request.Builder builder = original.newBuilder()
+                    .addHeader("Authorization", authToken)
+                    .addHeader("hfuuid", hfuuid);
 
-        Request request = builder.build();
-        return chain.proceed(request);
+            Request request = builder.build();
+            return chain.proceed(request);
+        }else {
+            Request.Builder builder = original.newBuilder()
+                    .header("Authorization", authToken);
+
+            Request request = builder.build();
+            return chain.proceed(request);
+        }
     }
 }

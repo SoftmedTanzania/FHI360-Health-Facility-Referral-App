@@ -34,16 +34,16 @@ public class FirebaseInstanseIdService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String token){
 
-        SessionManager sess = BaseActivity.session;
+        SessionManager sess = new SessionManager(getApplicationContext());
 
         String datastream = "";
         JSONObject object   = new JSONObject();
         RequestBody body;
 
         try {
-            object.put("user_uuid", "");
-            object.put("device_id", token);
-            object.put("hf_uuid", "");
+            object.put("userUuid", ""); //TODO
+            object.put("googlePushNotificationToken", token);
+            object.put("facilityUuid", sess.getKeyHfid());
 
             datastream = object.toString();
 
@@ -56,12 +56,12 @@ public class FirebaseInstanseIdService extends FirebaseInstanceIdService {
 
 
         if (sess.isLoggedIn()){
-            Endpoints.NotificationServices notificationServices = ServiceGenerator.createService(Endpoints.NotificationServices.class, sess.getUserName(), sess.getUserPass());
+            Endpoints.NotificationServices notificationServices = ServiceGenerator.createService(Endpoints.NotificationServices.class, sess.getUserName(), sess.getUserPass(), null);
             retrofit2.Call call = notificationServices.registerDevice(body);
             call.enqueue(new retrofit2.Callback() {
                 @Override
                 public void onResponse(retrofit2.Call call, Response response) {
-                    Log.d("", response.body().toString());
+                    //Log.d("", response.body().toString());
                 }
 
                 @Override

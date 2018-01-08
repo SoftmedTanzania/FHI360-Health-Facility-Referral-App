@@ -31,7 +31,7 @@ public class PatientAppointment implements Serializable{
 
     @SerializedName("appointment_date")
     @TypeConverters(DateConverter.class)
-    private Date appointmentDate;
+    private long appointmentDate;
 
     @SerializedName("is_cancelled")
     private boolean cancelled;
@@ -41,11 +41,11 @@ public class PatientAppointment implements Serializable{
 
     @SerializedName("created_at")
     @TypeConverters(DateConverter.class)
-    private Date createdAt;
+    private long createdAt;
 
     @SerializedName("updated_at")
     @TypeConverters(DateConverter.class)
-    private Date updatedAt;
+    private long updatedAt;
 
     private String appointmentEncounterMonth;
 
@@ -66,11 +66,11 @@ public class PatientAppointment implements Serializable{
         this.patientID = patientID;
     }
 
-    public Date getAppointmentDate() {
+    public long getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(Date appointmentDate) {
+    public void setAppointmentDate(long appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
@@ -90,19 +90,19 @@ public class PatientAppointment implements Serializable{
         this.status = status;
     }
 
-    public Date getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
     }
 

@@ -1,13 +1,11 @@
 package apps.softmed.com.hfreferal.dom.objects;
 
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by issy on 12/28/17.
@@ -47,11 +45,11 @@ public class TbEncounters implements Serializable {
     @SerializedName("medication_status")
     private boolean medicationStatus;
 
-    @SerializedName("medication_date")
-    private String medicationDate;
+    @SerializedName("medicationDate")
+    private long medicationDate;
 
-    @SerializedName("appointment_date")
-    private String appointmentDate;
+    @SerializedName("scheduledDate")
+    private long scheduledDate;
 
 
     public String getTbPatientID() {
@@ -118,20 +116,20 @@ public class TbEncounters implements Serializable {
         this.medicationStatus = medicationStatus;
     }
 
-    public String getMedicationDate() {
+    public long getMedicationDate() {
         return medicationDate;
     }
 
-    public void setMedicationDate(String medicationDate) {
+    public void setMedicationDate(long medicationDate) {
         this.medicationDate = medicationDate;
     }
 
-    public String getAppointmentDate() {
-        return appointmentDate;
+    public long getScheduledDate() {
+        return scheduledDate;
     }
 
-    public void setAppointmentDate(String appointmentDate) {
-        this.appointmentDate = appointmentDate;
+    public void setScheduledDate(long scheduledDate) {
+        this.scheduledDate = scheduledDate;
     }
 
     public String getId() {

@@ -26,25 +26,26 @@ public class ServiceGenerator {
     private static Retrofit retrofit = builder.build();
 
     public static <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass, null, null);
+        return createService(serviceClass, null, null, null);
     }
 
     public static <S> S createService(
-            Class<S> serviceClass, String username, String password) {
+            Class<S> serviceClass, String username, String password, String hfuuid) {
         if (!TextUtils.isEmpty(username)
                 && !TextUtils.isEmpty(password)) {
             String authToken = Credentials.basic(username, password);
-            return createService(serviceClass, authToken);
+            return createService(serviceClass, authToken, hfuuid);
         }
 
-        return createService(serviceClass, null, null);
+        return createService(serviceClass, null, null, null);
     }
 
     public static <S> S createService(
-            Class<S> serviceClass, final String authToken) {
+            Class<S> serviceClass, final String authToken, String hfuuid) {
         if (!TextUtils.isEmpty(authToken)) {
+
             AuthenticationInterceptor interceptor =
-                    new AuthenticationInterceptor(authToken);
+                    new AuthenticationInterceptor(authToken, hfuuid);
 
             if (!httpClient.interceptors().contains(interceptor)) {
                 httpClient.addInterceptor(interceptor);

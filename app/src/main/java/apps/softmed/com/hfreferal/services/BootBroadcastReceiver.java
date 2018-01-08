@@ -17,7 +17,7 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // Launch the specified service when this message is received
         Intent startServiceIntent = new Intent(context, PostOfficeService.class);
-        startWakefulService(context, startServiceIntent);
+
     }
 
 }

@@ -1,11 +1,9 @@
 package apps.softmed.com.hfreferal;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +21,8 @@ import java.util.List;
 import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.LargeDiagonalCutPathDrawable;
+import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
+import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.dom.responces.LoginResponse;
 import apps.softmed.com.hfreferal.dom.responces.ReferalResponce;
@@ -48,9 +48,10 @@ public class LoginActivity extends BaseActivity {
     private RelativeLayout credentialCard;
 
     private String usernameValue, passwordValue;
+    private Endpoints.ReferalService referalService;
 
     // Session Manager Class
-    SessionManager session;
+    private SessionManager session;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,7 +100,7 @@ public class LoginActivity extends BaseActivity {
 
         //Use Retrofit to make http request calls
         Endpoints.LoginService loginService =
-                ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue);
+                ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue, null);
         Call<LoginResponse> call = loginService.basicLogin();
         Log.d("BTC", "calling...");
         call.enqueue(new Callback<LoginResponse >() {
@@ -122,7 +123,12 @@ public class LoginActivity extends BaseActivity {
                             loginResponse.getUser().getAttributes().getPersonUUID(),
                             passwordValue,
                             loginResponse.getTeam().getTeam().getLocation().getUuid());
+
+                    referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
+
                     callReferralList();
+                    callServices();
+                    getHealthFacilities();
 
                 } else {
                     // error response, no access to resource?
@@ -154,7 +160,7 @@ public class LoginActivity extends BaseActivity {
         loginMessages.setTextColor(getResources().getColor(R.color.amber_a700));
 
         if (session.isLoggedIn()){
-            Endpoints.ReferalService referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass());
+
             Call<List<ReferalResponce>> call = referalService.getHfReferrals();
             call.enqueue(new Callback<List<ReferalResponce>>() {
 
@@ -177,6 +183,61 @@ public class LoginActivity extends BaseActivity {
                 }
             });
         }
+    }
+
+    public void callServices(){
+        Call<List<HealthFacilityServices>> call = referalService.getAllServices();
+        call.enqueue(new Callback<List<HealthFacilityServices>>() {
+            @Override
+            public void onResponse(Call<List<HealthFacilityServices>> call, Response<List<HealthFacilityServices>> response) {
+                Log.d("SAMPLE", response.body()+"");
+                List<HealthFacilityServices> receivedServices = response.body();
+
+                List<HealthFacilityServices> servicesList =  baseDatabase.servicesModelDao().getAllServices();
+                for (HealthFacilityServices service : servicesList){
+                    baseDatabase.servicesModelDao().deleteService(service);
+                }
+
+                for (HealthFacilityServices newService : receivedServices){
+                    baseDatabase.servicesModelDao().addService(newService);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<HealthFacilityServices>> call, Throwable t) {
+                Log.d("SAMPLE", t.getMessage());
+
+            }
+        });
+    }
+
+    public void getHealthFacilities(){
+
+        Call<List<HealthFacilities>> call = referalService.getHealthFacilities();
+        call.enqueue(new Callback<List<HealthFacilities>>() {
+            @Override
+            public void onResponse(Call<List<HealthFacilities>> call, Response<List<HealthFacilities>> response) {
+                Log.d("SAMPLE", "HEALTH FACILITIES : "+response.body()+"");
+                List<HealthFacilities> receivedHF = response.body();
+
+                List<HealthFacilities> oldHealthFacilities = baseDatabase.healthFacilitiesModelDao().getAllHealthFacilities();
+                for (HealthFacilities hf : oldHealthFacilities){
+                    baseDatabase.healthFacilitiesModelDao().deleteHealthFacility(hf);
+                }
+
+                for (HealthFacilities hf : receivedHF){
+                    baseDatabase.healthFacilitiesModelDao().addHealthFacility(hf);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<HealthFacilities>> call, Throwable t) {
+                Log.d("SAMPLE", "HEALTH FACILITIES : "+t.getMessage());
+            }
+        });
+
     }
 
     public class addReferralsAsyncTask extends AsyncTask<Void, Void, Void> {
