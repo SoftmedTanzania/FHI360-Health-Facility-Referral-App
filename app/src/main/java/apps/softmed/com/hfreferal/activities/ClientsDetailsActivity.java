@@ -44,7 +44,7 @@ public class ClientsDetailsActivity extends BaseActivity {
     public ProgressView saveProgress;
     private CheckBox hivStatus;
 
-    public TextView clientNames, wardText, villageText, hamletText, patientGender;
+    public TextView clientNames, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
 
     public Dialog referalDialogue;
 
@@ -74,6 +74,7 @@ public class ClientsDetailsActivity extends BaseActivity {
                     hivStatus.setEnabled(false);
 
                 }
+                otherClinicalInformationValue.setText(currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "" : currentReferral.getVillageLeader());
                 referrerName.setText(currentReferral.getServiceProviderUIID() == null ? "" : currentReferral.getServiceProviderUIID());
@@ -116,7 +117,9 @@ public class ClientsDetailsActivity extends BaseActivity {
 
             String serviceOferedString = servicesOfferedEt.getText().toString();
             String otherInformation = otherInformationEt.getText().toString();
+            boolean result = hivStatus.isChecked();
 
+            currentReferral.setTestResults(result);
             currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
             currentReferral.setServiceGivenToPatient(serviceOferedString);
             currentReferral.setOtherNotesAndAdvices(otherInformation);
@@ -127,7 +130,6 @@ public class ClientsDetailsActivity extends BaseActivity {
 
             UpdateReferralTask updateReferralTask = new UpdateReferralTask(currentReferral, baseDatabase);
             updateReferralTask.execute();
-
 
         }
     }
@@ -142,6 +144,8 @@ public class ClientsDetailsActivity extends BaseActivity {
     }
 
     private void setupviews(){
+
+        otherClinicalInformationValue = (TextView) findViewById(R.id.other_clinical_inforamtion_value);
 
         hivStatus = (CheckBox) findViewById(R.id.hiv_status);
 
@@ -232,9 +236,9 @@ public class ClientsDetailsActivity extends BaseActivity {
             Log.d("reckless", "Done background!"+patientNames);
             clientNames.setText(patientNames);
             if (patient != null){
-                wardText.setText(patient.getWard() == null ? "Kata :  " : "Kata : "+patient.getWard());
-                villageText.setText(patient.getVillage() == null ? "Kijiji :  " : "Kijiji : "+patient.getVillage());
-                hamletText.setText(patient.getHamlet() == null ? "Kitongoji :  " : "Kitongoji : "+patient.getHamlet());
+                wardText.setText(patient.getWard() == null ? "Kata : __ " : "Kata : "+patient.getWard());
+                villageText.setText(patient.getVillage() == null ? "Kijiji : __ " : "Kijiji : "+patient.getVillage());
+                hamletText.setText(patient.getHamlet() == null ? "Kitongoji : __ " : "Kitongoji : "+patient.getHamlet());
                 patientGender.setText(patient.getGender());
             }
             //adapter.notifyDataSetChanged();

@@ -94,6 +94,9 @@ public class Referral implements Serializable{
     @SerializedName("referralStatus")
     private int referralStatus;
 
+    @SerializedName("testResults")
+    private boolean testResults;
+
     /*
     The following two are the feedback portion of a referal
      */
@@ -285,5 +288,13 @@ public class Referral implements Serializable{
 
     public void setOtherClinicalInformation(String otherClinicalInformation) {
         this.otherClinicalInformation = otherClinicalInformation;
+    }
+
+    public boolean isTestResults() {
+        return testResults;
+    }
+
+    public void setTestResults(boolean testResults) {
+        this.testResults = testResults;
     }
 }
