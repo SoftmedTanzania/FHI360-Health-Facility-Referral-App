@@ -9,19 +9,15 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import apps.softmed.com.hfreferal.NewReferalsActivity;
+import apps.softmed.com.hfreferal.activities.NewReferalsActivity;
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.ReferalListActivityOld;
-import apps.softmed.com.hfreferal.ReferedClientsActivity;
-import apps.softmed.com.hfreferal.ReferralListActivity;
+import apps.softmed.com.hfreferal.activities.ReferedClientsActivity;
+import apps.softmed.com.hfreferal.activities.ReferralListActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 
-import static apps.softmed.com.hfreferal.base.BaseActivity.Avenir;
-import static apps.softmed.com.hfreferal.base.BaseActivity.Julius;
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;

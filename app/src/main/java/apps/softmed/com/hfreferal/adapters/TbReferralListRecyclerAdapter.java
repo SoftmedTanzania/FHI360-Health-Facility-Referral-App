@@ -13,7 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.TbReferralDetailsActivity;
+import apps.softmed.com.hfreferal.activities.TbReferralDetailsActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Referal;

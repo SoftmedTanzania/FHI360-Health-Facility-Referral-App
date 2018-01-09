@@ -10,17 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import apps.softmed.com.hfreferal.NewReferalsActivity;
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.ReferedClientsActivity;
-import apps.softmed.com.hfreferal.TbClientListActivity;
-import apps.softmed.com.hfreferal.TbReferalListActivity;
-import apps.softmed.com.hfreferal.TbRegisterActivity;
+import apps.softmed.com.hfreferal.activities.ReferedClientsActivity;
+import apps.softmed.com.hfreferal.activities.TbClientListActivity;
+import apps.softmed.com.hfreferal.activities.TbReferalListActivity;
+import apps.softmed.com.hfreferal.activities.TbRegisterActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.utils.constants;
 
-import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;

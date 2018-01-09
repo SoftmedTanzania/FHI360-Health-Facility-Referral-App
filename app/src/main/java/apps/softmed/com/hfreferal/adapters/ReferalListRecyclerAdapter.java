@@ -12,12 +12,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import apps.softmed.com.hfreferal.ClientsDetailsActivity;
+import apps.softmed.com.hfreferal.activities.ClientsDetailsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.dom.objects.Client;
-import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 
 /**

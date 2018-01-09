@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 import java.util.HashMap;
 
-import apps.softmed.com.hfreferal.LoginActivity;
+import apps.softmed.com.hfreferal.activities.LoginActivity;
 
 /**
  * Created by issy on 11/27/17.

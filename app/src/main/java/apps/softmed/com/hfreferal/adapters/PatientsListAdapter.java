@@ -1,11 +1,8 @@
 package apps.softmed.com.hfreferal.adapters;
 
 import android.app.Dialog;
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,12 +15,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import apps.softmed.com.hfreferal.ClientsDetailsActivity;
-import apps.softmed.com.hfreferal.NewReferalsActivity;
+import apps.softmed.com.hfreferal.activities.NewReferalsActivity;
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 

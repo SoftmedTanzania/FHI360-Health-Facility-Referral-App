@@ -1,34 +1,18 @@
 package apps.softmed.com.hfreferal.base;
 
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
-import apps.softmed.com.hfreferal.HomeActivity;
-import apps.softmed.com.hfreferal.LoaderActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.api.Endpoints;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
-import apps.softmed.com.hfreferal.dom.responces.ReferalResponce;
-import apps.softmed.com.hfreferal.utils.ServiceGenerator;
 import apps.softmed.com.hfreferal.utils.SessionManager;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
-
-import static apps.softmed.com.hfreferal.utils.constants.BASE_URL;
 
 /**
  * Created by issy on 11/14/17.

@@ -29,12 +29,9 @@ import java.util.Date;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.TbReferalListActivity;
-import apps.softmed.com.hfreferal.adapters.ReferalListRecyclerAdapter;
 import apps.softmed.com.hfreferal.adapters.TbReferralListRecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.dom.objects.Client;
 import apps.softmed.com.hfreferal.dom.objects.Referal;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;

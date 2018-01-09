@@ -11,33 +11,33 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".activities.MainActivity"
             >
         </activity>
 
-        <activity android:name=".LoaderActivity">
+        <activity android:name=".activities.LoaderActivity">
         </activity>
 
-        <activity android:name=".ReferalListActivityOld"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".activities.ReferalListActivityOld"
+            android:parentActivityName=".activities.MainActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".ReferedClientsActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".activities.ReferedClientsActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".NewReferalsActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".activities.NewReferalsActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".ClientsDetailsActivity"
-            android:parentActivityName=".ReferalListActivityOld"
+        <activity android:name=".activities.ClientsDetailsActivity"
+            android:parentActivityName=".activities.ReferalListActivityOld"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.LoginActivity">
         </activity>
 
-        <activity android:name=".HomeActivity"
+        <activity android:name=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,24 +45,24 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TbReferalListActivity"
-            android:parentActivityName=".HomeActivity"
+        <activity android:name=".activities.TbReferalListActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".ReferralListActivity"
-            android:parentActivityName=".HomeActivity"
+        <activity android:name=".activities.ReferralListActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".TbReferralDetailsActivity"
-            android:parentActivityName=".TbReferalListActivity"
+        <activity android:name=".activities.TbReferralDetailsActivity"
+            android:parentActivityName=".activities.TbReferalListActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".AppointmentActivity"
-            android:parentActivityName=".HomeActivity"
+        <activity android:name=".activities.AppointmentActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".TbRegisterActivity"
-            android:parentActivityName=".HomeActivity"
+        <activity android:name=".activities.TbRegisterActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
         <service
@@ -86,16 +86,16 @@
         <service android:name=".services.PostOfficeService"
             android:exported="false"/>
 
-        <activity android:name=".TbClientListActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name=".activities.TbClientListActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".TbClientDetailsActivity"
-            android:parentActivityName=".TbClientListActivity"
+        <activity android:name=".activities.TbClientDetailsActivity"
+            android:parentActivityName=".activities.TbClientListActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".FeedbackDetailsActivity"
-            android:parentActivityName=".ReferedClientsActivity"
+        <activity android:name=".activities.FeedbackDetailsActivity"
+            android:parentActivityName=".activities.ReferedClientsActivity"
             android:windowSoftInputMode="stateHidden"/>
 
     </application>

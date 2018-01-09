@@ -124,6 +124,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         new getFacilitiesAndServices(this.getContext()).execute();
 
 
+        /*
+
         String[] servicesList = {HIV_SERVICE, TB_SERVICE, MALARIA_SERVICE };
         String[] hflist = {"Agha Khan" };
 
@@ -135,6 +137,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         ArrayAdapter<String> hfAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, hflist);
         hfAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerToHealthFacility.setAdapter(hfAdapter);
+
+        */
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,14 +160,14 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("IssueReferral", i+"");
-                if (i == 0){
+                if (i == 1){
                     tbIndicatorWrapper.setVisibility(View.GONE);
                     tbSeparator.setVisibility(View.GONE);
                     hivIndicatorsWrapper.setVisibility(View.VISIBLE);
                     hivSeparator.setVisibility(View.VISIBLE);
                     currentServiceTb = true;
                     currentServiceHiv = false;
-                }else if (i==1){
+                }else if (i==0){
                     tbIndicatorWrapper.setVisibility(View.VISIBLE);
                     tbSeparator.setVisibility(View.VISIBLE);
                     hivIndicatorsWrapper.setVisibility(View.GONE);
@@ -255,7 +259,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             toastThis("Chagua huduma ya kutoa rufaa");
             return false;
         }else {
-            serviceID = (String) spinnerService.getSelectedItem();
+            HealthFacilityServices service = (HealthFacilityServices) spinnerService.getSelectedItem();
+            serviceID = service.getId()+"";
         }
         if (spinnerToHealthFacility.getSelectedItemPosition() == 0){
             toastThis("Chagua Kituo cha afya cha kutuma rufaa");

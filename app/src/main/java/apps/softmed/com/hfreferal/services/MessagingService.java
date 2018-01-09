@@ -12,7 +12,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import apps.softmed.com.hfreferal.HomeActivity;
+import apps.softmed.com.hfreferal.activities.HomeActivity;
 import apps.softmed.com.hfreferal.utils.Config;
 import apps.softmed.com.hfreferal.utils.NotificationUtils;
 

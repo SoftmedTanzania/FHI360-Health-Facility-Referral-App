@@ -1,32 +1,25 @@
 package apps.softmed.com.hfreferal.adapters;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
-import apps.softmed.com.hfreferal.NewReferalsActivity;
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.TbClientDetailsActivity;
-import apps.softmed.com.hfreferal.TbClientListActivity;
-import apps.softmed.com.hfreferal.TbReferralDetailsActivity;
+import apps.softmed.com.hfreferal.activities.TbClientDetailsActivity;
+import apps.softmed.com.hfreferal.activities.TbClientListActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
-import fr.ganfra.materialspinner.MaterialSpinner;
 
 /**
  * Created by issy on 12/28/17.
