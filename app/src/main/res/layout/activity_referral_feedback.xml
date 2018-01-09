@@ -440,6 +440,7 @@
                                 </RelativeLayout>
 
                                 <RelativeLayout
+                                    android:visibility="invisible"
                                     android:layout_width="0dp"
                                     android:layout_weight="0.4"
                                     android:paddingBottom="16dp"

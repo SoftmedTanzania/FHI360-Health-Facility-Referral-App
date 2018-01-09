@@ -1,5 +1,8 @@
 package apps.softmed.com.hfreferal.dom.responces;
 
+import android.arch.persistence.room.Ignore;
+
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -23,6 +26,7 @@ public class ReferalResponce implements Serializable {
     @SerializedName("referralsDTOS")
     private List<Referral> referralDTOS;
 
+    @Expose
     @SerializedName("patientReferralsList")
     private List<Referral> patientReferalList;
 

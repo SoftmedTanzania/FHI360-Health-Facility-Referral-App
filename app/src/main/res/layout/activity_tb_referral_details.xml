@@ -293,6 +293,7 @@
                                 </RelativeLayout>
 
                                 <RelativeLayout
+                                    android:visibility="invisible"
                                     android:layout_width="0dp"
                                     android:layout_weight="0.4"
                                     android:paddingBottom="16dp"
@@ -624,6 +625,7 @@
                                         android:layout_marginTop="8dp"
                                         android:textSize="14sp"
                                         android:text="N/A"
+                                        android:id="@+id/other_clinical_inforamtion_value"
                                         android:fontFamily="@font/avenir_light"
                                         android:textColor="@color/card_title_text"/>
 

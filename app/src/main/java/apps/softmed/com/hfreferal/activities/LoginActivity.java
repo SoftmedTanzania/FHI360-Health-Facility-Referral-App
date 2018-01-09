@@ -194,7 +194,7 @@ public class LoginActivity extends BaseActivity {
         RequestBody body;
 
         try {
-            object.put("userUiid", userUiid); //TODO
+            object.put("userUiid", userUiid);
             object.put("googlePushNotificationToken", token);
             object.put("facilityUiid", hfid);
             object.put("userType", 1);

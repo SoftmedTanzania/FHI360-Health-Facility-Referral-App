@@ -8,11 +8,22 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.Timestamp;
+import java.util.Calendar;
+import java.util.Map;
+
 import apps.softmed.com.hfreferal.activities.HomeActivity;
+import apps.softmed.com.hfreferal.base.AppDatabase;
+import apps.softmed.com.hfreferal.base.BaseActivity;
+import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.responces.ReferalResponce;
 import apps.softmed.com.hfreferal.utils.Config;
 import apps.softmed.com.hfreferal.utils.NotificationUtils;
 
@@ -29,8 +40,12 @@ public class MessagingService extends FirebaseMessagingService {
 
     private NotificationUtils notificationUtils;
 
+    private AppDatabase database;
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
+        database = AppDatabase.getDatabase(this);
 
         // If the application is in the foreground handle both data and notification messages here.
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -75,8 +90,8 @@ public class MessagingService extends FirebaseMessagingService {
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
             // play notification sound
-            NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-            notificationUtils.playNotificationSound();
+            //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+            //notificationUtils.playNotificationSound();
         }else{
             // If the app is in background, firebase itself handles the notification
         }
@@ -85,56 +100,107 @@ public class MessagingService extends FirebaseMessagingService {
     private void handleDataMessage(JSONObject json) {
         Log.e(TAG, "push json: " + json.toString());
 
+        Patient patient = new Patient();
+        Referral referral = new Referral();
+
         try {
-            JSONObject data = json.getJSONObject("data");
 
-            String title = data.getString("title");
-            String message = data.getString("message");
-            boolean isBackground = data.getBoolean("is_background");
-            String imageUrl = data.getString("image");
-            String timestamp = data.getString("timestamp");
-            JSONObject payload = data.getJSONObject("payload");
+            JSONObject data = new JSONObject(json.toString());
 
-            Log.e(TAG, "title: " + title);
-            Log.e(TAG, "message: " + message);
-            Log.e(TAG, "isBackground: " + isBackground);
-            Log.e(TAG, "payload: " + payload.toString());
-            Log.e(TAG, "imageUrl: " + imageUrl);
-            Log.e(TAG, "timestamp: " + timestamp);
+            JSONObject patientDTOS = data.getJSONObject("patientsDTO");
 
+            String patientFirstName = patientDTOS.getString("firstName");
+            String patientPhoneNumber = patientDTOS.getString("phoneNumber");
+            String patientGender = patientDTOS.getString("gender");
+            String patientSurname = patientDTOS.getString("surname");
+            String patientMiddleName = patientDTOS.getString("middleName");
+            int patientId = patientDTOS.getInt("patientId");
+            long patientDateOfBirth = patientDTOS.getLong("dateOfBirth");
+            long patientDateOfDeath = patientDTOS.getLong("dateOfDeath");
+            boolean patientHivStatus = patientDTOS.getBoolean("hivStatus");
+
+            patient.setPatientFirstName(patientFirstName);
+            patient.setPatientMiddleName(patientMiddleName);
+            patient.setPatientSurname(patientSurname);
+            patient.setPhone_number(patientPhoneNumber);
+            patient.setGender(patientGender);
+            patient.setPatientId(patientId+"");
+            patient.setDateOfBirth(patientDateOfBirth);
+            patient.setDateOfDeath(patientDateOfDeath);
+            patient.setHivStatus(patientHivStatus);
+
+            Log.d("FinalTAg", "Patient : "+patient.getPatientId());
+            database.patientModel().addPatient(patient);
+
+            JSONArray referralsDTOS = data.getJSONArray("referralsDTOS");
+            for (int i=0; i<referralsDTOS.length(); i++){
+                    JSONObject referralObject = referralsDTOS.getJSONObject(i);
+
+                    referral.setReferralReason(referralObject.getString("referralReason"));
+                    referral.setFacilityId(referralObject.getString("facilityId"));
+                    referral.setServiceProviderUIID(referralObject.getString("serviceProviderUIID"));
+                    referral.setServiceProviderGroup(referralObject.getString("serviceProviderGroup"));
+                    referral.setCommunityBasedHivService(referralObject.getString("communityBasedHivService"));
+                    referral.setVillageLeader(referralObject.getString("villageLeader"));
+                    referral.setCtcNumber(referralObject.getString("ctcNumber"));
+
+                    referral.setTestResults(referralObject.getBoolean("testResults"));
+                    referral.setHasSevereSweating(referralObject.getBoolean("hasSevereSweating"));
+                    referral.setHasFever(referralObject.getBoolean("hasFever"));
+                    referral.setHadWeightLoss(referralObject.getBoolean("hadWeightLoss"));
+                    referral.setHasBloodCough(referralObject.getBoolean("hasBloodCough"));
+                    referral.setHas2WeeksCough(referralObject.getBoolean("has2WeeksCough"));
+
+                    referral.setReferralStatus(referralObject.getInt("referralStatus"));
+                    referral.setPatient_id(referralObject.getInt("patientId")+"");
+                    referral.setFacilityId(referralObject.getInt("fromFacilityId")+"");
+                    referral.setReferral_id(referralObject.getInt("referralId")+"");
+                    referral.setReferralSource(referralObject.getInt("referralSource"));
+                    referral.setServiceId(referralObject.getInt("serviceId"));
+                    referral.setReferralDate(referralObject.getLong("referralDate"));
+
+                    Log.d("FinalTAg", "Referral : "+referral.getReferralReason());
+
+                    database.referalModel().addReferal(referral);
+
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            String msg = "Data Received";
 
             if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
                 // app is in foreground, broadcast the push message
                 Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", message);
+                pushNotification.putExtra("message", msg);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
                 // play notification sound
-                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                notificationUtils.playNotificationSound();
+                //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+                //notificationUtils.playNotificationSound();
             } else {
                 // app is in background, show the notification in notification tray
                 Intent resultIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                resultIntent.putExtra("message", message);
+                resultIntent.putExtra("message", "");
+
+                showNotificationMessage(getApplicationContext(), "HTMR", msg, null, resultIntent);
 
                 // check for image attachment
-                if (TextUtils.isEmpty(imageUrl)) {
+                /*if (TextUtils.isEmpty(imageUrl)) {
                     showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
                 } else {
                     // image is present, show notification with image
                     showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
-                }
+                }*/
 
                 // play notification sound
-                NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                notificationUtils.playNotificationSound();
+                //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+                //notificationUtils.playNotificationSound();
 
             }
-        } catch (JSONException e) {
-            Log.e(TAG, "Json Exception: " + e.getMessage());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage());
-        }
+
     }
 
     /**

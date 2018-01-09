@@ -74,6 +74,8 @@ public class ClientsDetailsActivity extends BaseActivity {
                     hivStatus.setEnabled(false);
 
                 }
+
+                hivStatus.setChecked(currentReferral.isTestResults());
                 otherClinicalInformationValue.setText(currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "" : currentReferral.getVillageLeader());

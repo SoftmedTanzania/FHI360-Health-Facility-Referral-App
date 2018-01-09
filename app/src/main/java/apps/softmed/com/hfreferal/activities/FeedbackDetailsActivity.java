@@ -54,6 +54,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
                     hivStatus.setEnabled(false);
 
                 }
+                hivStatus.setChecked(currentReferral.isTestResults());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "" : currentReferral.getVillageLeader());
                 referrerName.setText(currentReferral.getServiceProviderUIID() == null ? "" : currentReferral.getServiceProviderUIID());

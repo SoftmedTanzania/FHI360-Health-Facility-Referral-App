@@ -36,7 +36,7 @@ public class BaseActivity extends AppCompatActivity {
     public Retrofit retrofit;
     public Endpoints apiEndpoints;
 
-    public AppDatabase baseDatabase;
+    public static AppDatabase baseDatabase;
 
     // Session Manager Class
     public static SessionManager session;

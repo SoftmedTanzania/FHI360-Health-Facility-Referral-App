@@ -47,9 +47,9 @@ public class TbReferralDetailsActivity extends BaseActivity {
     public TextView clientName, ctcNumber, referalReasons, villageLeaderValue, referrerName;
     private EditText servicesOfferedEt, otherInformationEt;
     public ProgressView saveProgress;
-    private CheckBox tbStatus;
+    private CheckBox tbStatus, twoWeeksCoughFlag, bloodCoughFlag, severeSweatingFlag, feverFlag, weightLossFlag;
 
-    public TextView clientNames, wardText, villageText, hamletText, patientGender;
+    public TextView clientNames, wardText, villageText, hamletText, patientGender, otherClunucalInformationValue;
 
     public Dialog referalDialogue;
 
@@ -74,11 +74,32 @@ public class TbReferralDetailsActivity extends BaseActivity {
                     otherInformationEt.setText(currentReferral.getOtherNotesAndAdvices());
                     otherInformationEt.setEnabled(false);
 
+                    twoWeeksCoughFlag.setChecked(currentReferral.getHas2WeeksCough());
+                    bloodCoughFlag.setChecked(currentReferral.getHasBloodCough());
+                    severeSweatingFlag.setChecked(currentReferral.getHasSevereSweating());
+                    feverFlag.setChecked(currentReferral.getHasFever());
+                    weightLossFlag.setChecked(currentReferral.getHadWeightLoss());
+
                     saveButton.setEnabled(false);
                     referButton.setEnabled(false);
                     tbStatus.setEnabled(false);
 
+                    twoWeeksCoughFlag.setEnabled(false);
+                    bloodCoughFlag.setEnabled(false);
+                    severeSweatingFlag.setEnabled(false);
+                    feverFlag.setEnabled(false);
+                    weightLossFlag.setEnabled(false);
+
                 }
+
+                tbStatus.setChecked(currentReferral.isTestResults());
+                twoWeeksCoughFlag.setChecked(currentReferral.getHas2WeeksCough());
+                bloodCoughFlag.setChecked(currentReferral.getHasBloodCough());
+                severeSweatingFlag.setChecked(currentReferral.getHasSevereSweating());
+                feverFlag.setChecked(currentReferral.getHasFever());
+                weightLossFlag.setChecked(currentReferral.getHadWeightLoss());
+
+                otherClunucalInformationValue.setText(currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "" : currentReferral.getVillageLeader());
                 referrerName.setText(currentReferral.getServiceProviderUIID() == null ? "" : currentReferral.getServiceProviderUIID());
@@ -130,7 +151,9 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
             String serviceOferedString = servicesOfferedEt.getText().toString();
             String otherInformation = otherInformationEt.getText().toString();
+            boolean results = tbStatus.isChecked();
 
+            currentReferral.setTestResults(results);
             currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
             currentReferral.setServiceGivenToPatient(serviceOferedString);
             currentReferral.setOtherNotesAndAdvices(otherInformation);
@@ -157,17 +180,19 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
     private void setupviews(){
 
+        twoWeeksCoughFlag = (CheckBox) findViewById(R.id.two_weeks_cough_flag);
+        bloodCoughFlag = (CheckBox) findViewById(R.id.blood_cough_flag);
+        severeSweatingFlag = (CheckBox) findViewById(R.id.severe_sweating_flag);
+        feverFlag = (CheckBox) findViewById(R.id.fever_flag);
+        weightLossFlag = (CheckBox) findViewById(R.id.weight_loss_flag);
+
+        otherClunucalInformationValue = (TextView) findViewById(R.id.other_clinical_inforamtion_value);
         tbStatus = (CheckBox) findViewById(R.id.tb_status);
-
         saveProgress = (ProgressView) findViewById(R.id.save_progress);
-
         servicesOfferedEt = (EditText) findViewById(R.id.service_offered_et);
-
         otherInformationEt = (EditText) findViewById(R.id.other_information_et);
-
         referrerName = (TextView) findViewById(R.id.referer_name_value);
         villageLeaderValue = (TextView) findViewById(R.id.mwenyekiti_name_value);
-
         patientGender = (TextView) findViewById(R.id.patient_gender_value);
         wardText = (TextView) findViewById(R.id.client_kata_value);
         villageText = (TextView) findViewById(R.id.client_kijiji_value);
