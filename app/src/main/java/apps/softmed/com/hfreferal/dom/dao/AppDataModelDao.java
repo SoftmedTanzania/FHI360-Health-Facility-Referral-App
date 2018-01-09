@@ -3,10 +3,8 @@ package apps.softmed.com.hfreferal.dom.dao;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
 
 import apps.softmed.com.hfreferal.dom.objects.AppData;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 

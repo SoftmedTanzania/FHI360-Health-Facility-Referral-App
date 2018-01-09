@@ -28,7 +28,7 @@ import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.LargeDiagonalCutPathDrawable;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
 import apps.softmed.com.hfreferal.dom.responces.LoginResponse;
 import apps.softmed.com.hfreferal.dom.responces.ReferalResponce;
@@ -322,9 +322,9 @@ public class LoginActivity extends BaseActivity {
             for (ReferalResponce mList : results){
                 baseDatabase.patientModel().addPatient(mList.getPatient());
                 Log.d("InitialSync", "Patient  : "+mList.getPatient().getPatientFirstName());
-                for (Referal referal : mList.getPatientReferalList()){
-                    Log.d("InitialSync", "Referal  : "+referal.toString());
-                    baseDatabase.referalModel().addReferal(referal);
+                for (Referral referral : mList.getPatientReferalList()){
+                    Log.d("InitialSync", "Referal  : "+ referral.toString());
+                    baseDatabase.referalModel().addReferal(referral);
                 }
             }
 

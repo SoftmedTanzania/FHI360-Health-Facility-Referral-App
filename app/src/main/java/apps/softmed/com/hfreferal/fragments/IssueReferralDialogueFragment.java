@@ -2,7 +2,6 @@ package apps.softmed.com.hfreferal.fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.ArrayRes;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -21,7 +19,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -34,7 +31,7 @@ import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
@@ -42,7 +39,6 @@ import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE;
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE;
 import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE_ID;
-import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_ENCOUNTER;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_NEW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
@@ -69,8 +65,9 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     private Patient currentPatient;
     private boolean twoWeeksCoughFlag, bloodCoughFlag, weightLossFlag, severeSweatingFlag, feverFlag, involvedInRiskySituationsFlag;
     private boolean doesNotTrustPartnerFlag, pregnantFlag, hivPregnantFlag;
-    private String referralReasonsValue, otherClinicalInformationValue, serviceID, toHealthFacilityID;
+    private String referralReasonsValue, otherClinicalInformationValue, toHealthFacilityID;
     private boolean currentServiceTb, currentServiceHiv;
+    private int serviceID;
 
     private AppDatabase database;
 
@@ -116,10 +113,9 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
 
         healthFacilitiesAdapter = new HealthFacilitiesAdapter(this.getContext(),R.layout.subscription_plan_items_drop_down, healthFacilities);
-        spinnerToHealthFacility.setAdapter(healthFacilitiesAdapter);
-
+        //spinnerToHealthFacility.setAdapter(healthFacilitiesAdapter);
         servicesAdapter = new ServicesAdapter(this.getContext(), R.layout.subscription_plan_items_drop_down ,healthFacilityServices);
-        spinnerService.setAdapter(servicesAdapter);
+        //spinnerService.setAdapter(servicesAdapter);
 
         new getFacilitiesAndServices(this.getContext()).execute();
 
@@ -205,7 +201,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     private void createReferralObject(){
 
-        Referal referal = new Referal();
+        Referral referral = new Referral();
 
         long range = 1234567L;
         Random r = new Random();
@@ -213,43 +209,31 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         long today = Calendar.getInstance().getTimeInMillis();
 
-        referal.setReferral_id(number+"");
-        referal.setId(number);
-        referal.setPatient_id(currentPatient.getPatientId());
-        referal.setCommunityBasedHivService("");
-        referal.setReferralReason(referralReasonsValue);
-        referal.setServiceId(getServiceID(serviceID));
-        referal.setCtcNumber("");
-        referal.setHas2WeeksCough(twoWeeksCoughFlag);
-        referal.setHasBloodCough(bloodCoughFlag);
-        referal.setHasSevereSweating(severeSweatingFlag);
-        referal.setHasFever(feverFlag);
-        referal.setHadWeightLoss(weightLossFlag);
-        referal.setServiceProviderUIID("");
-        referal.setServiceProviderGroup("");
-        referal.setVillageLeader("");
-        referal.setReferralDate(today);
-        referal.setFacilityId(toHealthFacilityID);
-//      referal.setFromFacilityId(BaseActivity.session.getKeyHfid());
-        referal.setFromFacilityId(BaseActivity.getThisFacilityId());
-        referal.setReferralStatus(REFERRAL_STATUS_NEW);
-        referal.setReferralSource(SOURCE_HF);
+        referral.setReferral_id(number+"");
+        referral.setId(number);
+        referral.setPatient_id(currentPatient.getPatientId());
+        referral.setCommunityBasedHivService("");
+        referral.setReferralReason(referralReasonsValue);
+        referral.setServiceId(serviceID);
+        referral.setCtcNumber("");
+        referral.setHas2WeeksCough(twoWeeksCoughFlag);
+        referral.setHasBloodCough(bloodCoughFlag);
+        referral.setHasSevereSweating(severeSweatingFlag);
+        referral.setHasFever(feverFlag);
+        referral.setHadWeightLoss(weightLossFlag);
+        referral.setServiceProviderUIID("");
+        referral.setServiceProviderGroup("");
+        referral.setVillageLeader("");
+        referral.setReferralDate(today);
+        referral.setFacilityId(toHealthFacilityID);
+        referral.setFromFacilityId(BaseActivity.session.getKeyHfid());
+        referral.setReferralStatus(REFERRAL_STATUS_NEW);
+        referral.setReferralSource(SOURCE_HF);
+        referral.setOtherClinicalInformation(otherClinicalInformationValue);
 
         SaveReferral saveReferral = new SaveReferral(database);
-        saveReferral.execute(referal);
+        saveReferral.execute(referral);
 
-    }
-
-    private int getServiceID(String serviceIDInString){
-        if (serviceIDInString.equals(TB_SERVICE)){
-            return TB_SERVICE_ID;
-        }else if (serviceIDInString.equals(HIV_SERVICE)){
-            return HIV_SERVICE_ID;
-        }else if (serviceIDInString.equals(MALARIA_SERVICE)){
-            return MALARIA_SERVICE_ID;
-        }else {
-            return 0;
-        }
     }
 
     private boolean getCurrentInputs(){
@@ -260,13 +244,18 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             return false;
         }else {
             HealthFacilityServices service = (HealthFacilityServices) spinnerService.getSelectedItem();
-            serviceID = service.getId()+"";
+            serviceID = service.getId();
         }
         if (spinnerToHealthFacility.getSelectedItemPosition() == 0){
             toastThis("Chagua Kituo cha afya cha kutuma rufaa");
             return false;
         }else {
-            toHealthFacilityID = (String) spinnerToHealthFacility.getSelectedItem();
+            HealthFacilities hf = (HealthFacilities) spinnerToHealthFacility.getSelectedItem();
+            toHealthFacilityID = hf.getOpenMRSUIID();
+            Log.d("Sample", "To facility ID  "+toHealthFacilityID);
+            Log.d("Sample", "To facility ID  "+hf.getFacilityName());
+            Log.d("Sample", "To facility ID  "+hf.getHfrCode());
+            Log.d("Sample", "To facility ID  "+hf.getOpenMRSUIID());
         }
 
         if (referralReasons.getText().toString().isEmpty()){
@@ -275,6 +264,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         }else {
             referralReasonsValue = referralReasons.getText().toString();
         }
+
+        otherClinicalInformationValue = otherClinicalInformation.getText().toString();
 
         if (currentServiceTb){
             twoWeeksCoughFlag = twoWeeksCough.isChecked();
@@ -332,7 +323,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     class getFacilitiesAndServices extends AsyncTask<Void, Void, Void>{
 
-        List<HealthFacilities> healthFacilities = new ArrayList<>();
+        List<HealthFacilities> hfs = new ArrayList<>();
         List<HealthFacilityServices> services = new ArrayList<>();
         Context context;
 
@@ -344,22 +335,28 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            healthFacilitiesAdapter.updateItems(healthFacilities);
+            healthFacilitiesAdapter = new HealthFacilitiesAdapter(context,R.layout.subscription_plan_items_drop_down, hfs);
+            servicesAdapter = new ServicesAdapter(context, R.layout.subscription_plan_items_drop_down ,services);
+            spinnerService.setAdapter(servicesAdapter);
+            spinnerToHealthFacility.setAdapter(healthFacilitiesAdapter);
+            /*healthFacilitiesAdapter.updateItems(healthFacilities);
+            healthFacilitiesAdapter.notifyDataSetChanged();
             servicesAdapter.updateItems(services);
+            servicesAdapter.notifyDataSetChanged();*/
 
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
 
-            healthFacilities = database.healthFacilitiesModelDao().getAllHealthFacilities();
+            hfs = database.healthFacilitiesModelDao().getAllHealthFacilities();
             services = database.servicesModelDao().getAllServices();
 
             return null;
         }
     }
 
-    class SaveReferral extends AsyncTask<Referal, Void, Void>{
+    class SaveReferral extends AsyncTask<Referral, Void, Void>{
 
         AppDatabase database;
 
@@ -375,9 +372,11 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         }
 
         @Override
-        protected Void doInBackground(Referal... referrals) {
+        protected Void doInBackground(Referral... referrals) {
 
             database.referalModel().addReferal(referrals[0]);
+            List<Referral> x = database.referalModel().getAllReferralsOfThisFacility(BaseActivity.session.getKeyHfid());
+            Log.d("AllReferrals", "All referrals : "+x.size());
 
             PostOffice postOffice = new PostOffice();
             postOffice.setPost_id(referrals[0].getReferral_id());

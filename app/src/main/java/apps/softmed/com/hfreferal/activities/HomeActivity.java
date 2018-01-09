@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -26,24 +27,39 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.R;
+import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager;
+import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.objects.TbPatient;
+import apps.softmed.com.hfreferal.dom.objects.UserData;
+import apps.softmed.com.hfreferal.dom.responces.PatientResponce;
 import apps.softmed.com.hfreferal.fragments.HivFragment;
 import apps.softmed.com.hfreferal.fragments.MalariaFragment;
 import apps.softmed.com.hfreferal.fragments.TbFragment;
 import apps.softmed.com.hfreferal.utils.AlarmReceiver;
 import apps.softmed.com.hfreferal.utils.Config;
+import apps.softmed.com.hfreferal.utils.ServiceGenerator;
 import apps.softmed.com.hfreferal.viewmodels.PostOfficeListViewModel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_ENCOUNTER;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_PATIENT;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 
 /**
  * Created by issy on 12/4/17.
@@ -60,11 +76,14 @@ public class HomeActivity extends BaseActivity {
     public static NonSwipeableViewPager viewPager;
     private Toolbar toolbar;
     private TextView toolbarTitle, unsynced;
+    private CircularProgressView syncProgressBar;
+    private ImageView manualSync;
 
     private PostOfficeListViewModel viewModel;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private AppDatabase database;
-
+    private Endpoints.PatientServices patientServices;
+    private Endpoints.ReferalService referalService;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +94,16 @@ public class HomeActivity extends BaseActivity {
 
         session.checkLogin();
 
+        patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
+
+        referalService = ServiceGenerator.createService(Endpoints.ReferalService.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null){
             setSupportActionBar(toolbar);
@@ -84,13 +113,7 @@ public class HomeActivity extends BaseActivity {
             toolbarTitle.setText(session.getUserName());
         }
 
-        viewModel = ViewModelProviders.of(this).get(PostOfficeListViewModel.class);
-        viewModel.getUnpostedDataList().observe(HomeActivity.this, new Observer<List<PostOffice>>() {
-            @Override
-            public void onChanged(@Nullable List<PostOffice> postOffices) {
-                unsynced.setText("Unsynced Data : "+postOffices.size());
-            }
-        });
+        checkPostOfficeData();
 
         viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -101,6 +124,14 @@ public class HomeActivity extends BaseActivity {
             public void run() {
                 tabLayout.setupWithViewPager(viewPager);
                 setupTabIcons();
+            }
+        });
+
+        manualSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Manual Sync the data in postman
+                new SyncPostOfficeData().execute();
             }
         });
 
@@ -135,10 +166,124 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    private void checkPostOfficeData(){
+
+        viewModel = ViewModelProviders.of(this).get(PostOfficeListViewModel.class);
+        viewModel.getUnpostedDataList().observe(HomeActivity.this, new Observer<List<PostOffice>>() {
+            @Override
+            public void onChanged(@Nullable List<PostOffice> postOffices) {
+                if (postOffices.size() > 0){
+                    unsynced.setText("Unsynced Data : "+postOffices.size());
+                    unsynced.setTextColor(getResources().getColor(R.color.orange_400));
+                }else {
+                    unsynced.setText("Data Synced");
+                    unsynced.setTextColor(getResources().getColor(R.color.green_600));
+                }
+
+            }
+        });
+
+    }
+
+    private void syncDataInPostOffice(){
+        //Check if data is available in the PostOffice
+        if (database.postOfficeModelDao().getUnpostedDataCount() > 0){
+            List<PostOffice> unpostedData = database.postOfficeModelDao().getUnpostedData();
+            for (int i=0; i<unpostedData.size(); i++){
+
+                final PostOffice data = unpostedData.get(i);
+                Log.d("PostOfficeService", data.getPost_data_type());
+
+                if (data.getPost_data_type().equals(POST_DATA_TYPE_PATIENT)){
+
+                    final Patient patient = database.patientModel().getPatientById(data.getPost_id());
+                    final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
+
+                    Call call = patientServices.postPatient(getPatientRequestBody(patient, tbPatient, userData));
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            PatientResponce patientResponce = (PatientResponce) response.body();
+                            //Store Received Patient Information, TbPatient as well as PatientAppointments
+                            if (response.body()!=null){
+                                Log.d("patient_response", response.body().toString());
+
+                                Patient patient1 = patientResponce.getPatient();
+                                TbPatient tbPatient1 = patientResponce.getTbPatient();
+                                List<PatientAppointment> appointments = patientResponce.getPatientAppointments();
+
+                                //Delete local patient reference
+                                database.patientModel().deleteAPatient(patient);
+                                database.tbPatientModelDao().deleteAPatient(tbPatient);
+                                List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
+                                for (int i=0; i<oldAppointments.size(); i++){
+                                    database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
+                                }
+
+                                //Insert server's patient reference
+                                database.patientModel().addPatient(patient1);
+                                database.tbPatientModelDao().addPatient(tbPatient1);
+                                for (int j=0; j<appointments.size(); j++){
+                                    database.appointmentModelDao().addAppointment(appointments.get(j));
+                                }
+
+                            }else {
+                                Log.d("patient_response","Patient Responce is null "+response.body());
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Log.d("patient_response", t.getMessage());
+                        }
+                    });
+                }else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
+
+                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
+
+                    Call call = referalService.postReferral(getReferralRequestBody(referral, userData));
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            Referral receivedReferral = (Referral) response.body();
+                            if (response.body() != null){
+
+                                Log.d("PostReferral", response.body().toString());
+                                database.referalModel().deleteReferal(referral); //Delete local referral reference
+                                database.referalModel().addReferal(receivedReferral); //Store the server's referral reference
+
+                            }else {
+                                Log.d("PostReferral", "Responce is Null : "+response.body());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Log.d("PostReferral", t.getMessage());
+                        }
+                    });
+
+
+                }else if(data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)){
+                    //TbEncounters encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+                }
+            }
+
+        }
+    }
+
     private void setupviews(){
+
+        syncProgressBar = (CircularProgressView) findViewById(R.id.manual_sync_loader);
+        syncProgressBar.setVisibility(View.INVISIBLE);
+
+        manualSync = (ImageView) findViewById(R.id.manual_sync);
+
         toolbarTitle = (TextView) findViewById(R.id.toolbar_user_name);
         unsynced = (TextView) findViewById(R.id.unsynced);
-        unsynced.setTextColor(getResources().getColor(R.color.orange_400));
     }
 
     @Override
@@ -257,6 +402,34 @@ public class HomeActivity extends BaseActivity {
         // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
                 INTERVAL_FIFTEEN_MINUTES, pIntent);
+    }
+
+    class SyncPostOfficeData extends AsyncTask<Void,Void, Void>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            manualSync.setVisibility(View.INVISIBLE);
+            syncProgressBar.setVisibility(View.VISIBLE);
+            unsynced.setText("Taarifa zinaoanishwa..");
+            unsynced.setTextColor(getResources().getColor(R.color.white));
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            syncDataInPostOffice();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            manualSync.setVisibility(View.VISIBLE);
+            syncProgressBar.setVisibility(View.INVISIBLE);
+            unsynced.setText("Data Synced!");
+            unsynced.setTextColor(getResources().getColor(R.color.white));
+            checkPostOfficeData();
+            super.onPostExecute(aVoid);
+        }
     }
 
 }

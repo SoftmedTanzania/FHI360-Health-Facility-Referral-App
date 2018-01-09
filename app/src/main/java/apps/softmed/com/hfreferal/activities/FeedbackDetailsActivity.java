@@ -13,7 +13,8 @@ import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
+
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_COMPLETED;
 
 /**
@@ -31,7 +32,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
     private CheckBox hivStatus;
     public TextView clientNames, wardText, villageText, hamletText, patientGender;
 
-    private Referal currentReferral;
+    private Referral currentReferral;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
         setupviews();
 
         if (getIntent().getExtras() != null){
-            currentReferral = (Referal) getIntent().getSerializableExtra("referal");
+            currentReferral = (Referral) getIntent().getSerializableExtra("referal");
             if (currentReferral != null){
                 if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
 

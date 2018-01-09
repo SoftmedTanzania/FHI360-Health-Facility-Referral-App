@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 
 /**
  * Created by issy on 12/3/17.
@@ -67,7 +67,7 @@ public class LoaderActivity extends BaseActivity {
 
     private  void createDummyReferralData(){
 
-        Referal dummyReferral = new Referal();
+        Referral dummyReferral = new Referral();
         dummyReferral.setId(Long.valueOf("1"));
         dummyReferral.setReferral_id("0001");
         dummyReferral.setPatient_id("0001");
@@ -90,7 +90,7 @@ public class LoaderActivity extends BaseActivity {
 //        dummyReferral.setCreatedAt(new Date());
 //        dummyReferral.setUpdatedAt(new Date());
 
-        Referal dummyReferral2 = new Referal();
+        Referral dummyReferral2 = new Referral();
         dummyReferral2.setId(Long.valueOf("2"));
         dummyReferral2.setReferral_id("0002");
         dummyReferral2.setPatient_id("0002");
@@ -113,7 +113,7 @@ public class LoaderActivity extends BaseActivity {
 //        dummyReferral2.setCreatedAt(new Date());
 //        dummyReferral2.setUpdatedAt(new Date());
 
-        Referal dummyReferral3 = new Referal();
+        Referral dummyReferral3 = new Referral();
         dummyReferral3.setReferral_id("0003");
         dummyReferral3.setId(Long.valueOf("3"));
         dummyReferral3.setPatient_id("0002");
@@ -136,7 +136,7 @@ public class LoaderActivity extends BaseActivity {
 //        dummyReferral3.setCreatedAt(new Date());
 //        dummyReferral3.setUpdatedAt(new Date());
 
-        Referal dummyReferral4 = new Referal();
+        Referral dummyReferral4 = new Referral();
         dummyReferral4.setReferral_id("0004");
         dummyReferral4.setId(Long.valueOf("4"));
         dummyReferral4.setPatient_id("0001");

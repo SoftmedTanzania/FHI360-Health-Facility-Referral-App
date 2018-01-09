@@ -32,7 +32,7 @@ import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.adapters.TbReferralListRecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -185,20 +185,20 @@ public class TbReferralListFragment extends Fragment {
             }
         });
 
-        adapter = new TbReferralListRecyclerAdapter(new ArrayList<Referal>(), TbReferralListFragment.this.getActivity());
+        adapter = new TbReferralListRecyclerAdapter(new ArrayList<Referral>(), TbReferralListFragment.this.getActivity());
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
         if (source == SOURCE_CHW){
-            listViewModel.getReferalListChwSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referal>>() {
+            listViewModel.getReferalListChwSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
-                public void onChanged(@Nullable List<Referal> referals) {
-                    adapter.addItems(referals);
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    adapter.addItems(referrals);
                 }
             });
         }else if (source == SOURCE_HF){
-            listViewModel.getReferalListHfSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referal>>() {
+            listViewModel.getReferalListHfSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
-                public void onChanged(@Nullable List<Referal> referals) {
-                    adapter.addItems(referals);
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    adapter.addItems(referrals);
                 }
             });
         }
@@ -255,7 +255,7 @@ public class TbReferralListFragment extends Fragment {
 
         String clientName, lastName, ctcNumber;
         AppDatabase db;
-        List<Referal> fReferrals;
+        List<Referral> fReferrals;
         int referalStatus;
         Date frmDate, toDate;
 

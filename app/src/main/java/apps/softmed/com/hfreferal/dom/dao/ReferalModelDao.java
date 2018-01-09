@@ -8,10 +8,9 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
 
-import java.util.Date;
 import java.util.List;
 
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.utils.DateConverter;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
@@ -23,65 +22,69 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 @TypeConverters(DateConverter.class)
 public interface ReferalModelDao {
-    @Query("select * from Referal where serviceId = :serviceId")
-    LiveData<List<Referal>> getAllReferals(int serviceId);
 
-    @Query("select * from Referal where serviceId = :serviceId and referralSource = :SourceID")
-    LiveData<List<Referal>> getReferralsBySourceId(int serviceId, int SourceID);
+    @Query("select * from Referral where fromFacilityId = :fromHfId")
+    List<Referral> getAllReferralsOfThisFacility(String fromHfId);
 
-    @Query("select * from Referal where serviceId = :serviceId and fromFacilityId = :fromFacilityId order by referralStatus desc")
-    LiveData<List<Referal>> getReferredClients(int serviceId, String fromFacilityId);
+    @Query("select * from Referral where serviceId = :serviceId")
+    LiveData<List<Referral>> getAllReferals(int serviceId);
 
-    @Query("select count(*) from Referal where referralStatus = 0 and serviceId = :serviceId and fromFacilityId = :fromFacilityId")
+    @Query("select * from Referral where serviceId = :serviceId and referralSource = :SourceID")
+    LiveData<List<Referral>> getReferralsBySourceId(int serviceId, int SourceID);
+
+    @Query("select * from Referral where serviceId = :serviceId and fromFacilityId = :fromFacilityId order by referralStatus desc")
+    LiveData<List<Referral>> getReferredClients(int serviceId, String fromFacilityId);
+
+    @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and fromFacilityId = :fromFacilityId")
     int geCountPendingReferalFeedback(int serviceId, String fromFacilityId);
 
-    @Query("select * from Referal where referralStatus = 0 and serviceId = :serviceId")
-    LiveData<List<Referal>> getUnattendedReferals(int serviceId);
+    @Query("select * from Referral where referralStatus = 0 and serviceId = :serviceId")
+    LiveData<List<Referral>> getUnattendedReferals(int serviceId);
 
-    @Query("select count(*) from Referal where referralStatus = 0 and serviceId = :serviceId")
+    @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId")
     int geCounttUnattendedReferals(int serviceId);
 
-    @Query("select count(*) from Referal where referralStatus = 0 and serviceId = :serviceId and referralSource = :sourceID")
+    @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and referralSource = :sourceID")
     int getCountSourceReferrals(int serviceId, int sourceID);
 
-    @Query("select * from Referal where patient_id = :id")
-    LiveData<List<Referal>> getReferalsByPatientId(String id);
+    @Query("select * from Referral where patient_id = :id")
+    LiveData<List<Referral>> getReferalsByPatientId(String id);
 
-    @Query("select * from Referal where id = :id")
-    Referal getReferalById(String id);
+    @Query("select * from Referral where id = :id")
+    Referral getReferalById(String id);
 
-    @Query("select * from Referal inner join Patient on Referal.patient_id = Patient.patientId where " +
-            "Referal.referralStatus = :status and " +
-            "Referal.serviceId = :serviceId and "+
+    @Query("select * from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +
+            "Referral.referralStatus = :status and " +
+            "Referral.serviceId = :serviceId and "+
             "Patient.patientFirstName like :name COLLATE NOCASE and " +
             "Patient.patientSurname like :lastName COLLATE NOCASE"
     )
-    List<Referal> getFilteredReferal(String name, String lastName, int status, int serviceId);
+    List<Referral> getFilteredReferal(String name, String lastName, int status, int serviceId);
 
     @Insert(onConflict = REPLACE)
-    void addReferal(Referal referal);
+    void addReferal(Referral referral);
 
     @Update
-    int updateReferral(Referal referal);
+    int updateReferral(Referral referral);
 
     @Delete
-    void deleteReferal(Referal referal);
+    void deleteReferal(Referral referral);
 
 
     /**
      * TB CASES
      */
 
-    @Query("select * from Referal where serviceId = :serviceId")
-    LiveData<List<Referal>> getTbReferralList(int serviceId);
+    @Query("select * from Referral where serviceId = :serviceId")
+    LiveData<List<Referral>> getTbReferralList(int serviceId);
 
-    @Query("select * from Referal inner join Patient on Referal.patient_id = Patient.patientId where " +
-            "Referal.referralStatus = :status and " +
-            "Referal.serviceId = :serviceId and "+
+    @Query("select * from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +
+            "Referral.referralStatus = :status and " +
+            "Referral.serviceId = :serviceId and "+
             "Patient.patientFirstName like :name COLLATE NOCASE and " +
             "Patient.patientSurname like :lastName COLLATE NOCASE"
     )
-    List<Referal> getFilteredTbReferals(String name, String lastName, int status, int serviceId);
+    List<Referral> getFilteredTbReferals(String name, String lastName, int status, int serviceId);
 
 
 

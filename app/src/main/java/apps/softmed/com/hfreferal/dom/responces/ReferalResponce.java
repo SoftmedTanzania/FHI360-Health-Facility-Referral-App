@@ -1,18 +1,12 @@
 package apps.softmed.com.hfreferal.dom.responces;
 
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.sql.Ref;
-import java.util.Date;
 import java.util.List;
 
 import apps.softmed.com.hfreferal.dom.objects.Patient;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
-import apps.softmed.com.hfreferal.utils.DateConverter;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 
 /**
  * Created by issy on 12/3/17.
@@ -27,10 +21,10 @@ public class ReferalResponce implements Serializable {
     private Patient patient;
 
     @SerializedName("referralsDTOS")
-    private List<Referal> referralDTOS;
+    private List<Referral> referralDTOS;
 
     @SerializedName("patientReferralsList")
-    private List<Referal> patientReferalList;
+    private List<Referral> patientReferalList;
 
     public ReferalResponce(){}
 
@@ -42,19 +36,19 @@ public class ReferalResponce implements Serializable {
         this.patient = patient;
     }
 
-    public List<Referal> getPatientReferalList() {
+    public List<Referral> getPatientReferalList() {
         return patientReferalList;
     }
 
-    public void setPatientReferalList(List<Referal> patientReferalList) {
+    public void setPatientReferalList(List<Referral> patientReferalList) {
         this.patientReferalList = patientReferalList;
     }
 
-    public List<Referal> getReferralDTOS() {
+    public List<Referral> getReferralDTOS() {
         return referralDTOS;
     }
 
-    public void setReferralDTOS(List<Referal> referralDTOS) {
+    public void setReferralDTOS(List<Referral> referralDTOS) {
         this.referralDTOS = referralDTOS;
     }
 }

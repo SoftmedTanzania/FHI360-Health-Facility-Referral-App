@@ -9,7 +9,6 @@ import java.util.List;
 
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
 
 /**
  * Created by issy on 12/12/17.

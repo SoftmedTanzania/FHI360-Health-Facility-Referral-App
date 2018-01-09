@@ -112,7 +112,7 @@ public class HivFragment extends Fragment {
             referralCounts = database.referalModel().geCounttUnattendedReferals(HIV_SERVICE_ID)+" New referrals unattended";
             chwCount = "CHW : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_CHW);
             hfCount = "Health Facility : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_HF);
-            feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.getThisFacilityId());
+            feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
             return null;
         }
 

@@ -1,20 +1,14 @@
 package apps.softmed.com.hfreferal.activities;
 
 import android.app.Dialog;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -24,12 +18,11 @@ import android.widget.Toast;
 import com.rey.material.widget.ProgressView;
 
 import apps.softmed.com.hfreferal.R;
-import apps.softmed.com.hfreferal.adapters.ReferalListRecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -55,7 +48,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     public Dialog referalDialogue;
 
-    private Referal currentReferral;
+    private Referral currentReferral;
     private Patient currentPatient;
     private AppDatabase database;
 
@@ -66,7 +59,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         setupviews();
 
         if (getIntent().getExtras() != null){
-            currentReferral = (Referal) getIntent().getSerializableExtra("referal");
+            currentReferral = (Referral) getIntent().getSerializableExtra("referal");
             if (currentReferral != null){
                 if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
 
@@ -177,10 +170,10 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     class UpdateReferralTask extends AsyncTask<Void, Void, Void>{
 
-        Referal referal;
+        Referral referal;
         AppDatabase database;
 
-        UpdateReferralTask(Referal ref, AppDatabase db){
+        UpdateReferralTask(Referral ref, AppDatabase db){
             this.referal = ref;
             this.database = db;
         }

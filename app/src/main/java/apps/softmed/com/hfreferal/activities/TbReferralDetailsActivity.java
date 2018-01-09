@@ -24,7 +24,7 @@ import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -53,7 +53,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
     public Dialog referalDialogue;
 
-    private Referal currentReferral;
+    private Referral currentReferral;
     private Patient currentPatient;
     private AppDatabase database;
 
@@ -64,7 +64,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
         setupviews();
 
         if (getIntent().getExtras() != null){
-            currentReferral = (Referal) getIntent().getSerializableExtra("referal");
+            currentReferral = (Referral) getIntent().getSerializableExtra("referal");
             if (currentReferral != null){
                 if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
 
@@ -184,10 +184,10 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
     class UpdateReferralTask extends AsyncTask<Void, Void, Void> {
 
-        Referal referal;
+        Referral referal;
         AppDatabase database;
 
-        UpdateReferralTask(Referal ref, AppDatabase db){
+        UpdateReferralTask(Referral ref, AppDatabase db){
             this.referal = ref;
             this.database = db;
         }

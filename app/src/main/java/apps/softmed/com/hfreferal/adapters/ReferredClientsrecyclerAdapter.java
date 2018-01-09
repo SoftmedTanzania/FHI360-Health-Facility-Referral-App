@@ -16,7 +16,7 @@ import apps.softmed.com.hfreferal.activities.FeedbackDetailsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 
 /**
  * Created by issy on 12/7/17.
@@ -27,13 +27,13 @@ import apps.softmed.com.hfreferal.dom.objects.Referal;
 
 public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
 
-    private List<Referal> items;
+    private List<Referral> items;
     private Context context;
     private AppDatabase database;
     private ReferredClientsrecyclerAdapter.ListViewItemViewHolder mViewHolder;
 
 
-    public ReferredClientsrecyclerAdapter(List<Referal> mItems, Context context){
+    public ReferredClientsrecyclerAdapter(List<Referral> mItems, Context context){
         this.items = mItems;
         this.database = AppDatabase.getDatabase(context);
     }
@@ -56,13 +56,13 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int itemPosition){
 
-        final Referal referal = getItem(itemPosition);
+        final Referral referral = getItem(itemPosition);
         ReferredClientsrecyclerAdapter.ListViewItemViewHolder holder = (ReferredClientsrecyclerAdapter.ListViewItemViewHolder) viewHolder;
         mViewHolder = holder;
 
-        new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referal.getPatient_id(), holder.clientsNames).execute();
+        new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral.getPatient_id(), holder.clientsNames).execute();
 
-        if (referal.getReferralStatus() == 0){
+        if (referral.getReferralStatus() == 0){
             holder.feedbackStatus.setText("Pending");
             holder.feedbackStatus.setTextColor(context.getResources().getColor(R.color.amber_700));
         }else {
@@ -70,23 +70,23 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
             holder.feedbackStatus.setTextColor(context.getResources().getColor(R.color.green_a700));
         }
 
-        holder.ctcNumber.setText(referal.getCtcNumber());
-        holder.referralReasons.setText(referal.getReferralReason());
-        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referal.getReferralDate()));
+        holder.ctcNumber.setText(referral.getCtcNumber());
+        holder.referralReasons.setText(referral.getReferralReason());
+        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, FeedbackDetailsActivity.class);
-                intent.putExtra("referal", referal);
+                intent.putExtra("referal", referral);
                 context.startActivity(intent);
             }
         });
 
     }
 
-    public void addItems (List<Referal> referalList){
-        this.items = referalList;
+    public void addItems (List<Referral> referralList){
+        this.items = referralList;
         notifyDataSetChanged();
     }
 
@@ -96,7 +96,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 //        return 10;
     }
 
-    private Referal getItem(int position){
+    private Referral getItem(int position){
         return items.get(position);
     }
 

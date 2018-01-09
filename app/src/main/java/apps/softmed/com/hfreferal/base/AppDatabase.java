@@ -23,7 +23,7 @@ import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.PatientsNotification;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
@@ -35,7 +35,7 @@ import apps.softmed.com.hfreferal.dom.objects.UserData;
 @Database(
         entities = {
                 Patient.class,
-                Referal.class,
+                Referral.class,
                 PatientsNotification.class,
                 PostOffice.class,
                 AppData.class,

@@ -29,7 +29,7 @@ import apps.softmed.com.hfreferal.adapters.ReferalListRecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Client;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -178,12 +178,12 @@ public class ReferalListActivityOld extends BaseActivity {
         });
 
 
-        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referal>(), this);
+        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), this);
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
-        listViewModel.getReferalList().observe(ReferalListActivityOld.this, new Observer<List<Referal>>() {
+        listViewModel.getReferalList().observe(ReferalListActivityOld.this, new Observer<List<Referral>>() {
             @Override
-            public void onChanged(@Nullable List<Referal> referals) {
-                adapter.addItems(referals);
+            public void onChanged(@Nullable List<Referral> referrals) {
+                adapter.addItems(referrals);
             }
         });
 
@@ -215,7 +215,7 @@ public class ReferalListActivityOld extends BaseActivity {
 
         String clientName, lastName, ctcNumber;
         AppDatabase db;
-        List<Referal> fReferrals;
+        List<Referral> fReferrals;
         int referalStatus;
         Date frmDate, toDate;
 

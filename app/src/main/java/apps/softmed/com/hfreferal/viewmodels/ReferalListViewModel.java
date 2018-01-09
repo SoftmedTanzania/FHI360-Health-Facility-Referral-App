@@ -9,7 +9,7 @@ import java.util.List;
 
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
@@ -22,17 +22,17 @@ import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 
 public class ReferalListViewModel extends AndroidViewModel{
 
-    private final LiveData<List<Referal>> referalList;
-    private final LiveData<List<Referal>> unattendedReferrals;
-    private final LiveData<List<Referal>> tbReferalList;
-    private final LiveData<List<Referal>> referredClientsList;
-    private final LiveData<List<Referal>> tbReferredClientsList;
+    private final LiveData<List<Referral>> referalList;
+    private final LiveData<List<Referral>> unattendedReferrals;
+    private final LiveData<List<Referral>> tbReferalList;
+    private final LiveData<List<Referral>> referredClientsList;
+    private final LiveData<List<Referral>> tbReferredClientsList;
 
-    private final LiveData<List<Referal>> referalListHfSource;
-    private final LiveData<List<Referal>> referalListChwSource;
+    private final LiveData<List<Referral>> referalListHfSource;
+    private final LiveData<List<Referral>> referalListChwSource;
 
-    private final LiveData<List<Referal>> referalListHfSourceTb;
-    private final LiveData<List<Referal>> referalListChwSourceTb;
+    private final LiveData<List<Referral>> referalListHfSourceTb;
+    private final LiveData<List<Referral>> referalListChwSourceTb;
 
     private AppDatabase appDatabase;
 
@@ -53,51 +53,51 @@ public class ReferalListViewModel extends AndroidViewModel{
 
     }
 
-    public LiveData<List<Referal>> getTbReferalList() {
+    public LiveData<List<Referral>> getTbReferalList() {
         return tbReferalList;
     }
 
-    public LiveData<List<Referal>> getReferalListHfSource() {
+    public LiveData<List<Referral>> getReferalListHfSource() {
         return referalListHfSource;
     }
 
-    public LiveData<List<Referal>> getReferalListChwSource() {
+    public LiveData<List<Referral>> getReferalListChwSource() {
         return referalListChwSource;
     }
 
-    public LiveData<List<Referal>> getReferalList(){
+    public LiveData<List<Referral>> getReferalList(){
         return referalList;
     }
 
-    public LiveData<List<Referal>> getReferredClientsList(){
+    public LiveData<List<Referral>> getReferredClientsList(){
         return referredClientsList;
     }
 
-    public LiveData<List<Referal>> getTbReferredClientsList() {
+    public LiveData<List<Referral>> getTbReferredClientsList() {
         return tbReferredClientsList;
     }
 
-    public LiveData<List<Referal>> getUnattendedReferrals(){
+    public LiveData<List<Referral>> getUnattendedReferrals(){
         return unattendedReferrals;
     }
 
-    public void deleteReferal(Referal referal){
-        new deleteAsyncTask(appDatabase).execute(referal);
+    public void deleteReferal(Referral referral){
+        new deleteAsyncTask(appDatabase).execute(referral);
     }
 
-    public LiveData<List<Referal>> getTbReferralList(){
+    public LiveData<List<Referral>> getTbReferralList(){
         return tbReferalList;
     }
 
-    public LiveData<List<Referal>> getReferalListHfSourceTb() {
+    public LiveData<List<Referral>> getReferalListHfSourceTb() {
         return referalListHfSourceTb;
     }
 
-    public LiveData<List<Referal>> getReferalListChwSourceTb() {
+    public LiveData<List<Referral>> getReferalListChwSourceTb() {
         return referalListChwSourceTb;
     }
 
-    private static class deleteAsyncTask extends AsyncTask<Referal, Void, Void>{
+    private static class deleteAsyncTask extends AsyncTask<Referral, Void, Void>{
 
         private AppDatabase db;
 
@@ -106,8 +106,8 @@ public class ReferalListViewModel extends AndroidViewModel{
         }
 
         @Override
-        protected Void doInBackground(Referal... referals) {
-            db.referalModel().deleteReferal(referals[0]);
+        protected Void doInBackground(Referral... referrals) {
+            db.referalModel().deleteReferal(referrals[0]);
             return null;
         }
     }

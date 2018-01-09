@@ -17,7 +17,7 @@ import apps.softmed.com.hfreferal.utils.DateConverter;
  */
 
 @Entity
-public class Referal implements Serializable{
+public class Referral implements Serializable{
 
     private Long id;
 
@@ -100,6 +100,8 @@ public class Referal implements Serializable{
     private String serviceGivenToPatient;
 
     private String otherNotesAndAdvices;
+
+    private String otherClinicalInformation;
 
     public Long getId() {
         return id;
@@ -275,5 +277,13 @@ public class Referal implements Serializable{
 
     public void setOtherNotesAndAdvices(String otherNotesAndAdvices) {
         this.otherNotesAndAdvices = otherNotesAndAdvices;
+    }
+
+    public String getOtherClinicalInformation() {
+        return otherClinicalInformation;
+    }
+
+    public void setOtherClinicalInformation(String otherClinicalInformation) {
+        this.otherClinicalInformation = otherClinicalInformation;
     }
 }

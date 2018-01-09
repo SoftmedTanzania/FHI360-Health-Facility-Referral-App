@@ -12,6 +12,6 @@
         android:textColor="@color/card_title_text"
         android:fontFamily="@font/roboto_light"
         android:id="@+id/title_text"
-        android:text="HOME"/>
+        android:text="@string/home"/>
 
 </RelativeLayout>

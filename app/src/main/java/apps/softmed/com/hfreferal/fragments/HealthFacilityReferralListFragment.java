@@ -31,7 +31,7 @@ import java.util.List;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.adapters.ReferalListRecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -187,22 +187,22 @@ public class HealthFacilityReferralListFragment extends Fragment {
         });
 
 
-        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referal>(), HealthFacilityReferralListFragment.this.getActivity());
+        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), HealthFacilityReferralListFragment.this.getActivity());
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
 
         if (source == SOURCE_HF){
-            listViewModel.getReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referal>>() {
+            listViewModel.getReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
-                public void onChanged(@Nullable List<Referal> referals) {
-                    adapter.addItems(referals);
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    adapter.addItems(referrals);
                 }
             });
         }
         else if (source == SOURCE_CHW){
-            listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referal>>() {
+            listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
-                public void onChanged(@Nullable List<Referal> referals) {
-                    adapter.addItems(referals);
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    adapter.addItems(referrals);
                 }
             });
         }
@@ -235,7 +235,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
 
         String clientName, lastName, ctcNumber;
         AppDatabase db;
-        List<Referal> fReferrals;
+        List<Referral> fReferrals;
         int referalStatus;
         Date frmDate, toDate;
 

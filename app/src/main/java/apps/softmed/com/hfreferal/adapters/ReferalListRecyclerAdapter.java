@@ -16,7 +16,7 @@ import apps.softmed.com.hfreferal.activities.ClientsDetailsActivity;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 
 /**
  * Created by issy on 11/17/17.
@@ -24,12 +24,12 @@ import apps.softmed.com.hfreferal.dom.objects.Referal;
 
 public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
 
-    private List<Referal> items;
+    private List<Referral> items;
     private Context context;
     private AppDatabase database;
     private ListViewItemViewHolder mViewHolder;
 
-    public ReferalListRecyclerAdapter(List<Referal> mItems, Context context){
+    public ReferalListRecyclerAdapter(List<Referral> mItems, Context context){
         this.items = mItems;
         this.database = AppDatabase.getDatabase(context);
     }
@@ -52,14 +52,14 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int itemPosition){
 
-        final Referal referal = getItem(itemPosition);
+        final Referral referral = getItem(itemPosition);
 
         ReferalListRecyclerAdapter.ListViewItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewItemViewHolder) viewHolder;
         mViewHolder = holder;
 
-        new patientDetailsTask(database, referal.getPatient_id(), holder.clientsNames).execute();
+        new patientDetailsTask(database, referral.getPatient_id(), holder.clientsNames).execute();
 
-        if (referal.getReferralStatus() == 0){
+        if (referral.getReferralStatus() == 0){
             holder.attendedFlag.setText("New");
             holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
         }else {
@@ -67,24 +67,24 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
         }
 
-        holder.ctcNumber.setText(referal.getCtcNumber());
-        holder.referralReasons.setText(referal.getReferralReason());
+        holder.ctcNumber.setText(referral.getCtcNumber());
+        holder.referralReasons.setText(referral.getReferralReason());
 
-        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referal.getReferralDate()));
+        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ClientsDetailsActivity.class);
-                intent.putExtra("referal", referal);
+                intent.putExtra("referal", referral);
                 context.startActivity(intent);
             }
         });
 
     }
 
-    public void addItems (List<Referal> referalList){
-        this.items = referalList;
+    public void addItems (List<Referral> referralList){
+        this.items = referralList;
         notifyDataSetChanged();
     }
 
@@ -94,7 +94,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 //        return 10;
     }
 
-    private Referal getItem(int position){
+    private Referral getItem(int position){
         return items.get(position);
     }
 

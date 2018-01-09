@@ -173,6 +173,7 @@
     <orderEntry type="library" name="com.wdullaer:materialdatetimepicker-2.3.0" level="project" />
     <orderEntry type="library" name="org.jetbrains:annotations:13.0@jar" level="project" />
     <orderEntry type="library" name="android.arch.persistence.room:common:1.0.0@jar" level="project" />
+    <orderEntry type="library" name="com.github.rahatarmanahmed:circularprogressview-2.5.0" level="project" />
     <orderEntry type="library" name="com.github.bumptech.glide:glide:3.7.0@jar" level="project" />
   </component>
 </module>

@@ -54,7 +54,7 @@ public class constants {
     public static final String TB_SERVICE = "Kifua Kikuu";
     public static final String MALARIA_SERVICE = "Malaria";
 
-    public static final int HIV_SERVICE_ID = 5;
+    public static final int HIV_SERVICE_ID = 2;
     public static final int TB_SERVICE_ID = 1;
     public static final int MALARIA_SERVICE_ID = 3;
 

@@ -28,7 +28,7 @@ import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.adapters.ReferredClientsrecyclerAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
@@ -178,28 +178,29 @@ public class ReferedClientsActivity extends BaseActivity {
             }
         });
 
-        adapter = new ReferredClientsrecyclerAdapter(new ArrayList<Referal>(), this);
+        adapter = new ReferredClientsrecyclerAdapter(new ArrayList<Referral>(), this);
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
+        clientsRecycler.setAdapter(adapter);
 
         if (serviceID == TB_SERVICE_ID){
-            listViewModel.getTbReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referal>>() {
+            listViewModel.getTbReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
                 @Override
-                public void onChanged(@Nullable List<Referal> referals) {
-                    adapter.addItems(referals);
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    adapter.addItems(referrals);
                 }
             });
         }else if (serviceID == HIV_SERVICE_ID){
             Log.d("MIMI", "Calling Hiv referred list of referrals");
-            listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referal>>() {
+            listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
                 @Override
-                public void onChanged(@Nullable List<Referal> referals) {
-                    adapter.addItems(referals);
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    Log.d("MIMI", "Adding items to adapter with size : "+referrals.size());
+                    adapter.addItems(referrals);
                 }
             });
         }else if (serviceID == MALARIA_SERVICE_ID){
             //Get Malaria referred client list
         }
-        clientsRecycler.setAdapter(adapter);
 
 
     }
@@ -253,7 +254,7 @@ public class ReferedClientsActivity extends BaseActivity {
 
         String clientName, lastName, ctcNumber;
         AppDatabase db;
-        List<Referal> fReferrals;
+        List<Referral> fReferrals;
         int referalStatus;
         Date frmDate, toDate;
 

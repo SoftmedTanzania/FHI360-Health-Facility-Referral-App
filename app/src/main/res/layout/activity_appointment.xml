@@ -90,7 +90,7 @@
                     android:drawableRight="@mipmap/ic_date"
                     android:layout_marginLeft="16dp"
                     android:textColorHint="@color/card_grid_tex"
-                    android:hint="Kutoka Tarehe"
+                    android:hint="@string/kutoka_tarehe"
                     android:fontFamily="@font/avenir_light"
                     android:textSize="14sp"/>
 

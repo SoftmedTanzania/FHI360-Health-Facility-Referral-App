@@ -11,10 +11,11 @@ import java.util.List;
 
 import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.base.AppDatabase;
+import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
-import apps.softmed.com.hfreferal.dom.objects.Referal;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
@@ -79,7 +80,7 @@ public class PostOfficeService extends IntentService {
                     final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(getPatientRequestBody(patient, tbPatient, userData));
+                    Call call = patientServices.postPatient(BaseActivity.getPatientRequestBody(patient, tbPatient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -120,17 +121,18 @@ public class PostOfficeService extends IntentService {
                     });
                 }else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
 
-                    final Referal referal = database.referalModel().getReferalById(data.getPost_id());
+                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = referalService.postReferral(getReferralRequestBody(referal));
+                    Call call = referalService.postReferral(BaseActivity.getReferralRequestBody(referral, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
-                            Referal receivedReferral = (Referal) response.body();
+                            Referral receivedReferral = (Referral) response.body();
                             if (response.body() != null){
 
                                 Log.d("PostReferral", response.body().toString());
-                                database.referalModel().deleteReferal(referal); //Delete local referral reference
+                                database.referalModel().deleteReferal(referral); //Delete local referral reference
                                 database.referalModel().addReferal(receivedReferral); //Store the server's referral reference
 
                             }else {
@@ -155,126 +157,6 @@ public class PostOfficeService extends IntentService {
 
         // Release the wake lock provided by the WakefulBroadcastReceiver.
         WakefulBroadcastReceiver.completeWakefulIntent(intent);
-    }
-
-    private RequestBody getReferralRequestBody(Referal referal){
-        RequestBody body;
-        String datastream = "";
-        JSONObject object   = new JSONObject();
-
-        try {
-
-            object.put("referralId", referal.getReferral_id());
-            object.put("patientId", referal.getPatient_id());
-            object.put("communityBasedHivService", referal.getCommunityBasedHivService());
-            object.put("referralReason", referal.getReferralReason());
-            object.put("serviceId", referal.getServiceId());
-            object.put("ctcNumber", referal.getCtcNumber());
-            object.put("has2WeeksCough", referal.getHas2WeeksCough());
-            object.put("hasbloodCough", referal.getHasBloodCough());
-            object.put("hasSevereSweating", referal.getHasSevereSweating());
-            object.put("hasFever", referal.getHasFever());
-            object.put("hadWeightLoss", referal.getHadWeightLoss());
-            object.put("serviceProviderUIID", referal.getServiceProviderUIID());
-            object.put("serviceProviderGroup", referal.getServiceProviderGroup());
-            object.put("villageLeader", referal.getVillageLeader());
-            object.put("otherClinicalInformation", "");
-            object.put("otherNotes", referal.getOtherNotesAndAdvices());
-            object.put("testResults", "");
-            object.put("fromFacilityId", referal.getFromFacilityId());
-            object.put("referralSource", referal.getReferralSource());
-            object.put("referralDate", referal.getReferralDate());
-            object.put("facilityId", referal.getFacilityId());
-            object.put("referralStatus", referal.getReferralStatus());
-
-            datastream = object.toString();
-
-            Log.d("PostOfficeService", datastream);
-
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-        }
-
-        return body;
-
-    }
-
-    private RequestBody getPatientRequestBody(Patient patient, TbPatient tbPatient, UserData userData){
-
-        RequestBody body;
-        String datastream = "";
-        JSONObject object   = new JSONObject();
-
-        try {
-            object.put("firstName", patient.getPatientFirstName());
-            object.put("middleName", patient.getPatientMiddleName());
-            object.put("phoneNumber", patient.getPhone_number());
-            object.put("ward", patient.getWard());
-            object.put("village", patient.getVillage());
-            object.put("hamlet", patient.getHamlet());
-            object.put("dateOfBirth", patient.getDateOfBirth());
-            object.put("surname", patient.getPatientSurname());
-            object.put("gender", patient.getGender());
-            //object.put("healthFacilityCode", "2ff3e6fb-eb85-49eb-b7b3-564ddc26b9d4");
-            object.put("healthFacilityCode", userData.getUserFacilityId());
-
-            object.put("patientType", tbPatient.getPatientType());
-            object.put("transferType", tbPatient.getTransferType());
-            object.put("referralType", tbPatient.getReferralType());
-            object.put("veo", tbPatient.getVeo());
-            object.put("weight", tbPatient.getWeight());
-            object.put("xray", tbPatient.getXray());
-            object.put("makohozi", tbPatient.getMakohozi());
-            object.put("otherTests", tbPatient.getOtherTests());
-            object.put("treatment_type", tbPatient.getTreatment_type());
-            object.put("outcome", tbPatient.getOutcome());
-            object.put("outcomeDate", tbPatient.getOutcomeDate());
-            object.put("outcomeDetails", tbPatient.getOutcomeDetails());
-
-            datastream = object.toString();
-
-            Log.d("PostOfficeService", datastream);
-
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-        }
-
-        return body;
-
-    }
-
-    private RequestBody getEncounterRequestBody(TbEncounters encounters){
-        RequestBody body;
-        String datastream = "";
-        JSONObject object   = new JSONObject();
-
-        try {
-
-            object.put("", 0);
-            object.put("", 0);
-            object.put("", 0);
-            object.put("", 0);
-            object.put("", 0);
-
-            datastream = object.toString();
-
-            Log.d("PostOfficeService", datastream);
-
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-        }
-
-        return body;
-
     }
 
 
