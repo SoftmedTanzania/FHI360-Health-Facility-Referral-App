@@ -80,8 +80,8 @@ public class Referal implements Serializable{
     private String fromFacilityId;
 
     /*
-     * 1 = CHW
-     * 2 = Health facility
+     * 0 = CHW
+     * 1 = Health facility
      */
     @SerializedName("referralSource")
     private int referralSource;

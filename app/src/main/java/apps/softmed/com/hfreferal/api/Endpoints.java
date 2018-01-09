@@ -64,7 +64,7 @@ public class Endpoints {
 
     public interface NotificationServices{
 
-        @POST("push_notification_register")
+        @POST("save_push_notification_token")
         Call<String> registerDevice(@Body RequestBody u);
 
     }

@@ -172,8 +172,6 @@ public class TbRegisterActivity extends BaseActivity {
         patient.setPatientSurname(strSurname);
         patient.setCurrentOnTbTreatment(true);
         patient.setDateOfBirth(dobCalendar.getTimeInMillis());
-        patient.setCreatedAt(Calendar.getInstance().getTimeInMillis());
-        patient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
 
         tbPatient.setTempID(number);
         tbPatient.setPatientId(number);

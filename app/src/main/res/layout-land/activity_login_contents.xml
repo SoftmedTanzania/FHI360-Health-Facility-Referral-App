@@ -113,6 +113,16 @@
             android:fontFamily="@font/roboto_light"
             android:text="Application"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="32dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:fontFamily="@font/avenir_light"
+            android:id="@+id/login_messages"/>
+
         <RelativeLayout
             android:layout_width="400dp"
             android:layout_height="match_parent"
@@ -231,29 +241,16 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="20px"
                     android:text="Login"
+                    android:textAllCaps="false"
                     android:id="@+id/login_button"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:fontFamily="@font/roboto_regular"
+                    android:fontFamily="@font/roboto_bold"
                     android:background="@color/card_title_text"/>
 
             </RelativeLayout>
 
         </RelativeLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/login_messages"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/avenir_light"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="Logging in"
-            android:layout_below="@id/credential_card"/>
 
     </RelativeLayout>
 

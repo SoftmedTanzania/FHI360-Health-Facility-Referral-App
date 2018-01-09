@@ -230,8 +230,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referal.setFromFacilityId(BaseActivity.getThisFacilityId());
         referal.setReferralStatus(REFERRAL_STATUS_NEW);
         referal.setReferralSource(SOURCE_HF);
-        referal.setCreatedAt(today);
-        referal.setUpdatedAt(today);
 
         SaveReferral saveReferral = new SaveReferral(database);
         saveReferral.execute(referal);

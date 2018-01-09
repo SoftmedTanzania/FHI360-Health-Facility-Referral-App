@@ -28,9 +28,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager;
@@ -40,7 +43,12 @@ import apps.softmed.com.hfreferal.fragments.MalariaFragment;
 import apps.softmed.com.hfreferal.fragments.TbFragment;
 import apps.softmed.com.hfreferal.utils.AlarmReceiver;
 import apps.softmed.com.hfreferal.utils.Config;
+import apps.softmed.com.hfreferal.utils.ServiceGenerator;
+import apps.softmed.com.hfreferal.utils.SessionManager;
 import apps.softmed.com.hfreferal.viewmodels.PostOfficeListViewModel;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Response;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 

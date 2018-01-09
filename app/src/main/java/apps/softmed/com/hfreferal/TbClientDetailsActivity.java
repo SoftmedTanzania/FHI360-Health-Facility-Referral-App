@@ -332,9 +332,6 @@ public class TbClientDetailsActivity extends BaseActivity {
         Calendar calendar = Calendar.getInstance();
         long today = calendar.getTimeInMillis();
 
-        tbEncounter.setCreatedAt(today+"");
-        tbEncounter.setUpdatedAt(today+"");
-
         tbEncounter.setId(currentPatient.getPatientId()+"_"+encouterMonthSpinner.getSelectedItemPosition());
 
         SaveEncounters saveEncounters = new SaveEncounters(baseDatabase);
@@ -603,8 +600,6 @@ public class TbClientDetailsActivity extends BaseActivity {
 
                 appointment.setAppointmentDate(calendar.getTimeInMillis());
                 appointment.setAppointmentEncounterMonth((i+1)+"");
-                appointment.setCreatedAt(Calendar.getInstance().getTimeInMillis());
-                appointment.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                 appointment.setStatus(STATUS_PENDING);
 
                 long range = 1234567L;

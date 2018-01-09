@@ -37,7 +37,7 @@ public class ServiceGenerator {
             return createService(serviceClass, authToken, hfuuid);
         }
 
-        return createService(serviceClass, null, null, null);
+        return createService(serviceClass, null, null);
     }
 
     public static <S> S createService(
