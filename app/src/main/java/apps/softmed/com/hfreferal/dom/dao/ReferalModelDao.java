@@ -50,7 +50,7 @@ public interface ReferalModelDao {
     @Query("select * from Referral where patient_id = :id")
     LiveData<List<Referral>> getReferalsByPatientId(String id);
 
-    @Query("select * from Referral where id = :id")
+    @Query("select * from Referral where referral_id = :id")
     Referral getReferalById(String id);
 
     @Query("select * from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +

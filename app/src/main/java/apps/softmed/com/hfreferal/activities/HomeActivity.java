@@ -46,7 +46,7 @@ import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
 import apps.softmed.com.hfreferal.dom.responces.PatientResponce;
 import apps.softmed.com.hfreferal.fragments.HivFragment;
-import apps.softmed.com.hfreferal.fragments.MalariaFragment;
+import apps.softmed.com.hfreferal.fragments.OPDFragment;
 import apps.softmed.com.hfreferal.fragments.TbFragment;
 import apps.softmed.com.hfreferal.utils.AlarmReceiver;
 import apps.softmed.com.hfreferal.utils.Config;
@@ -57,6 +57,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_ENCOUNTER;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_PATIENT;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
@@ -232,11 +233,14 @@ public class HomeActivity extends BaseActivity {
                                 Log.d("patient_response","Patient Responce is null "+response.body());
                             }
 
+                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+
                         }
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
                             Log.d("patient_response", t.getMessage());
+                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
                         }
                     });
                 }else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
@@ -258,17 +262,48 @@ public class HomeActivity extends BaseActivity {
                             }else {
                                 Log.d("PostReferral", "Responce is Null : "+response.body());
                             }
+
+                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+
                         }
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
                             Log.d("PostReferral", t.getMessage());
+                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
                         }
                     });
 
 
+
+                }else if (data.getPost_data_type().equals(POST_DATA_REFERRAL_FEEDBACK)){
+
+                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
+
+                    Call call = referalService.sendReferralFeedback(BaseActivity.getReferralFeedbackRequestBody(referral, userData));
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            Log.d("POST_RESPOMCES", "Saved to seerver : "+response.body());
+                            //database.postOfficeModelDao().deletePostData(data);
+                            if (response.code() == 200){
+                                new BaseActivity.DeletePostData(database).execute(data);
+                            }
+
+                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+                        }
+                    });
+
                 }else if(data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)){
                     //TbEncounters encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+                    new DeletePOstData(database).execute(data); //TODO REMOVE THIS
                 }
             }
 
@@ -325,37 +360,37 @@ public class HomeActivity extends BaseActivity {
 
     public void setupTabIcons() {
 
+        View ccmView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView ccmTitle = (TextView) ccmView.findViewById(R.id.title_text);
+        ccmTitle.setText("OPD");
+        ImageView iv3    = (ImageView) ccmView.findViewById(R.id.icon);
+        iv3.setColorFilter(this.getResources().getColor(R.color.white));
+        Glide.with(this).load(R.mipmap.ic_face).into(iv3);
+        tabLayout.getTabAt(0).setCustomView(ccmView);
+
         View homeView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView homeTitle = (TextView) homeView.findViewById(R.id.title_text);
         ImageView iv    = (ImageView) homeView.findViewById(R.id.icon);
 //        iv.setColorFilter(this.getResources().getColor(R.color.colorPrimary));
         Glide.with(this).load(R.mipmap.ic_hiv).into(iv);
-        homeTitle.setText("CTC");
-        tabLayout.getTabAt(0).setCustomView(homeView);
+        homeTitle.setText("Huduma za VVU/Ukimwi");
+        tabLayout.getTabAt(1).setCustomView(homeView);
 
         View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
         newsTitle.setText("Kifua Kikuu");
         ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
-//        iv2.setColorFilter(this.getResources().getColor(R.color.colorPrimary));
+        iv2.setColorFilter(this.getResources().getColor(R.color.white));
         Glide.with(this).load(R.mipmap.ic_tb).into(iv2);
-        tabLayout.getTabAt(1).setCustomView(newsView);
-
-        View ccmView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView ccmTitle = (TextView) ccmView.findViewById(R.id.title_text);
-        ccmTitle.setText("Malaria");
-        ImageView iv3    = (ImageView) ccmView.findViewById(R.id.icon);
-//        iv3.setColorFilter(this.getResources().getColor(R.color.colorPrimary));
-        Glide.with(this).load(R.mipmap.ic_malaria).into(iv3);
-        tabLayout.getTabAt(2).setCustomView(ccmView);
+        tabLayout.getTabAt(2).setCustomView(newsView);
 
     }
 
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HivFragment(), "Hiv");
-        adapter.addFragment(new TbFragment(), "Tb");
-        adapter.addFragment(new MalariaFragment(), "Malaria");
+        adapter.addFragment(new OPDFragment(), "opd");
+        adapter.addFragment(new HivFragment(), "hiv");
+        adapter.addFragment(new TbFragment(), "tb");
         viewPager.setAdapter(adapter);
     }
 
@@ -417,6 +452,12 @@ public class HomeActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+
+            try {
+                Thread.sleep(5000, 0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             syncDataInPostOffice();
             return null;
         }
@@ -429,6 +470,27 @@ public class HomeActivity extends BaseActivity {
             unsynced.setTextColor(getResources().getColor(R.color.white));
             checkPostOfficeData();
             super.onPostExecute(aVoid);
+        }
+    }
+
+    class DeletePOstData extends AsyncTask<PostOffice, Void, Void>{
+
+        AppDatabase database;
+
+        DeletePOstData(AppDatabase db){
+            this.database = db;
+        }
+
+        @Override
+        protected Void doInBackground(PostOffice... postOffices) {
+            database.postOfficeModelDao().deletePostData(postOffices[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
         }
     }
 

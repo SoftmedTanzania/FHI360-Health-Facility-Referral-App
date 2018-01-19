@@ -1,6 +1,7 @@
 package apps.softmed.com.hfreferal.base;
 
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
@@ -73,6 +75,53 @@ public class BaseActivity extends AppCompatActivity {
         return session.getKeyHfid();
     }
 
+    public static RequestBody getReferralFeedbackRequestBody(Referral referral, UserData userData){
+        RequestBody body;
+        String datastream = "";
+        JSONObject object   = new JSONObject();
+
+        try {
+
+            object.put("referralId", referral.getReferral_id());
+            object.put("serviceGivenToPatient", referral.getServiceGivenToPatient());
+            object.put("otherNotes", referral.getOtherNotesAndAdvices());
+            object.put("testResults", referral.isTestResults());
+            object.put("healthFacilityCode", userData.getUserFacilityId());
+
+            datastream = object.toString();
+            Log.d("PostOfficeService", datastream);
+
+            body = RequestBody.create(MediaType.parse("application/json"), datastream);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            body = RequestBody.create(MediaType.parse("application/json"), datastream);
+        }
+
+        return body;
+
+    }
+
+    public static class DeletePostData extends AsyncTask<PostOffice, Void, Void> {
+
+        AppDatabase db;
+
+        public DeletePostData(AppDatabase database){
+            this.db = database;
+        }
+
+        @Override
+        protected Void doInBackground(PostOffice... postOffices) {
+            db.postOfficeModelDao().deletePostData(postOffices[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
     public static RequestBody getReferralRequestBody(Referral referral, UserData userData){
         RequestBody body;
         String datastream = "";
@@ -95,8 +144,9 @@ public class BaseActivity extends AppCompatActivity {
             object.put("serviceProviderGroup", referral.getServiceProviderGroup());
             object.put("villageLeader", referral.getVillageLeader());
             object.put("otherClinicalInformation", referral.getOtherClinicalInformation());
+            object.put("serviceGivenToPatient", referral.getServiceGivenToPatient());
             object.put("otherNotes", referral.getOtherNotesAndAdvices());
-            object.put("testResults", "");
+            object.put("testResults", referral.isTestResults());
             object.put("fromFacilityId", referral.getFromFacilityId());
             object.put("referralSource", referral.getReferralSource());
             object.put("referralDate", referral.getReferralDate());

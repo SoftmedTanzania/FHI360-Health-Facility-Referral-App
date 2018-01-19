@@ -44,6 +44,7 @@ public class constants {
     public static final int REFERRAL_STATUS_REJECTED = -1;
 
     public static final String POST_DATA_TYPE_REFERRAL = "r";
+    public static final String POST_DATA_REFERRAL_FEEDBACK = "rf";
     public static final String POST_DATA_TYPE_PATIENT = "p";
     public static final String POST_DATA_TYPE_ENCOUNTER = "e";
 

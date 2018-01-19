@@ -153,7 +153,11 @@ public class MessagingService extends FirebaseMessagingService {
 
                     referral.setReferralStatus(referralObject.getInt("referralStatus"));
                     referral.setPatient_id(referralObject.getInt("patientId")+"");
-                    referral.setFacilityId(referralObject.getInt("fromFacilityId")+"");
+                    try {
+                        referral.setFacilityId(referralObject.getInt("fromFacilityId")+"");
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     referral.setReferral_id(referralObject.getInt("referralId")+"");
                     referral.setReferralSource(referralObject.getInt("referralSource"));
                     referral.setServiceId(referralObject.getInt("serviceId"));

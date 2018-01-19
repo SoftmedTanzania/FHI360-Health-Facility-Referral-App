@@ -4,6 +4,7 @@ import java.util.List;
 
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
+import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.responces.InitialSyncResponce;
 import apps.softmed.com.hfreferal.dom.responces.LoginResponse;
@@ -35,14 +36,14 @@ public class Endpoints {
 
     public interface ReferalService {
 
-        @GET("all-patients-referrals/")
+        @GET("all-patients-referrals")
         Call<List<ReferalResponce>> getHfReferrals();
 
         @POST("save_facility_referral")
-        Call<SingleReferralResonse> postReferral(@Body RequestBody r);
+        Call<Referral> postReferral(@Body RequestBody r);
 
         @POST("receive_feedback")
-        Call sendReferralFeedback(@Body RequestBody f);
+        Call<String> sendReferralFeedback(@Body RequestBody f);
 
         @GET("boresha-afya-services")
         Call<List<HealthFacilityServices>> getAllServices();

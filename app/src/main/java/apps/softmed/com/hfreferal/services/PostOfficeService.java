@@ -2,6 +2,7 @@ package apps.softmed.com.hfreferal.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
+import apps.softmed.com.hfreferal.dom.objects.AppData;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
@@ -28,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_ENCOUNTER;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_PATIENT;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
@@ -67,14 +70,14 @@ public class PostOfficeService extends IntentService {
                 sess.getKeyHfid());
 
         //Check if data is available in the PostOffice
-        if (database.postOfficeModelDao().getUnpostedDataCount() > 0){
+        if (database.postOfficeModelDao().getUnpostedDataCount() > 0) {
             List<PostOffice> unpostedData = database.postOfficeModelDao().getUnpostedData();
-            for (int i=0; i<unpostedData.size(); i++){
+            for (int i = 0; i < unpostedData.size(); i++) {
 
                 final PostOffice data = unpostedData.get(i);
                 Log.d("PostOfficeService", data.getPost_data_type());
 
-                if (data.getPost_data_type().equals(POST_DATA_TYPE_PATIENT)){
+                if (data.getPost_data_type().equals(POST_DATA_TYPE_PATIENT)) {
 
                     final Patient patient = database.patientModel().getPatientById(data.getPost_id());
                     final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
@@ -86,7 +89,7 @@ public class PostOfficeService extends IntentService {
                         public void onResponse(Call call, Response response) {
                             PatientResponce patientResponce = (PatientResponce) response.body();
                             //Store Received Patient Information, TbPatient as well as PatientAppointments
-                            if (response.body()!=null){
+                            if (response.body() != null) {
                                 Log.d("patient_response", response.body().toString());
 
                                 Patient patient1 = patientResponce.getPatient();
@@ -97,19 +100,19 @@ public class PostOfficeService extends IntentService {
                                 database.patientModel().deleteAPatient(patient);
                                 database.tbPatientModelDao().deleteAPatient(tbPatient);
                                 List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
-                                for (int i=0; i<oldAppointments.size(); i++){
+                                for (int i = 0; i < oldAppointments.size(); i++) {
                                     database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
                                 }
 
                                 //Insert server's patient reference
                                 database.patientModel().addPatient(patient1);
                                 database.tbPatientModelDao().addPatient(tbPatient1);
-                                for (int j=0; j<appointments.size(); j++){
+                                for (int j = 0; j < appointments.size(); j++) {
                                     database.appointmentModelDao().addAppointment(appointments.get(j));
                                 }
 
-                            }else {
-                                Log.d("patient_response","Patient Responce is null "+response.body());
+                            } else {
+                                Log.d("patient_response", "Patient Responce is null " + response.body());
                             }
 
                         }
@@ -119,7 +122,7 @@ public class PostOfficeService extends IntentService {
                             Log.d("patient_response", t.getMessage());
                         }
                     });
-                }else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
+                } else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)) {
 
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
@@ -129,14 +132,14 @@ public class PostOfficeService extends IntentService {
                         @Override
                         public void onResponse(Call call, Response response) {
                             Referral receivedReferral = (Referral) response.body();
-                            if (response.body() != null){
+                            if (response.body() != null) {
 
                                 Log.d("PostReferral", response.body().toString());
                                 database.referalModel().deleteReferal(referral); //Delete local referral reference
                                 database.referalModel().addReferal(receivedReferral); //Store the server's referral reference
 
-                            }else {
-                                Log.d("PostReferral", "Responce is Null : "+response.body());
+                            } else {
+                                Log.d("PostReferral", "Responce is Null : " + response.body());
                             }
                         }
 
@@ -146,8 +149,29 @@ public class PostOfficeService extends IntentService {
                         }
                     });
 
+                } else if (data.getPost_data_type().equals(POST_DATA_REFERRAL_FEEDBACK)) {
 
-                }else if(data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)){
+                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
+
+                    Call call = referalService.sendReferralFeedback(BaseActivity.getReferralFeedbackRequestBody(referral, userData));
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            Log.d("POST_RESPOMCES", "Saved to seerver : " + response.body());
+                            //database.postOfficeModelDao().deletePostData(data);
+                            if (response.code() == 200) {
+                                new BaseActivity.DeletePostData(database).execute(data);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+
+                        }
+                    });
+
+                } else if (data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)) {
                     //TbEncounters encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
                 }
             }

@@ -100,10 +100,13 @@ public class Referral implements Serializable{
     /*
     The following two are the feedback portion of a referal
      */
+    @SerializedName("serviceGivenToPatient")
     private String serviceGivenToPatient;
 
+    @SerializedName("otherNotes")
     private String otherNotesAndAdvices;
 
+    @SerializedName("otherClinicalInformation")
     private String otherClinicalInformation;
 
     public Long getId() {

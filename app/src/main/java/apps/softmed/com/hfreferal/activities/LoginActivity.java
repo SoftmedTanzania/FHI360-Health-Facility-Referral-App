@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isDeviceRegistered(){
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         deviceRegistrationId = pref.getString("regId", null);
-        if (deviceRegistrationId.isEmpty()){
+        if (deviceRegistrationId == null || deviceRegistrationId.isEmpty()){
             return false;
         }else {
             return true;

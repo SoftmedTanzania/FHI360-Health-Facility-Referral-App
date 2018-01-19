@@ -27,6 +27,7 @@ import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_COMPLETED;
 
@@ -197,7 +198,7 @@ public class ClientsDetailsActivity extends BaseActivity {
             PostOffice postOffice = new PostOffice();
             postOffice.setPost_id(referal.getReferral_id());
             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
-            postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
+            postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
             database.postOfficeModelDao().addPostEntry(postOffice);
 
             return null;
