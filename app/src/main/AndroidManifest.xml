@@ -61,7 +61,7 @@
             android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name=".activities.TbRegisterActivity"
+        <activity android:name=".activities.ClientRegisterActivity"
             android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 

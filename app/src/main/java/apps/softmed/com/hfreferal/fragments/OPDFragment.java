@@ -1,5 +1,6 @@
 package apps.softmed.com.hfreferal.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import apps.softmed.com.hfreferal.R;
+import apps.softmed.com.hfreferal.activities.ClientRegisterActivity;
+import apps.softmed.com.hfreferal.activities.ReferralListActivity;
 
 /**
  * Created by issy on 12/4/17.
@@ -35,14 +38,16 @@ public class OPDFragment extends Fragment {
         opdRegistrationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(OPDFragment.this.getActivity(), ClientRegisterActivity.class);
+                intent.putExtra("isTbClient", false);
+                startActivity(intent);
             }
         });
 
         opdReferralListCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(OPDFragment.this.getActivity(), ReferralListActivity.class));
             }
         });
 

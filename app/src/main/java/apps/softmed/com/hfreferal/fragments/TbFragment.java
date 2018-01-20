@@ -14,7 +14,7 @@ import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.activities.ReferedClientsActivity;
 import apps.softmed.com.hfreferal.activities.TbClientListActivity;
 import apps.softmed.com.hfreferal.activities.TbReferalListActivity;
-import apps.softmed.com.hfreferal.activities.TbRegisterActivity;
+import apps.softmed.com.hfreferal.activities.ClientRegisterActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.utils.constants;
@@ -81,7 +81,9 @@ public class TbFragment extends Fragment {
         tbRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(TbFragment.this.getActivity(), TbRegisterActivity.class));
+                Intent intent = new Intent(TbFragment.this.getActivity(), ClientRegisterActivity.class);
+                intent.putExtra("isTbClient", true);
+                startActivity(intent);
             }
         });
 
