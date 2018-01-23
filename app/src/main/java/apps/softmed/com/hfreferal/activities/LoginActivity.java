@@ -29,6 +29,9 @@ import apps.softmed.com.hfreferal.customviews.LargeDiagonalCutPathDrawable;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.objects.ReferralIndicator;
+import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicators;
+import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicatorsResponse;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
 import apps.softmed.com.hfreferal.dom.responces.LoginResponse;
 import apps.softmed.com.hfreferal.dom.responces.ReferalResponce;
@@ -260,19 +263,19 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void callServices(){
-        Call<List<HealthFacilityServices>> call = referalService.getAllServices();
-        call.enqueue(new Callback<List<HealthFacilityServices>>() {
+        Call<List<ReferralServiceIndicatorsResponse>> call = referalService.getAllServices();
+        call.enqueue(new Callback<List<ReferralServiceIndicatorsResponse>>() {
             @Override
-            public void onResponse(Call<List<HealthFacilityServices>> call, Response<List<HealthFacilityServices>> response) {
+            public void onResponse(Call<List<ReferralServiceIndicatorsResponse>> call, Response<List<ReferralServiceIndicatorsResponse>> response) {
                 Log.d("SAMPLE", response.body().toString());
-                List<HealthFacilityServices> receivedServices = response.body();
+                List<ReferralServiceIndicatorsResponse> receivedServices = response.body();
 
                 new AddServices().execute(receivedServices);
 
             }
 
             @Override
-            public void onFailure(Call<List<HealthFacilityServices>> call, Throwable t) {
+            public void onFailure(Call<List<ReferralServiceIndicatorsResponse>> call, Throwable t) {
                 Log.d("SAMPLE", t.getMessage());
 
             }
@@ -368,7 +371,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    class AddServices extends AsyncTask<List<HealthFacilityServices>, Void, Void>{
+    class AddServices extends AsyncTask<List<ReferralServiceIndicatorsResponse>, Void, Void>{
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -378,17 +381,24 @@ public class LoginActivity extends BaseActivity {
         }
 
         @Override
-        protected Void doInBackground(List<HealthFacilityServices>[] lists) {
+        protected Void doInBackground(List<ReferralServiceIndicatorsResponse>[] lists) {
 
-            List<HealthFacilityServices> receivedServices = lists[0];
+            List<ReferralServiceIndicatorsResponse> receivedServices = lists[0];
 
-            List<HealthFacilityServices> servicesList =  baseDatabase.servicesModelDao().getAllServices();
-            for (HealthFacilityServices service : servicesList){
-                baseDatabase.servicesModelDao().deleteService(service);
-            }
+            for (ReferralServiceIndicatorsResponse response : receivedServices){
+                ReferralServiceIndicators service  = new ReferralServiceIndicators();
+                service.setServiceId(response.getServiceId());
+                service.setActive(response.isActive());
+                service.setCategory(response.getCategory());
+                service.setServiceName(response.getServiceName());
 
-            for (HealthFacilityServices newService : receivedServices){
-                baseDatabase.servicesModelDao().addService(newService);
+                for (ReferralIndicator indicator : response.getIndicators()){
+                    indicator.setServiceID(response.getServiceId());
+                    baseDatabase.referralIndicatorDao().addIndicator(indicator);
+                }
+
+                baseDatabase.referralServiceIndicatorsDao().addService(service);
+
             }
 
             return null;

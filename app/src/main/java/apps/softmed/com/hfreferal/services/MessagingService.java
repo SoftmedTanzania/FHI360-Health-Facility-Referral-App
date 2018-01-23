@@ -145,11 +145,13 @@ public class MessagingService extends FirebaseMessagingService {
                     referral.setCtcNumber(referralObject.getString("ctcNumber"));
 
                     referral.setTestResults(referralObject.getBoolean("testResults"));
-                    referral.setHasSevereSweating(referralObject.getBoolean("hasSevereSweating"));
+
+
+                    /*referral.setHasSevereSweating(referralObject.getBoolean("hasSevereSweating"));
                     referral.setHasFever(referralObject.getBoolean("hasFever"));
                     referral.setHadWeightLoss(referralObject.getBoolean("hadWeightLoss"));
                     referral.setHasBloodCough(referralObject.getBoolean("hasBloodCough"));
-                    referral.setHas2WeeksCough(referralObject.getBoolean("has2WeeksCough"));
+                    referral.setHas2WeeksCough(referralObject.getBoolean("has2WeeksCough"));*/
 
                     referral.setReferralStatus(referralObject.getInt("referralStatus"));
                     referral.setPatient_id(referralObject.getInt("patientId")+"");

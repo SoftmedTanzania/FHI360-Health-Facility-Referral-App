@@ -1,6 +1,7 @@
 package apps.softmed.com.hfreferal.dom.objects;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
@@ -9,8 +10,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import apps.softmed.com.hfreferal.utils.DateConverter;
+import apps.softmed.com.hfreferal.utils.ListStringConverter;
 
 /**
  *  Created by issy on 11/28/17.
@@ -41,23 +44,11 @@ public class Referral implements Serializable{
     @SerializedName("serviceId")
     private int serviceId;
 
+    @SerializedName("referralUUID")
+    private String referralUUID;
+
     @SerializedName("ctcNumber")
     private String ctcNumber;
-
-    @SerializedName("has2WeeksCough")
-    private Boolean has2WeeksCough;
-
-    @SerializedName("hasBloodCough")
-    private Boolean hasBloodCough;
-
-    @SerializedName("hasSevereSweating")
-    private Boolean hasSevereSweating;
-
-    @SerializedName("hasFever")
-    private Boolean hasFever;
-
-    @SerializedName("hadWeightLoss")
-    private Boolean hadWeightLoss;
 
     @SerializedName("serviceProviderUIID")
     private String serviceProviderUIID;
@@ -79,12 +70,27 @@ public class Referral implements Serializable{
     @SerializedName("fromFacilityId")
     private String fromFacilityId;
 
+    @TypeConverters(ListStringConverter.class)
+    @SerializedName("serviceIndicatorIds")
+    private List<Long> serviceIndicatorIds;
+
     /*
      * 0 = CHW
      * 1 = Health facility
+     *
      */
     @SerializedName("referralSource")
     private int referralSource;
+
+
+    /*
+     * chw ->facility = 1
+     * Intra-facility = 2
+     * Inter-facility = 3
+     * facility - chw = 4
+     */
+    @SerializedName("referralType")
+    private int referralType;
 
     /*
      *  0 = new
@@ -165,52 +171,12 @@ public class Referral implements Serializable{
         this.ctcNumber = ctcNumber;
     }
 
-    public Boolean getHas2WeeksCough() {
-        return has2WeeksCough;
-    }
-
-    public void setHas2WeeksCough(Boolean has2WeeksCough) {
-        this.has2WeeksCough = has2WeeksCough;
-    }
-
-    public Boolean getHasBloodCough() {
-        return hasBloodCough;
-    }
-
-    public void setHasBloodCough(Boolean hasBloodCough) {
-        this.hasBloodCough = hasBloodCough;
-    }
-
-    public Boolean getHasSevereSweating() {
-        return hasSevereSweating;
-    }
-
-    public void setHasSevereSweating(Boolean hasSevereSweating) {
-        this.hasSevereSweating = hasSevereSweating;
-    }
-
     public int getReferralSource() {
         return referralSource;
     }
 
     public void setReferralSource(int referralSource) {
         this.referralSource = referralSource;
-    }
-
-    public Boolean getHasFever() {
-        return hasFever;
-    }
-
-    public void setHasFever(Boolean hasFever) {
-        this.hasFever = hasFever;
-    }
-
-    public Boolean getHadWeightLoss() {
-        return hadWeightLoss;
-    }
-
-    public void setHadWeightLoss(Boolean hadWeightLoss) {
-        this.hadWeightLoss = hadWeightLoss;
     }
 
     public String getServiceProviderUIID() {
@@ -299,5 +265,29 @@ public class Referral implements Serializable{
 
     public void setTestResults(boolean testResults) {
         this.testResults = testResults;
+    }
+
+    public String getReferralUUID() {
+        return referralUUID;
+    }
+
+    public void setReferralUUID(String referralUUID) {
+        this.referralUUID = referralUUID;
+    }
+
+    public List<Long> getServiceIndicatorIds() {
+        return serviceIndicatorIds;
+    }
+
+    public void setServiceIndicatorIds(List<Long> serviceIndicatorIds) {
+        this.serviceIndicatorIds = serviceIndicatorIds;
+    }
+
+    public int getReferralType() {
+        return referralType;
+    }
+
+    public void setReferralType(int referralType) {
+        this.referralType = referralType;
     }
 }

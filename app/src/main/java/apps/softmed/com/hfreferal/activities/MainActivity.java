@@ -155,7 +155,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().geCounttUnattendedReferals(HIV_SERVICE_ID)+" New referrals unattended";
+            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(HIV_SERVICE_ID)+" New referrals unattended";
             return null;
         }
 

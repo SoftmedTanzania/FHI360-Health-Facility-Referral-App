@@ -1,5 +1,8 @@
 package apps.softmed.com.hfreferal.dom.objects;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -11,8 +14,10 @@ import java.io.Serializable;
  * On Project HFReferralApp
  */
 
+@Entity
 public class ReferralIndicator implements Serializable {
 
+    @PrimaryKey
     @SerializedName("referralServiceIndicatorId")
     private long referralServiceIndicatorId;
 
@@ -24,6 +29,8 @@ public class ReferralIndicator implements Serializable {
 
     @SerializedName("isActive")
     private boolean isActive;
+
+    private long serviceID;
 
     public long getReferralServiceIndicatorId() {
         return referralServiceIndicatorId;
@@ -55,5 +62,13 @@ public class ReferralIndicator implements Serializable {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public long getServiceID() {
+        return serviceID;
+    }
+
+    public void setServiceID(long serviceID) {
+        this.serviceID = serviceID;
     }
 }

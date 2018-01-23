@@ -65,41 +65,6 @@
                             android:textColor="@color/card_grid_text"
                             android:text="15 Referals Unattended"/>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="13sp"
-                                android:id="@+id/chw_referal_count_text"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:fontFamily="@font/roboto_regular"
-                                android:textColor="@color/card_grid_tex"
-                                android:text=""/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="13dp"
-                                android:background="@color/red_400"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="13sp"
-                                android:id="@+id/hf_referal_count_text"
-                                android:layout_marginLeft="16dp"
-                                android:fontFamily="@font/roboto_regular"
-                                android:layout_marginRight="16dp"
-                                android:textColor="@color/card_grid_tex"
-                                android:text=""/>
-
-                        </LinearLayout>
-
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -191,7 +156,7 @@
                         android:layout_height="80dp"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="32dp"
-                        android:src="@mipmap/ic_new_green"
+                        android:src="@mipmap/ic_clients_list"
                         android:id="@+id/refer_new_client"/>
 
                     <TextView
@@ -205,7 +170,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
-                        android:text="Toa Rufaa Mpya"/>
+                        android:text="List ya Wateja"/>
 
                 </RelativeLayout>
 

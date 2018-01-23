@@ -1,14 +1,19 @@
 package apps.softmed.com.hfreferal.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,13 +24,18 @@ import android.widget.Toast;
 
 import com.rey.material.widget.ProgressView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.objects.ReferralIndicator;
 import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
+import apps.softmed.com.hfreferal.utils.ListStringConverter;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
@@ -47,8 +57,8 @@ public class TbReferralDetailsActivity extends BaseActivity {
     public TextView clientName, ctcNumber, referalReasons, villageLeaderValue, referrerName;
     private EditText servicesOfferedEt, otherInformationEt;
     public ProgressView saveProgress;
-    private CheckBox tbStatus, twoWeeksCoughFlag, bloodCoughFlag, severeSweatingFlag, feverFlag, weightLossFlag;
-
+    private CheckBox tbStatus;
+    private RecyclerView indicatorsRecyclerView;
     public TextView clientNames, wardText, villageText, hamletText, patientGender, otherClunucalInformationValue;
 
     public Dialog referalDialogue;
@@ -74,30 +84,13 @@ public class TbReferralDetailsActivity extends BaseActivity {
                     otherInformationEt.setText(currentReferral.getOtherNotesAndAdvices());
                     otherInformationEt.setEnabled(false);
 
-                    twoWeeksCoughFlag.setChecked(currentReferral.getHas2WeeksCough());
-                    bloodCoughFlag.setChecked(currentReferral.getHasBloodCough());
-                    severeSweatingFlag.setChecked(currentReferral.getHasSevereSweating());
-                    feverFlag.setChecked(currentReferral.getHasFever());
-                    weightLossFlag.setChecked(currentReferral.getHadWeightLoss());
-
                     saveButton.setEnabled(false);
                     referButton.setEnabled(false);
                     tbStatus.setEnabled(false);
 
-                    twoWeeksCoughFlag.setEnabled(false);
-                    bloodCoughFlag.setEnabled(false);
-                    severeSweatingFlag.setEnabled(false);
-                    feverFlag.setEnabled(false);
-                    weightLossFlag.setEnabled(false);
-
                 }
 
                 tbStatus.setChecked(currentReferral.isTestResults());
-                twoWeeksCoughFlag.setChecked(currentReferral.getHas2WeeksCough());
-                bloodCoughFlag.setChecked(currentReferral.getHasBloodCough());
-                severeSweatingFlag.setChecked(currentReferral.getHasSevereSweating());
-                feverFlag.setChecked(currentReferral.getHasFever());
-                weightLossFlag.setChecked(currentReferral.getHadWeightLoss());
 
                 otherClunucalInformationValue.setText(currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
@@ -180,11 +173,10 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
     private void setupviews(){
 
-        twoWeeksCoughFlag = (CheckBox) findViewById(R.id.two_weeks_cough_flag);
-        bloodCoughFlag = (CheckBox) findViewById(R.id.blood_cough_flag);
-        severeSweatingFlag = (CheckBox) findViewById(R.id.severe_sweating_flag);
-        feverFlag = (CheckBox) findViewById(R.id.fever_flag);
-        weightLossFlag = (CheckBox) findViewById(R.id.weight_loss_flag);
+        indicatorsRecyclerView = (RecyclerView) findViewById(R.id.indicators_linear_recycler);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        indicatorsRecyclerView.setLayoutManager(layoutManager);
+        indicatorsRecyclerView.setHasFixedSize(true);
 
         otherClunucalInformationValue = (TextView) findViewById(R.id.other_clinical_inforamtion_value);
         tbStatus = (CheckBox) findViewById(R.id.tb_status);
@@ -204,6 +196,62 @@ public class TbReferralDetailsActivity extends BaseActivity {
         clientNames = (TextView) findViewById(R.id.client_name);
 
         referalReasons = (TextView) findViewById(R.id.sababu_ya_rufaa_value);
+
+    }
+
+    class IndicatorsRecyclerAdapter  extends RecyclerView.Adapter<IndicatorsViewHolder> {
+
+        private List<ReferralIndicator> indicators = new ArrayList<>();
+        private LayoutInflater mInflater;
+
+        // data is passed into the constructor
+        public IndicatorsRecyclerAdapter(Context context, List<ReferralIndicator> items) {
+            this.mInflater = LayoutInflater.from(context);
+            this.indicators = items;
+        }
+
+        // inflates the cell layout from xml when needed
+        @Override
+        public IndicatorsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.referral_details_indicatior_list_item, parent, false);
+            IndicatorsViewHolder holder = new IndicatorsViewHolder(view);
+            return holder;
+        }
+
+        // binds the data to the textview in each cell
+        @Override
+        public void onBindViewHolder(IndicatorsViewHolder holder, int position) {
+            ReferralIndicator indicator = indicators.get(position);
+            holder.bindIndicator(indicator);
+        }
+
+        // total number of cells
+        @Override
+        public int getItemCount() {
+            return indicators.size();
+        }
+
+        // convenience method for getting data at click position
+        ReferralIndicator getItem(int id) {
+            return indicators.get(id);
+        }
+
+    }
+
+    class IndicatorsViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView indicatorName;
+        private ReferralIndicator referralIndicator;
+
+        private IndicatorsViewHolder(View itemView) {
+            super(itemView);
+            indicatorName = (TextView) itemView.findViewById(R.id.indicator_name);
+        }
+
+        private void bindIndicator(ReferralIndicator indicator){
+            this.referralIndicator = indicator;
+            indicatorName.setText(referralIndicator.getIndicatorName());
+        }
 
     }
 
@@ -259,6 +307,8 @@ public class TbReferralDetailsActivity extends BaseActivity {
         Patient patient;
         AppDatabase db;
 
+        List<ReferralIndicator> indicators =  new ArrayList<>();
+
         patientDetailsTask(AppDatabase database, String patientID){
             this.db = database;
             this.patientId = patientID;
@@ -269,7 +319,15 @@ public class TbReferralDetailsActivity extends BaseActivity {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
-            Log.d("", "PATIENT : "+patient.getPatientId());
+
+            List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
+
+            //Call Patient Referral Indicators
+            for (int i=0; i<ids.size(); i++){
+                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i)+"");
+                indicators.add(referralIndicator);
+            }
+
             return null;
         }
 
@@ -284,11 +342,11 @@ public class TbReferralDetailsActivity extends BaseActivity {
                 hamletText.setText(patient.getHamlet() == null ? "Kitongoji :  " : "Kitongoji : "+patient.getHamlet());
                 patientGender.setText(patient.getGender());
             }
-            //adapter.notifyDataSetChanged();
+
+            IndicatorsRecyclerAdapter adapter = new IndicatorsRecyclerAdapter(TbReferralDetailsActivity.this, indicators);
+            indicatorsRecyclerView.setAdapter(adapter);
         }
 
     }
-
-
 
 }

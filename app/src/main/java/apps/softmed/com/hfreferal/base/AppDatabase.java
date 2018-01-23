@@ -13,6 +13,8 @@ import apps.softmed.com.hfreferal.dom.dao.PatientNotificationModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PatientServicesModelDao;
 import apps.softmed.com.hfreferal.dom.dao.PostOfficeModelDao;
 import apps.softmed.com.hfreferal.dom.dao.ReferalModelDao;
+import apps.softmed.com.hfreferal.dom.dao.ReferralIndicatorDao;
+import apps.softmed.com.hfreferal.dom.dao.ReferralServiceIndicatorsDao;
 import apps.softmed.com.hfreferal.dom.dao.TbEncounterModelDao;
 import apps.softmed.com.hfreferal.dom.dao.TbPatientModelDao;
 import apps.softmed.com.hfreferal.dom.dao.UserDataModelDao;
@@ -24,6 +26,8 @@ import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.PatientsNotification;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.objects.ReferralIndicator;
+import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicators;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
@@ -44,7 +48,9 @@ import apps.softmed.com.hfreferal.dom.objects.UserData;
                 PatientAppointment.class,
                 HealthFacilityServices.class,
                 HealthFacilities.class,
-                UserData.class
+                UserData.class,
+                ReferralIndicator.class,
+                ReferralServiceIndicators.class
         },
         version = 1)
 
@@ -82,5 +88,9 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract HealthFacilitiesModelDao healthFacilitiesModelDao();
 
     public abstract UserDataModelDao userDataModelDao();
+
+    public abstract ReferralIndicatorDao referralIndicatorDao();
+
+    public abstract ReferralServiceIndicatorsDao referralServiceIndicatorsDao();
 
 }

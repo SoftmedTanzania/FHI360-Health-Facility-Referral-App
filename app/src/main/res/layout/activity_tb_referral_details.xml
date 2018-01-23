@@ -458,141 +458,17 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:id="@+id/flags_title"
+                                        android:text="Viashiria"
+                                        android:id="@+id/viashiria_title"
+                                        android:textColor="@color/card_title_text"
                                         android:textSize="14sp"
-                                        android:text="Indicators"
-                                        android:fontFamily="@font/roboto_condensed"
-                                        android:textColor="@color/card_title_text"/>
+                                        android:fontFamily="@font/roboto_condensed"/>
 
-                                    <RelativeLayout
+                                    <android.support.v7.widget.RecyclerView
                                         android:layout_width="match_parent"
-                                        android:layout_height="40dp">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Has two weeks cough"
-                                            android:textSize="14sp"
-                                            android:layout_centerVertical="true"
-                                            android:fontFamily="@font/avenir_light"
-                                            android:textColor="@color/card_title_text"/>
-
-                                        <CheckBox
-                                            android:id="@+id/two_weeks_cough_flag"
-                                            android:layout_width="35dp"
-                                            android:layout_height="35dp"
-                                            android:layout_marginLeft="16dp"
-                                            android:layout_marginRight="8dp"
-                                            android:checked="false"
-                                            android:layout_alignParentRight="true"
-                                            android:background="@drawable/checkbox"
-                                            tools:checked="true" />
-
-                                    </RelativeLayout>
-
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="40dp">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Has blood cough"
-                                            android:textSize="14sp"
-                                            android:layout_centerVertical="true"
-                                            android:fontFamily="@font/avenir_light"
-                                            android:textColor="@color/card_title_text"/>
-
-                                        <CheckBox
-                                            android:id="@+id/blood_cough_flag"
-                                            android:layout_width="35dp"
-                                            android:layout_height="35dp"
-                                            android:layout_marginLeft="16dp"
-                                            android:layout_marginRight="8dp"
-                                            android:checked="false"
-                                            android:layout_alignParentRight="true"
-                                            android:background="@drawable/checkbox"
-                                            tools:checked="true" />
-
-                                    </RelativeLayout>
-
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="40dp">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Has severe sweating"
-                                            android:textSize="14sp"
-                                            android:layout_centerVertical="true"
-                                            android:fontFamily="@font/avenir_light"
-                                            android:textColor="@color/card_title_text"/>
-
-                                        <CheckBox
-                                            android:id="@+id/severe_sweating_flag"
-                                            android:layout_width="35dp"
-                                            android:layout_height="35dp"
-                                            android:layout_marginLeft="16dp"
-                                            android:layout_marginRight="8dp"
-                                            android:checked="false"
-                                            android:layout_alignParentRight="true"
-                                            android:background="@drawable/checkbox"
-                                            tools:checked="true" />
-
-                                    </RelativeLayout>
-
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="40dp">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Has Fever"
-                                            android:textSize="14sp"
-                                            android:layout_centerVertical="true"
-                                            android:fontFamily="@font/avenir_light"
-                                            android:textColor="@color/card_title_text"/>
-
-                                        <CheckBox
-                                            android:id="@+id/fever_flag"
-                                            android:layout_width="35dp"
-                                            android:layout_height="35dp"
-                                            android:layout_marginLeft="16dp"
-                                            android:layout_marginRight="8dp"
-                                            android:checked="false"
-                                            android:layout_alignParentRight="true"
-                                            android:background="@drawable/checkbox"
-                                            tools:checked="true" />
-
-                                    </RelativeLayout>
-
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="40dp">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Had weight loss"
-                                            android:textSize="14sp"
-                                            android:layout_centerVertical="true"
-                                            android:fontFamily="@font/avenir_light"
-                                            android:textColor="@color/card_title_text"/>
-
-                                        <CheckBox
-                                            android:id="@+id/weight_loss_flag"
-                                            android:layout_width="35dp"
-                                            android:layout_height="35dp"
-                                            android:layout_marginRight="8dp"
-                                            android:checked="false"
-                                            android:layout_alignParentRight="true"
-                                            android:background="@drawable/checkbox"
-                                            tools:checked="true" />
-
-                                    </RelativeLayout>
-
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/viashiria_title"
+                                        android:id="@+id/indicators_linear_recycler"/>
 
                                 </LinearLayout>
 

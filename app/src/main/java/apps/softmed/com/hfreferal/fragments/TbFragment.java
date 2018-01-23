@@ -112,7 +112,7 @@ public class TbFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().geCounttUnattendedReferals(TB_SERVICE_ID)+" New referrals unattended";
+            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(TB_SERVICE_ID)+" New referrals unattended";
             chwCount = "CHW : "+database.referalModel().getCountSourceReferrals(TB_SERVICE_ID, SOURCE_CHW);
             hfCount = "Health Facility : "+database.referalModel().getCountSourceReferrals(TB_SERVICE_ID, SOURCE_HF);
             feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.getThisFacilityId());

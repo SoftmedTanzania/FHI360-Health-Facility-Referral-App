@@ -31,8 +31,7 @@ import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 
 public class HivFragment extends Fragment {
 
-    private TextView referalListText, referedClientsText, newReferalText, hivText, tbText, tbReferalListText, tbReferedClientsText, tbReferNewClientsText;
-    private TextView referalCountText, referalFeedbackCount, toolbarTitle, chwReferralCounts, hfReferralCount;
+    private TextView referalCountText, referalFeedbackCount, chwReferralCounts, hfReferralCount;
     private CardView referalListCard, referedClientsCard, newReferalsCard;
 
     private Context context;
@@ -62,7 +61,9 @@ public class HivFragment extends Fragment {
         referalListCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HivFragment.this.getActivity(), ReferralListActivity.class));
+                Intent intent = new Intent(HivFragment.this.getActivity(), ReferralListActivity.class);
+                intent.putExtra("service", HIV_SERVICE_ID);
+                startActivity(intent);
             }
         });
 
@@ -91,9 +92,6 @@ public class HivFragment extends Fragment {
         hfReferralCount = (TextView) view.findViewById(R.id.hf_referal_count_text);
         referalCountText = (TextView) view.findViewById(R.id.referal_count_text);
         referalFeedbackCount = (TextView) view.findViewById(R.id.referal_feedback_count);
-        referalListText = (TextView) view.findViewById(R.id.referal_list_text);
-        referedClientsText = (TextView) view.findViewById(R.id.refered_clients_text);
-        newReferalText = (TextView) view.findViewById(R.id.new_referals_text);
         referedClientsCard = (CardView) view.findViewById(R.id.refered_clients_card);
         referalListCard = (CardView) view.findViewById(R.id.referal_list_card);
         newReferalsCard = (CardView) view.findViewById(R.id.new_referals_card);
@@ -103,15 +101,11 @@ public class HivFragment extends Fragment {
     private class ReferalCountsTask extends AsyncTask<Void, Void, Void> {
 
         String referralCounts = "";
-        String chwCount = "";
-        String hfCount = "";
         String feedbackCount = "";
 
         @Override
         protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().geCounttUnattendedReferals(HIV_SERVICE_ID)+" New referrals unattended";
-            chwCount = "CHW : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_CHW);
-            hfCount = "Health Facility : "+database.referalModel().getCountSourceReferrals(HIV_SERVICE_ID, SOURCE_HF);
+            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(HIV_SERVICE_ID)+" New referrals unattended";
             feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
             return null;
         }
@@ -119,8 +113,6 @@ public class HivFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             referalCountText.setText(referralCounts);
-            chwReferralCounts.setText(chwCount);
-            hfReferralCount.setText(hfCount);
             referalFeedbackCount.setText(feedbackCount);
             super.onPostExecute(aVoid);
         }

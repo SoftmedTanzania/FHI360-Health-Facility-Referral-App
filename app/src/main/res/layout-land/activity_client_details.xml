@@ -429,7 +429,7 @@
                                         android:layout_height="wrap_content"
                                         android:id="@+id/drug_allergies_title"
                                         android:textSize="14sp"
-                                        android:text="Drug allergies"
+                                        android:text="Allergies za Dawa"
                                         android:fontFamily="@font/roboto_condensed"
                                         android:textColor="@color/card_title_text"/>
 
@@ -461,57 +461,17 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:id="@+id/flags_title"
+                                        android:text="Viashiria"
+                                        android:id="@+id/viashiria_title"
+                                        android:textColor="@color/card_title_text"
                                         android:textSize="14sp"
-                                        android:text="Flags"
-                                        android:fontFamily="@font/roboto_condensed"
-                                        android:textColor="@color/card_title_text"/>
+                                        android:fontFamily="@font/roboto_condensed"/>
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
+                                    <android.support.v7.widget.RecyclerView
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:id="@+id/tb_dose_flag"
-                                        android:layout_below="@id/flags_title"
-                                        android:layout_marginTop="16dp"
-                                        android:text="Dozi ya TB"
-                                        android:textSize="14sp"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <CheckBox
-                                        android:id="@+id/tb_flag"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_below="@+id/flags_title"
-                                        android:layout_marginTop="8dp"
-                                        android:layout_marginLeft="16dp"
-                                        android:checked="false"
-                                        android:enabled="false"
-                                        android:layout_toRightOf="@id/tb_dose_flag"
-                                        android:background="@drawable/checkbox"
-                                        tools:checked="true" />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/pregnancy_flag_title"
-                                        android:layout_below="@id/tb_flag"
-                                        android:layout_marginTop="16dp"
-                                        android:text="Mjamzito"
-                                        android:textSize="14sp"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <CheckBox
-                                        android:id="@+id/pregnancy_flag"
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
-                                        android:layout_below="@+id/tb_flag"
-                                        android:layout_marginTop="8dp"
-                                        android:layout_alignRight="@+id/tb_flag"
-                                        android:checked="true"
-                                        android:enabled="false"
-                                        android:background="@drawable/checkbox" />
+                                        android:layout_below="@+id/viashiria_title"
+                                        android:id="@+id/indicators_linear_recycler"/>
 
                                 </RelativeLayout>
 
@@ -533,7 +493,7 @@
                                         android:layout_height="wrap_content"
                                         android:id="@+id/clinical_information_title"
                                         android:textSize="14sp"
-                                        android:text="Other Clinical Information"
+                                        android:text="Taarifa Nyingine za Kliniki"
                                         android:fontFamily="@font/roboto_condensed"
                                         android:textColor="@color/card_title_text"/>
 

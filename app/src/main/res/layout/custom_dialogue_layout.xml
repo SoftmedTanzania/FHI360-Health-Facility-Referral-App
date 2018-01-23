@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app_ms="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -90,7 +90,6 @@
                         app_ms:ms_alignLabels="false"
                         app_ms:ms_floatingLabelColor="@color/white"/>
 
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -98,6 +97,29 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent">
 
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_destination"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:divider="@null"
+                        android:layout_marginLeft="8dp"
+                        android:textSize="14sp"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_multiline="false"
+                        app_ms:ms_hint="Kwenda"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_floatingLabelText="Kwenda"
+                        app_ms:ms_baseColor="@color/white"
+                        app_ms:ms_highlightColor="@color/colorPrimary"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_arrowColor="@color/white"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_floatingLabelColor="@color/white"/>
 
                 </RelativeLayout>
 
@@ -118,10 +140,10 @@
                         app_ms:ms_hintTextSize="14sp"
                         app_ms:ms_alwaysShowFloatingLabel="true"
                         app_ms:ms_multiline="false"
-                        app_ms:ms_hint="Kwenda Kituo"
+                        app_ms:ms_hint="Kituo"
                         app_ms:ms_enableFloatingLabel="true"
                         app_ms:ms_enableErrorLabel="false"
-                        app_ms:ms_floatingLabelText="Kwenda Kituo"
+                        app_ms:ms_floatingLabelText="Kituo"
                         app_ms:ms_baseColor="@color/white"
                         app_ms:ms_highlightColor="@color/colorPrimary"
                         app_ms:ms_errorColor="@color/red_500"
@@ -136,210 +158,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/tb_indicators_wrapper">
-
-                <LinearLayout
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
-                        android:layout_marginLeft="16dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/has_two_weeks_cough_title"
-                            android:layout_below="@id/flags_title"
-                            android:layout_marginTop="16dp"
-                            android:text="Kifua cha Wiki mbili"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/avenir_light"
-                            android:textColor="@color/white"/>
-
-                        <CheckBox
-                            android:id="@+id/two_weeks_cough"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@+id/flags_title"
-                            android:layout_marginTop="8dp"
-                            android:checked="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="32dp"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/blood_cough_title"
-                            android:layout_below="@id/flags_title"
-                            android:layout_marginTop="16dp"
-                            android:text="Kukohoa damu"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/avenir_light"
-                            android:textColor="@color/white"/>
-
-                        <CheckBox
-                            android:id="@+id/blood_cough"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@+id/flags_title"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginLeft="16dp"
-                            android:checked="false"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="32dp"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
-                        android:layout_marginRight="16dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/weight_loss_title"
-                            android:layout_below="@id/flags_title"
-                            android:layout_marginTop="16dp"
-                            android:text="Kupungua Uzito"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/avenir_light"
-                            android:textColor="@color/white"/>
-
-                        <CheckBox
-                            android:id="@+id/weight_loss"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@+id/flags_title"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginLeft="16dp"
-                            android:checked="false"
-                            android:layout_alignParentRight="true" />
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
-                        android:layout_marginLeft="16dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/severe_sweating_title"
-                            android:layout_below="@id/flags_title"
-                            android:layout_marginTop="16dp"
-                            android:text="Kutokwa Jasho"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/avenir_light"
-                            android:textColor="@color/white"/>
-
-                        <CheckBox
-                            android:id="@+id/severe_sweating"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@+id/flags_title"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginLeft="16dp"
-                            android:checked="false"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="32dp"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/fever_title"
-                            android:layout_below="@id/flags_title"
-                            android:layout_marginTop="16dp"
-                            android:text="Homa"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/avenir_light"
-                            android:textColor="@color/white"/>
-
-                        <CheckBox
-                            android:id="@+id/fever"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@+id/flags_title"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginLeft="16dp"
-                            android:checked="false"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="32dp"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.3"
-                        android:layout_marginRight="16dp"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/pregnant_title"
-                            android:layout_below="@id/flags_title"
-                            android:layout_marginTop="16dp"
-                            android:text="Mjamzito"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/avenir_light"
-                            android:textColor="@color/white"/>
-
-                        <CheckBox
-                            android:id="@+id/pregnant"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_below="@+id/flags_title"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginLeft="16dp"
-                            android:checked="false"
-                            android:layout_alignParentRight="true"/>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:id="@+id/tb_separator"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="14dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@color/cyan_400"/>
@@ -347,98 +169,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="16dp"
-                android:id="@+id/hiv_indicators_wrapper">
+                android:orientation="vertical"
+                android:id="@+id/tb_indicators_wrapper">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/indicators_title"
                     android:layout_marginLeft="16dp"
-                    android:layout_height="wrap_content">
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Chagua Viashiria"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/risky_situation_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Mazingira Hatarishi"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/indicators_recycler"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp">
 
-                    <CheckBox
-                        android:id="@+id/risky_situation"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:checked="false"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="32dp"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginLeft="16dp"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/partner_distrust_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Kukosa Uaminifu"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
-
-                    <CheckBox
-                        android:id="@+id/partner_distrust"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:checked="false"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="32dp"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginRight="16dp"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/hiv_pregnant_title"
-                        android:layout_below="@id/flags_title"
-                        android:layout_marginTop="16dp"
-                        android:text="Mjamzito"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
-                        android:textColor="@color/white"/>
-
-                    <CheckBox
-                        android:id="@+id/hiv_pregnant"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_below="@+id/flags_title"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="16dp"
-                        android:checked="false"
-                        android:layout_alignParentRight="true"/>
-
-                </RelativeLayout>
+                </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>
 
@@ -451,55 +202,80 @@
                 android:id="@+id/hiv_separator"
                 android:background="@color/cyan_400"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:textSize="16sp"
-                android:fontFamily="@font/avenir_light"
-                android:layout_marginTop="16dp"
-                android:text="Sababu za Rufaa"
-                android:textColor="@color/white"/>
-
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_three"
-                android:id="@+id/referal_reasons_text"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:paddingLeft="8dp"
-                android:textSize="24sp"
-                android:gravity="start"
-                android:textColor="@color/white"
-                android:paddingStart="4dp"
-                android:minLines="4"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:textSize="16sp"
-                android:fontFamily="@font/avenir_light"
-                android:layout_marginTop="16dp"
-                android:text="Taarifa zingine za Kliniki"
-                android:textColor="@color/white"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_three"
-                android:id="@+id/other_clinical_information_text"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:paddingLeft="8dp"
-                android:textSize="24sp"
-                android:gravity="start"
-                android:textColor="@color/white"
-                android:paddingStart="4dp"
-                android:minLines="4"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:layout_marginTop="16dp"
+                        android:text="Sababu za Rufaa"
+                        android:textColor="@color/white"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_three"
+                        android:id="@+id/referal_reasons_text"
+                        android:fontFamily="@font/roboto_regular"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingLeft="8dp"
+                        android:textSize="16sp"
+                        android:gravity="start"
+                        android:textColor="@color/white"
+                        android:paddingStart="4dp"
+                        android:minLines="4"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:layout_marginTop="16dp"
+                        android:text="Taarifa zingine za Kliniki"
+                        android:textColor="@color/white"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_three"
+                        android:id="@+id/other_clinical_information_text"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:paddingLeft="8dp"
+                        android:textSize="16sp"
+                        android:gravity="start"
+                        android:textColor="@color/white"
+                        android:paddingStart="4dp"
+                        android:minLines="4"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"

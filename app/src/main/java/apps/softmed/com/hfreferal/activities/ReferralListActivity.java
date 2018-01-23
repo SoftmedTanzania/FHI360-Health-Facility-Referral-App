@@ -41,6 +41,7 @@ public class ReferralListActivity extends BaseActivity {
     private TextView toolbarTitle;
 
     private AppDatabase database;
+    private int serviceID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,10 +51,14 @@ public class ReferralListActivity extends BaseActivity {
 
         database = AppDatabase.getDatabase(this);
 
+        if (getIntent().getExtras() != null){
+            serviceID = getIntent().getExtras().getInt("service");
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null){
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
@@ -98,8 +103,8 @@ public class ReferralListActivity extends BaseActivity {
 
         ReferralListActivity.ViewPagerAdapter adapter = new ReferralListActivity.ViewPagerAdapter(getSupportFragmentManager());
         
-        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(SOURCE_HF), "hf");
-        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(SOURCE_CHW), "chw");
+        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(SOURCE_HF, serviceID), "hf");
+        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(SOURCE_CHW, serviceID), "chw");
 
         viewPager.setAdapter(adapter);
     }

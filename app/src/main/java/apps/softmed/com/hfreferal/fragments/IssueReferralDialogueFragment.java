@@ -5,15 +5,17 @@ import android.os.AsyncTask;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,22 +30,17 @@ import apps.softmed.com.hfreferal.adapters.ServicesAdapter;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
-import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.objects.ReferralIndicator;
+import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicators;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
-import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE;
-import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
-import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE;
-import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_NEW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
-import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE;
-import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 1/6/18.
@@ -55,27 +52,27 @@ import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 public class IssueReferralDialogueFragment extends DialogFragment{
 
     private TextView patientNames;
-    private MaterialSpinner spinnerService, spinnerToHealthFacility;
-    private LinearLayout tbIndicatorWrapper, hivIndicatorsWrapper;
-    private CheckBox twoWeeksCough, bloodCough, weightLoss, severeSweating, fever, involvedInRiskySituations, doesNotTrustPartner, pregnant, hivPregnant;
+    private MaterialSpinner spinnerService, spinnerToHealthFacility, spinnerReferralDestination;
     private EditText referralReasons, otherClinicalInformation;
     private Button cancelButton, issueButton;
-    private View tbSeparator, hivSeparator;
+    private RecyclerView indicatorsRecycler;
 
     private Patient currentPatient;
-    private boolean twoWeeksCoughFlag, bloodCoughFlag, weightLossFlag, severeSweatingFlag, feverFlag, involvedInRiskySituationsFlag;
-    private boolean doesNotTrustPartnerFlag, pregnantFlag, hivPregnantFlag;
     private String referralReasonsValue, otherClinicalInformationValue, toHealthFacilityID;
-    private boolean currentServiceTb, currentServiceHiv;
     private int serviceID;
+    private static final String TAG = "IssueReferralDialogueFragment";
+    private List<ReferralIndicator> selectedIndicators = new ArrayList<>();
 
     private AppDatabase database;
 
     private HealthFacilitiesAdapter healthFacilitiesAdapter;
     List<HealthFacilities> healthFacilities = new ArrayList<>();
 
+    private mAdapter madapter;
+    List<String> destinations = new ArrayList<>();
+
     private ServicesAdapter servicesAdapter;
-    List<HealthFacilityServices> healthFacilityServices = new ArrayList<>();
+    List<ReferralServiceIndicators> referralServiceIndicators = new ArrayList<>();
 
     public IssueReferralDialogueFragment() {}
 
@@ -111,30 +108,16 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     currentPatient.getPatientSurname());
         }
 
-
         healthFacilitiesAdapter = new HealthFacilitiesAdapter(this.getContext(),R.layout.subscription_plan_items_drop_down, healthFacilities);
-        //spinnerToHealthFacility.setAdapter(healthFacilitiesAdapter);
-        servicesAdapter = new ServicesAdapter(this.getContext(), R.layout.subscription_plan_items_drop_down ,healthFacilityServices);
-        //spinnerService.setAdapter(servicesAdapter);
+        servicesAdapter = new ServicesAdapter(this.getContext(), R.layout.subscription_plan_items_drop_down , referralServiceIndicators);
+
+        destinations.add("CHW");
+        destinations.add("Health Facility");
+
+        madapter = new mAdapter(IssueReferralDialogueFragment.this.getActivity(),R.layout.subscription_plan_items_drop_down, destinations);
+        spinnerReferralDestination.setAdapter(madapter);
 
         new getFacilitiesAndServices(this.getContext()).execute();
-
-
-        /*
-
-        String[] servicesList = {HIV_SERVICE, TB_SERVICE, MALARIA_SERVICE };
-        String[] hflist = {"Agha Khan" };
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, servicesList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerService.setAdapter(adapter);
-
-        ArrayAdapter<String> hfAdapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, hflist);
-        hfAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerToHealthFacility.setAdapter(hfAdapter);
-
-        */
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,31 +135,40 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             }
         });
 
+        spinnerReferralDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == -1){
+
+                }else if (i==0){
+                    spinnerToHealthFacility.setEnabled(false);
+                    spinnerToHealthFacility.setSelection(0);
+                }else if (i == 1){
+                    spinnerToHealthFacility.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         spinnerService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("IssueReferral", i+"");
-                if (i == 1){
-                    tbIndicatorWrapper.setVisibility(View.GONE);
-                    tbSeparator.setVisibility(View.GONE);
-                    hivIndicatorsWrapper.setVisibility(View.VISIBLE);
-                    hivSeparator.setVisibility(View.VISIBLE);
-                    currentServiceTb = true;
-                    currentServiceHiv = false;
-                }else if (i==0){
-                    tbIndicatorWrapper.setVisibility(View.VISIBLE);
-                    tbSeparator.setVisibility(View.VISIBLE);
-                    hivIndicatorsWrapper.setVisibility(View.GONE);
-                    hivSeparator.setVisibility(View.GONE);
-                    currentServiceTb = false;
-                    currentServiceHiv = true;
+                /*TODO
+                * Get the selected service
+                * Query all the indicators associated with that service
+                * display indicators
+                * */
+
+                if (i != -1){
+                    selectedIndicators.clear();
+                    ReferralServiceIndicators service = (ReferralServiceIndicators) adapterView.getSelectedItem();
+                    new getServiceIndicator(database).execute(service.getServiceId());
                 }
-                else {
-                    tbIndicatorWrapper.setVisibility(View.GONE);
-                    hivIndicatorsWrapper.setVisibility(View.GONE);
-                    tbSeparator.setVisibility(View.GONE);
-                    hivSeparator.setVisibility(View.GONE);
-                }
+
             }
 
             @Override
@@ -199,9 +191,15 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void createReferralObject(){
 
         Referral referral = new Referral();
+        List<Long> indicatorIDs = new ArrayList<>();
 
         long range = 1234567L;
         Random r = new Random();
@@ -215,12 +213,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setCommunityBasedHivService("");
         referral.setReferralReason(referralReasonsValue);
         referral.setServiceId(serviceID);
+        referral.setReferralUUID(number+"");
         referral.setCtcNumber("");
-        referral.setHas2WeeksCough(twoWeeksCoughFlag);
-        referral.setHasBloodCough(bloodCoughFlag);
-        referral.setHasSevereSweating(severeSweatingFlag);
-        referral.setHasFever(feverFlag);
-        referral.setHadWeightLoss(weightLossFlag);
         referral.setServiceProviderUIID("");
         referral.setServiceProviderGroup("");
         referral.setVillageLeader("");
@@ -230,6 +224,12 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setReferralStatus(REFERRAL_STATUS_NEW);
         referral.setReferralSource(SOURCE_HF);
         referral.setOtherClinicalInformation(otherClinicalInformationValue);
+
+        for (ReferralIndicator indicator : selectedIndicators){
+            indicatorIDs.add(indicator.getReferralServiceIndicatorId());
+        }
+
+        referral.setServiceIndicatorIds(indicatorIDs);
 
         SaveReferral saveReferral = new SaveReferral(database);
         saveReferral.execute(referral);
@@ -243,19 +243,24 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             toastThis("Chagua huduma ya kutoa rufaa");
             return false;
         }else {
-            HealthFacilityServices service = (HealthFacilityServices) spinnerService.getSelectedItem();
-            serviceID = service.getId();
+            ReferralServiceIndicators services = (ReferralServiceIndicators) spinnerService.getSelectedItem();
+            serviceID = Integer.parseInt(services.getServiceId()+"");
         }
-        if (spinnerToHealthFacility.getSelectedItemPosition() == 0){
-            toastThis("Chagua Kituo cha afya cha kutuma rufaa");
+
+        if (spinnerReferralDestination.getSelectedItemPosition() == 2) {
+            if (spinnerToHealthFacility.getSelectedItemPosition() == 0) {
+                toastThis("Chagua Kituo cha afya cha kutuma rufaa");
+                return false;
+            } else {
+                HealthFacilities hf = (HealthFacilities) spinnerToHealthFacility.getSelectedItem();
+                toHealthFacilityID = hf.getOpenMRSUIID();
+            }
+        }else if (spinnerReferralDestination.getSelectedItemPosition() == 0){
+            toastThis("Chagua ruffaa inapokwenda kabla ya kuendelea");
             return false;
-        }else {
-            HealthFacilities hf = (HealthFacilities) spinnerToHealthFacility.getSelectedItem();
-            toHealthFacilityID = hf.getOpenMRSUIID();
-            Log.d("Sample", "To facility ID  "+toHealthFacilityID);
-            Log.d("Sample", "To facility ID  "+hf.getFacilityName());
-            Log.d("Sample", "To facility ID  "+hf.getHfrCode());
-            Log.d("Sample", "To facility ID  "+hf.getOpenMRSUIID());
+        }else{
+            //TODO referral destination selected to go to CHW, handle the implementation accordingly
+            return  true;
         }
 
         if (referralReasons.getText().toString().isEmpty()){
@@ -266,22 +271,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         }
 
         otherClinicalInformationValue = otherClinicalInformation.getText().toString();
-
-        if (currentServiceTb){
-            twoWeeksCoughFlag = twoWeeksCough.isChecked();
-            bloodCoughFlag = bloodCough.isChecked();
-            weightLossFlag = weightLoss.isChecked();
-            severeSweatingFlag = severeSweating.isChecked();
-            feverFlag = fever.isChecked();
-            pregnantFlag = pregnant.isChecked();
-        }
-
-        if (currentServiceHiv) {
-            involvedInRiskySituationsFlag = involvedInRiskySituations.isChecked();
-            doesNotTrustPartnerFlag = doesNotTrustPartner.isChecked();
-            hivPregnantFlag = hivPregnant.isChecked();
-        }
-
         return true;
 
     }
@@ -290,25 +279,18 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         Toast.makeText(IssueReferralDialogueFragment.this.getContext(), message, Toast.LENGTH_LONG).show();
     }
 
-    private void setupviews(View v){
+    private void setupviews(View v) {
+
+        indicatorsRecycler = (RecyclerView) v.findViewById(R.id.indicators_recycler);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(IssueReferralDialogueFragment.this.getContext(), 3);
+        indicatorsRecycler.setLayoutManager(layoutManager);
+        indicatorsRecycler.setHasFixedSize(true);
 
         patientNames = (TextView) v.findViewById(R.id.patient_name);
 
         spinnerService = (MaterialSpinner) v.findViewById(R.id.spin_service);
         spinnerToHealthFacility = (MaterialSpinner) v.findViewById(R.id.spin_to_facility);
-
-        tbIndicatorWrapper = (LinearLayout) v.findViewById(R.id.tb_indicators_wrapper);
-        hivIndicatorsWrapper = (LinearLayout) v.findViewById(R.id.hiv_indicators_wrapper);
-
-        twoWeeksCough = (CheckBox) v.findViewById(R.id.two_weeks_cough);
-        bloodCough = (CheckBox) v.findViewById(R.id.blood_cough);
-        weightLoss = (CheckBox) v.findViewById(R.id.weight_loss);
-        severeSweating = (CheckBox) v.findViewById(R.id.severe_sweating);
-        fever = (CheckBox) v.findViewById(R.id.fever);
-        involvedInRiskySituations = (CheckBox) v.findViewById(R.id.risky_situation);
-        doesNotTrustPartner = (CheckBox) v.findViewById(R.id.partner_distrust);
-        pregnant = (CheckBox) v.findViewById(R.id.pregnant);
-        hivPregnant = (CheckBox)v.findViewById(R.id.hiv_pregnant);
+        spinnerReferralDestination = (MaterialSpinner) v.findViewById(R.id.spin_destination);
 
         referralReasons = (EditText) v.findViewById(R.id.referal_reasons_text);
         otherClinicalInformation = (EditText) v.findViewById(R.id.other_clinical_information_text);
@@ -316,15 +298,112 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         cancelButton = (Button) v.findViewById(R.id.cancel_button);
         issueButton = (Button) v.findViewById(R.id.tuma_button);
 
-        tbSeparator = (View) v.findViewById(R.id.tb_separator);
-        hivSeparator = (View) v.findViewById(R.id.hiv_separator);
+    }
 
+    class IndicatorsRecyclerAdapter  extends RecyclerView.Adapter<IndicatorsViewHolder> {
+
+        private List<ReferralIndicator> indicators = new ArrayList<>();
+        private LayoutInflater mInflater;
+
+        // data is passed into the constructor
+        public IndicatorsRecyclerAdapter(Context context, List<ReferralIndicator> items) {
+            this.mInflater = LayoutInflater.from(context);
+            this.indicators = items;
+        }
+
+        // inflates the cell layout from xml when needed
+        @Override
+        public IssueReferralDialogueFragment.IndicatorsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.indicator_grid_item, parent, false);
+            IndicatorsViewHolder holder = new IndicatorsViewHolder(view);
+            return holder;
+        }
+
+        // binds the data to the textview in each cell
+        @Override
+        public void onBindViewHolder(IndicatorsViewHolder holder, int position) {
+            ReferralIndicator indicator = indicators.get(position);
+            holder.bindIndicator(indicator);
+        }
+
+        // total number of cells
+        @Override
+        public int getItemCount() {
+            return indicators.size();
+        }
+
+        // convenience method for getting data at click position
+        ReferralIndicator getItem(int id) {
+            return indicators.get(id);
+        }
+
+    }
+
+    class IndicatorsViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener{
+
+        private TextView indicatorName;
+        private RelativeLayout indicatorWrapper;
+        private ReferralIndicator referralIndicator;
+        private boolean isSelected = false;
+
+        private IndicatorsViewHolder(View itemView) {
+            super(itemView);
+            indicatorName = (TextView) itemView.findViewById(R.id.indicator_name);
+            indicatorWrapper = (RelativeLayout) itemView.findViewById(R.id.indicator_wrapper);
+            itemView.setOnClickListener(this);
+        }
+
+        private void bindIndicator(ReferralIndicator indicator){
+            this.referralIndicator = indicator;
+            indicatorName.setText(referralIndicator.getIndicatorName());
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (this.isSelected){
+                isSelected = false;
+                selectedIndicators.remove(referralIndicator);
+                indicatorWrapper.setBackground(getResources().getDrawable(R.drawable.border_indicators_unselected));
+            }else {
+                isSelected = true;
+                selectedIndicators.add(referralIndicator);
+                indicatorWrapper.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            }
+        }
+
+    }
+
+    class getServiceIndicator extends AsyncTask<Long, Void, Void>{
+
+        AppDatabase database;
+        List<ReferralIndicator> referralIndicators;
+
+        getServiceIndicator(AppDatabase db){
+            database = db;
+        }
+
+        @Override
+        protected Void doInBackground(Long... longs) {
+            long serviceId = longs[0];
+            List<ReferralIndicator> indicators = database.referralIndicatorDao().getIndicatorsByServiceId(serviceId);
+            referralIndicators = indicators;
+            //TODO: display the indicators
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            IndicatorsRecyclerAdapter adapter = new IndicatorsRecyclerAdapter(getContext(), referralIndicators);
+            indicatorsRecycler.setAdapter(adapter);
+        }
     }
 
     class getFacilitiesAndServices extends AsyncTask<Void, Void, Void>{
 
         List<HealthFacilities> hfs = new ArrayList<>();
-        List<HealthFacilityServices> services = new ArrayList<>();
+        List<ReferralServiceIndicators> serviceIndicators = new ArrayList<>();
         Context context;
 
         getFacilitiesAndServices(Context ctx){
@@ -336,13 +415,9 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             super.onPostExecute(aVoid);
 
             healthFacilitiesAdapter = new HealthFacilitiesAdapter(context,R.layout.subscription_plan_items_drop_down, hfs);
-            servicesAdapter = new ServicesAdapter(context, R.layout.subscription_plan_items_drop_down ,services);
+            servicesAdapter = new ServicesAdapter(context, R.layout.subscription_plan_items_drop_down ,serviceIndicators);
             spinnerService.setAdapter(servicesAdapter);
             spinnerToHealthFacility.setAdapter(healthFacilitiesAdapter);
-            /*healthFacilitiesAdapter.updateItems(healthFacilities);
-            healthFacilitiesAdapter.notifyDataSetChanged();
-            servicesAdapter.updateItems(services);
-            servicesAdapter.notifyDataSetChanged();*/
 
         }
 
@@ -350,7 +425,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         protected Void doInBackground(Void... voids) {
 
             hfs = database.healthFacilitiesModelDao().getAllHealthFacilities();
-            services = database.servicesModelDao().getAllServices();
+            serviceIndicators = database.referralServiceIndicatorsDao().getAllServices();
 
             return null;
         }
@@ -387,6 +462,55 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
             return null;
         }
+    }
+
+    class mAdapter extends ArrayAdapter<String> {
+
+        List<String> items = new ArrayList<>();
+        Context act;
+
+        public mAdapter(Context context, int resource, List<String> mItems) {
+            super(context, resource, mItems);
+            this.items = mItems;
+            act = context;
+        }
+
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            View rowView = convertView;
+            LayoutInflater vi = (LayoutInflater) act.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = vi.inflate(R.layout.subscription_plan_items_drop_down, null);
+
+            TextView tvTitle =(TextView)rowView.findViewById(R.id.rowtext);
+            tvTitle.setText(items.get(position));
+
+            return rowView;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            View rowView = convertView;
+            LayoutInflater vi = (LayoutInflater) act.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = vi.inflate(R.layout.single_text_spinner_view_item, null);
+
+            TextView tvTitle = (TextView)rowView.findViewById(R.id.rowtext);
+            tvTitle.setText(items.get(position));
+
+            return rowView;
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        public void updateItems(List<String> newItems){
+            this.items = null;
+            this.items = newItems;
+            this.notifyDataSetChanged();
+        }
+
     }
 
 }

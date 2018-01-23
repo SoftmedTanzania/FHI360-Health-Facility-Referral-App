@@ -34,6 +34,9 @@ public class ReferalListViewModel extends AndroidViewModel{
     private final LiveData<List<Referral>> referalListHfSourceTb;
     private final LiveData<List<Referral>> referalListChwSourceTb;
 
+    private final LiveData<List<Referral>> allReferralListFromChw;
+    private final LiveData<List<Referral>> allReferralListFromHealthFacilities;
+
     private AppDatabase appDatabase;
 
     public ReferalListViewModel(Application application){
@@ -50,6 +53,9 @@ public class ReferalListViewModel extends AndroidViewModel{
 
         referalListHfSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, SOURCE_HF);
         referalListChwSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, SOURCE_CHW);
+
+        allReferralListFromChw = appDatabase.referalModel().getAllReferalsBySource(SOURCE_CHW);
+        allReferralListFromHealthFacilities = appDatabase.referalModel().getAllReferalsBySource(SOURCE_HF);
 
     }
 
@@ -75,6 +81,14 @@ public class ReferalListViewModel extends AndroidViewModel{
 
     public LiveData<List<Referral>> getTbReferredClientsList() {
         return tbReferredClientsList;
+    }
+
+    public LiveData<List<Referral>> getAllReferralListFromChw() {
+        return allReferralListFromChw;
+    }
+
+    public LiveData<List<Referral>> getAllReferralListFromHealthFacilities() {
+        return allReferralListFromHealthFacilities;
     }
 
     public LiveData<List<Referral>> getUnattendedReferrals(){

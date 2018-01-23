@@ -135,11 +135,8 @@ public class BaseActivity extends AppCompatActivity {
             object.put("referralReason", referral.getReferralReason());
             object.put("serviceId", referral.getServiceId());
             object.put("ctcNumber", referral.getCtcNumber());
-            object.put("has2WeeksCough", referral.getHas2WeeksCough());
-            object.put("hasbloodCough", referral.getHasBloodCough());
-            object.put("hasSevereSweating", referral.getHasSevereSweating());
-            object.put("hasFever", referral.getHasFever());
-            object.put("hadWeightLoss", referral.getHadWeightLoss());
+            object.put("serviceIndicatorIds", referral.getServiceIndicatorIds());
+            object.put("referralUUID", referral.getReferralUUID());
             object.put("serviceProviderUIID", referral.getServiceProviderUIID());
             object.put("serviceProviderGroup", referral.getServiceProviderGroup());
             object.put("villageLeader", referral.getVillageLeader());

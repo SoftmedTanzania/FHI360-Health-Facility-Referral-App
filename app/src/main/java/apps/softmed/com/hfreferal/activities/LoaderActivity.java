@@ -75,11 +75,6 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral.setReferralReason("Coughing alot");
         dummyReferral.setServiceId(1);
         dummyReferral.setCtcNumber("00001/0001/00001");
-        dummyReferral.setHas2WeeksCough(true);
-        dummyReferral.setHasBloodCough(false);
-        dummyReferral.setHasSevereSweating(true);
-        dummyReferral.setHasFever(true);
-        dummyReferral.setHadWeightLoss(true);
         dummyReferral.setServiceProviderUIID("123456");
         dummyReferral.setServiceProviderGroup("none");
         dummyReferral.setVillageLeader("Baraka");
@@ -98,11 +93,6 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral2.setReferralReason("Fever");
         dummyReferral2.setServiceId(2);
         dummyReferral2.setCtcNumber("00003/0003/00012");
-        dummyReferral2.setHas2WeeksCough(true);
-        dummyReferral2.setHasBloodCough(false);
-        dummyReferral2.setHasSevereSweating(true);
-        dummyReferral2.setHasFever(true);
-        dummyReferral2.setHadWeightLoss(true);
         dummyReferral2.setServiceProviderUIID("33556");
         dummyReferral2.setServiceProviderGroup("none");
         dummyReferral2.setVillageLeader("Mugezwa");
@@ -121,11 +111,6 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral3.setReferralReason("Coughing alot");
         dummyReferral3.setServiceId(3);
         dummyReferral3.setCtcNumber("00012/0003/00242");
-        dummyReferral3.setHas2WeeksCough(false);
-        dummyReferral3.setHasBloodCough(true);
-        dummyReferral3.setHasSevereSweating(false);
-        dummyReferral3.setHasFever(false);
-        dummyReferral3.setHadWeightLoss(true);
         dummyReferral3.setServiceProviderUIID("4556");
         dummyReferral3.setServiceProviderGroup("group 8");
         dummyReferral3.setVillageLeader("Maheba");
@@ -144,11 +129,6 @@ public class LoaderActivity extends BaseActivity {
         dummyReferral4.setReferralReason("Night fevers, coughing a lot and loss of weight rapidly in the last two months");
         dummyReferral4.setServiceId(1);
         dummyReferral4.setCtcNumber("00017/0003/00243");
-        dummyReferral4.setHas2WeeksCough(false);
-        dummyReferral4.setHasBloodCough(true);
-        dummyReferral4.setHasSevereSweating(false);
-        dummyReferral4.setHasFever(false);
-        dummyReferral4.setHadWeightLoss(true);
         dummyReferral4.setServiceProviderUIID("4556");
         dummyReferral4.setServiceProviderGroup("group 8");
         dummyReferral4.setVillageLeader("Maheba");

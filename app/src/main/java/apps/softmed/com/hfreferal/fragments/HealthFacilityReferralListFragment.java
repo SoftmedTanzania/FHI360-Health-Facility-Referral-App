@@ -36,6 +36,7 @@ import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
+import static apps.softmed.com.hfreferal.utils.constants.OPD_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 import static apps.softmed.com.hfreferal.utils.constants.STATUS_COMPLETED;
@@ -64,7 +65,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
 
     private Date fromDate, toDate;
     private String clientName, clientCtcNumber, lastName;
-    private int selectedStatus, source;
+    private int selectedStatus, source, service;
     private boolean notSelectedStatus, notSelectedFromDate, notSelectedTodate;
 
     private DatePickerDialog toDatePicker = new DatePickerDialog();
@@ -72,10 +73,11 @@ public class HealthFacilityReferralListFragment extends Fragment {
 
     private AppDatabase database;
 
-    public static HealthFacilityReferralListFragment newInstance(int source) {
+    public static HealthFacilityReferralListFragment newInstance(int source, int service) {
         Bundle args = new Bundle();
         HealthFacilityReferralListFragment fragment = new HealthFacilityReferralListFragment();
         args.putInt("source", source);
+        args.putInt("service", service);
         fragment.setArguments(args);
 
         return fragment;
@@ -101,6 +103,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         source = getArguments().getInt("source");
+        service = getArguments().getInt("service");
         setupviews(view);
 
         final String[] status = {STATUS_COMPLETED, STATUS_NEW};
@@ -190,25 +193,42 @@ public class HealthFacilityReferralListFragment extends Fragment {
         adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), HealthFacilityReferralListFragment.this.getActivity());
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
 
-        if (source == SOURCE_HF){
-            listViewModel.getReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
-                @Override
-                public void onChanged(@Nullable List<Referral> referrals) {
-                    adapter.addItems(referrals);
-                }
-            });
-        }
-        else if (source == SOURCE_CHW){
-            listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
-                @Override
-                public void onChanged(@Nullable List<Referral> referrals) {
-                    adapter.addItems(referrals);
-                }
-            });
+        if (service == OPD_SERVICE_ID){
+            if (source == SOURCE_HF){
+                listViewModel.getAllReferralListFromHealthFacilities().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Referral> referrals) {
+                        adapter.addItems(referrals);
+                    }
+                });
+            }else if (source == SOURCE_CHW){
+                listViewModel.getAllReferralListFromChw().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Referral> referrals) {
+                        adapter.addItems(referrals);
+                    }
+                });
+            }
+
+        }else {
+            if (source == SOURCE_HF){
+                listViewModel.getReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Referral> referrals) {
+                        adapter.addItems(referrals);
+                    }
+                });
+            }else if (source == SOURCE_CHW){
+                listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Referral> referrals) {
+                        adapter.addItems(referrals);
+                    }
+                });
+            }
         }
 
         clientRecyclerView.setAdapter(adapter);
-        //getReferalClientsList();
 
     }
 

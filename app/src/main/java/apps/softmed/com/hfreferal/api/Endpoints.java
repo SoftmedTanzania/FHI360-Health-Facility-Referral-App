@@ -5,6 +5,7 @@ import java.util.List;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicatorsResponse;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.responces.InitialSyncResponce;
 import apps.softmed.com.hfreferal.dom.responces.LoginResponse;
@@ -18,6 +19,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by issy on 11/23/17.
@@ -39,33 +41,36 @@ public class Endpoints {
         @GET("all-patients-referrals")
         Call<List<ReferalResponce>> getHfReferrals();
 
-        @POST("save_facility_referral")
+        @GET("get-facility-referrals/{facilityUUID}")
+        Call<List<ReferalResponce>> getHealthFacilityReferrals(@Path("facilityUUID") String facilityUUID );
+
+        @POST("save-facility-referral")
         Call<Referral> postReferral(@Body RequestBody r);
 
-        @POST("receive_feedback")
+        @POST("receive-feedback")
         Call<String> sendReferralFeedback(@Body RequestBody f);
 
         @GET("boresha-afya-services")
-        Call<List<HealthFacilityServices>> getAllServices();
+        Call<List<ReferralServiceIndicatorsResponse>> getAllServices();
 
-        @GET("get_health_facilities")
+        @GET("get-health-facilities")
         Call<List<HealthFacilities>> getHealthFacilities();
 
     }
 
     public interface PatientServices{
 
-        @POST("save_tb_patient")
+        @POST("save-tb-patient")
         Call<PatientResponce> postPatient(@Body RequestBody p);
 
-        @POST("save_tb_encounters")
+        @POST("save-tb-encounters")
         Call<TbEncounters> postEncounter(@Body RequestBody e);
 
     }
 
     public interface NotificationServices{
 
-        @POST("save_push_notification_token")
+        @POST("save-push-notification-token")
         Call<String> registerDevice(@Body RequestBody u);
 
     }

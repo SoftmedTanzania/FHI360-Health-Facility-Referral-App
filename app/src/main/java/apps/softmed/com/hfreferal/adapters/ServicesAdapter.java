@@ -13,6 +13,7 @@ import java.util.List;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
+import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicators;
 
 /**
  * Created by issy on 1/7/18.
@@ -21,12 +22,12 @@ import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
  * On Project HFReferralApp
  */
 
-public class ServicesAdapter extends ArrayAdapter<HealthFacilityServices> {
+public class ServicesAdapter extends ArrayAdapter<ReferralServiceIndicators> {
 
-    List<HealthFacilityServices> items = new ArrayList<>();
+    List<ReferralServiceIndicators> items = new ArrayList<>();
     Context act;
 
-    public ServicesAdapter(Context context, int resource, List<HealthFacilityServices> mItems) {
+    public ServicesAdapter(Context context, int resource, List<ReferralServiceIndicators> mItems) {
         super(context, resource, mItems);
         this.items = mItems;
         act = context;
@@ -62,7 +63,7 @@ public class ServicesAdapter extends ArrayAdapter<HealthFacilityServices> {
         return items.size();
     }
 
-    public void updateItems(List<HealthFacilityServices> newItems){
+    public void updateItems(List<ReferralServiceIndicators> newItems){
         this.items = null;
         this.items = newItems;
         this.notifyDataSetChanged();
