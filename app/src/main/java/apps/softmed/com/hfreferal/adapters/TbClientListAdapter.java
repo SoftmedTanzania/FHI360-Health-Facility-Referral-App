@@ -32,9 +32,11 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     List<Patient> items;
     private Context context;
+    private int serviceID;
 
-    public TbClientListAdapter(List<Patient> mItems, Context context){
+    public TbClientListAdapter(List<Patient> mItems, Context context, int serviceId){
         this.items = mItems;
+        this.serviceID = serviceId;
     }
 
     public TbClientListAdapter(){}
@@ -90,7 +92,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         TbClientListActivity activity = (TbClientListActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, serviceID);
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }

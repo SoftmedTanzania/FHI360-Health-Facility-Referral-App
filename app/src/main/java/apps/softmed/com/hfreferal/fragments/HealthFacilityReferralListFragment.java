@@ -35,7 +35,10 @@ import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import static apps.softmed.com.hfreferal.utils.constants.CHW_TO_FACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
+import static apps.softmed.com.hfreferal.utils.constants.INTERFACILITY;
+import static apps.softmed.com.hfreferal.utils.constants.INTRAFACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.OPD_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
@@ -189,20 +192,19 @@ public class HealthFacilityReferralListFragment extends Fragment {
             }
         });
 
-
-        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), HealthFacilityReferralListFragment.this.getActivity());
+        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), HealthFacilityReferralListFragment.this.getActivity(), service);
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
 
         if (service == OPD_SERVICE_ID){
-            if (source == SOURCE_HF){
-                listViewModel.getAllReferralListFromHealthFacilities().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+            if (source == CHW_TO_FACILITY){
+                listViewModel.getAllReferralListFromChw().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
                         adapter.addItems(referrals);
                     }
                 });
-            }else if (source == SOURCE_CHW){
-                listViewModel.getAllReferralListFromChw().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+            }else{
+                listViewModel.getAllReferralListFromHealthFacilities().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
                         adapter.addItems(referrals);

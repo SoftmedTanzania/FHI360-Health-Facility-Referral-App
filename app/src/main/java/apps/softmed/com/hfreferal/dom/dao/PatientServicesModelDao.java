@@ -31,5 +31,7 @@ public interface PatientServicesModelDao {
     @Delete
     void deleteService(HealthFacilityServices service);
 
+    @Query("select serviceName || ' ' from HealthFacilityServices where id = :serviceID")
+    String getServiceName(int serviceID);
 
 }

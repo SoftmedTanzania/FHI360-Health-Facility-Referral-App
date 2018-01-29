@@ -60,6 +60,11 @@ public class constants {
     public static final int TB_SERVICE_ID = 1;
     public static final int MALARIA_SERVICE_ID = 3;
 
+    public static final int CHW_TO_FACILITY = 1;
+    public static final int INTRAFACILITY = 2;
+    public static final int INTERFACILITY = 3;
+    public static final int FACILITY_TO_CHW = 4;
+
     public static final int SOURCE_CHW = 0;
     public static final int SOURCE_HF = 1;
 

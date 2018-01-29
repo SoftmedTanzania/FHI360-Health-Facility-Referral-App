@@ -544,7 +544,7 @@
                                     android:layout_height="wrap_content"
                                     android:id="@+id/hiv_status_title"
                                     android:layout_marginTop="16dp"
-                                    android:text="HIV STATUS"
+                                    android:text="Test Results"
                                     android:textSize="14sp"
                                     android:fontFamily="@font/avenir_light"
                                     android:textColor="@color/card_title_text"/>

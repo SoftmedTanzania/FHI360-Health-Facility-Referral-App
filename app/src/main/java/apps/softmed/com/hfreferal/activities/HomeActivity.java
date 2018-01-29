@@ -278,6 +278,8 @@ public class HomeActivity extends BaseActivity {
 
                 }else if (data.getPost_data_type().equals(POST_DATA_REFERRAL_FEEDBACK)){
 
+                    Log.d("PostOfficeService", data.getPost_data_type());
+
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
@@ -285,9 +287,10 @@ public class HomeActivity extends BaseActivity {
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
-                            Log.d("POST_RESPOMCES", "Saved to seerver : "+response.body());
+                            Log.d("POST_RESPONSES", "Outside 200 : "+response.body());
                             //database.postOfficeModelDao().deletePostData(data);
                             if (response.code() == 200){
+                                Log.d("POST_RESPONSES", "Saved to seerver : "+response.body());
                                 new BaseActivity.DeletePostData(database).execute(data);
                             }
 

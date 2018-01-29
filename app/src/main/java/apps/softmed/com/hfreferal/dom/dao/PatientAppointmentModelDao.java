@@ -23,6 +23,12 @@ public interface PatientAppointmentModelDao {
     @Query("select * from PatientAppointment order by appointmentDate asc")
     List<PatientAppointment> getAllAppointments();
 
+    @Query("select * from PatientAppointment where appointmentType = 2 order by appointmentDate asc")
+    List<PatientAppointment> getAllTbAppointments();
+
+    @Query("select * from PatientAppointment where appointmentType = 1 order by appointmentDate asc")
+    List<PatientAppointment> getAllCTCAppointments();
+
     @Query("select * from PatientAppointment where patientID = :patientId")
     List<PatientAppointment> getThisPatientAppointments(String patientId);
 

@@ -33,7 +33,6 @@ import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
-import static apps.softmed.com.hfreferal.utils.constants.MALARIA_SERVICE_ID;
 import static apps.softmed.com.hfreferal.utils.constants.STATUS_COMPLETED;
 import static apps.softmed.com.hfreferal.utils.constants.STATUS_NEW;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
@@ -191,15 +190,21 @@ public class ReferedClientsActivity extends BaseActivity {
             });
         }else if (serviceID == HIV_SERVICE_ID){
             Log.d("MIMI", "Calling Hiv referred list of referrals");
-            listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+            listViewModel.getHivReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {
                     Log.d("MIMI", "Adding items to adapter with size : "+referrals.size());
                     adapter.addItems(referrals);
                 }
             });
-        }else if (serviceID == MALARIA_SERVICE_ID){
+        } else {
             //Get Malaria referred client list
+            listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+                @Override
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    adapter.addItems(referrals);
+                }
+            });
         }
 
 

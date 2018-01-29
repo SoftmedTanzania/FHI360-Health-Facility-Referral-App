@@ -85,8 +85,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="16dp"
-                    android:id="@+id/ctc_number"
-                    android:text="No CTC number"
+                    android:id="@+id/service_name"
+                    android:text="TB"
                     android:textColor="@color/card_grid_tex"/>
 
             </RelativeLayout>

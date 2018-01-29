@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +34,11 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
     List<Patient> items;
     private Context context;
     public Dialog referalDialogue;
+    private int serviceID;
 
-    public PatientsListAdapter(List<Patient> mItems, Context context){
+    public PatientsListAdapter(List<Patient> mItems, Context context, int serviceID){
         this.items = mItems;
+        this.serviceID = serviceID;
     }
 
     public PatientsListAdapter(){}
@@ -80,7 +83,8 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
         NewReferalsActivity activity = (NewReferalsActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, serviceID);
+        Log.d("MIMI", serviceID+"");
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }

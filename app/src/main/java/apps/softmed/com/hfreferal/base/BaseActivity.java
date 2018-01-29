@@ -26,6 +26,9 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 
+import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
+import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
+
 /**
  * Created by issy on 11/14/17.
  */
@@ -62,17 +65,20 @@ public class BaseActivity extends AppCompatActivity {
         toDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
         datePickerDialog.setAccentColor(getResources().getColor(R.color.colorPrimary));
 
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl(BASE_URL)
-//                .addConverterFactory(ScalarsConverterFactory.create())
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        apiEndpoints = retrofit.create(Endpoints.class);
-
     }
 
     public static String getThisFacilityId(){
         return session.getKeyHfid();
+    }
+
+    public String getServiceName(int serviceID){
+        if (serviceID == HIV_SERVICE_ID){
+            return "CTC";
+        }else if (serviceID == TB_SERVICE_ID){
+            return "Kifua Kikuu";
+        }else {
+            return "Nyingine";
+        }
     }
 
     public static RequestBody getReferralFeedbackRequestBody(Referral referral, UserData userData){
@@ -81,6 +87,24 @@ public class BaseActivity extends AppCompatActivity {
         JSONObject object   = new JSONObject();
 
         try {
+
+            object.put("patientId", referral.getPatient_id());
+            object.put("communityBasedHivService", referral.getCommunityBasedHivService());
+            object.put("referralReason", referral.getReferralReason());
+            object.put("serviceId", referral.getServiceId());
+            object.put("ctcNumber", referral.getCtcNumber());
+            object.put("referralUUID", referral.getReferralUUID());
+            object.put("serviceProviderUIID", referral.getServiceProviderUIID());
+            object.put("serviceProviderGroup", referral.getServiceProviderGroup());
+            object.put("villageLeader", referral.getVillageLeader());
+            object.put("otherClinicalInformation", referral.getOtherClinicalInformation());
+            object.put("fromFacilityId", referral.getFromFacilityId());
+            object.put("referralSource", referral.getReferralSource());
+            object.put("referralType", referral.getReferralType());
+            object.put("referralDate", referral.getReferralDate());
+            object.put("facilityId", referral.getFacilityId());
+            object.put("referralStatus", referral.getReferralStatus());
+            object.put("serviceIndicatorIds", referral.getServiceIndicatorIds());
 
             object.put("referralId", referral.getReferral_id());
             object.put("serviceGivenToPatient", referral.getServiceGivenToPatient());

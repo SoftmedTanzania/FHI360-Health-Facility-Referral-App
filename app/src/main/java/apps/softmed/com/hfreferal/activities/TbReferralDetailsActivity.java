@@ -41,6 +41,7 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_COMPLETED;
+import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 12/14/17.
@@ -166,7 +167,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, TB_SERVICE_ID);
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }

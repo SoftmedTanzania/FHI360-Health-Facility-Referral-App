@@ -79,7 +79,9 @@ public class HivFragment extends Fragment {
         newReferalsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HivFragment.this.getActivity(), NewReferalsActivity.class));
+                Intent intent = new Intent(HivFragment.this.getActivity(), NewReferalsActivity.class);
+                intent.putExtra("service", HIV_SERVICE_ID);
+                startActivity(intent);
             }
         });
 

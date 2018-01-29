@@ -178,7 +178,7 @@ public class ReferalListActivityOld extends BaseActivity {
         });
 
 
-        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), this);
+        adapter = new ReferalListRecyclerAdapter();
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
         listViewModel.getReferalList().observe(ReferalListActivityOld.this, new Observer<List<Referral>>() {
             @Override

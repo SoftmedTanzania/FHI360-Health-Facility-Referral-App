@@ -28,6 +28,7 @@ public class NewReferalsActivity extends BaseActivity {
     private PatientsListAdapter adapter;
 
     private PatientsListViewModel patientsListViewModel;
+    private int service;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +41,11 @@ public class NewReferalsActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        adapter = new PatientsListAdapter(new ArrayList<Patient>(), this);
+        if (getIntent().getExtras() != null){
+            service = getIntent().getIntExtra("service", 0);
+        }
+
+        adapter = new PatientsListAdapter(new ArrayList<Patient>(), this, service);
         patientsListViewModel = ViewModelProviders.of(this).get(PatientsListViewModel.class);
         patientsListViewModel.getPatientsList().observe(NewReferalsActivity.this, new Observer<List<Patient>>() {
             @Override

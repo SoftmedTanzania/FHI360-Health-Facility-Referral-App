@@ -33,6 +33,9 @@ public class PatientAppointment implements Serializable{
     @TypeConverters(DateConverter.class)
     private long appointmentDate;
 
+    @SerializedName("appointmentType")
+    private int appointmentType;
+
     @SerializedName("is_cancelled")
     private boolean cancelled;
 
@@ -88,5 +91,13 @@ public class PatientAppointment implements Serializable{
 
     public void setAppointmentEncounterMonth(String appointmentEncounterMonth) {
         this.appointmentEncounterMonth = appointmentEncounterMonth;
+    }
+
+    public int getAppointmentType() {
+        return appointmentType;
+    }
+
+    public void setAppointmentType(int appointmentType) {
+        this.appointmentType = appointmentType;
     }
 }

@@ -60,7 +60,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
         ReferredClientsrecyclerAdapter.ListViewItemViewHolder holder = (ReferredClientsrecyclerAdapter.ListViewItemViewHolder) viewHolder;
         mViewHolder = holder;
 
-        new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral.getPatient_id(), holder.clientsNames).execute();
+        new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute();
 
         if (referral.getReferralStatus() == 0){
             holder.feedbackStatus.setText("Pending");
@@ -70,7 +70,6 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
             holder.feedbackStatus.setTextColor(context.getResources().getColor(R.color.green_a700));
         }
 
-        holder.ctcNumber.setText(referral.getCtcNumber());
         holder.referralReasons.setText(referral.getReferralReason());
         holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
 
@@ -102,7 +101,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientsNames, feedbackStatus, ctcNumber, referralReasons, referralDate;
+        TextView clientsNames, feedbackStatus, serviceName, referralReasons, referralDate;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
@@ -111,7 +110,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
             clientsNames = (TextView) itemView.findViewById(R.id.client_name);
             feedbackStatus = (TextView) itemView.findViewById(R.id.feedback_status);
-            ctcNumber = (TextView) itemView.findViewById(R.id.ctc_number);
+            serviceName = (TextView) itemView.findViewById(R.id.service_name);
             referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
             referralDate = (TextView) itemView.findViewById(R.id.ref_date);
 
@@ -125,20 +124,23 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
     private static class patientDetailsTask extends AsyncTask<Void, Void, Void> {
 
-        String patientNames, patientId;
+        String patientNames, serviceNameString;
         AppDatabase db;
-        TextView mText;
+        TextView mText, sname;
+        Referral ref;
 
-        patientDetailsTask(AppDatabase database, String patientID, TextView namesInstance){
+        patientDetailsTask(AppDatabase database, Referral referral, TextView namesInstance, TextView serviceName){
             this.db = database;
-            this.patientId = patientID;
+            this.ref = referral;
             mText = namesInstance;
+            sname = serviceName;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             Log.d("reckless", "doing name search backgroundically!");
-            patientNames = db.patientModel().getPatientName(patientId);
+            patientNames = db.patientModel().getPatientName(ref.getPatient_id());
+            serviceNameString = db.servicesModelDao().getServiceName(ref.getReferralSource());
             return null;
         }
 
@@ -147,6 +149,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
             super.onPostExecute(aVoid);
             Log.d("reckless", "Done background !"+patientNames);
             mText.setText(patientNames);
+            sname.setText(serviceNameString);
             //adapter.notifyDataSetChanged();
         }
 

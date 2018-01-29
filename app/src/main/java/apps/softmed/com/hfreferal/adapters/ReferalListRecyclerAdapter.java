@@ -28,10 +28,12 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
     private Context context;
     private AppDatabase database;
     private ListViewItemViewHolder mViewHolder;
+    private int serviceID;
 
-    public ReferalListRecyclerAdapter(List<Referral> mItems, Context context){
+    public ReferalListRecyclerAdapter(List<Referral> mItems, Context context, int service){
         this.items = mItems;
         this.database = AppDatabase.getDatabase(context);
+        this.serviceID = service;
     }
 
     public ReferalListRecyclerAdapter(){}
@@ -77,6 +79,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             public void onClick(View view) {
                 Intent intent = new Intent(context, ClientsDetailsActivity.class);
                 intent.putExtra("referal", referral);
+                intent.putExtra("service", serviceID);
                 context.startActivity(intent);
             }
         });

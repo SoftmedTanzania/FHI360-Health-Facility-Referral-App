@@ -51,8 +51,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
     public Button saveButton, referButton;
-    private MaterialSpinner servicesSpinner, healthFacilitySpinner;
-    public TextView clientName, ctcNumber, referalReasons, villageLeaderValue, referrerName;
+    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName;
     private EditText servicesOfferedEt, otherInformationEt;
     public ProgressView saveProgress;
     private CheckBox hivStatus;
@@ -62,9 +61,9 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     public Dialog referalDialogue;
 
+    private int service;
     private Referral currentReferral;
     private Patient currentPatient;
-    private AppDatabase database;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +73,8 @@ public class ClientsDetailsActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null){
             currentReferral = (Referral) getIntent().getSerializableExtra("referal");
+            service = getIntent().getIntExtra("service", 0);
+
             if (currentReferral != null){
                 if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
 
@@ -155,7 +156,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, service);
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }

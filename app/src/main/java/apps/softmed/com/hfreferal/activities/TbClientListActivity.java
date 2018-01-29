@@ -21,6 +21,8 @@ import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.viewmodels.PatientsListViewModel;
 
+import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
+
 /**
  * Created by issy on 12/28/17.
  *
@@ -51,7 +53,7 @@ public class TbClientListActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        adapter = new TbClientListAdapter(new ArrayList<Patient>(), this);
+        adapter = new TbClientListAdapter(new ArrayList<Patient>(), this, TB_SERVICE_ID);
         patientsListViewModel = ViewModelProviders.of(this).get(PatientsListViewModel.class);
         patientsListViewModel.getTbPatientsOnly().observe(TbClientListActivity.this, new Observer<List<Patient>>() {
             @Override

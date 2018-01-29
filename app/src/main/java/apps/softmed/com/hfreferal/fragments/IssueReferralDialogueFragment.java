@@ -38,6 +38,9 @@ import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicators;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
+import static apps.softmed.com.hfreferal.utils.constants.FACILITY_TO_CHW;
+import static apps.softmed.com.hfreferal.utils.constants.INTERFACILITY;
+import static apps.softmed.com.hfreferal.utils.constants.INTRAFACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_NEW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
@@ -72,14 +75,18 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     List<String> destinations = new ArrayList<>();
 
     private ServicesAdapter servicesAdapter;
+    private int service;
     List<ReferralServiceIndicators> referralServiceIndicators = new ArrayList<>();
+
+    private int referralType;
 
     public IssueReferralDialogueFragment() {}
 
-    public static IssueReferralDialogueFragment newInstance(Patient patient) {
+    public static IssueReferralDialogueFragment newInstance(Patient patient, int sourceServiceId) {
         Bundle args = new Bundle();
         IssueReferralDialogueFragment fragment = new IssueReferralDialogueFragment();
         args.putSerializable("currentPatient", patient);
+        args.putInt("sourceID", sourceServiceId);
         fragment.setArguments(args);
 
         return fragment;
@@ -98,6 +105,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
         currentPatient = (Patient) getArguments().getSerializable("currentPatient");
+        service = getArguments().getInt("sourceID");
 
         setupviews(view);
 
@@ -143,6 +151,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                 }else if (i==0){
                     spinnerToHealthFacility.setEnabled(false);
                     spinnerToHealthFacility.setSelection(0);
+                    referralType = FACILITY_TO_CHW;
                 }else if (i == 1){
                     spinnerToHealthFacility.setEnabled(true);
                 }
@@ -181,6 +190,14 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("IssueReferral", i+" : to health Facility");
+                HealthFacilities hf = (HealthFacilities)spinnerToHealthFacility.getSelectedItem();
+                if (i!=-1){
+                    if (hf.getOpenMRSUIID().equals(BaseActivity.getThisFacilityId())){
+                        referralType = INTRAFACILITY;
+                    }else {
+                        referralType = INTERFACILITY;
+                    }
+                }
             }
 
             @Override
@@ -218,11 +235,14 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setServiceProviderUIID("");
         referral.setServiceProviderGroup("");
         referral.setVillageLeader("");
+
+        referral.setReferralSource(service);
+        referral.setReferralType(referralType);
+
         referral.setReferralDate(today);
         referral.setFacilityId(toHealthFacilityID);
         referral.setFromFacilityId(BaseActivity.session.getKeyHfid());
         referral.setReferralStatus(REFERRAL_STATUS_NEW);
-        referral.setReferralSource(SOURCE_HF);
         referral.setOtherClinicalInformation(otherClinicalInformationValue);
 
         for (ReferralIndicator indicator : selectedIndicators){
