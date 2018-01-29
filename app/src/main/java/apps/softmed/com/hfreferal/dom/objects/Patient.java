@@ -35,6 +35,12 @@ public class Patient implements Serializable{
     @SerializedName("surname")
     private String patientSurname;
 
+    @SerializedName("communityBasedHivService")
+    private String cbhs;
+
+    @SerializedName("ctcNumber")
+    private String ctcNumber;
+
     @SerializedName("phoneNumber")
     private String phone_number;
 
@@ -61,6 +67,15 @@ public class Patient implements Serializable{
     private boolean hivStatus = false;
 
     private boolean currentOnTbTreatment;
+
+    @SerializedName("careTakerName")
+    private String careTakerName;
+
+    @SerializedName("careTakerPhoneNumber")
+    private String careTakerPhoneNumber;
+
+    @SerializedName("careTakerRelationship")
+    private String careTakerRelationship;
 
     public Long getId() {
         return id;
@@ -164,6 +179,46 @@ public class Patient implements Serializable{
 
     public void setCurrentOnTbTreatment(boolean currentOnTbTreatment) {
         this.currentOnTbTreatment = currentOnTbTreatment;
+    }
+
+    public String getCareTakerName() {
+        return careTakerName;
+    }
+
+    public void setCareTakerName(String careTakerName) {
+        this.careTakerName = careTakerName;
+    }
+
+    public String getCareTakerPhoneNumber() {
+        return careTakerPhoneNumber;
+    }
+
+    public void setCareTakerPhoneNumber(String careTakerPhoneNumber) {
+        this.careTakerPhoneNumber = careTakerPhoneNumber;
+    }
+
+    public String getCareTakerRelationship() {
+        return careTakerRelationship;
+    }
+
+    public void setCareTakerRelationship(String careTakerRelationship) {
+        this.careTakerRelationship = careTakerRelationship;
+    }
+
+    public String getCbhs() {
+        return cbhs;
+    }
+
+    public void setCbhs(String cbhs) {
+        this.cbhs = cbhs;
+    }
+
+    public String getCtcNumber() {
+        return ctcNumber;
+    }
+
+    public void setCtcNumber(String ctcNumber) {
+        this.ctcNumber = ctcNumber;
     }
 
     public boolean isHivStatus() {

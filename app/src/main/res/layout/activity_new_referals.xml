@@ -207,6 +207,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_weight="0.2"
                     android:layout_marginLeft="8dp"
@@ -227,6 +228,7 @@
 
 
                 <RelativeLayout
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_weight="0.2"
                     android:layout_marginLeft="8dp"

@@ -153,6 +153,32 @@ public class BaseActivity extends AppCompatActivity {
 
         try {
 
+            /**
+             *
+             * {"patientId":1,
+             "communityBasedHivService":"",
+             "referralReason":"testing",
+             "serviceId":1,
+             "referralUUID":"11",
+             "serviceProviderUIID":"11",
+             "serviceProviderGroup":"group",
+             "villageLeader":"kallel",
+             "otherClinicalInformation":"",
+             "otherNotes":"",
+             "serviceGivenToPatient":"",
+             "testResults":"",
+             "fromFacilityId":"chw",
+             "referralSource":0,
+             "referralType":4,
+             "referralDate":0,
+             "facilityId":"60DF1C60-16E3-6123-94CD-1595111630C4",
+             "referralStatus":-1,
+             "serviceIndicatorIds":[1]
+             }
+             *
+             *
+             */
+
             object.put("referralId", referral.getReferral_id());
             object.put("patientId", referral.getPatient_id());
             object.put("communityBasedHivService", referral.getCommunityBasedHivService());
@@ -191,7 +217,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public static RequestBody getPatientRequestBody(Patient patient, TbPatient tbPatient, UserData userData){
+    public static RequestBody getPatientRequestBody(Patient patient, UserData userData){
 
         RequestBody body;
         String datastream = "";
@@ -209,8 +235,14 @@ public class BaseActivity extends AppCompatActivity {
             object.put("gender", patient.getGender());
             //object.put("healthFacilityCode", "2ff3e6fb-eb85-49eb-b7b3-564ddc26b9d4");
             object.put("healthFacilityCode", userData.getUserFacilityId());
+            object.put("communityBasedHivService", patient.getCbhs());
+            object.put("ctcNumber", patient.getCtcNumber());
+            object.put("hivStatus", patient.isHivStatus());
+            object.put("careTakerName", patient.getCareTakerName());
+            object.put("careTakerPhoneNumber", patient.getCareTakerPhoneNumber());
+            object.put("careTakerRelationship", patient.getCareTakerRelationship());
 
-            object.put("patientType", tbPatient.getPatientType());
+            /*object.put("patientType", tbPatient.getPatientType());
             object.put("transferType", tbPatient.getTransferType());
             object.put("referralType", tbPatient.getReferralType());
             object.put("veo", tbPatient.getVeo());
@@ -221,7 +253,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("treatment_type", tbPatient.getTreatment_type());
             object.put("outcome", tbPatient.getOutcome());
             object.put("outcomeDate", tbPatient.getOutcomeDate());
-            object.put("outcomeDetails", tbPatient.getOutcomeDetails());
+            object.put("outcomeDetails", tbPatient.getOutcomeDetails());*/
 
             datastream = object.toString();
 
@@ -265,6 +297,7 @@ public class BaseActivity extends AppCompatActivity {
         return body;
 
     }
+
 
     public void setuptypeface(){
         Julius = Typeface.createFromAsset(this.getAssets(), "JuliusSansOne-Regular.ttf");

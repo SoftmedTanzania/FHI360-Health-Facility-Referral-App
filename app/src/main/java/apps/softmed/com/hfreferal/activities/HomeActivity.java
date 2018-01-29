@@ -61,6 +61,7 @@ import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_REFERRAL_FEED
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_ENCOUNTER;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_PATIENT;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_TB_PATIENT;
 
 /**
  * Created by issy on 12/4/17.
@@ -198,10 +199,46 @@ public class HomeActivity extends BaseActivity {
                 if (data.getPost_data_type().equals(POST_DATA_TYPE_PATIENT)){
 
                     final Patient patient = database.patientModel().getPatientById(data.getPost_id());
-                    final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(getPatientRequestBody(patient, tbPatient, userData));
+                    Call call = patientServices.postPatient(getPatientRequestBody(patient, userData));
+                    call.enqueue(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            //Store Received Patient Information, TbPatient as well as PatientAppointments
+                            if (response.body()!=null){
+
+                                Patient patient1 = (Patient) response.body();
+                                Log.d("POST_DATA_TYPE_PATIENT", patient1.getPatientFirstName());
+
+                                /**
+                                 * TODO: 1: Update patient object with the new patient id (Delete old insert new)
+                                 * TODO: 2: Update all referrals with this patient ID to the newly created patient ID
+                                 */
+
+                                new ReplacePatientObject().execute(patient, patient1);
+
+                            }else {
+                                Log.d("POST_DATA_TYPE_PATIENT","Patient Responce is null "+response.body());
+                            }
+
+                            new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
+
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Log.d("patient_response", t.getMessage());
+                        }
+                    });
+
+                }else if (data.getPost_data_type().equals(POST_DATA_TYPE_TB_PATIENT)){
+                    /*
+                    final Patient patient = database.patientModel().getPatientById(data.getPost_id());
+                    //final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
+
+                    Call call = patientServices.postPatient(getPatientRequestBody(patient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -243,7 +280,10 @@ public class HomeActivity extends BaseActivity {
                             new DeletePOstData(database).execute(data); //TODO REMOVE THIS
                         }
                     });
-                }else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
+                     */
+                } else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
+
+                    Log.d("POST_DATA_TYPE_REFERRAL", "Syncing referral data");
 
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
@@ -255,12 +295,13 @@ public class HomeActivity extends BaseActivity {
                             Referral receivedReferral = (Referral) response.body();
                             if (response.body() != null){
 
-                                Log.d("PostReferral", response.body().toString());
+                                Log.d("POST_DATA_TYPE_REFERRAL", "Synced and received back referral is : "+receivedReferral.getReferral_id());
+
                                 database.referalModel().deleteReferal(referral); //Delete local referral reference
                                 database.referalModel().addReferal(receivedReferral); //Store the server's referral reference
 
                             }else {
-                                Log.d("PostReferral", "Responce is Null : "+response.body());
+                                Log.d("POST_DATA_TYPE_REFERRAL", "Responce is Null : "+response.body());
                             }
 
                             new DeletePOstData(database).execute(data); //TODO REMOVE THIS
@@ -269,16 +310,14 @@ public class HomeActivity extends BaseActivity {
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
-                            Log.d("PostReferral", t.getMessage());
-                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+                            Log.d("POST_DATA_TYPE_REFERRAL", t.getMessage());
+                            //new DeletePOstData(database).execute(data); //TODO : Do not delete the data
                         }
                     });
 
-
-
                 }else if (data.getPost_data_type().equals(POST_DATA_REFERRAL_FEEDBACK)){
 
-                    Log.d("PostOfficeService", data.getPost_data_type());
+                    Log.d("POST_DATA_REFERRAL_FB", data.getPost_data_type());
 
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
@@ -287,10 +326,10 @@ public class HomeActivity extends BaseActivity {
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
-                            Log.d("POST_RESPONSES", "Outside 200 : "+response.body());
+                            Log.d("POST_DATA_REFERRAL_FB", "Outside 200 : "+response.body());
                             //database.postOfficeModelDao().deletePostData(data);
                             if (response.code() == 200){
-                                Log.d("POST_RESPONSES", "Saved to seerver : "+response.body());
+                                Log.d("POST_DATA_REFERRAL_FB", "Saved to seerver : "+response.body());
                                 new BaseActivity.DeletePostData(database).execute(data);
                             }
 
@@ -440,6 +479,29 @@ public class HomeActivity extends BaseActivity {
         // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
                 INTERVAL_FIFTEEN_MINUTES, pIntent);
+    }
+
+    class ReplacePatientObject extends AsyncTask<Patient, Void, Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Patient... patients) {
+
+            //Delete the old object
+            database.patientModel().deleteAPatient(patients[0]);
+            //Insert server's patient reference
+            database.patientModel().addPatient(patients[1]);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
     }
 
     class SyncPostOfficeData extends AsyncTask<Void,Void, Void>{

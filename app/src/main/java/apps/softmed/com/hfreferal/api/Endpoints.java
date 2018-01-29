@@ -4,6 +4,7 @@ import java.util.List;
 
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilities;
 import apps.softmed.com.hfreferal.dom.objects.HealthFacilityServices;
+import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicatorsResponse;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
@@ -60,8 +61,8 @@ public class Endpoints {
 
     public interface PatientServices{
 
-        @POST("save-tb-patient")
-        Call<PatientResponce> postPatient(@Body RequestBody p);
+        @POST("save-patients")
+        Call<Patient> postPatient(@Body RequestBody p);
 
         @POST("save-tb-encounters")
         Call<TbEncounters> postEncounter(@Body RequestBody e);

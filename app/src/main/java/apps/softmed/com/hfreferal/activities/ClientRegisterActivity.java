@@ -24,12 +24,15 @@ import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
+import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
 import static apps.softmed.com.hfreferal.utils.constants.FEMALE;
 import static apps.softmed.com.hfreferal.utils.constants.MALE;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_PATIENT;
 
 /**
  * Created by issy on 12/14/17.
@@ -42,14 +45,15 @@ public class ClientRegisterActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private MaterialSpinner genderSpinner;
-    private EditText firstName, middleName, surname, phone, ward, village, hamlet, weight, mwenyekiti;
+    private EditText firstName, middleName, surname, phone, ward, village, hamlet, weight, mwenyekiti, careTakerName, careTakerPhone, careTakerRelationship, chbsNumber, ctcNumber;
     private Button btnSave;
     private TextView dateOfBirth;
     private CheckBox pregnant;
     private ProgressDialog dialog;
 
     private Date dob;
-    private String strFname, strMname, strSurname, strGender, strPhone, strWard, strVillage, strHamlet, strDateOfBirth, strWeight, strMwenyekiti;
+    private String strFname, strMname, strSurname, strGender, strPhone, strWard, strVillage, strHamlet, strCbhsNumber, strCTCNumber;
+    private String strDateOfBirth, strWeight, strMwenyekiti, strCareTakerName, strCareTakerPhone, strCareTakerRelationship;
     private boolean isPregnant;
     private boolean isTbClient = false;
     private Calendar dobCalendar;
@@ -149,6 +153,16 @@ public class ClientRegisterActivity extends BaseActivity {
 
         strMwenyekiti = mwenyekiti.getText().toString();
 
+        strCareTakerName = careTakerName.getText().toString();
+
+        strCareTakerPhone = careTakerPhone.getText().toString();
+
+        strCareTakerRelationship = careTakerRelationship.getText().toString();
+
+        strCbhsNumber = chbsNumber.getText().toString();
+
+        strCTCNumber = ctcNumber.getText().toString();
+
         return true;
     }
 
@@ -172,13 +186,19 @@ public class ClientRegisterActivity extends BaseActivity {
         patient.setPatientSurname(strSurname);
         patient.setCurrentOnTbTreatment(isTbClient);//This value depends on where the client has been registered from
         patient.setDateOfBirth(dobCalendar.getTimeInMillis());
+        patient.setCareTakerName(strCareTakerName);
+        patient.setCareTakerPhoneNumber(strCareTakerPhone);
+        patient.setCareTakerRelationship(strCareTakerRelationship);
+        patient.setCbhs(strCbhsNumber);
+        patient.setCtcNumber(strCTCNumber);
 
+        /*
         tbPatient.setTempID(number);
         tbPatient.setPatientId(number);
         tbPatient.setWeight(Double.parseDouble(strWeight));
-        tbPatient.setVeo(strMwenyekiti);
+        tbPatient.setVeo(strMwenyekiti);*/
 
-        AddNewPatient addNewPatient = new AddNewPatient(tbPatient, patient, baseDatabase);
+        AddNewPatient addNewPatient = new AddNewPatient(patient, baseDatabase);
         addNewPatient.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
@@ -199,6 +219,13 @@ public class ClientRegisterActivity extends BaseActivity {
         weight = (EditText) findViewById(R.id.weight);
         mwenyekiti = (EditText) findViewById(R.id.mwenyekiti);
 
+        careTakerName = (EditText) findViewById(R.id.care_taker_name);
+        careTakerPhone = (EditText) findViewById(R.id.care_taker_phone);
+        careTakerRelationship = (EditText) findViewById(R.id.care_taker_relationship);
+
+        chbsNumber = (EditText) findViewById(R.id.cbhs_number);
+        ctcNumber = (EditText) findViewById(R.id.patient_ctc_number);
+
         pregnant = (CheckBox) findViewById(R.id.is_pregnant);
 
         btnSave = (Button) findViewById(R.id.save_button);
@@ -210,9 +237,8 @@ public class ClientRegisterActivity extends BaseActivity {
         TbPatient tp;
         AppDatabase database;
 
-        AddNewPatient(TbPatient tbPatient, Patient patient,  AppDatabase db){
+        AddNewPatient(Patient patient,  AppDatabase db){
             this.p = patient;
-            this.tp = tbPatient;
             this.database = db;
             dialog.show();
         }
@@ -226,9 +252,14 @@ public class ClientRegisterActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
 
             database.patientModel().addPatient(p);
-            database.tbPatientModelDao().addPatient(tp);
+            //database.tbPatientModelDao().addPatient(tp);
 
             //TODO: Add patient to PostOffice and set Sync Status
+            PostOffice po = new PostOffice();
+            po.setPost_id(p.getPatientId());
+            po.setPost_data_type(POST_DATA_TYPE_PATIENT);
+            po.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(po);
 
             return null;
         }
@@ -237,8 +268,8 @@ public class ClientRegisterActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
-
-            if (isTbClient){
+            finish();
+            /*if (isTbClient){
                 Intent intent = new Intent(ClientRegisterActivity.this, TbClientDetailsActivity.class);
                 intent.putExtra("patient", p);
                 intent.putExtra("isPatientNew", true);
@@ -246,9 +277,7 @@ public class ClientRegisterActivity extends BaseActivity {
                 finish();
             }else {
                 finish();
-            }
-
-
+            }*/
         }
     }
 

@@ -46,6 +46,7 @@ public class constants {
     public static final String POST_DATA_TYPE_REFERRAL = "r";
     public static final String POST_DATA_REFERRAL_FEEDBACK = "rf";
     public static final String POST_DATA_TYPE_PATIENT = "p";
+    public static final String POST_DATA_TYPE_TB_PATIENT = "tp";
     public static final String POST_DATA_TYPE_ENCOUNTER = "e";
 
     public static final int ENTRY_NOT_SYNCED = 0;

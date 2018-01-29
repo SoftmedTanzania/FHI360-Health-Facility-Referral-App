@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import apps.softmed.com.hfreferal.activities.HomeActivity;
 import apps.softmed.com.hfreferal.api.Endpoints;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
@@ -80,36 +81,39 @@ public class PostOfficeService extends IntentService {
                 if (data.getPost_data_type().equals(POST_DATA_TYPE_PATIENT)) {
 
                     final Patient patient = database.patientModel().getPatientById(data.getPost_id());
-                    final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
+                    //final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(BaseActivity.getPatientRequestBody(patient, tbPatient, userData));
+                    Call call = patientServices.postPatient(BaseActivity.getPatientRequestBody(patient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
-                            PatientResponce patientResponce = (PatientResponce) response.body();
+                            Patient patient1 = (Patient) response.body();
                             //Store Received Patient Information, TbPatient as well as PatientAppointments
                             if (response.body() != null) {
                                 Log.d("patient_response", response.body().toString());
 
-                                Patient patient1 = patientResponce.getPatient();
-                                TbPatient tbPatient1 = patientResponce.getTbPatient();
-                                List<PatientAppointment> appointments = patientResponce.getPatientAppointments();
+                                //TbPatient tbPatient1 = patientResponce.getTbPatient();
+                                //List<PatientAppointment> appointments = patientResponce.getPatientAppointments();
+
+                                new ReplacePatientObject().execute(patient, patient1);
 
                                 //Delete local patient reference
-                                database.patientModel().deleteAPatient(patient);
-                                database.tbPatientModelDao().deleteAPatient(tbPatient);
-                                List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
+                                //database.patientModel().deleteAPatient(patient);
+                                //database.tbPatientModelDao().deleteAPatient(tbPatient);
+                                /*List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
                                 for (int i = 0; i < oldAppointments.size(); i++) {
                                     database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
-                                }
+                                }*/
 
                                 //Insert server's patient reference
-                                database.patientModel().addPatient(patient1);
-                                database.tbPatientModelDao().addPatient(tbPatient1);
+                                //database.patientModel().addPatient(patient1);
+                                /*database.tbPatientModelDao().addPatient(tbPatient1);
                                 for (int j = 0; j < appointments.size(); j++) {
                                     database.appointmentModelDao().addAppointment(appointments.get(j));
-                                }
+                                }*/
+
+                                new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
 
                             } else {
                                 Log.d("patient_response", "Patient Responce is null " + response.body());
@@ -183,5 +187,49 @@ public class PostOfficeService extends IntentService {
         WakefulBroadcastReceiver.completeWakefulIntent(intent);
     }
 
+
+    class ReplacePatientObject extends AsyncTask<Patient, Void, Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Patient... patients) {
+
+            //Delete the old object
+            database.patientModel().deleteAPatient(patients[0]);
+            //Insert server's patient reference
+            database.patientModel().addPatient(patients[1]);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    class DeletePOstData extends AsyncTask<PostOffice, Void, Void>{
+
+        AppDatabase database;
+
+        DeletePOstData(AppDatabase db){
+            this.database = db;
+        }
+
+        @Override
+        protected Void doInBackground(PostOffice... postOffices) {
+            database.postOfficeModelDao().deletePostData(postOffices[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+        }
+    }
 
 }
