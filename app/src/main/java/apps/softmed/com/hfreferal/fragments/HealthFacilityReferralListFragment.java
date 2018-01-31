@@ -213,15 +213,15 @@ public class HealthFacilityReferralListFragment extends Fragment {
             }
 
         }else {
-            if (source == SOURCE_HF){
-                listViewModel.getReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+            if (source == CHW_TO_FACILITY){
+                listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
                         adapter.addItems(referrals);
                     }
                 });
-            }else if (source == SOURCE_CHW){
-                listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+            }else{
+                listViewModel.getReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
                         adapter.addItems(referrals);

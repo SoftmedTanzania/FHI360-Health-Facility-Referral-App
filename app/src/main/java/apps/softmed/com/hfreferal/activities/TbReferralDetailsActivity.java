@@ -283,6 +283,11 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
             database.postOfficeModelDao().addPostEntry(postOffice);
 
+            currentPatient = database.patientModel().getPatientById(currentReferral.getPatient_id());
+            if (tbStatus.isChecked()){
+                currentPatient.setCurrentOnTbTreatment(true);
+                database.patientModel().updatePatient(currentPatient);
+            }
 
             return null;
         }
@@ -293,9 +298,10 @@ public class TbReferralDetailsActivity extends BaseActivity {
             saveProgress.setVisibility(View.GONE);
             saveButton.setVisibility(View.VISIBLE);
             if (tbStatus.isChecked()){
+
                 Intent intent = new Intent(TbReferralDetailsActivity.this, TbClientDetailsActivity.class);
                 intent.putExtra("patient", currentPatient);
-                intent.putExtra("isPatientNew", true);
+                intent.putExtra("isPatientNew", false);
                 startActivity(intent);
             }
             finish();

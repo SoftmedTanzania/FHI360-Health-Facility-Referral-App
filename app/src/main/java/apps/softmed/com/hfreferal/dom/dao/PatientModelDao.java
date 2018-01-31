@@ -6,6 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -33,6 +34,9 @@ public interface PatientModelDao {
 
     @Insert(onConflict = REPLACE)
     void addPatient(Patient patients);
+
+    @Update
+    void updatePatient(Patient patient);
 
     @Query("select patientFirstName || ' ' || patientSurname from Patient where patientId = :patientId")
     String getPatientName(String patientId);

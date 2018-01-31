@@ -27,6 +27,7 @@ import java.util.Random;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
+import apps.softmed.com.hfreferal.dom.objects.AppData;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
@@ -123,9 +124,23 @@ public class TbClientDetailsActivity extends BaseActivity {
                 ward.setText(currentPatient.getWard()==""? "" : currentPatient.getWard());
                 village.setText(currentPatient.getVillage() == "" ? "" : currentPatient.getVillage());
                 hamlet.setText(currentPatient.getHamlet() == "" ? "" : currentPatient.getHamlet());
+                patientWeight.setText(""); //save patient weight in patient object so as to be able to display it here
 
-                GetTbPatient getTbPatient = new GetTbPatient(baseDatabase, patientNew);
-                getTbPatient.execute(currentPatient.getPatientId());
+                if (patientNew){
+
+                    TbPatient tbPatient = new TbPatient();
+                    tbPatient.setTempID(Long.parseLong(currentPatient.getPatientId()));
+                    tbPatient.setPatientId(Long.parseLong(currentPatient.getPatientId()));
+
+                    currentTbPatient = tbPatient;
+
+                    CreateTbPatient createTbPatient = new CreateTbPatient(baseDatabase, patientNew);
+                    createTbPatient.execute(tbPatient);
+
+                }else {
+                    GetTbPatientByPatientID getTbPatientByPatientID = new GetTbPatientByPatientID(baseDatabase);
+                    getTbPatientByPatientID.execute(currentPatient.getPatientId());
+                }
 
             }
 
@@ -393,49 +408,70 @@ public class TbClientDetailsActivity extends BaseActivity {
         }
     }
 
-    class GetTbPatient extends AsyncTask<String, Void, TbPatient> {
+    class CreateTbPatient extends AsyncTask<TbPatient, Void, Void> {
 
         AppDatabase database;
         boolean isPatientNew;
         List<TbEncounters> listOfPatientEncounters;
 
-        GetTbPatient(AppDatabase db, boolean patientNew){
+        CreateTbPatient(AppDatabase db, boolean patientNew){
             this.database = db;
             this.isPatientNew = patientNew;
         }
 
         @Override
-        protected TbPatient doInBackground(String... params) {
+        protected Void doInBackground(TbPatient... params) {
+            database.tbPatientModelDao().addPatient(params[0]);
+            return null;
+        }
 
-            TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(params[0]);
-            currentTbPatient = tbPatient;
+        @Override
+        protected void onPostExecute(Void voids) {
+            super.onPostExecute(voids);
+        }
 
-            return tbPatient;
+    }
 
+    class GetTbPatientByPatientID extends AsyncTask<String, Void, TbPatient>{
+
+        AppDatabase database;
+
+        GetTbPatientByPatientID(AppDatabase db){
+            this.database = db;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected TbPatient doInBackground(String... strings) {
+
+            TbPatient patient = database.tbPatientModelDao().getTbPatientById(strings[0]);
+            currentTbPatient = patient;
+
+            return patient;
         }
 
         @Override
         protected void onPostExecute(TbPatient tbPatient) {
             super.onPostExecute(tbPatient);
-            if (!patientNew){
 
-                xray.setText(tbPatient.getXray());
-                xray.setEnabled(false);
-                otherTests.setText(tbPatient.getOtherTests());
-                otherTests.setEnabled(false);
-                patientWeight.setText(tbPatient.getWeight()+"");
-
-                for (int i=0; i<treatmentTypes.length; i++){
-                    if (treatmentTypes[i].equals(tbPatient.getTreatment_type())){
-                        matibabuSpinner.setSelection(i+1);
-                        matibabuSpinner.setEnabled(false);
-                    }
-                }
-
-            }
+            xray.setText(tbPatient.getXray());
+            xray.setEnabled(false);
+            otherTests.setText(tbPatient.getOtherTests());
+            otherTests.setEnabled(false);
             patientWeight.setText(tbPatient.getWeight()+"");
-        }
 
+            for (int i=0; i<treatmentTypes.length; i++){
+                if (treatmentTypes[i].equals(tbPatient.getTreatment_type())){
+                    matibabuSpinner.setSelection(i+1);
+                    matibabuSpinner.setEnabled(false);
+                }
+            }
+
+        }
     }
 
     class SaveTbPatientTask extends AsyncTask<TbPatient, Void, Void> {

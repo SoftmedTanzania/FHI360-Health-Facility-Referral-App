@@ -192,12 +192,6 @@ public class ClientRegisterActivity extends BaseActivity {
         patient.setCbhs(strCbhsNumber);
         patient.setCtcNumber(strCTCNumber);
 
-        /*
-        tbPatient.setTempID(number);
-        tbPatient.setPatientId(number);
-        tbPatient.setWeight(Double.parseDouble(strWeight));
-        tbPatient.setVeo(strMwenyekiti);*/
-
         AddNewPatient addNewPatient = new AddNewPatient(patient, baseDatabase);
         addNewPatient.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

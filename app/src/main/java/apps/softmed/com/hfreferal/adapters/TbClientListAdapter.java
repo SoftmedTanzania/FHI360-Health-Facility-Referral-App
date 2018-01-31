@@ -1,5 +1,6 @@
 package apps.softmed.com.hfreferal.adapters;
 
+import android.arch.persistence.room.Update;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import java.util.List;
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.activities.TbClientDetailsActivity;
 import apps.softmed.com.hfreferal.activities.TbClientListActivity;
+import apps.softmed.com.hfreferal.activities.TbReferralDetailsActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
@@ -69,7 +71,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //refer client popup
+                //UpdatePatientInformation and save data
                 Intent intent = new Intent(context, TbClientDetailsActivity.class);
                 intent.putExtra("patient", patient);
                 intent.putExtra("isPatientNew", false);
@@ -149,7 +151,11 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            holder.clientTreatment.setText(tbPatient.getTreatment_type());
+            try {
+                holder.clientTreatment.setText(tbPatient.getTreatment_type());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -158,5 +164,6 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
             return null;
         }
     }
+
 
 }

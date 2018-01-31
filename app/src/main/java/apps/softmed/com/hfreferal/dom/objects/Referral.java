@@ -74,10 +74,8 @@ public class Referral implements Serializable{
     @SerializedName("serviceIndicatorIds")
     private List<Long> serviceIndicatorIds;
 
-    /*
-     * 0 = CHW
-     * 1 = Health facility
-     *
+    /**
+     * This represent the service in which the referral is originated
      */
     @SerializedName("referralSource")
     private int referralSource;

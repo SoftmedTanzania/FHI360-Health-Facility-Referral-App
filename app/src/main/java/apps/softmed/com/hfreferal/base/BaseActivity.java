@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -20,6 +21,7 @@ import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
+import apps.softmed.com.hfreferal.dom.objects.User;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
 import apps.softmed.com.hfreferal.utils.SessionManager;
 import okhttp3.MediaType;
@@ -153,54 +155,36 @@ public class BaseActivity extends AppCompatActivity {
 
         try {
 
-            /**
-             *
-             * {"patientId":1,
-             "communityBasedHivService":"",
-             "referralReason":"testing",
-             "serviceId":1,
-             "referralUUID":"11",
-             "serviceProviderUIID":"11",
-             "serviceProviderGroup":"group",
-             "villageLeader":"kallel",
-             "otherClinicalInformation":"",
-             "otherNotes":"",
-             "serviceGivenToPatient":"",
-             "testResults":"",
-             "fromFacilityId":"chw",
-             "referralSource":0,
-             "referralType":4,
-             "referralDate":0,
-             "facilityId":"60DF1C60-16E3-6123-94CD-1595111630C4",
-             "referralStatus":-1,
-             "serviceIndicatorIds":[1]
-             }
-             *
-             *
-             */
+            int patientID = Integer.parseInt(referral.getPatient_id());
 
-            object.put("referralId", referral.getReferral_id());
-            object.put("patientId", referral.getPatient_id());
+            object.put("patientId", patientID);
             object.put("communityBasedHivService", referral.getCommunityBasedHivService());
             object.put("referralReason", referral.getReferralReason());
+            //object.put("ctcNumber", referral.getCtcNumber());
             object.put("serviceId", referral.getServiceId());
-            object.put("ctcNumber", referral.getCtcNumber());
-            object.put("serviceIndicatorIds", referral.getServiceIndicatorIds());
             object.put("referralUUID", referral.getReferralUUID());
             object.put("serviceProviderUIID", referral.getServiceProviderUIID());
             object.put("serviceProviderGroup", referral.getServiceProviderGroup());
             object.put("villageLeader", referral.getVillageLeader());
             object.put("otherClinicalInformation", referral.getOtherClinicalInformation());
-            object.put("serviceGivenToPatient", referral.getServiceGivenToPatient());
-            object.put("otherNotes", referral.getOtherNotesAndAdvices());
-            object.put("testResults", referral.isTestResults());
+            object.put("otherNotes", referral.getOtherNotesAndAdvices() == null ? "" : referral.getOtherNotesAndAdvices());
+            object.put("serviceGivenToPatient", referral.getServiceGivenToPatient() == null ? "" : referral.getServiceGivenToPatient());
+            object.put("testResults", referral.isTestResults()+"");
             object.put("fromFacilityId", referral.getFromFacilityId());
             object.put("referralSource", referral.getReferralSource());
+            object.put("referralType", referral.getReferralType());
             object.put("referralDate", referral.getReferralDate());
             object.put("facilityId", referral.getFacilityId());
             object.put("referralStatus", referral.getReferralStatus());
 
-            object.put("healthFacilityCode", userData.getUserFacilityId());
+            JSONArray serviceIndicatorsArray = new JSONArray();
+            for (int i=0; i< referral.getServiceIndicatorIds().size(); i++){
+                long indicator = Long.parseLong(referral.getServiceIndicatorIds().get(i)+"");
+                serviceIndicatorsArray.put(indicator);
+            }
+
+            object.put("serviceIndicatorIds", serviceIndicatorsArray);
+            //object.put("healthFacilityCode", userData.getUserFacilityId());
 
             datastream = object.toString();
 
@@ -234,6 +218,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("surname", patient.getPatientSurname());
             object.put("gender", patient.getGender());
             //object.put("healthFacilityCode", "2ff3e6fb-eb85-49eb-b7b3-564ddc26b9d4");
+            object.put("currentOnTbTreatment", patient.isCurrentOnTbTreatment());
             object.put("healthFacilityCode", userData.getUserFacilityId());
             object.put("communityBasedHivService", patient.getCbhs());
             object.put("ctcNumber", patient.getCtcNumber());
@@ -268,6 +253,62 @@ public class BaseActivity extends AppCompatActivity {
 
         return body;
 
+    }
+
+    public static RequestBody getTbPatientRequestBody(Patient patient, TbPatient tbPatient, UserData userData){
+        RequestBody body;
+        String datastream = "";
+        JSONObject object   = new JSONObject();
+
+        try {
+            object.put("patientId", patient.getPatientId());
+            object.put("firstName", patient.getPatientFirstName());
+            object.put("middleName", patient.getPatientMiddleName());
+            object.put("phoneNumber", patient.getPhone_number());
+            object.put("ward", patient.getWard());
+            object.put("village", patient.getVillage());
+            object.put("hamlet", patient.getHamlet());
+            object.put("dateOfBirth", patient.getDateOfBirth());
+            object.put("surname", patient.getPatientSurname());
+            object.put("gender", patient.getGender());
+            object.put("hivStatus", patient.isHivStatus());
+            object.put("isPRegnant", false);
+            object.put("dateOfDeath", patient.getDateOfDeath());
+            object.put("healthFacilityPatientId", 0);
+            object.put("patientType", tbPatient.getPatientType());
+            object.put("transferType", tbPatient.getTransferType());
+            object.put("referralType", tbPatient.getReferralType());
+            object.put("veo", tbPatient.getVeo());
+            object.put("weight", tbPatient.getWeight());
+            object.put("xray", tbPatient.getXray());
+            object.put("makohozi", tbPatient.getMakohozi());
+            object.put("otherTests", tbPatient.getOtherTests());
+            object.put("treatment_type", tbPatient.getTreatment_type());
+            object.put("outcome", tbPatient.getOutcome());
+            object.put("outcomeDate", tbPatient.getOutcomeDate());
+            object.put("outcomeDetails", tbPatient.getOutcomeDetails());
+            object.put("healthFacilityCode", userData.getUserFacilityId());
+
+            //object.put("healthFacilityCode", "2ff3e6fb-eb85-49eb-b7b3-564ddc26b9d4");
+            //object.put("currentOnTbTreatment", patient.isCurrentOnTbTreatment());
+            //object.put("communityBasedHivService", patient.getCbhs());
+            //object.put("ctcNumber", patient.getCtcNumber());
+            //object.put("careTakerName", patient.getCareTakerName());
+            //object.put("careTakerPhoneNumber", patient.getCareTakerPhoneNumber());
+            //object.put("careTakerRelationship", patient.getCareTakerRelationship());
+
+            datastream = object.toString();
+
+            Log.d("PostOfficeService", datastream);
+
+            body = RequestBody.create(MediaType.parse("application/json"), datastream);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            body = RequestBody.create(MediaType.parse("application/json"), datastream);
+        }
+
+        return body;
     }
 
     public static RequestBody getEncounterRequestBody(TbEncounters encounters){

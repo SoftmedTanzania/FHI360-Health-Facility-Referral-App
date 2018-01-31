@@ -48,6 +48,7 @@ import apps.softmed.com.hfreferal.dom.responces.PatientResponce;
 import apps.softmed.com.hfreferal.fragments.HivFragment;
 import apps.softmed.com.hfreferal.fragments.OPDFragment;
 import apps.softmed.com.hfreferal.fragments.TbFragment;
+import apps.softmed.com.hfreferal.services.PostOfficeService;
 import apps.softmed.com.hfreferal.utils.AlarmReceiver;
 import apps.softmed.com.hfreferal.utils.Config;
 import apps.softmed.com.hfreferal.utils.ServiceGenerator;
@@ -233,85 +234,61 @@ public class HomeActivity extends BaseActivity {
                     });
 
                 }else if (data.getPost_data_type().equals(POST_DATA_TYPE_TB_PATIENT)){
-                    /*
+
                     final Patient patient = database.patientModel().getPatientById(data.getPost_id());
-                    //final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
+                    final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(getPatientRequestBody(patient, userData));
+                    Call call = patientServices.postPatient(getTbPatientRequestBody(patient, tbPatient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
                             PatientResponce patientResponce = (PatientResponce) response.body();
                             //Store Received Patient Information, TbPatient as well as PatientAppointments
                             if (response.body()!=null){
-                                Log.d("patient_response", response.body().toString());
+                                Log.d("POST_DATA_TYPE_TP", response.body().toString());
 
-                                Patient patient1 = patientResponce.getPatient();
-                                TbPatient tbPatient1 = patientResponce.getTbPatient();
-                                List<PatientAppointment> appointments = patientResponce.getPatientAppointments();
-
-                                //Delete local patient reference
-                                database.patientModel().deleteAPatient(patient);
-                                database.tbPatientModelDao().deleteAPatient(tbPatient);
-                                List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
-                                for (int i=0; i<oldAppointments.size(); i++){
-                                    database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
-                                }
-
-                                //Insert server's patient reference
-                                database.patientModel().addPatient(patient1);
-                                database.tbPatientModelDao().addPatient(tbPatient1);
-                                for (int j=0; j<appointments.size(); j++){
-                                    database.appointmentModelDao().addAppointment(appointments.get(j));
-                                }
+                                new ReplaceTbPatientAndAppointments(database, patient, tbPatient).execute(patientResponce);
 
                             }else {
-                                Log.d("patient_response","Patient Responce is null "+response.body());
+                                Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
                             }
 
-                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+                            new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
 
                         }
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
                             Log.d("patient_response", t.getMessage());
-                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
                         }
                     });
-                     */
-                } else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
 
-                    Log.d("POST_DATA_TYPE_REFERRAL", "Syncing referral data");
+                } else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
 
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = referalService.postReferral(getReferralRequestBody(referral, userData));
+                    Call call = referalService.postReferral(BaseActivity.getReferralRequestBody(referral, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
                             Referral receivedReferral = (Referral) response.body();
-                            if (response.body() != null){
+                            if (response.body() != null) {
 
-                                Log.d("POST_DATA_TYPE_REFERRAL", "Synced and received back referral is : "+receivedReferral.getReferral_id());
+                                Log.d("PostReferral", response.body().toString());
+                                new ReplaceReferralObject().execute(referral, receivedReferral);
 
-                                database.referalModel().deleteReferal(referral); //Delete local referral reference
-                                database.referalModel().addReferal(receivedReferral); //Store the server's referral reference
+                                new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
 
-                            }else {
-                                Log.d("POST_DATA_TYPE_REFERRAL", "Responce is Null : "+response.body());
+                            } else {
+                                Log.d("PostReferral", "Responce is Null : " + response.body());
                             }
-
-                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
-
                         }
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
-                            Log.d("POST_DATA_TYPE_REFERRAL", t.getMessage());
-                            //new DeletePOstData(database).execute(data); //TODO : Do not delete the data
+                            Log.d("PostReferral", t.getMessage());
                         }
                     });
 
@@ -556,6 +533,68 @@ public class HomeActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+        }
+    }
+
+    class ReplaceReferralObject extends AsyncTask<Referral, Void, Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Referral... referrals) {
+
+            database.referalModel().deleteReferal(referrals[0]); //Delete local referral reference
+            database.referalModel().addReferal(referrals[1]); //Store the server's referral reference
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    class ReplaceTbPatientAndAppointments extends AsyncTask<PatientResponce, Void, Void>{
+
+        Patient patient;
+        TbPatient tbPatient;
+        PatientAppointment patientAppointment;
+        AppDatabase database;
+
+        ReplaceTbPatientAndAppointments(AppDatabase db, Patient pt, TbPatient tp){
+            this. database = db;
+            this.patient = pt;
+            this.tbPatient = tp;
+        }
+
+        @Override
+        protected Void doInBackground(PatientResponce... patientResponces) {
+
+            database.tbPatientModelDao().deleteAPatient(tbPatient);
+
+            TbPatient tbPatient1 = patientResponces[0].getTbPatient();
+            List<PatientAppointment> appointments = patientResponces[0].getPatientAppointments();
+
+            List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
+            for (int i=0; i<oldAppointments.size(); i++){
+                database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
+            }
+
+            //Insert server's patient reference
+            database.tbPatientModelDao().addPatient(tbPatient1);
+            for (int j=0; j<appointments.size(); j++){
+                database.appointmentModelDao().addAppointment(appointments.get(j));
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 

@@ -51,7 +51,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/black"
-                            android:text="Rufaa za CTC"/>
+                            android:text="Referrals List"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
                             android:id="@+id/refered_clients_text"
                             android:fontFamily="@font/roboto_regular"
                             android:textColor="@color/black"
-                            android:text="Rufaa zilizotolewa (CTC)"/>
+                            android:text="Referrals Issued (CTC)"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -170,7 +170,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
-                        android:text="List ya Wateja"/>
+                        android:text="Clients List"/>
 
                 </RelativeLayout>
 

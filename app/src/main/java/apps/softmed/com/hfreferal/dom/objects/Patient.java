@@ -66,6 +66,7 @@ public class Patient implements Serializable{
     @SerializedName("hivStatus")
     private boolean hivStatus = false;
 
+    @SerializedName("currentOnTbTreatment")
     private boolean currentOnTbTreatment;
 
     @SerializedName("careTakerName")

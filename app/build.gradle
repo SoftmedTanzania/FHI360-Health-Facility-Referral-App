@@ -6,7 +6,7 @@ android {
     buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "apps.softmed.com.hfreferal"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

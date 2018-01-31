@@ -52,7 +52,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/black"
-                            android:text="Rufaa"/>
+                            android:text="Referrals List "/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -146,7 +146,7 @@
                             android:id="@+id/refered_clients_text"
                             android:fontFamily="@font/roboto_regular"
                             android:textColor="@color/black"
-                            android:text="Rufaa zilizotolewa (CTC)"/>
+                            android:text="Referrals Issued"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -206,7 +206,7 @@
                         android:layout_toRightOf="@id/tb_referals_icon"
                         android:textColor="@color/card_grid_text"
                         android:layout_centerVertical="true"
-                        android:text="Sajili Mteja"/>
+                        android:text="Register Client"/>
 
                 </RelativeLayout>
 
@@ -245,7 +245,7 @@
                         android:layout_toRightOf="@id/client_list_image"
                         android:textColor="@color/card_grid_text"
                         android:layout_centerVertical="true"
-                        android:text="List ya wateja"/>
+                        android:text="Clients List"/>
 
 
                 </RelativeLayout>
