@@ -24,7 +24,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface TbEncounterModelDao {
 
     @Query("select * from TbEncounters where tbPatientID = :tbPatientId")
-    List<TbEncounters> getEncounterByPatientID(long tbPatientId);
+    List<TbEncounters> getEncounterByPatientID(String tbPatientId);
 
     @Query("select * from TbEncounters")
     LiveData<List<TbEncounters>> getAllEncounters();

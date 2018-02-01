@@ -26,6 +26,7 @@ import com.rey.material.widget.ProgressView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
@@ -34,12 +35,16 @@ import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.dom.objects.ReferralIndicator;
+import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.fragments.IssueReferralDialogueFragment;
 import apps.softmed.com.hfreferal.utils.ListStringConverter;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_PATIENT;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
+import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_TB_PATIENT;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_COMPLETED;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 
@@ -278,15 +283,33 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
             PostOffice postOffice = new PostOffice();
             postOffice.setPost_id(referal.getReferral_id());
-            postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
+            postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
             database.postOfficeModelDao().addPostEntry(postOffice);
 
             currentPatient = database.patientModel().getPatientById(currentReferral.getPatient_id());
             if (tbStatus.isChecked()){
+
                 currentPatient.setCurrentOnTbTreatment(true);
                 database.patientModel().updatePatient(currentPatient);
+
+                PostOffice patientPost = new PostOffice();
+                patientPost.setPost_id(referal.getReferral_id());
+                patientPost.setPost_data_type(POST_DATA_TYPE_PATIENT);
+                patientPost.setSyncStatus(ENTRY_NOT_SYNCED);
+
+                //TODO: Create a new TbClient Object with basic parameters
+                TbPatient tbPatient = new TbPatient();
+                tbPatient.setPatientId(Long.parseLong(currentPatient.getPatientId()));
+                tbPatient.setTempID(UUID.randomUUID()+"");
+                database.tbPatientModelDao().addPatient(tbPatient);
+
+                PostOffice tbPatientPost = new PostOffice();
+                tbPatientPost.setPost_id(referal.getReferral_id());
+                tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
+                tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
+
             }
 
             return null;
@@ -298,13 +321,13 @@ public class TbReferralDetailsActivity extends BaseActivity {
             saveProgress.setVisibility(View.GONE);
             saveButton.setVisibility(View.VISIBLE);
             if (tbStatus.isChecked()){
-
                 Intent intent = new Intent(TbReferralDetailsActivity.this, TbClientDetailsActivity.class);
                 intent.putExtra("patient", currentPatient);
-                intent.putExtra("isPatientNew", false);
+                intent.putExtra("isPatientNew", true);
                 startActivity(intent);
+            }else {
+                finish();
             }
-            finish();
         }
     }
 

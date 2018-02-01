@@ -26,7 +26,7 @@ public class TbPatient implements Serializable{
     This is the ID of tbPatient table
      */
     @NonNull
-    private long tempID;
+    private String tempID;
 
     @PrimaryKey(autoGenerate = false)
     private long patientId;
@@ -74,7 +74,7 @@ public class TbPatient implements Serializable{
     @SerializedName("isPregnant")
     private boolean isPregnant;
 
-    public void setTempID(@NonNull Long id) {
+    public void setTempID(@NonNull String id) {
         this.tempID = id;
     }
 
@@ -87,7 +87,7 @@ public class TbPatient implements Serializable{
     }
 
     @NonNull
-    public Long getTempID() {
+    public String getTempID() {
         return tempID;
     }
 

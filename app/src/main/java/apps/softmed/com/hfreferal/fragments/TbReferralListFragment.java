@@ -36,6 +36,7 @@ import apps.softmed.com.hfreferal.dom.objects.Referral;
 import apps.softmed.com.hfreferal.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import static apps.softmed.com.hfreferal.utils.constants.CHW_TO_FACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 import static apps.softmed.com.hfreferal.utils.constants.STATUS_COMPLETED;
@@ -187,14 +188,14 @@ public class TbReferralListFragment extends Fragment {
 
         adapter = new TbReferralListRecyclerAdapter(new ArrayList<Referral>(), TbReferralListFragment.this.getActivity());
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
-        if (source == SOURCE_CHW){
+        if (source == CHW_TO_FACILITY){
             listViewModel.getReferalListChwSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {
                     adapter.addItems(referrals);
                 }
             });
-        }else if (source == SOURCE_HF){
+        }else{
             listViewModel.getReferalListHfSourceTb().observe(TbReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {

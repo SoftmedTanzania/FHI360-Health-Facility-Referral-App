@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.UUID;
 
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.base.AppDatabase;
@@ -119,28 +120,14 @@ public class TbClientDetailsActivity extends BaseActivity {
                 calendar.setTimeInMillis(currentPatient.getDateOfBirth());
 
                 patientAge.setText(getDiffYears(calendar.getTime(), new Date())+"");
-                patientWeight.setText("");
                 phoneNumber.setText(currentPatient.getPhone_number()==""? "" : currentPatient.getPhone_number());
                 ward.setText(currentPatient.getWard()==""? "" : currentPatient.getWard());
                 village.setText(currentPatient.getVillage() == "" ? "" : currentPatient.getVillage());
                 hamlet.setText(currentPatient.getHamlet() == "" ? "" : currentPatient.getHamlet());
                 patientWeight.setText(""); //save patient weight in patient object so as to be able to display it here
 
-                if (patientNew){
-
-                    TbPatient tbPatient = new TbPatient();
-                    tbPatient.setTempID(Long.parseLong(currentPatient.getPatientId()));
-                    tbPatient.setPatientId(Long.parseLong(currentPatient.getPatientId()));
-
-                    currentTbPatient = tbPatient;
-
-                    CreateTbPatient createTbPatient = new CreateTbPatient(baseDatabase, patientNew);
-                    createTbPatient.execute(tbPatient);
-
-                }else {
-                    GetTbPatientByPatientID getTbPatientByPatientID = new GetTbPatientByPatientID(baseDatabase);
-                    getTbPatientByPatientID.execute(currentPatient.getPatientId());
-                }
+                GetTbPatientByPatientID getTbPatientByPatientID = new GetTbPatientByPatientID(baseDatabase);
+                getTbPatientByPatientID.execute(currentPatient.getPatientId());
 
             }
 
@@ -263,7 +250,7 @@ public class TbClientDetailsActivity extends BaseActivity {
                 Log.d("BILLION", "Matibabu selected  : "+matibabuSpinner.getSelectedItem());
             }
             if (xray.getText().toString().equals("")){
-                Toast.makeText(context, "Tafadhali Jaza Aina ya matibabu", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Jaza majibu ya X-Ray", Toast.LENGTH_LONG).show();
                 return false;
             }else {
                 strXray = xray.getText().toString();
@@ -397,7 +384,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         protected TbEncounters doInBackground(String... strings) {
             Log.d("Billions", "On Encounters background");
 
-            List<TbEncounters> allEncounters = database.tbEncounterModelDao().getEncounterByPatientID(Long.parseLong(strings[1]));
+            List<TbEncounters> allEncounters = database.tbEncounterModelDao().getEncounterByPatientID(strings[1]);
             Log.d("Billions", "All Encounters Size "+allEncounters.size());
 
             List<TbEncounters> encounter = database.tbEncounterModelDao().getMonthEncounter(strings[0], strings[1]);
@@ -458,17 +445,27 @@ public class TbClientDetailsActivity extends BaseActivity {
         protected void onPostExecute(TbPatient tbPatient) {
             super.onPostExecute(tbPatient);
 
-            xray.setText(tbPatient.getXray());
-            xray.setEnabled(false);
-            otherTests.setText(tbPatient.getOtherTests());
-            otherTests.setEnabled(false);
-            patientWeight.setText(tbPatient.getWeight()+"");
+            if (tbPatient != null){
 
-            for (int i=0; i<treatmentTypes.length; i++){
-                if (treatmentTypes[i].equals(tbPatient.getTreatment_type())){
-                    matibabuSpinner.setSelection(i+1);
+                xray.setText(tbPatient.getXray() == null ? "" : tbPatient.getXray());
+                otherTests.setText(tbPatient.getOtherTests() == null ? "" : tbPatient.getOtherTests());
+                patientWeight.setText(tbPatient.getWeight()+"" == null ? "" : tbPatient.getWeight()+"");
+                for (int i=0; i<treatmentTypes.length; i++){
+                    if (treatmentTypes[i].equals(tbPatient.getTreatment_type())){
+                        matibabuSpinner.setSelection(i+1);
+                    }
+                }
+
+                if (patientNew){
+                    xray.setEnabled(true);
+                    otherTests.setEnabled(true);
+                    matibabuSpinner.setEnabled(true);
+                }else {
+                    xray.setEnabled(false);
+                    otherTests.setEnabled(false);
                     matibabuSpinner.setEnabled(false);
                 }
+
             }
 
         }

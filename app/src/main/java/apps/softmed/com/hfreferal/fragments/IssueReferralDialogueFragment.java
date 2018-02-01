@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import apps.softmed.com.hfreferal.R;
 import apps.softmed.com.hfreferal.adapters.HealthFacilitiesAdapter;
@@ -43,7 +44,6 @@ import static apps.softmed.com.hfreferal.utils.constants.INTERFACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.INTRAFACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static apps.softmed.com.hfreferal.utils.constants.REFERRAL_STATUS_NEW;
-import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 
 /**
  * Created by issy on 1/6/18.
@@ -75,7 +75,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     List<String> destinations = new ArrayList<>();
 
     private ServicesAdapter servicesAdapter;
-    private int service;
+    private int sourceService;
     List<ReferralServiceIndicators> referralServiceIndicators = new ArrayList<>();
 
     private int referralType;
@@ -105,7 +105,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
         currentPatient = (Patient) getArguments().getSerializable("currentPatient");
-        service = getArguments().getInt("sourceID");
+        sourceService = getArguments().getInt("sourceID");
 
         setupviews(view);
 
@@ -154,6 +154,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     referralType = FACILITY_TO_CHW;
                 }else if (i == 1){
                     spinnerToHealthFacility.setEnabled(true);
+                    referralType = INTERFACILITY;
                 }
             }
 
@@ -167,8 +168,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 /*TODO
-                * Get the selected service
-                * Query all the indicators associated with that service
+                * Get the selected sourceService
+                * Query all the indicators associated with that sourceService
                 * display indicators
                 * */
 
@@ -230,13 +231,13 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setCommunityBasedHivService("");
         referral.setReferralReason(referralReasonsValue);
         referral.setServiceId(serviceID);
-        referral.setReferralUUID(number+"");
+        referral.setReferralUUID(UUID.randomUUID()+"");
         referral.setCtcNumber("");
         referral.setServiceProviderUIID("");
         referral.setServiceProviderGroup("");
         referral.setVillageLeader("");
 
-        referral.setReferralSource(service);
+        referral.setReferralSource(sourceService);
         referral.setReferralType(referralType);
 
         referral.setReferralDate(today);
