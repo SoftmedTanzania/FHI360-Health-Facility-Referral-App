@@ -38,6 +38,7 @@ import apps.softmed.com.hfreferal.dom.objects.ReferralIndicator;
 import apps.softmed.com.hfreferal.dom.objects.ReferralServiceIndicators;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
+import static apps.softmed.com.hfreferal.utils.SessionManager.KEY_UUID;
 import static apps.softmed.com.hfreferal.utils.constants.ENTRY_NOT_SYNCED;
 import static apps.softmed.com.hfreferal.utils.constants.FACILITY_TO_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.INTERFACILITY;
@@ -233,7 +234,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setServiceId(serviceID);
         referral.setReferralUUID(UUID.randomUUID()+"");
         referral.setCtcNumber("");
-        referral.setServiceProviderUIID("");
+        referral.setServiceProviderUIID(BaseActivity.session.getUserDetails().get(KEY_UUID));
         referral.setServiceProviderGroup("");
         referral.setVillageLeader("");
 

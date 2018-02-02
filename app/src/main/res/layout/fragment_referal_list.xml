@@ -132,7 +132,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.8"
                 android:layout_gravity="center_vertical"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_marginRight="4dp">
 
                 <Button
@@ -149,6 +149,7 @@
                     android:id="@+id/filter_button"/>
 
                 <com.rey.material.widget.ProgressView
+                    android:visibility="gone"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"

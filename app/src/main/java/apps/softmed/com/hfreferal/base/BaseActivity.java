@@ -106,7 +106,14 @@ public class BaseActivity extends AppCompatActivity {
             object.put("referralDate", referral.getReferralDate());
             object.put("facilityId", referral.getFacilityId());
             object.put("referralStatus", referral.getReferralStatus());
-            object.put("serviceIndicatorIds", referral.getServiceIndicatorIds());
+
+            JSONArray serviceIndicatorsArray = new JSONArray();
+            for (int i=0; i< referral.getServiceIndicatorIds().size(); i++){
+                long indicator = Long.parseLong(referral.getServiceIndicatorIds().get(i)+"");
+                serviceIndicatorsArray.put(indicator);
+            }
+
+            object.put("serviceIndicatorIds", serviceIndicatorsArray);
 
             object.put("referralId", referral.getReferral_id());
             object.put("serviceGivenToPatient", referral.getServiceGivenToPatient());

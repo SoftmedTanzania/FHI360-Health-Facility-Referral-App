@@ -198,18 +198,26 @@ public class PostOfficeService extends IntentService {
                             Log.d("POST_RESPOMCES", "Saved to seerver : " + response.body());
                             //database.postOfficeModelDao().deletePostData(data);
                             if (response.code() == 200) {
-                                new BaseActivity.DeletePostData(database).execute(data);
+                                new DeletePOstData(database).execute(data);
                             }
                         }
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
-
+                            Log.d("POST_RESPOMCES", "Failed with message : " + t.getMessage());
                         }
                     });
 
                 } else if (data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)) {
-                    //TbEncounters encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+
+                    /*
+
+                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
+
+                    */
+
                 }
             }
 
