@@ -155,6 +155,37 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public static RequestBody getTbEncounterRequestBody(TbEncounters encounters){
+        RequestBody body;
+        String datastream = "";
+        JSONObject object   = new JSONObject();
+
+        try {
+
+            object.put("tbPatientId", Long.parseLong(encounters.getTbPatientID()));
+            object.put("makohozi", encounters.getMakohozi());
+            object.put("appointmentId", encounters.getAppointmentId());
+            object.put("encounterMonth", encounters.getEncounterMonth());
+            object.put("hasFinishedPreviousMonthMedication", encounters.isHasFinishedPreviousMonthMedication());
+            object.put("scheduledDate", encounters.getScheduledDate());
+            object.put("medicationDate", encounters.getMedicationDate());
+            object.put("medicationStatus", encounters.isMedicationStatus());
+
+            datastream = object.toString();
+
+            Log.d("PostOfficeService", datastream);
+
+            body = RequestBody.create(MediaType.parse("application/json"), datastream);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            body = RequestBody.create(MediaType.parse("application/json"), datastream);
+        }
+
+        return body;
+
+    }
+
     public static RequestBody getReferralRequestBody(Referral referral, UserData userData){
         RequestBody body;
         String datastream = "";

@@ -20,23 +20,23 @@ public class TbEncounters implements Serializable {
     private String id;
 
     @NonNull
-    @SerializedName("tb_patient_id")
+    @SerializedName("tbPatientId")
     private String tbPatientID;
 
     @NonNull
-    @SerializedName("encounter_month")
-    private String encounterMonth;
+    @SerializedName("encounterMonth")
+    private int encounterMonth;
 
     @SerializedName("makohozi")
     private String makohozi;
 
-    @SerializedName("appointment_id")
-    private String appointmentId;
+    @SerializedName("appointmentId")
+    private long appointmentId;
 
-    @SerializedName("has_finished_previous_month_medication")
-    private int hasFinishedPreviousMonthMedication;
+    @SerializedName("hasFinishedPreviousMonthMedication")
+    private boolean hasFinishedPreviousMonthMedication;
 
-    @SerializedName("medication_status")
+    @SerializedName("medicationStatus")
     private boolean medicationStatus;
 
     @SerializedName("medicationDate")
@@ -54,36 +54,12 @@ public class TbEncounters implements Serializable {
         this.tbPatientID = tbPatientID;
     }
 
-    public String getEncounterMonth() {
-        return encounterMonth;
-    }
-
-    public void setEncounterMonth(String encounterMonth) {
-        this.encounterMonth = encounterMonth;
-    }
-
     public String getMakohozi() {
         return makohozi;
     }
 
     public void setMakohozi(String makohozi) {
         this.makohozi = makohozi;
-    }
-
-    public String getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(String appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
-    public int getHasFinishedPreviousMonthMedication() {
-        return hasFinishedPreviousMonthMedication;
-    }
-
-    public void setHasFinishedPreviousMonthMedication(int hasFinishedPreviousMonthMedication) {
-        this.hasFinishedPreviousMonthMedication = hasFinishedPreviousMonthMedication;
     }
 
     public boolean isMedicationStatus() {
@@ -116,5 +92,30 @@ public class TbEncounters implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @NonNull
+    public int getEncounterMonth() {
+        return encounterMonth;
+    }
+
+    public void setEncounterMonth(@NonNull int encounterMonth) {
+        this.encounterMonth = encounterMonth;
+    }
+
+    public long getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(long appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public boolean isHasFinishedPreviousMonthMedication() {
+        return hasFinishedPreviousMonthMedication;
+    }
+
+    public void setHasFinishedPreviousMonthMedication(boolean hasFinishedPreviousMonthMedication) {
+        this.hasFinishedPreviousMonthMedication = hasFinishedPreviousMonthMedication;
     }
 }

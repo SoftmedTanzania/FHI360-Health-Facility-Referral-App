@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +48,11 @@ public class ClientRegisterActivity extends BaseActivity {
     private Toolbar toolbar;
     private MaterialSpinner genderSpinner;
     private EditText firstName, middleName, surname, phone, ward, village, hamlet, weight, mwenyekiti, careTakerName, careTakerPhone, careTakerRelationship, chbsNumber, ctcNumber;
-    private Button btnSave;
+    private Button btnSave, btnCancel;
     private TextView dateOfBirth;
     private CheckBox pregnant;
     private ProgressDialog dialog;
+    private RelativeLayout pregnantWrap;
 
     private Date dob;
     private String strFname, strMname, strSurname, strGender, strPhone, strWard, strVillage, strHamlet, strCbhsNumber, strCTCNumber;
@@ -61,7 +64,7 @@ public class ClientRegisterActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tb_register);
+        setContentView(R.layout.opd_client_registration_activity);
         setupview();
 
         if (getIntent().getExtras() != null){
@@ -103,6 +106,22 @@ public class ClientRegisterActivity extends BaseActivity {
             }
         });
 
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0){
+                    pregnantWrap.setVisibility(View.INVISIBLE);
+                }else {
+                    pregnantWrap.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,6 +132,13 @@ public class ClientRegisterActivity extends BaseActivity {
                             "Weka taarifa zote kabla ya kuhifadhi taarifa",
                             Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -198,6 +224,9 @@ public class ClientRegisterActivity extends BaseActivity {
     }
 
     private void setupview(){
+
+        pregnantWrap = (RelativeLayout) findViewById(R.id.pregnant_wrap);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         genderSpinner = (MaterialSpinner) findViewById(R.id.spin_gender);
 
@@ -223,6 +252,7 @@ public class ClientRegisterActivity extends BaseActivity {
         pregnant = (CheckBox) findViewById(R.id.is_pregnant);
 
         btnSave = (Button) findViewById(R.id.save_button);
+        btnCancel = (Button) findViewById(R.id.cancel_button);
     }
 
     class AddNewPatient extends AsyncTask<Void, Void, Void> {

@@ -19,7 +19,9 @@ import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 import apps.softmed.com.hfreferal.utils.constants;
 
-import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
+import static apps.softmed.com.hfreferal.utils.constants.CHW_TO_FACILITY;
+import static apps.softmed.com.hfreferal.utils.constants.INTERFACILITY;
+import static apps.softmed.com.hfreferal.utils.constants.INTRAFACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
 import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 
@@ -113,8 +115,8 @@ public class TbFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             referralCounts = database.referalModel().geCounttUnattendedReferalsByService(TB_SERVICE_ID)+" New referrals unattended";
-            chwCount = "CHW : "+database.referalModel().getCountSourceReferrals(TB_SERVICE_ID, SOURCE_CHW);
-            hfCount = "Health Facility : "+database.referalModel().getCountSourceReferrals(TB_SERVICE_ID, SOURCE_HF);
+            chwCount = "CHW : "+database.referalModel().getCountReferralsByType(TB_SERVICE_ID, new int[]{CHW_TO_FACILITY});
+            hfCount = "Health Facility : "+database.referalModel().getCountReferralsByType(TB_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
             feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.getThisFacilityId());
             return null;
         }

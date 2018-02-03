@@ -18,9 +18,13 @@ import apps.softmed.com.hfreferal.activities.ReferralListActivity;
 import apps.softmed.com.hfreferal.base.AppDatabase;
 import apps.softmed.com.hfreferal.base.BaseActivity;
 
+import static apps.softmed.com.hfreferal.utils.constants.CHW_TO_FACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.HIV_SERVICE_ID;
+import static apps.softmed.com.hfreferal.utils.constants.INTERFACILITY;
+import static apps.softmed.com.hfreferal.utils.constants.INTRAFACILITY;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_CHW;
 import static apps.softmed.com.hfreferal.utils.constants.SOURCE_HF;
+import static apps.softmed.com.hfreferal.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 12/4/17.
@@ -104,17 +108,23 @@ public class HivFragment extends Fragment {
 
         String referralCounts = "";
         String feedbackCount = "";
+        String chwCount = "";
+        String hfCount = "";
 
         @Override
         protected Void doInBackground(Void... voids) {
             referralCounts = database.referalModel().geCounttUnattendedReferalsByService(HIV_SERVICE_ID)+" New referrals unattended";
             feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
+            chwCount = "CHW : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[]{CHW_TO_FACILITY});
+            hfCount = "Health Facility : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             referalCountText.setText(referralCounts);
+            chwReferralCounts.setText(chwCount);
+            hfReferralCount.setText(hfCount);
             referalFeedbackCount.setText(feedbackCount);
             super.onPostExecute(aVoid);
         }

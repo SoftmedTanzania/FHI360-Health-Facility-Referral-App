@@ -94,25 +94,7 @@ public class PostOfficeService extends IntentService {
                             if (response.body() != null) {
                                 Log.d("patient_response", response.body().toString());
 
-                                //TbPatient tbPatient1 = patientResponce.getTbPatient();
-                                //List<PatientAppointment> appointments = patientResponce.getPatientAppointments();
-
                                 new ReplacePatientObject().execute(patient, patient1);
-
-                                //Delete local patient reference
-                                //database.patientModel().deleteAPatient(patient);
-                                //database.tbPatientModelDao().deleteAPatient(tbPatient);
-                                /*List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
-                                for (int i = 0; i < oldAppointments.size(); i++) {
-                                    database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
-                                }*/
-
-                                //Insert server's patient reference
-                                //database.patientModel().addPatient(patient1);
-                                /*database.tbPatientModelDao().addPatient(tbPatient1);
-                                for (int j = 0; j < appointments.size(); j++) {
-                                    database.appointmentModelDao().addAppointment(appointments.get(j));
-                                }*/
 
                                 new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
 
@@ -144,11 +126,11 @@ public class PostOfficeService extends IntentService {
 
                                 new ReplaceTbPatientAndAppointments(database, patient, tbPatient).execute(patientResponce);
 
+                                new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
+
                             }else {
                                 Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
                             }
-
-                            new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
 
                         }
 
@@ -210,13 +192,23 @@ public class PostOfficeService extends IntentService {
 
                 } else if (data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)) {
 
-                    /*
-
                     List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
-                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
-                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
+                    for (TbEncounters e : encounter){
 
-                    */
+                        Call call = patientServices.postEncounter(BaseActivity.getTbEncounterRequestBody(e));
+                        call.enqueue(new Callback() {
+                            @Override
+                            public void onResponse(Call call, Response response) {
+                                Log.d("POST_DATA_TE", "Response Received : "+response.body());
+                            }
+
+                            @Override
+                            public void onFailure(Call call, Throwable t) {
+                                Log.d("POST_DATA_TE", "Error : "+t.getMessage());
+                            }
+                        });
+
+                    }
 
                 }
             }

@@ -314,21 +314,16 @@ public class TbClientDetailsActivity extends BaseActivity {
     private void saveEncounters(){
 
         TbEncounters tbEncounter = new TbEncounters();
-        tbEncounter.setEncounterMonth((encouterMonthSpinner.getSelectedItemPosition())+"");
+        tbEncounter.setEncounterMonth((encouterMonthSpinner.getSelectedItemPosition()));
         tbEncounter.setMakohozi((String) makohoziSpinner.getSelectedItem());
-        int hasFinishedPreviousMonth = -1;
-        if (medicationStatusCheckbox.isChecked())
-            hasFinishedPreviousMonth = 1;
-        else
-            hasFinishedPreviousMonth = 0;
-        tbEncounter.setHasFinishedPreviousMonthMedication(hasFinishedPreviousMonth);
+        tbEncounter.setHasFinishedPreviousMonthMedication(medicationStatusCheckbox.isChecked());
 
         //This is the medication Status of this encounter to be set on the next visit
         tbEncounter.setMedicationDate(Calendar.getInstance().getTimeInMillis());
         tbEncounter.setMedicationStatus(false);
 
         //Generate Appointment Schedule and assign temporary appointment ID
-        tbEncounter.setAppointmentId("");
+        tbEncounter.setAppointmentId(-1);
         tbEncounter.setScheduledDate(Calendar.getInstance().getTimeInMillis());
         tbEncounter.setTbPatientID(currentTbPatient.getTempID()+"");
 
@@ -535,15 +530,11 @@ public class TbClientDetailsActivity extends BaseActivity {
             database.postOfficeModelDao().addPostEntry(postOffice);
 
             //Save previous month medication status
-            int previousmonth = Integer.parseInt(encounters[0].getEncounterMonth()) - 1;
+            int previousmonth = encounters[0].getEncounterMonth() - 1;
             List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousmonth+"", currentTbPatient.getTempID()+"");
 
-            boolean previousMonthStatus = false;
-            if (encounters[0].getHasFinishedPreviousMonthMedication() == 1){
-                previousMonthStatus = true;
-            }else {
-                previousMonthStatus = false;
-            }
+
+            boolean previousMonthStatus = encounters[0].isHasFinishedPreviousMonthMedication();
 
             if (encounters1.size() > 0){
                 encounters1.get(0).setMedicationStatus(previousMonthStatus);
@@ -561,7 +552,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            new RegenerateAppointments(baseDatabase).execute(Integer.parseInt(currentEncounter.getEncounterMonth()));
+            new RegenerateAppointments(baseDatabase).execute(currentEncounter.getEncounterMonth());
         }
 
     }

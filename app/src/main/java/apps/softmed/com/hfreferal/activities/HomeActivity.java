@@ -42,6 +42,7 @@ import apps.softmed.com.hfreferal.dom.objects.Patient;
 import apps.softmed.com.hfreferal.dom.objects.PatientAppointment;
 import apps.softmed.com.hfreferal.dom.objects.PostOffice;
 import apps.softmed.com.hfreferal.dom.objects.Referral;
+import apps.softmed.com.hfreferal.dom.objects.TbEncounters;
 import apps.softmed.com.hfreferal.dom.objects.TbPatient;
 import apps.softmed.com.hfreferal.dom.objects.UserData;
 import apps.softmed.com.hfreferal.dom.responces.PatientResponce;
@@ -219,11 +220,12 @@ public class HomeActivity extends BaseActivity {
 
                                 new ReplacePatientObject().execute(patient, patient1);
 
+                                new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
+
                             }else {
                                 Log.d("POST_DATA_TYPE_PATIENT","Patient Responce is null "+response.body());
                             }
 
-                            new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
 
                         }
 
@@ -250,11 +252,11 @@ public class HomeActivity extends BaseActivity {
 
                                 new ReplaceTbPatientAndAppointments(database, patient, tbPatient).execute(patientResponce);
 
+                                new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
+
                             }else {
                                 Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
                             }
-
-                            new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
 
                         }
 
@@ -307,22 +309,43 @@ public class HomeActivity extends BaseActivity {
                             //database.postOfficeModelDao().deletePostData(data);
                             if (response.code() == 200){
                                 Log.d("POST_DATA_REFERRAL_FB", "Saved to seerver : "+response.body());
-                                new BaseActivity.DeletePostData(database).execute(data);
+                                new DeletePOstData(database).execute(data);
                             }
-
-                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
 
                         }
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
-                            new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+                            Log.d("POST_RESPOMCES", "Failed with message : " + t.getMessage());
                         }
                     });
 
                 }else if(data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)){
-                    //TbEncounters encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
-                    new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+
+                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+                    for (TbEncounters e : encounter){
+
+                        Call call = patientServices.postEncounter(BaseActivity.getTbEncounterRequestBody(e));
+                        call.enqueue(new Callback() {
+                            @Override
+                            public void onResponse(Call call, Response response) {
+                                Log.d("POST_DATA_TE", "Response Received : "+response.body());
+
+                                new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+
+                            }
+
+                            @Override
+                            public void onFailure(Call call, Throwable t) {
+                                Log.d("POST_DATA_TE", "Error : "+t.getMessage());
+
+                                new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+
+                            }
+                        });
+
+                    }
+
                 }
             }
 

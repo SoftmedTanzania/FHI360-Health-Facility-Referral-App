@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -103,6 +104,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //this.getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
         currentPatient = (Patient) getArguments().getSerializable("currentPatient");
