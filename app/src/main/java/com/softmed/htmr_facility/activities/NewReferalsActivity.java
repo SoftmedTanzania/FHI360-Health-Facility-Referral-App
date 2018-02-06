@@ -35,16 +35,22 @@ public class NewReferalsActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_referals);
+
+        if (getIntent().getExtras() != null){
+            service = getIntent().getIntExtra("service", 0);
+        }
+
+        if (service == HIV_SERVICE_ID){
+            setContentView(R.layout.activity_hiv_new_referrals);
+        }else {
+            setContentView(R.layout.activity_new_referals);
+        }
+
         setupview();
 
         if (toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        if (getIntent().getExtras() != null){
-            service = getIntent().getIntExtra("service", 0);
         }
 
         adapter = new PatientsListAdapter(new ArrayList<Patient>(), this, service);

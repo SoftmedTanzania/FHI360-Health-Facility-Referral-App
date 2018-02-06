@@ -2,6 +2,7 @@ package com.softmed.htmr_facility.adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.activities.NewReferalsActivity;
+import com.softmed.htmr_facility.activities.PatientDetailsActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 
@@ -47,8 +49,8 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
         if (serviceID == HIV_SERVICE_ID){
             itemView = LayoutInflater
                     .from(viewGroup.getContext())
-//                    .inflate(R.layout.hiv_client_list_item, viewGroup, false);
-                    .inflate(R.layout.patient_list_item, viewGroup, false);
+                    .inflate(R.layout.hiv_client_list_item, viewGroup, false);
+//                    .inflate(R.layout.patient_list_item, viewGroup, false);
             return new PatientsListAdapter.HivListItemViewHolder(itemView);
 
         }else {
@@ -70,48 +72,40 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
         if (viewHolder instanceof PatientsListAdapter.HivListItemViewHolder){
             PatientsListAdapter.HivListItemViewHolder holder = (PatientsListAdapter.HivListItemViewHolder) viewHolder;
 
-            holder.clientCTCNumber.setText("N/A");
-            holder.clientFirstName.setText(patient.getPatientFirstName());
-            holder.clientLastName.setText(patient.getPatientSurname());
-            holder.clientVillage.setText(patient.getVillage());
-            holder.clientPhoneNumber.setText(patient.getPhone_number());
+            holder.clientCtcNumber.setText(patient.getCtcNumber() == null ? "n/a" : patient.getCtcNumber());
+            holder.clientVillage.setText(patient.getVillage() == null ? "n/a" : patient.getVillage());
+            holder.clientPhoneNumber.setText(patient.getPhone_number() == null ? "n/a" : patient.getPhone_number());
+            holder.clientWard.setText(patient.getWard() == null ? "n/a" : patient.getWard());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //refer client popup
-//                referalDialogueEvents(patient);
-                    callReferralFragmentDialogue(patient);
+                    Intent patientDetalsIntent = new Intent(context, PatientDetailsActivity.class);
+                    patientDetalsIntent.putExtra("service", serviceID);
+                    patientDetalsIntent.putExtra("patient", patient);
+                    context.startActivity(patientDetalsIntent);
+
                 }
             });
         }else if (viewHolder instanceof PatientsListAdapter.ListViewItemViewHolder){
             PatientsListAdapter.ListViewItemViewHolder holder = (PatientsListAdapter.ListViewItemViewHolder) viewHolder;
 
             holder.clientCTCNumber.setText("N/A");
-            holder.clientFirstName.setText(patient.getPatientFirstName());
-            holder.clientLastName.setText(patient.getPatientSurname());
-            holder.clientVillage.setText(patient.getVillage());
-            holder.clientPhoneNumber.setText(patient.getPhone_number());
+            holder.clientFirstName.setText(patient.getPatientFirstName() == null ? "n/a" : patient.getPatientFirstName());
+            holder.clientLastName.setText(patient.getPatientSurname() == null ? "n/a" : patient.getPatientSurname());
+            holder.clientVillage.setText(patient.getVillage() == null ? "n/a" : patient.getVillage());
+            holder.clientPhoneNumber.setText(patient.getPhone_number() == null ? "n/a" : patient.getPhone_number());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //refer client popup
-//                referalDialogueEvents(patient);
-                    callReferralFragmentDialogue(patient);
+                    Intent patientDetalsIntent = new Intent(context, PatientDetailsActivity.class);
+                    patientDetalsIntent.putExtra("service", serviceID);
+                    patientDetalsIntent.putExtra("patient", patient);
+                    context.startActivity(patientDetalsIntent);
                 }
             });
         }
-
-    }
-
-    private void callReferralFragmentDialogue(Patient patient){
-        NewReferalsActivity activity = (NewReferalsActivity) context;
-        FragmentManager fm = activity.getSupportFragmentManager();
-
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, serviceID);
-        Log.d("MIMI", serviceID+"");
-        issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
 
@@ -151,18 +145,17 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     private class HivListItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientFirstName, clientLastName, clientCTCNumber, clientVillage, clientPhoneNumber;
+        TextView clientCtcNumber, clientPhoneNumber, clientVillage, clientWard;
         View viewItem;
 
         public HivListItemViewHolder(View itemView){
             super(itemView);
             this.viewItem   = itemView;
 
-            clientFirstName = (TextView) itemView.findViewById(R.id.client_f_name);
-            clientLastName = (TextView) itemView.findViewById(R.id.client_l_name);
-            clientCTCNumber = (TextView) itemView.findViewById(R.id.client_ctc_number);
             clientVillage = (TextView) itemView.findViewById(R.id.client_village);
             clientPhoneNumber = (TextView) itemView.findViewById(R.id.client_phone_number);
+            clientCtcNumber = (TextView) itemView.findViewById(R.id.client_ctc_number);
+            clientWard = (TextView) itemView.findViewById(R.id.client_ward);
 
         }
 

@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -10,6 +10,7 @@
         android:layout_height="50dp"
         android:background="@color/white"
         android:gravity="center_vertical"
+        android:id="@+id/wrapper"
         android:layout_gravity="center_vertical">
 
         <RelativeLayout
@@ -93,5 +94,11 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrapper"
+        android:background="@color/card_separator"/>
 
 </RelativeLayout>

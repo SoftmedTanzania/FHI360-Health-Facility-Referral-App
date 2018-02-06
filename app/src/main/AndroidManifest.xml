@@ -102,6 +102,9 @@
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
+        <activity android:name=".activities.PatientDetailsActivity"
+            android:parentActivityName=".activities.NewReferalsActivity"/>
+
     </application>
 
 </manifest>
