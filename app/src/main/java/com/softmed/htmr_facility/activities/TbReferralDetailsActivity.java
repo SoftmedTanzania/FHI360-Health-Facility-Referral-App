@@ -171,7 +171,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, TB_SERVICE_ID);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, TB_SERVICE_ID, currentReferral.getReferralUUID());
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }

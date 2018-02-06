@@ -118,10 +118,6 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
     }
 
-    private void setNames(String names){
-        mViewHolder.clientsNames.setText(names);
-    }
-
     private static class patientDetailsTask extends AsyncTask<Void, Void, Void> {
 
         String patientNames, serviceNameString;
@@ -140,7 +136,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
         protected Void doInBackground(Void... voids) {
             Log.d("reckless", "doing name search backgroundically!");
             patientNames = db.patientModel().getPatientName(ref.getPatient_id());
-            serviceNameString = db.servicesModelDao().getServiceName(ref.getReferralSource());
+            serviceNameString = db.referralServiceIndicatorsDao().getServiceNameById(ref.getServiceId());
             return null;
         }
 

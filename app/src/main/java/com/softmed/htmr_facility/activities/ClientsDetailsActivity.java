@@ -24,6 +24,7 @@ import com.rey.material.widget.ProgressView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.AppDatabase;
@@ -177,7 +178,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, service);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, service, currentReferral.getReferralUUID());
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
@@ -188,6 +189,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         indicatorsRecyclerView.setLayoutManager(layoutManager);
         indicatorsRecyclerView.setHasFixedSize(true);
+
         otherClinicalInformationValue = (TextView) findViewById(R.id.other_clinical_inforamtion_value);
         hivStatus = (CheckBox) findViewById(R.id.hiv_status);
         saveProgress = (ProgressView) findViewById(R.id.save_progress);

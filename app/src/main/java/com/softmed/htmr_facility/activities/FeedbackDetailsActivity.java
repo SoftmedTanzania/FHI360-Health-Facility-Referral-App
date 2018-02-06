@@ -1,10 +1,18 @@
 package com.softmed.htmr_facility.activities;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,6 +22,12 @@ import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
+import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
+import com.softmed.htmr_facility.utils.ListStringConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 
@@ -31,8 +45,11 @@ public class FeedbackDetailsActivity extends BaseActivity {
     private EditText servicesOfferedEt, otherInformationEt;
     private CheckBox hivStatus;
     public TextView clientNames, wardText, villageText, hamletText, patientGender;
+    private Button referralButton, cancelButton;
+    private RecyclerView indicatorsRecyclerView;
 
     private Referral currentReferral;
+    private Patient currentPatient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,13 +79,42 @@ public class FeedbackDetailsActivity extends BaseActivity {
             }
         }
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        referralButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                forwardReferral();
+            }
+        });
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
+    private void forwardReferral(){
+        FragmentManager fm = this.getSupportFragmentManager();
+
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(currentPatient, currentReferral.getReferralSource(), currentReferral.getReferralUUID());
+        issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
+    }
+
     private void setupviews(){
+
+        indicatorsRecyclerView = (RecyclerView) findViewById(R.id.indicators_linear_recycler);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        indicatorsRecyclerView.setLayoutManager(layoutManager);
+        indicatorsRecyclerView.setHasFixedSize(true);
+
+        referralButton = (Button) findViewById(R.id.referal_button);
+        cancelButton = (Button) findViewById(R.id.cancel_button);
 
         hivStatus = (CheckBox) findViewById(R.id.hiv_status);
         hivStatus.setEnabled(false);
@@ -97,6 +143,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
         String patientNames, patientId;
         Patient patient;
         AppDatabase db;
+        List<ReferralIndicator> indicators =  new ArrayList<>();
 
         patientDetailsTask(AppDatabase database, String patientID){
             this.db = database;
@@ -107,7 +154,16 @@ public class FeedbackDetailsActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
-            Log.d("", "PATIENT : "+patient.getPatientId());
+            currentPatient = patient;
+
+            List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
+
+            //Call Patient Referral Indicators
+            for (int i=0; i<ids.size(); i++){
+                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i)+"");
+                indicators.add(referralIndicator);
+            }
+
             return null;
         }
 
@@ -117,12 +173,74 @@ public class FeedbackDetailsActivity extends BaseActivity {
             Log.d("reckless", "Done background!"+patientNames);
             clientNames.setText(patientNames);
             if (patient != null){
-                wardText.setText(patient.getWard() == null ? "Kata :  " : "Kata : "+patient.getWard());
-                villageText.setText(patient.getVillage() == null ? "Kijiji :  " : "Kijiji : "+patient.getVillage());
-                hamletText.setText(patient.getHamlet() == null ? "Kitongoji :  " : "Kitongoji : "+patient.getHamlet());
+
+                wardText.setText(patient.getWard() == null ? "N/A " : patient.getWard());
+                villageText.setText(patient.getVillage() == null ? "N/A " : patient.getVillage());
+                //hamletText.setText(patient.getHamlet() == null ? "N/A " : patient.getHamlet());
+
                 patientGender.setText(patient.getGender());
             }
+
+            FeedbackDetailsActivity.IndicatorsRecyclerAdapter adapter = new FeedbackDetailsActivity.IndicatorsRecyclerAdapter(FeedbackDetailsActivity.this, indicators);
+            indicatorsRecyclerView.setAdapter(adapter);
+
             //adapter.notifyDataSetChanged();
+        }
+
+    }
+
+    class IndicatorsRecyclerAdapter  extends RecyclerView.Adapter<FeedbackDetailsActivity.IndicatorsViewHolder> {
+
+        private List<ReferralIndicator> indicators = new ArrayList<>();
+        private LayoutInflater mInflater;
+
+        // data is passed into the constructor
+        public IndicatorsRecyclerAdapter(Context context, List<ReferralIndicator> items) {
+            this.mInflater = LayoutInflater.from(context);
+            this.indicators = items;
+        }
+
+        // inflates the cell layout from xml when needed
+        @Override
+        public FeedbackDetailsActivity.IndicatorsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.referral_details_indicatior_list_item, parent, false);
+            FeedbackDetailsActivity.IndicatorsViewHolder holder = new FeedbackDetailsActivity.IndicatorsViewHolder(view);
+            return holder;
+        }
+
+        // binds the data to the textview in each cell
+        @Override
+        public void onBindViewHolder(FeedbackDetailsActivity.IndicatorsViewHolder holder, int position) {
+            ReferralIndicator indicator = indicators.get(position);
+            holder.bindIndicator(indicator);
+        }
+
+        // total number of cells
+        @Override
+        public int getItemCount() {
+            return indicators.size();
+        }
+
+        // convenience method for getting data at click position
+        ReferralIndicator getItem(int id) {
+            return indicators.get(id);
+        }
+
+    }
+
+    class IndicatorsViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView indicatorName;
+        private ReferralIndicator referralIndicator;
+
+        private IndicatorsViewHolder(View itemView) {
+            super(itemView);
+            indicatorName = (TextView) itemView.findViewById(R.id.indicator_name);
+        }
+
+        private void bindIndicator(ReferralIndicator indicator){
+            this.referralIndicator = indicator;
+            indicatorName.setText(referralIndicator.getIndicatorName());
         }
 
     }

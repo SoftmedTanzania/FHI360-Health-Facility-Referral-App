@@ -13,6 +13,8 @@ import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 
+import java.util.UUID;
+
 /**
  * Created by issy on 06/02/2018.
  *
@@ -89,7 +91,7 @@ public class PatientDetailsActivity extends BaseActivity {
     private void callReferralFragmentDialogue(Patient patient){
         FragmentManager fm = this.getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, service);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, service, UUID.randomUUID()+"");
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }

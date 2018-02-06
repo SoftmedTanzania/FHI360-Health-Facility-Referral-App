@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.activities.TbClientDetailsActivity;
@@ -92,7 +93,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         TbClientListActivity activity = (TbClientListActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, serviceID);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, serviceID, UUID.randomUUID()+"");
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }

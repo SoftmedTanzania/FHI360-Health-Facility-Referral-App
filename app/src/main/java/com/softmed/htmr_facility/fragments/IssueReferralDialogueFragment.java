@@ -87,14 +87,16 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     List<ReferralServiceIndicators> referralServiceIndicators = new ArrayList<>();
 
     private int referralType;
+    private String forwardUUID;
 
     public IssueReferralDialogueFragment() {}
 
-    public static IssueReferralDialogueFragment newInstance(Patient patient, int sourceServiceId) {
+    public static IssueReferralDialogueFragment newInstance(Patient patient, int sourceServiceId, String forwardedUUID) {
         Bundle args = new Bundle();
         IssueReferralDialogueFragment fragment = new IssueReferralDialogueFragment();
         args.putSerializable("currentPatient", patient);
         args.putInt("sourceID", sourceServiceId);
+        args.putString("forwardUUID", forwardedUUID+"");
         fragment.setArguments(args);
 
         return fragment;
@@ -115,6 +117,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         // Get field from view
         currentPatient = (Patient) getArguments().getSerializable("currentPatient");
         sourceService = getArguments().getInt("sourceID");
+        forwardUUID = getArguments().getString("forwardUUID");
 
         setupviews(view);
 
@@ -258,7 +261,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setCommunityBasedHivService("");
         referral.setReferralReason(referralReasonsValue);
         referral.setServiceId(serviceID);
-        referral.setReferralUUID(UUID.randomUUID()+"");
+        referral.setReferralUUID(forwardUUID);
         referral.setCtcNumber("");
         referral.setServiceProviderUIID(BaseActivity.session.getUserDetails().get(KEY_UUID));
         referral.setServiceProviderGroup("");

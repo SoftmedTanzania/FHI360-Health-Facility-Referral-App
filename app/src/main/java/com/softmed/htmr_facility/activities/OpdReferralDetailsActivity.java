@@ -144,7 +144,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, service);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, service, currentReferral.getReferralUUID());
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
