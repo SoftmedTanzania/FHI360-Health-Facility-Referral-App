@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rey.material.widget.ProgressView;
@@ -57,6 +58,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
     private RecyclerView clientRecyclerView;
     private MaterialSpinner statusSpinner;
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
+    private TextView ctcNumberOrServiceNameTitle;
     private ProgressView progressView;
     private Button filterButton;
 
@@ -104,6 +106,12 @@ public class HealthFacilityReferralListFragment extends Fragment {
         source = getArguments().getInt("source");
         service = getArguments().getInt("service");
         setupviews(view);
+
+        if (service == OPD_SERVICE_ID){
+            ctcNumberOrServiceNameTitle.setText("Huduma");
+        }else{
+            ctcNumberOrServiceNameTitle.setText("Namba ya CTC");
+        }
 
         final String[] status = {STATUS_COMPLETED, STATUS_NEW};
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(HealthFacilityReferralListFragment.this.getActivity(), android.R.layout.simple_spinner_item, status);
@@ -285,6 +293,8 @@ public class HealthFacilityReferralListFragment extends Fragment {
 
 
     private void setupviews(View v){
+
+        ctcNumberOrServiceNameTitle = (TextView) v.findViewById(R.id.ctc_number);
 
         filterButton = (Button) v.findViewById(R.id.filter_button);
 

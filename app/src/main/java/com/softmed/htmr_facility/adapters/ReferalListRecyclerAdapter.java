@@ -19,6 +19,7 @@ import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Referral;
 
+import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 
 /**
@@ -30,7 +31,6 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
     private List<Referral> items;
     private Context context;
     private AppDatabase database;
-    private ListViewItemViewHolder mViewHolder;
     private int serviceID;
 
     public ReferalListRecyclerAdapter(List<Referral> mItems, Context context, int service){
@@ -45,11 +45,22 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
         context         = viewGroup.getContext();
         View itemView   = null;
-        itemView = LayoutInflater
-                .from(viewGroup.getContext())
-                .inflate(R.layout.referal_list_client_item, viewGroup, false);
 
-        return new ReferalListRecyclerAdapter.ListViewItemViewHolder(itemView);
+        if (serviceID == OPD_SERVICE_ID){
+            itemView = LayoutInflater
+                    .from(viewGroup.getContext())
+                    .inflate(R.layout.referral_list_opd_client_item, viewGroup, false);
+//                    .inflate(R.layout.patient_list_item, viewGroup, false);
+            return new ReferalListRecyclerAdapter.ListViewOPDItemViewHolder(itemView);
+
+        }else {
+            itemView = LayoutInflater
+                    .from(viewGroup.getContext())
+                    .inflate(R.layout.referal_list_client_item, viewGroup, false);
+
+            return new ReferalListRecyclerAdapter.ListViewItemViewHolder(itemView);
+        }
+
 
     }
 
@@ -59,43 +70,66 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
         final Referral referral = getItem(itemPosition);
 
-        ReferalListRecyclerAdapter.ListViewItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewItemViewHolder) viewHolder;
-        mViewHolder = holder;
+        if (viewHolder instanceof ReferalListRecyclerAdapter.ListViewItemViewHolder){
+            ReferalListRecyclerAdapter.ListViewItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewItemViewHolder) viewHolder;
 
-        new patientDetailsTask(database, referral.getPatient_id(), holder.clientsNames).execute();
+            new patientDetailsTask(database, referral, holder.clientsNames, holder.ctcNumber).execute(serviceID);
 
-        if (referral.getReferralStatus() == 0){
-            holder.attendedFlag.setText("New");
-            holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
-        }else {
-            holder.attendedFlag.setText("Attended");
-            holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
-        }
+            if (referral.getReferralStatus() == 0){
+                holder.attendedFlag.setText("New");
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
+            }else {
+                holder.attendedFlag.setText("Attended");
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
+            }
 
-        holder.ctcNumber.setText(referral.getCtcNumber());
-        holder.referralReasons.setText(referral.getReferralReason());
+            holder.ctcNumber.setText(referral.getCtcNumber());
+            holder.referralReasons.setText(referral.getReferralReason());
 
-        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
+            holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (serviceID == OPD_SERVICE_ID){
-                    Log.d("worships", "service is OPD");
-                    Intent intent = new Intent(context, OpdReferralDetailsActivity.class);
-                    intent.putExtra("referal", referral);
-                    intent.putExtra("service", serviceID);
-                    context.startActivity(intent);
-                }else {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     Log.d("worships", "service is not opd "+serviceID);
                     Intent intent = new Intent(context, ClientsDetailsActivity.class);
                     intent.putExtra("referal", referral);
                     intent.putExtra("service", serviceID);
                     context.startActivity(intent);
                 }
+            });
+
+        }else if (viewHolder instanceof ReferalListRecyclerAdapter.ListViewOPDItemViewHolder){
+            ReferalListRecyclerAdapter.ListViewOPDItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewOPDItemViewHolder) viewHolder;
+
+            new patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute(serviceID);
+
+            if (referral.getReferralStatus() == 0){
+                holder.attendedFlag.setText("New");
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
+            }else {
+                holder.attendedFlag.setText("Attended");
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
             }
-        });
+
+            holder.referralReasons.setText(referral.getReferralReason());
+
+            holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Log.d("worships", "service is OPD");
+                    Intent intent = new Intent(context, OpdReferralDetailsActivity.class);
+                    intent.putExtra("referal", referral);
+                    intent.putExtra("service", serviceID);
+                    context.startActivity(intent);
+
+                }
+            });
+
+        }
 
     }
 
@@ -133,26 +167,48 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     }
 
-    private void setNames(String names){
-        mViewHolder.clientsNames.setText(names);
+    private class ListViewOPDItemViewHolder extends RecyclerView.ViewHolder {
+
+        TextView clientsNames, attendedFlag, serviceName, referralReasons, referralDate;
+        View viewItem;
+
+        public ListViewOPDItemViewHolder(View itemView){
+            super(itemView);
+            this.viewItem   = itemView;
+
+            clientsNames = (TextView) itemView.findViewById(R.id.client_name);
+            attendedFlag = (TextView) itemView.findViewById(R.id.attended_flag);
+            serviceName = (TextView) itemView.findViewById(R.id.service_name);
+            referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
+            referralDate = (TextView) itemView.findViewById(R.id.ref_date);
+
+        }
+
     }
 
-    private static class patientDetailsTask extends AsyncTask<Void, Void, Void>{
+    private static class patientDetailsTask extends AsyncTask<Integer, Void, Void>{
 
-        String patientNames, patientId;
+        String patientNames, patientId, serviceNameString;
+        int serviceId;
+        Referral ref;
         AppDatabase db;
-        TextView mText;
+        TextView mText, serviceNameText;
 
-        patientDetailsTask(AppDatabase database, String patientID, TextView namesInstance){
+        patientDetailsTask(AppDatabase database, Referral referral, TextView namesInstance, TextView serviceName){
             this.db = database;
-            this.patientId = patientID;
+            this.ref = referral;
+            this.patientId = ref.getPatient_id();
+            serviceNameText = serviceName;
             mText = namesInstance;
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(Integer... integers) {
             Log.d("reckless", "doing name search backgroundically!");
+            serviceId = integers[0];
+
             patientNames = db.patientModel().getPatientName(patientId);
+            serviceNameString = db.referralServiceIndicatorsDao().getServiceNameById(ref.getServiceId());
             return null;
         }
 
@@ -161,6 +217,10 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             super.onPostExecute(aVoid);
             Log.d("reckless", "Done background !"+patientNames);
             mText.setText(patientNames);
+            if (serviceId == OPD_SERVICE_ID){
+                Log.d("reckless", "Service is opd, setting service name "+serviceNameString);
+                serviceNameText.setText(serviceNameString);
+            }
             //adapter.notifyDataSetChanged();
         }
 
