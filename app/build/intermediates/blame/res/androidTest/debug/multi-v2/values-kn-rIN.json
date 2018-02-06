@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Development/Android/HFReferralApp/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-kn-rIN/values-kn-rIN.xml",
+            "map": [
+                {
+                    "source": "/Users/administrator/.gradle/caches/transforms-1/files-1.1/materialdatetimepicker-2.3.0.aar/04ca0280dd1bd6def2be111b38775b05/res/values-kn-rIN/values-kn-rIN.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12,13,14,15",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "267,328,435,550,633,745,871,986,1092,1189,1289,1384",
+                        "endColumns": "60,106,114,82,111,125,114,105,96,99,94,98",
+                        "endOffsets": "323,430,545,628,740,866,981,1087,1184,1284,1379,1478"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,166,273,388,471,583,709,824,930,1027,1127,1222",
+                        "endColumns": "60,106,114,82,111,125,114,105,96,99,94,98",
+                        "endOffsets": "161,268,383,466,578,704,819,925,1022,1122,1217,1316"
+                    }
+                }
+            ]
+        }
+    ]
+}

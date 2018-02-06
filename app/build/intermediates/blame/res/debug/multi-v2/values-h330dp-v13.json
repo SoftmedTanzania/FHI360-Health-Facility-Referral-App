@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Development/Android/HFReferralApp/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-h330dp-v13/values-h330dp-v13.xml",
+            "map": [
+                {
+                    "source": "/Users/administrator/.gradle/caches/transforms-1/files-1.1/materialdatetimepicker-2.3.0.aar/04ca0280dd1bd6def2be111b38775b05/res/values-h330dp/values-h330dp.xml",
+                    "from": {
+                        "startLines": "4,5",
+                        "startColumns": "4,4",
+                        "startOffsets": "216,286",
+                        "endColumns": "69,56",
+                        "endOffsets": "281,338"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,125",
+                        "endColumns": "69,56",
+                        "endOffsets": "120,177"
+                    }
+                }
+            ]
+        }
+    ]
+}

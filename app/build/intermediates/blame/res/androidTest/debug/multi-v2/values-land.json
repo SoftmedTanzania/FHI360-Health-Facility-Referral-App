@@ -1,0 +1,55 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Development/Android/HFReferralApp/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-land/values-land.xml",
+            "map": [
+                {
+                    "source": "/Users/administrator/.gradle/caches/transforms-1/files-1.1/design-27.0.1.aar/3a209c3f97685d354f3e386382267d72/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "232"
+                    },
+                    "to": {
+                        "startLines": "15",
+                        "startColumns": "4",
+                        "startOffsets": "858",
+                        "endLines": "18",
+                        "endColumns": "12",
+                        "endOffsets": "1035"
+                    }
+                },
+                {
+                    "source": "/Users/administrator/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.1.aar/7b38f0f62761ddc68a57d8d0e35fc447/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,125,189,260",
+                        "endColumns": "69,63,70,67",
+                        "endOffsets": "120,184,255,323"
+                    }
+                },
+                {
+                    "source": "/Users/administrator/.gradle/caches/transforms-1/files-1.1/materialdatetimepicker-2.3.0.aar/04ca0280dd1bd6def2be111b38775b05/res/values-land/values-land.xml",
+                    "from": {
+                        "startLines": "4,5,6,7,8,9,10,11,12",
+                        "startColumns": "4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "214,279,349,401,455,506,566,627,687",
+                        "endColumns": "64,69,51,53,50,59,60,59,56",
+                        "endOffsets": "274,344,396,450,501,561,622,682,739"
+                    },
+                    "to": {
+                        "startLines": "6,7,8,9,10,11,12,13,14",
+                        "startColumns": "4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "328,393,463,515,569,620,680,741,801",
+                        "endColumns": "64,69,51,53,50,59,60,59,56",
+                        "endOffsets": "388,458,510,564,615,675,736,796,853"
+                    }
+                }
+            ]
+        }
+    ]
+}

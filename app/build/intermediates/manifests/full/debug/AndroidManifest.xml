@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="apps.softmed.com.hfreferal"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="22"
+        android:targetSdkVersion="26" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="apps.softmed.com.hfreferal.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="apps.softmed.com.hfreferal.permission.C2D_MESSAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity android:name="apps.softmed.com.hfreferal.activities.MainActivity" >
+        </activity>
+        <activity android:name="apps.softmed.com.hfreferal.activities.LoaderActivity" >
+        </activity>
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.ReferalListActivityOld"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.MainActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.ReferedClientsActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.MainActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.NewReferalsActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.MainActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.ClientsDetailsActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.ReferalListActivityOld"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name="apps.softmed.com.hfreferal.activities.LoginActivity" >
+        </activity>
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.HomeActivity"
+            android:windowSoftInputMode="stateHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.TbReferalListActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.HomeActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.ReferralListActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.HomeActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.TbReferralDetailsActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.TbReferalListActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.AppointmentActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.HomeActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.ClientRegisterActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.HomeActivity"
+            android:windowSoftInputMode="stateHidden" />
+
+        <service android:name="apps.softmed.com.hfreferal.services.FirebaseInstanseIdService" >
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="apps.softmed.com.hfreferal.services.MessagingService" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="apps.softmed.com.hfreferal.utils.AlarmReceiver"
+            android:process=":remote" >
+        </receiver>
+
+        <service
+            android:name="apps.softmed.com.hfreferal.services.PostOfficeService"
+            android:exported="false" />
+
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.TbClientListActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.MainActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.TbClientDetailsActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.TbClientListActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="apps.softmed.com.hfreferal.activities.FeedbackDetailsActivity"
+            android:parentActivityName="apps.softmed.com.hfreferal.activities.ReferedClientsActivity"
+            android:windowSoftInputMode="stateHidden" />
+
+        <provider
+            android:name="android.arch.lifecycle.ProcessLifecycleOwnerInitializer"
+            android:authorities="apps.softmed.com.hfreferal.lifecycle-trojan"
+            android:exported="false"
+            android:multiprocess="true" />
+        <!--
+ FirebaseMessagingService performs security checks at runtime,
+             no need for explicit permissions despite exported="true"
+        -->
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="true" >
+            <intent-filter android:priority="-500" >
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
+        <receiver
+            android:name="com.google.android.gms.measurement.AppMeasurementInstallReferrerReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INSTALL_PACKAGES" >
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.google.android.gms.measurement.AppMeasurementService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="apps.softmed.com.hfreferal" />
+            </intent-filter>
+        </receiver>
+        <!--
+ Internal (not exported) receiver used by the app to start its own exported services
+             without risk of being spoofed.
+        -->
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver"
+            android:exported="false" />
+        <!--
+ FirebaseInstanceIdService performs security checks at runtime,
+             no need for explicit permissions despite exported="true"
+        -->
+        <service
+            android:name="com.google.firebase.iid.FirebaseInstanceIdService"
+            android:exported="true" >
+            <intent-filter android:priority="-500" >
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="apps.softmed.com.hfreferal.firebaseinitprovider"
+            android:exported="false"
+            android:initOrder="100" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>

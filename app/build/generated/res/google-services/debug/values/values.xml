@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">327103044117-c05mlckns8bdgc495sp5mivehbp25c28.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://hfreferralapp.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">327103044117</string>
+    <string name="google_api_key" translatable="false">AIzaSyBIKltypChde1_p1DGu27TqTKdPV_1T8bQ</string>
+    <string name="google_app_id" translatable="false">1:327103044117:android:130f306bb55ab5d9</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBIKltypChde1_p1DGu27TqTKdPV_1T8bQ</string>
+    <string name="google_storage_bucket" translatable="false">hfreferralapp.appspot.com</string>
+    <string name="project_id" translatable="false">hfreferralapp</string>
+</resources>
