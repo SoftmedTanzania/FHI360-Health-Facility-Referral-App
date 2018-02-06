@@ -60,7 +60,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
     public Button saveButton, referButton;
     private MaterialSpinner servicesSpinner, healthFacilitySpinner;
     public TextView clientName, ctcNumber, referalReasons, villageLeaderValue, referrerName;
-    private EditText servicesOfferedEt, otherInformationEt;
+    private EditText servicesOfferedEt, otherInformationEt, clientCtcNumber;
     public ProgressView saveProgress;
     private CheckBox tbStatus;
     private RecyclerView indicatorsRecyclerView;
@@ -188,6 +188,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
         saveProgress = (ProgressView) findViewById(R.id.save_progress);
         servicesOfferedEt = (EditText) findViewById(R.id.service_offered_et);
         otherInformationEt = (EditText) findViewById(R.id.other_information_et);
+        clientCtcNumber = (EditText) findViewById(R.id.ctc_number_et);
         referrerName = (TextView) findViewById(R.id.referer_name_value);
         villageLeaderValue = (TextView) findViewById(R.id.mwenyekiti_name_value);
         patientGender = (TextView) findViewById(R.id.patient_gender_value);
@@ -291,6 +292,9 @@ public class TbReferralDetailsActivity extends BaseActivity {
             if (tbStatus.isChecked()){
 
                 currentPatient.setCurrentOnTbTreatment(true);
+                if (!clientCtcNumber.getText().toString().isEmpty()){
+                    currentPatient.setCtcNumber(clientCtcNumber.getText().toString());
+                }
                 database.patientModel().updatePatient(currentPatient);
 
                 PostOffice patientPost = new PostOffice();
@@ -366,10 +370,11 @@ public class TbReferralDetailsActivity extends BaseActivity {
             Log.d("reckless", "Done background!"+patientNames);
             clientNames.setText(patientNames);
             if (patient != null){
-                wardText.setText(patient.getWard() == null ? "Kata :  " : "Kata : "+patient.getWard());
-                villageText.setText(patient.getVillage() == null ? "Kijiji :  " : "Kijiji : "+patient.getVillage());
-                hamletText.setText(patient.getHamlet() == null ? "Kitongoji :  " : "Kitongoji : "+patient.getHamlet());
+                wardText.setText(patient.getWard() == null ? "" : patient.getWard());
+                villageText.setText(patient.getVillage() == null ? "" : patient.getVillage());
+                hamletText.setText(patient.getHamlet() == null ? "" : patient.getHamlet());
                 patientGender.setText(patient.getGender());
+                clientCtcNumber.setText(patient.getCtcNumber());
             }
 
             IndicatorsRecyclerAdapter adapter = new IndicatorsRecyclerAdapter(TbReferralDetailsActivity.this, indicators);
