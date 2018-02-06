@@ -54,11 +54,72 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/cyan_400"/>
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0.2dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:background="@color/white">
+
+                <belka.us.androidtoggleswitch.widgets.ToggleSwitch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:id="@+id/referral_to_toggle"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center_vertical"
+                    custom:toggleWidth="120dp"
+                    custom:cornerRadius="0dp"
+                    custom:textToggleLeft="@string/health_facility"
+                    custom:textToggleRight="@string/chw"
+                    custom:activeBgColor="@color/colorPrimary"
+                    custom:activeTextColor="@android:color/white"
+                    custom:inactiveBgColor="@color/colorPrimaryDark"
+                    custom:inactiveTextColor="@android:color/white"
+                    custom:separatorColor="@color/white"/>
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
+                android:id="@+id/service_and_facility_wrap"
                 android:layout_height="70dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent">
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_to_facility"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:divider="@null"
+                        android:layout_marginLeft="16dp"
+                        android:textSize="14sp"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_multiline="false"
+                        app_ms:ms_hint="Kituo"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_floatingLabelText="Kituo"
+                        app_ms:ms_baseColor="@color/white"
+                        app_ms:ms_highlightColor="@color/colorPrimary"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_arrowColor="@color/white"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_floatingLabelColor="@color/white"/>
+
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -93,6 +154,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent">
@@ -123,44 +185,12 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="16dp"
-                    android:layout_height="match_parent">
-
-                    <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/spin_to_facility"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:divider="@null"
-                        android:layout_marginLeft="8dp"
-                        android:textSize="14sp"
-                        app_ms:ms_hintTextSize="14sp"
-                        app_ms:ms_alwaysShowFloatingLabel="true"
-                        app_ms:ms_multiline="false"
-                        app_ms:ms_hint="Kituo"
-                        app_ms:ms_enableFloatingLabel="true"
-                        app_ms:ms_enableErrorLabel="false"
-                        app_ms:ms_floatingLabelText="Kituo"
-                        app_ms:ms_baseColor="@color/white"
-                        app_ms:ms_highlightColor="@color/colorPrimary"
-                        app_ms:ms_errorColor="@color/red_500"
-                        app_ms:ms_hintColor="#b3b3b3"
-                        app_ms:ms_arrowColor="@color/white"
-                        app_ms:ms_arrowSize="12dp"
-                        app_ms:ms_alignLabels="false"
-                        app_ms:ms_floatingLabelColor="@color/white"/>
-
-
-                </RelativeLayout>
-
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:id="@+id/indicators_separator"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
@@ -170,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:id="@+id/tb_indicators_wrapper">
+                android:id="@+id/indicators_wrapper">
 
                 <TextView
                     android:layout_width="wrap_content"

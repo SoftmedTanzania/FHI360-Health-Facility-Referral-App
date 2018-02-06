@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
+
+import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.SessionManager.KEY_UUID;
@@ -61,6 +64,9 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     private EditText referralReasons, otherClinicalInformation;
     private Button cancelButton, issueButton;
     private RecyclerView indicatorsRecycler;
+    private ToggleSwitch referralToToggle;
+    private LinearLayout serviceAndFacilityWrap, indicatorsWrap;
+    private View indicatorSeparator;
 
     private Patient currentPatient;
     private String referralReasonsValue, otherClinicalInformationValue, toHealthFacilityID;
@@ -154,10 +160,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                 }else if (i==0){
                     spinnerToHealthFacility.setEnabled(false);
                     spinnerToHealthFacility.setSelection(0);
-                    referralType = FACILITY_TO_CHW;
                 }else if (i == 1){
                     spinnerToHealthFacility.setEnabled(true);
-                    referralType = INTERFACILITY;
                 }
             }
 
@@ -207,6 +211,26 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+
+        referralToToggle.setOnToggleSwitchChangeListener(new ToggleSwitch.OnToggleSwitchChangeListener(){
+
+            @Override
+            public void onToggleSwitchChangeListener(int position, boolean isChecked) {
+                Log.d("sia", position+" "+isChecked);
+                if (position == 1){
+                    serviceAndFacilityWrap.setVisibility(View.GONE);
+                    indicatorsWrap.setVisibility(View.GONE);
+                    indicatorSeparator.setVisibility(View.GONE);
+                    referralType = FACILITY_TO_CHW;
+                }else {
+                    serviceAndFacilityWrap.setVisibility(View.VISIBLE);
+                    indicatorsWrap.setVisibility(View.VISIBLE);
+                    indicatorSeparator.setVisibility(View.VISIBLE);
+                    referralType = INTERFACILITY;
+                }
             }
         });
 
@@ -322,6 +346,13 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         cancelButton = (Button) v.findViewById(R.id.cancel_button);
         issueButton = (Button) v.findViewById(R.id.tuma_button);
 
+        referralToToggle = (ToggleSwitch) v.findViewById(R.id.referral_to_toggle);
+
+        serviceAndFacilityWrap = (LinearLayout) v.findViewById(R.id.service_and_facility_wrap);
+        indicatorsWrap = (LinearLayout) v.findViewById(R.id.indicators_wrapper);
+
+        indicatorSeparator = (View) v.findViewById(R.id.indicators_separator);
+
     }
 
     class IndicatorsRecyclerAdapter  extends RecyclerView.Adapter<IndicatorsViewHolder> {
@@ -421,6 +452,13 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             super.onPostExecute(aVoid);
             IndicatorsRecyclerAdapter adapter = new IndicatorsRecyclerAdapter(getContext(), referralIndicators);
             indicatorsRecycler.setAdapter(adapter);
+            if (referralIndicators.size() <= 0){
+                indicatorsWrap.setVisibility(View.GONE);
+                indicatorSeparator.setVisibility(View.GONE);
+            }else {
+                indicatorsWrap.setVisibility(View.VISIBLE);
+                indicatorSeparator.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -442,6 +480,11 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             servicesAdapter = new ServicesAdapter(context, R.layout.subscription_plan_items_drop_down ,serviceIndicators);
             spinnerService.setAdapter(servicesAdapter);
             spinnerToHealthFacility.setAdapter(healthFacilitiesAdapter);
+            for (int i = 0; i<hfs.size(); i++){
+                if (BaseActivity.getThisFacilityId().equals(hfs.get(i).getOpenMRSUIID())){
+                    spinnerToHealthFacility.setSelection(i+1);
+                }
+            }
 
         }
 

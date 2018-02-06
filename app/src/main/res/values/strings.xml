@@ -10,5 +10,7 @@
     <string name="village">Kijiji</string>
     <string name="ward">Kata</string>
     <string name="map_cue">Map Cue</string>
+    <string name="health_facility">\n Kituo cha Afya \n</string>
+    <string name="chw">\nMtoa huduma wa Jamii \n</string>
 
 </resources>
