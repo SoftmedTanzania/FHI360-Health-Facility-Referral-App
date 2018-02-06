@@ -15,35 +15,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e64e6164-d795-43a1-8400-e8327b364fbe" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/softmed/htmr_facility/Manifest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/softmed/htmr_facility/R.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/fileHashes/fileHashes.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.1/taskHistory/taskHistory.lock" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/arch/lifecycle/extensions/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/arch/lifecycle/extensions/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/arch/persistence/room/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/arch/persistence/room/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/compat/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/compat/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/coreui/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/coreui/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/coreutils/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/coreutils/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/design/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/design/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/fragment/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/fragment/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/graphics/drawable/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/graphics/drawable/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/graphics/drawable/animated/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/graphics/drawable/animated/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/mediacompat/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/mediacompat/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/transition/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/transition/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/v4/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/v4/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/v7/appcompat/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/v7/appcompat/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/v7/recyclerview/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/android/support/v7/recyclerview/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/apps/softmed/com/hfreferal/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/apps/softmed/com/hfreferal/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/belka/us/androidtoggleswitch/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/belka/us/androidtoggleswitch/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/bignerdranch/android/multiselector/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/bignerdranch/android/multiselector/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/google/android/gms/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/google/android/gms/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/rey/material/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/rey/material/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/wdullaer/materialdatetimepicker/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/wdullaer/materialdatetimepicker/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/fr/ganfra/materialspinner/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/fr/ganfra/materialspinner/R.java" />
     </list>
     <ignored path="HFReferal.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -95,20 +69,20 @@
           </provider>
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="5300">
-              <caret line="265" column="48" lean-forward="false" selection-start-line="265" selection-start-column="48" selection-end-line="265" selection-end-column="48" />
+              <caret line="266" column="48" lean-forward="false" selection-start-line="266" selection-start-column="48" selection-end-line="266" selection-end-column="48" />
               <folding>
-                <marker date="1517924114000" expanded="true" signature="7336:11282" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="7645:8507" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="7813:8476" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="8537:9212" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="8705:9181" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="9242:9880" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="9410:9848" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="9910:10591" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="10078:10560" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="10621:11257" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="10789:11226" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="11333:11539" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="7382:11328" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="7691:8553" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="7859:8522" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="8583:9258" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="8751:9227" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="9288:9926" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="9456:9894" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="9956:10637" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="10124:10606" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="10667:11303" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="10835:11272" ph="..." />
+                <marker date="1517924358000" expanded="true" signature="11379:11585" ph="..." />
               </folding>
             </state>
           </provider>
@@ -127,8 +101,8 @@
       <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state relative-caret-position="60">
+              <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -143,8 +117,7 @@
             <state relative-caret-position="140">
               <caret line="7" column="34" lean-forward="false" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
               <folding>
-                <marker date="1517924114000" expanded="true" signature="4022:4024" ph="..." />
-                <marker date="1517924114000" expanded="true" signature="4022:4044" ph="..." />
+                <element signature="e#337#355#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2085,7 +2058,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_tb_referral_details.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_dialogue_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/objects/PatientAppointment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/dom/dao/PatientAppointmentModelDao.java" />
@@ -2135,6 +2107,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/activities/TbClientDetailsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_referal_list.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
@@ -2489,7 +2462,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1517924194985" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1517925701138" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2537,7 +2510,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1517924194985" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1517925701138" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2578,6 +2551,27 @@
       <setting name="params" value="" />
       <setting name="workDir" value="file://$PROJECT_DIR$" />
       <setting name="debug" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
       <method />
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
@@ -2708,7 +2702,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1517924194987" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1517925701140" />
       </method>
     </configuration>
     <list size="1">
@@ -2817,10 +2811,10 @@
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35871744" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293578" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.393578" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.393578" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1497996" sideWeight="0.48210922" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1497996" sideWeight="0.48210922" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3293578" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32976446" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -2913,7 +2907,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/build/generated/source/apt/debug/apps/softmed/com/hfreferal/dom/dao/PatientModelDao_Impl.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/activities/ClientsDetailsActivity.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/apps/softmed/com/hfreferal/activities/ClientDetailViewOnly.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_client_details.xml">
@@ -3090,20 +3083,20 @@
       </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5300">
-          <caret line="265" column="48" lean-forward="false" selection-start-line="265" selection-start-column="48" selection-end-line="265" selection-end-column="48" />
+          <caret line="266" column="48" lean-forward="false" selection-start-line="266" selection-start-column="48" selection-end-line="266" selection-end-column="48" />
           <folding>
-            <marker date="1517924114000" expanded="true" signature="7336:11282" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="7645:8507" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="7813:8476" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="8537:9212" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="8705:9181" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="9242:9880" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="9410:9848" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="9910:10591" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="10078:10560" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="10621:11257" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="10789:11226" ph="..." />
-            <marker date="1517924114000" expanded="true" signature="11333:11539" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="7382:11328" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="7691:8553" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="7859:8522" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="8583:9258" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="8751:9227" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="9288:9926" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="9456:9894" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="9956:10637" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="10124:10606" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="10667:11303" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="10835:11272" ph="..." />
+            <marker date="1517924358000" expanded="true" signature="11379:11585" ph="..." />
           </folding>
         </state>
       </provider>
@@ -3116,10 +3109,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="7" column="34" lean-forward="false" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+          <folding>
+            <element signature="e#337#355#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        <state relative-caret-position="60">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
