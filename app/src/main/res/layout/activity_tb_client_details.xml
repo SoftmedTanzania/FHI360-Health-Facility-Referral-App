@@ -708,7 +708,7 @@
                                             android:layout_marginRight="32dp"
                                             android:background="@color/card_separator"/>
 
-                                        <apps.softmed.com.hfreferal.customviews.WrapContentHeightViewPager
+                                        <com.softmed.htmr_facility.customviews.WrapContentHeightViewPager
                                             android:id="@+id/encounters_viewpager"
                                             android:layout_width="match_parent"
                                             android:layout_marginLeft="32dp"

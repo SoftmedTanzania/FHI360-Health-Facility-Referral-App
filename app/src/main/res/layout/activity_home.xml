@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="apps.softmed.com.hfreferal.activities.MainActivity">
+    tools:context="com.softmed.htmr_facility.activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -131,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <apps.softmed.com.hfreferal.customviews.NonSwipeableViewPager
+            <com.softmed.htmr_facility.customviews.NonSwipeableViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
