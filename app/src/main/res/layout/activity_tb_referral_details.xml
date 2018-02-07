@@ -447,7 +447,7 @@
                                         android:layout_height="wrap_content"
                                         android:id="@+id/clinical_information_title"
                                         android:textSize="14sp"
-                                        android:text="Other Clinical Information"
+                                        android:text="Taarifa nyingine za Kliniki"
                                         android:fontFamily="@font/roboto_condensed"
                                         android:textColor="@color/card_title_text"/>
 
@@ -498,7 +498,7 @@
                                     android:layout_height="wrap_content"
                                     android:id="@+id/tb_status_title"
                                     android:layout_marginTop="16dp"
-                                    android:text="TB STATUS"
+                                    android:text="Amepatikana na Kifua Kikuu"
                                     android:textSize="14sp"
                                     android:fontFamily="@font/avenir_light"
                                     android:textColor="@color/card_title_text"/>
@@ -521,7 +521,7 @@
                                     android:layout_centerVertical="true"
                                     android:textSize="12sp"
                                     android:textColor="@color/card_grid_text"
-                                    android:text="( Check if Positive )"
+                                    android:text="(Weka alama kama majibu ni chanya)"
                                     android:fontFamily="@font/roboto_condensed_italic"/>
 
 

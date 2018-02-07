@@ -192,7 +192,7 @@
                     android:paddingRight="16dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="Status"
+                    android:text="Hali ya Rufaa"
                     android:fontFamily="@font/roboto_condensed"
                     android:textColor="@color/black"
                     android:textSize="16sp"/>

@@ -28,7 +28,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="HTMR"
+                    android:text="Rufaa Zilizotolewa"
                     android:textColor="@color/white"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp"
@@ -304,7 +304,7 @@
                         android:paddingTop="8dp"
                         android:paddingBottom="8dp"
                         android:gravity="center"
-                        android:text="Referral Status"
+                        android:text="Hali ya Rufaa"
                         android:fontFamily="@font/roboto_condensed"
                         android:textColor="@color/black"
                         android:textSize="16sp"/>

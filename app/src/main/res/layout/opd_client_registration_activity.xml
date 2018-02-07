@@ -642,7 +642,7 @@
                                         android:fontFamily="@font/julius_sans_one"
                                         android:layout_marginRight="16dp"
                                         android:textColor="@color/card_title_text"
-                                        android:text="Cancel"/>
+                                        android:text="Sitisha"/>
 
                                     <com.rey.material.widget.ProgressView
                                         android:layout_width="150dp"

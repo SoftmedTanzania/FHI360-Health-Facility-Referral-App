@@ -153,7 +153,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_below="@id/lock_ico"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Login"
+                android:text="Ingia"
                 android:id="@+id/login_title"
                 android:textColor="@color/black"/>
 
@@ -164,7 +164,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_below="@id/login_title"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Enter username and password"
+                android:text="Ingiza jina na neno la siri"
                 android:id="@+id/login_msg"
                 android:textColor="@color/card_grid_text"/>
 
@@ -181,42 +181,29 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="32dp">
 
-                    <com.rey.material.widget.EditText
+                    <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:hint="Username"
+                        android:hint="Jina"
                         android:id="@+id/username_et"
                         android:textColor="@color/card_title_text"
                         android:textColorHint="@color/card_grid_text"
                         android:textSize="24sp"
-                        android:fontFamily="@font/roboto_regular"
-                        app:et_dividerHeight="1dp"
-                        app:et_supportTextSize="20sp"
-                        app:et_supportTextColor="@color/black"
-                        app:et_dividerColor="@color/card_grid_text"
-                        app:et_labelEnable="true"
-                        app:et_labelTextColor="@color/cyan_500" />
+                        android:fontFamily="@font/roboto_regular" />
 
-
-                    <com.rey.material.widget.EditText
+                    <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="Password"
+                        android:hint="Neno la Siri"
                         android:id="@+id/password_et"
                         android:textColor="@color/card_title_text"
                         android:textColorHint="@color/card_grid_tex"
                         android:textSize="24sp"
                         android:inputType="textPassword"
                         android:fontFamily="@font/roboto_regular"
-                        android:layout_gravity="center_vertical"
-                        app:et_dividerHeight="1dp"
-                        app:et_supportTextSize="20sp"
-                        app:et_supportTextColor="@color/black"
-                        app:et_dividerColor="@color/card_grid_text"
-                        app:et_labelEnable="true"
-                        app:et_labelTextColor="@color/cyan_500"/>
+                        android:layout_gravity="center_vertical"/>
 
                     <com.rey.material.widget.ProgressView
                         android:layout_width="40dp"
@@ -240,7 +227,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="20px"
-                    android:text="Login"
+                    android:text="Ingia"
                     android:textAllCaps="false"
                     android:id="@+id/login_button"
                     android:textColor="@color/white"

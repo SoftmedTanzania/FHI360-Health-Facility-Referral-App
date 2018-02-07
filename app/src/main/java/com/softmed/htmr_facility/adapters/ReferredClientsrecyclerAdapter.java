@@ -63,10 +63,10 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
         new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute();
 
         if (referral.getReferralStatus() == 0){
-            holder.feedbackStatus.setText("Pending");
+            holder.feedbackStatus.setText("Bado");
             holder.feedbackStatus.setTextColor(context.getResources().getColor(R.color.amber_700));
         }else {
-            holder.feedbackStatus.setText("Successful");
+            holder.feedbackStatus.setText("Imefanikiwa");
             holder.feedbackStatus.setTextColor(context.getResources().getColor(R.color.green_a700));
         }
 

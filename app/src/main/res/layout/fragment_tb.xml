@@ -52,7 +52,7 @@
                             android:layout_marginRight="16dp"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
-                            android:text="TB Referral List"/>
+                            android:text="Orodha ya Rufaa  (Kifua Kikuu)"/>
 
 
                         <TextView
@@ -149,7 +149,7 @@
                             android:layout_toRightOf="@id/tb_refered_clients_icon"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
-                            android:text="Referrals Issued"/>
+                            android:text="Rufaa Zilizotolewa"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -209,7 +209,7 @@
                         android:id="@+id/tb_new_referals_text"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
-                        android:text="Tb Client List"/>
+                        android:text="Wateja wa Kifua Kikuu"/>
 
                 </RelativeLayout>
 

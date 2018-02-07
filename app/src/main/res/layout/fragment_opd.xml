@@ -52,7 +52,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/black"
-                            android:text="Referrals List "/>
+                            android:text="Orodha ya Rufaa"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -146,7 +146,7 @@
                             android:id="@+id/refered_clients_text"
                             android:fontFamily="@font/roboto_regular"
                             android:textColor="@color/black"
-                            android:text="Referrals Issued"/>
+                            android:text="Rufaa Zilizotolewa"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -206,7 +206,7 @@
                         android:layout_toRightOf="@id/tb_referals_icon"
                         android:textColor="@color/card_grid_text"
                         android:layout_centerVertical="true"
-                        android:text="Register Client"/>
+                        android:text="Sajili Mteja"/>
 
                 </RelativeLayout>
 
@@ -245,7 +245,7 @@
                         android:layout_toRightOf="@id/client_list_image"
                         android:textColor="@color/card_grid_text"
                         android:layout_centerVertical="true"
-                        android:text="Clients List"/>
+                        android:text="Orodha ya Wateja"/>
 
 
                 </RelativeLayout>

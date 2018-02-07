@@ -8,13 +8,13 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.rey.material.widget.EditText;
 import com.rey.material.widget.ProgressView;
 
 import org.json.JSONObject;
@@ -94,10 +94,10 @@ public class LoginActivity extends BaseActivity {
             return false;
         }
         else if (usernameEt.getText().length() <= 0){
-            Toast.makeText(this, "Username can not be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Jina haliwezi kua wazi", Toast.LENGTH_SHORT).show();
             return false;
         }else if (passwordEt.getText().length() <= 0){
-            Toast.makeText(this, "Password can not be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Neno la siri haliwezi kuwa wazi", Toast.LENGTH_SHORT).show();
             return false;
         }
         else {
@@ -121,9 +121,9 @@ public class LoginActivity extends BaseActivity {
 
     private void loginUser(){
 
-        loginButton.setText("Loading Data...");
+        loginButton.setText("Inapakua...");
         loginMessages.setVisibility(View.VISIBLE);
-        loginMessages.setText("Loggin in..");
+        loginMessages.setText("Inasajili...");
 
         //Use Retrofit to make http request calls
         Endpoints.LoginService loginService =
@@ -166,10 +166,10 @@ public class LoginActivity extends BaseActivity {
                 } else {
                     // error response, no access to resource?
                     Log.d("BTC", "responce is error : "+response.toString());
-                    loginMessages.setText("Error Loging in");
+                    loginMessages.setText("Tatizo wakati wa kusajili");
                     loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
                     loginProgress.setVisibility(View.GONE);
-                    loginButton.setText("Login");
+                    loginButton.setText("Ingia");
                 }
             }
 

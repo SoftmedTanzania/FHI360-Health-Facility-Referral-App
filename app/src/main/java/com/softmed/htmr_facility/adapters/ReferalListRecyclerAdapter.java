@@ -76,10 +76,10 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             new patientDetailsTask(database, referral, holder.clientsNames, holder.ctcNumber).execute(serviceID);
 
             if (referral.getReferralStatus() == 0){
-                holder.attendedFlag.setText("New");
+                holder.attendedFlag.setText("Mpya");
                 holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
             }else {
-                holder.attendedFlag.setText("Attended");
+                holder.attendedFlag.setText("Tayari");
                 holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
             }
 
@@ -105,10 +105,10 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             new patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute(serviceID);
 
             if (referral.getReferralStatus() == 0){
-                holder.attendedFlag.setText("New");
+                holder.attendedFlag.setText("Mpya");
                 holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
             }else {
-                holder.attendedFlag.setText("Attended");
+                holder.attendedFlag.setText("Tayari");
                 holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
             }
 

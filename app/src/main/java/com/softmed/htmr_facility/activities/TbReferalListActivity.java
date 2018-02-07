@@ -75,12 +75,12 @@ public class TbReferalListActivity extends BaseActivity {
         ImageView iv    = (ImageView) homeView.findViewById(R.id.icon);
         iv.setColorFilter(getResources().getColor(R.color.white));
         Glide.with(this).load(R.mipmap.ic_referals_list).into(iv);
-        homeTitle.setText("Health Facility Referrals");
+        homeTitle.setText("Rufaa za vituo vya afya");
         tabLayout.getTabAt(0).setCustomView(homeView);
 
         View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
-        newsTitle.setText("CHW Referrals");
+        newsTitle.setText("Rufaa za chw");
         ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
         iv2.setColorFilter(getResources().getColor(R.color.white));
         Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);

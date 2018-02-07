@@ -176,10 +176,10 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onChanged(@Nullable List<PostOffice> postOffices) {
                 if (postOffices.size() > 0){
-                    unsynced.setText("Unsynced Data : "+postOffices.size());
+                    unsynced.setText("Taarifa Hazijaoanishwa : "+postOffices.size());
                     unsynced.setTextColor(getResources().getColor(R.color.orange_400));
                 }else {
-                    unsynced.setText("Data Synced");
+                    unsynced.setText("Taarifa Zimeoanishwa");
                     unsynced.setTextColor(getResources().getColor(R.color.green_600));
                 }
 
@@ -530,7 +530,7 @@ public class HomeActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             manualSync.setVisibility(View.VISIBLE);
             syncProgressBar.setVisibility(View.INVISIBLE);
-            unsynced.setText("Data Synced!");
+            unsynced.setText("Taarifa Zimeoanishwa!");
             unsynced.setTextColor(getResources().getColor(R.color.white));
             checkPostOfficeData();
             super.onPostExecute(aVoid);

@@ -171,7 +171,7 @@
                                     android:layout_height="wrap_content"
                                     android:id="@+id/hiv_status_title"
                                     android:layout_marginTop="16dp"
-                                    android:text="HIV STATUS"
+                                    android:text="Majibu ya Vipimo"
                                     android:textSize="14sp"
                                     android:fontFamily="@font/avenir_light"
                                     android:textColor="@color/card_title_text"/>
@@ -181,10 +181,11 @@
                                     android:layout_width="35dp"
                                     android:layout_height="35dp"
                                     android:layout_marginTop="8dp"
-                                    android:layout_marginLeft="32dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="4dp"
                                     android:layout_toRightOf="@+id/hiv_status_title"
                                     android:checked="false"
-                                    android:background="@drawable/checkbox" />
+                                    android:background="@drawable/checkbox"/>
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -194,7 +195,7 @@
                                     android:layout_centerVertical="true"
                                     android:textSize="12sp"
                                     android:textColor="@color/card_grid_text"
-                                    android:text="( Check if Positive )"
+                                    android:text="( Tiki kama chanya )"
                                     android:fontFamily="@font/roboto_condensed_italic"/>
 
                             </RelativeLayout>
@@ -570,43 +571,9 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:id="@+id/drug_allergies_title"
-                                        android:textSize="14sp"
-                                        android:text="Drug allergies"
-                                        android:fontFamily="@font/roboto_condensed"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/drug_allergies_title"
-                                        android:layout_marginTop="8dp"
-                                        android:textSize="14sp"
-                                        android:text="N/A"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:textColor="@color/card_title_text"/>
-
-                                </RelativeLayout>
-
-                                <View
-                                    android:layout_width="1dp"
-                                    android:layout_height="match_parent"
-                                    android:background="@color/card_separator"
-                                    android:layout_marginTop="16dp"
-                                    android:layout_marginBottom="16dp"
-                                    android:layout_marginRight="16dp"/>
-
-                                <RelativeLayout
-                                    android:layout_width="0dp"
-                                    android:layout_weight="0.3"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
                                         android:id="@+id/flags_title"
                                         android:textSize="14sp"
-                                        android:text="Flags"
+                                        android:text="Viashiria"
                                         android:fontFamily="@font/roboto_condensed"
                                         android:textColor="@color/card_title_text"/>
 
@@ -631,8 +598,7 @@
                                         android:checked="false"
                                         android:enabled="false"
                                         android:layout_toRightOf="@id/tb_dose_flag"
-                                        android:background="@drawable/checkbox"
-                                        tools:checked="true" />
+                                        android:background="@drawable/checkbox"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -652,7 +618,6 @@
                                         android:layout_below="@+id/tb_flag"
                                         android:layout_marginTop="8dp"
                                         android:layout_alignRight="@+id/tb_flag"
-                                        android:checked="true"
                                         android:enabled="false"
                                         android:background="@drawable/checkbox" />
 
@@ -676,7 +641,7 @@
                                         android:layout_height="wrap_content"
                                         android:id="@+id/clinical_information_title"
                                         android:textSize="14sp"
-                                        android:text="Other Clinical Information"
+                                        android:text="Taarifa nyingine za Kliniki"
                                         android:fontFamily="@font/roboto_condensed"
                                         android:textColor="@color/card_title_text"/>
 
