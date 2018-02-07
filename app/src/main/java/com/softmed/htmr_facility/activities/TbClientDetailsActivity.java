@@ -32,6 +32,9 @@ import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
+
+import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
+import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
@@ -68,14 +71,15 @@ import static java.util.Calendar.YEAR;
 public class TbClientDetailsActivity extends BaseActivity {
 
     private LinearLayout matokeoLinearLayout;
-    private RelativeLayout finishedPreviousMonthLayout;
-    private MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner;
+    private RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper;
+    private MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner;
     private TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
     private TextView ward, village, hamlet, medicationStatusTitle;
-    private EditText xray, otherTests, outcomeDetails;
+    private EditText outcomeDetails;
     private Button saveButton;
     public ProgressDialog dialog;
     private CheckBox medicationStatusCheckbox;
+    private ToggleSwitch testTypeToggle;
 
     private Patient currentPatient;
     private TbPatient currentTbPatient;
@@ -87,7 +91,7 @@ public class TbClientDetailsActivity extends BaseActivity {
     private Context context;
     private String[] treatmentTypes = {TREATMENT_TYPE_1, TREATMENT_TYPE_2, TREATMENT_TYPE_3, TREATMENT_TYPE_4, TREATMENT_TYPE_5};
     private final String[] tbTypes = {TB_NEGATIVE, TB_SCANTY, TB_1_PLUS, TB_2_PLUS, TB_3_PLUS};
-    private ArrayAdapter<String> makohoziSpinnerAdapter;
+    private ArrayAdapter<String> makohoziSpinnerAdapter, monthOneMakohoziAdapter;
 
 
     @Override
@@ -161,6 +165,10 @@ public class TbClientDetailsActivity extends BaseActivity {
         makohoziSpinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         makohoziSpinner.setAdapter(makohoziSpinnerAdapter);
 
+        monthOneMakohoziAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, tbTypes);
+        monthOneMakohoziAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
+        monthOneMakohoziSpinner.setAdapter(makohoziSpinnerAdapter);
+
         encouterMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -202,17 +210,37 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         });
 
+        testTypeToggle.setOnToggleSwitchChangeListener(new BaseToggleSwitch.OnToggleSwitchChangeListener() {
+            @Override
+            public void onToggleSwitchChangeListener(int position, boolean isChecked) {
+                if (position == 0 && isChecked){
+                    makohoziWrapper.setVisibility(View.VISIBLE);
+                    othersWrapper.setVisibility(View.GONE);
+                }else if (position == 1 && isChecked){
+                    makohoziWrapper.setVisibility(View.GONE);
+                    othersWrapper.setVisibility(View.GONE);
+                }else {
+                    makohoziWrapper.setVisibility(View.GONE);
+                    othersWrapper.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
     }
 
     private void setupviews(){
 
+        testTypeToggle = (ToggleSwitch) findViewById(R.id.test_type);
+
         matokeoLinearLayout = (LinearLayout) findViewById(R.id.matokep_ll);
-        matokeoLinearLayout.setVisibility(View.GONE);
+        //matokeoLinearLayout.setVisibility(View.GONE);
+
+        makohoziWrapper = (RelativeLayout) findViewById(R.id.makohozi_wrapper);
+        othersWrapper = findViewById(R.id.others_wrapper);
 
         finishedPreviousMonthLayout = (RelativeLayout) findViewById(R.id.finished_previous_month_layout);
 
-        xray = (EditText) findViewById(R.id.xray_value);
-        otherTests = (EditText) findViewById(R.id.other_tests_value);
         outcomeDetails = (EditText) findViewById(R.id.other_information);
 
         saveButton = (Button) findViewById(R.id.hifadhi_taarifa);
@@ -231,6 +259,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         matokeoSpinner = (MaterialSpinner) findViewById(R.id.spin_matokeo);
         encouterMonthSpinner = (MaterialSpinner) findViewById(R.id.spin_encounter_month);
         makohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi);
+        monthOneMakohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi_month_one);
 
         medicationStatusCheckbox = (CheckBox) findViewById(R.id.medication_status);
 
@@ -247,14 +276,6 @@ public class TbClientDetailsActivity extends BaseActivity {
                 strMatibabu = (String) matibabuSpinner.getSelectedItem();
                 Log.d("BILLION", "Matibabu selected  : "+matibabuSpinner.getSelectedItem());
             }
-            if (xray.getText().toString().equals("")){
-                Toast.makeText(context, "Jaza majibu ya X-Ray", Toast.LENGTH_LONG).show();
-                return false;
-            }else {
-                strXray = xray.getText().toString();
-            }
-
-            strVipimoVingine = otherTests.getText().toString();
 
             if (makohoziSpinner.getSelectedItemPosition() == -1){
                 Toast.makeText(
@@ -292,16 +313,6 @@ public class TbClientDetailsActivity extends BaseActivity {
         }else {
             saveEncounters();
         }
-    }
-
-    public void setEncounterValues(int month, String cough, int mediStatus){
-        encounterMonth = month;
-        strMakohozi = cough;
-        medicatonStatus = mediStatus;
-
-        //TODO:set previous month medication status
-
-
     }
 
     private void saveTbPatient(){
@@ -440,8 +451,8 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             if (tbPatient != null){
 
-                xray.setText(tbPatient.getXray() == null ? "" : tbPatient.getXray());
-                otherTests.setText(tbPatient.getOtherTests() == null ? "" : tbPatient.getOtherTests());
+                //xray.setText(tbPatient.getXray() == null ? "" : tbPatient.getXray());
+                //otherTests.setText(tbPatient.getOtherTests() == null ? "" : tbPatient.getOtherTests());
                 patientWeight.setText(tbPatient.getWeight()+"" == null ? "" : tbPatient.getWeight()+"");
                 for (int i=0; i<treatmentTypes.length; i++){
                     if (treatmentTypes[i].equals(tbPatient.getTreatment_type())){
@@ -450,12 +461,8 @@ public class TbClientDetailsActivity extends BaseActivity {
                 }
 
                 if (patientNew){
-                    xray.setEnabled(true);
-                    otherTests.setEnabled(true);
                     matibabuSpinner.setEnabled(true);
                 }else {
-                    xray.setEnabled(false);
-                    otherTests.setEnabled(false);
                     matibabuSpinner.setEnabled(false);
                 }
 

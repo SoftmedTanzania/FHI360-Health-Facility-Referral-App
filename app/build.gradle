@@ -57,7 +57,6 @@ dependencies {
     compile 'us.belka:androidtoggleswitch:1.2.2'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.bignerdranch.android:recyclerview-multiselect:0.2'
-
     compile 'us.belka:androidtoggleswitch:1.2.2'
 }
 repositories {
