@@ -110,10 +110,10 @@ public class HivFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(HIV_SERVICE_ID)+" New referrals unattended";
-            feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
+            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(HIV_SERVICE_ID)+" Rufaa Mpya";
+            feedbackCount = "Zinazosubiri Majibu : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
             chwCount = "CHW : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[]{CHW_TO_FACILITY});
-            hfCount = "Health Facility : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
+            hfCount = "Kituo cha Afya : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
             return null;
         }
 

@@ -484,7 +484,7 @@
                                         android:fontFamily="@font/roboto_regular"
                                         android:layout_marginRight="16dp"
                                         android:textColor="@color/black"
-                                        android:text="Cancel"/>
+                                        android:text="Sitisha"/>
 
 
                                 </RelativeLayout>

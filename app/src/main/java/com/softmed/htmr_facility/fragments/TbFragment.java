@@ -113,10 +113,10 @@ public class TbFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(TB_SERVICE_ID)+" New referrals unattended";
+            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(TB_SERVICE_ID)+" Rufaa Mpya";
             chwCount = "CHW : "+database.referalModel().getCountReferralsByType(TB_SERVICE_ID, new int[]{CHW_TO_FACILITY});
-            hfCount = "Health Facility : "+database.referalModel().getCountReferralsByType(TB_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
-            feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.getThisFacilityId());
+            hfCount = "Kituo cha Afya : "+database.referalModel().getCountReferralsByType(TB_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
+            feedbackCount = "Zinazosubiri Majibu : "+database.referalModel().geCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.getThisFacilityId());
             return null;
         }
 
