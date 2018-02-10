@@ -71,7 +71,7 @@ import static java.util.Calendar.YEAR;
 public class TbClientDetailsActivity extends BaseActivity {
 
     private LinearLayout matokeoLinearLayout;
-    private RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper;
+    private RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper, makohoziEncounterWrap;
     private MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner;
     private TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
     private TextView ward, village, hamlet, medicationStatusTitle;
@@ -156,7 +156,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         matokepSpinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         matokeoSpinner.setAdapter(matokepSpinnerAdapter);
 
-        final String[] encounterMonths = {"Kabla ya Matibabu", "Month 2", "Month 3", "Month 4", "Month 5", "Month 6", "Month 7", "Month 8"};
+        final String[] encounterMonths = {"Month 1", "Month 2", "Month 3", "Month 4", "Month 5", "Month 6", "Month 7", "Month 8"};
         ArrayAdapter<String> encounterMonthSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, encounterMonths);
         encounterMonthSpinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         encouterMonthSpinner.setAdapter(encounterMonthSpinnerAdapter);
@@ -183,10 +183,11 @@ public class TbClientDetailsActivity extends BaseActivity {
                     else
                         matokeoLinearLayout.setVisibility(View.GONE);
 
-                    if (i == 0)
-                        finishedPreviousMonthLayout.setVisibility(View.GONE);
-                    else
-                        finishedPreviousMonthLayout.setVisibility(View.VISIBLE);
+                    if (i == 0 || i == 2){
+                        makohoziEncounterWrap.setVisibility(View.VISIBLE);
+                    } else {
+                        finishedPreviousMonthLayout.setVisibility(View.INVISIBLE);
+                    }
 
                     GetEncounterDetails getEncounterDetails = new GetEncounterDetails(baseDatabase);
                     Log.d("Billions", "About to Get Encounters for month "+(i+1));
@@ -238,6 +239,8 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         makohoziWrapper = (RelativeLayout) findViewById(R.id.makohozi_wrapper);
         othersWrapper = findViewById(R.id.others_wrapper);
+
+        makohoziEncounterWrap = (RelativeLayout) findViewById(R.id.makohozi_encounter_wrap);
 
         finishedPreviousMonthLayout = (RelativeLayout) findViewById(R.id.finished_previous_month_layout);
 
@@ -459,6 +462,8 @@ public class TbClientDetailsActivity extends BaseActivity {
                         matibabuSpinner.setSelection(i+1);
                     }
                 }
+
+
 
                 if (patientNew){
                     matibabuSpinner.setEnabled(true);

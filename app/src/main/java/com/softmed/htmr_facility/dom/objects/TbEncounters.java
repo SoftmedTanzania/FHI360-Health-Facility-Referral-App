@@ -30,6 +30,9 @@ public class TbEncounters implements Serializable {
     @SerializedName("makohozi")
     private String makohozi;
 
+    @SerializedName("weight")
+    private String weight;
+
     @SerializedName("appointmentId")
     private long appointmentId;
 
@@ -117,5 +120,13 @@ public class TbEncounters implements Serializable {
 
     public void setHasFinishedPreviousMonthMedication(boolean hasFinishedPreviousMonthMedication) {
         this.hasFinishedPreviousMonthMedication = hasFinishedPreviousMonthMedication;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 }

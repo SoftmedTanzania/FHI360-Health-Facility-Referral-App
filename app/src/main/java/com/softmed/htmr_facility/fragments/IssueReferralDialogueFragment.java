@@ -60,7 +60,7 @@ import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_NEW;
 public class IssueReferralDialogueFragment extends DialogFragment{
 
     private TextView patientNames;
-    private MaterialSpinner spinnerService, spinnerToHealthFacility, spinnerReferralDestination;
+    private MaterialSpinner spinnerService, spinnerToHealthFacility;
     private EditText referralReasons, otherClinicalInformation;
     private Button cancelButton, issueButton;
     private RecyclerView indicatorsRecycler;
@@ -131,12 +131,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         healthFacilitiesAdapter = new HealthFacilitiesAdapter(this.getContext(),R.layout.subscription_plan_items_drop_down, healthFacilities);
         servicesAdapter = new ServicesAdapter(this.getContext(), R.layout.subscription_plan_items_drop_down , referralServiceIndicators);
 
-        destinations.add("CHW");
-        destinations.add("Health Facility");
-
-        madapter = new mAdapter(IssueReferralDialogueFragment.this.getActivity(),R.layout.subscription_plan_items_drop_down, destinations);
-        spinnerReferralDestination.setAdapter(madapter);
-
         new getFacilitiesAndServices(this.getContext()).execute();
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -152,25 +146,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                 if (getCurrentInputs()){
                     createReferralObject();
                 }
-            }
-        });
-
-        spinnerReferralDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == -1){
-
-                }else if (i==0){
-                    spinnerToHealthFacility.setEnabled(false);
-                    spinnerToHealthFacility.setSelection(0);
-                }else if (i == 1){
-                    spinnerToHealthFacility.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -298,7 +273,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             serviceID = Integer.parseInt(services.getServiceId()+"");
         }
 
-        if (spinnerReferralDestination.getSelectedItemPosition() == 2) {
+        /*if (spinnerReferralDestination.getSelectedItemPosition() == 2) {
             if (spinnerToHealthFacility.getSelectedItemPosition() == 0) {
                 toastThis("Chagua Kituo cha afya cha kutuma rufaa");
                 return false;
@@ -312,7 +287,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         }else{
             //TODO referral destination selected to go to CHW, handle the implementation accordingly
             return  true;
-        }
+        }*/
 
         if (referralReasons.getText().toString().isEmpty()){
             toastThis("Tafadhali andika sababu za rufaa");
@@ -341,7 +316,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         spinnerService = (MaterialSpinner) v.findViewById(R.id.spin_service);
         spinnerToHealthFacility = (MaterialSpinner) v.findViewById(R.id.spin_to_facility);
-        spinnerReferralDestination = (MaterialSpinner) v.findViewById(R.id.spin_destination);
 
         referralReasons = (EditText) v.findViewById(R.id.referal_reasons_text);
         otherClinicalInformation = (EditText) v.findViewById(R.id.other_clinical_information_text);

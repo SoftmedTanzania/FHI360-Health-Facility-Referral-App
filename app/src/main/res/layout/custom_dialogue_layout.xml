@@ -153,38 +153,6 @@
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:visibility="gone"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <fr.ganfra.materialspinner.MaterialSpinner
-                        android:id="@+id/spin_destination"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:divider="@null"
-                        android:layout_marginLeft="8dp"
-                        android:textSize="14sp"
-                        app_ms:ms_hintTextSize="14sp"
-                        app_ms:ms_alwaysShowFloatingLabel="true"
-                        app_ms:ms_multiline="false"
-                        app_ms:ms_hint="Kwenda"
-                        app_ms:ms_enableFloatingLabel="true"
-                        app_ms:ms_enableErrorLabel="false"
-                        app_ms:ms_floatingLabelText="Kwenda"
-                        app_ms:ms_baseColor="@color/white"
-                        app_ms:ms_highlightColor="@color/colorPrimary"
-                        app_ms:ms_errorColor="@color/red_500"
-                        app_ms:ms_hintColor="#b3b3b3"
-                        app_ms:ms_arrowColor="@color/white"
-                        app_ms:ms_arrowSize="12dp"
-                        app_ms:ms_alignLabels="false"
-                        app_ms:ms_floatingLabelColor="@color/white"/>
-
-                </RelativeLayout>
-
             </LinearLayout>
 
             <View

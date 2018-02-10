@@ -42,6 +42,17 @@ public class TbPatient implements Serializable{
     @SerializedName("referral_type")
     private int referralType;
 
+
+    /*
+    1 = Makohozi
+    2 = X-Ray
+    3 = Other
+    */
+    @SerializedName("test_type")
+    private int testType;
+
+    private String otherTestDetails;
+
     @SerializedName("veo")
     private String veo;
 
@@ -200,5 +211,21 @@ public class TbPatient implements Serializable{
 
     public void setPregnant(boolean pregnant) {
         isPregnant = pregnant;
+    }
+
+    public int getTestType() {
+        return testType;
+    }
+
+    public void setTestType(int testType) {
+        this.testType = testType;
+    }
+
+    public String getOtherTestDetails() {
+        return otherTestDetails;
+    }
+
+    public void setOtherTestDetails(String otherTestDetails) {
+        this.otherTestDetails = otherTestDetails;
     }
 }

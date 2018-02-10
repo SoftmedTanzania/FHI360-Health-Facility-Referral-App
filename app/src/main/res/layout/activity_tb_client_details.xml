@@ -642,8 +642,63 @@
                                                 android:layout_height="1dp"
                                                 android:layout_marginRight="8dp"
                                                 android:layout_marginBottom="16dp"
+                                                android:id="@+id/separator_two"
+                                                android:background="@color/card_separator_sec"/>
+
+                                            <TextView
+                                                android:id="@+id/uzito_title"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:layout_below="@id/separator_two"
+                                                android:text="Uzito"
+                                                android:layout_marginLeft="8dp"
+                                                android:textColor="@color/card_grid_text"
+                                                android:textSize="16dp" />
+
+                                            <EditText
+                                                android:id="@+id/monthly_uzito_value"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_below="@id/uzito_title"
+                                                android:background="@drawable/border_one"
+                                                android:hint="Uzito kwa Kg"
+                                                android:inputType="numberDecimal"
+                                                android:textColorHint="@color/card_grid_tex"
+                                                android:textColor="@color/card_grid_text"
+                                                android:fontFamily="@font/roboto_regular"
+                                                android:gravity="start"
+                                                android:layout_marginTop="16dp"
+                                                android:layout_marginBottom="8dp"
+                                                android:layout_marginRight="8dp"
+                                                android:padding="8dp"
+                                                android:textSize="16sp" />
+
+                                        </RelativeLayout>
+
+                                        <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="4dp"
+                                            android:layout_marginRight="4dp"
+                                            android:layout_marginTop="8dp"
+                                            android:layout_marginBottom="8dp"
+                                            android:background="@color/card_separator"/>
+
+                                        <RelativeLayout
+                                            android:layout_width="0dp"
+                                            android:layout_weight="1"
+                                            android:id="@+id/makohozi_encounter_wrap"
+                                            android:layout_marginLeft="8dp"
+                                            android:layout_height="wrap_content">
+
+                                            <View
+                                                android:layout_width="match_parent"
+                                                android:layout_height="1dp"
+                                                android:layout_marginRight="8dp"
+                                                android:layout_marginBottom="16dp"
                                                 android:id="@+id/separator_one"
-                                                android:background="@color/card_separator"/>
+                                                android:background="@color/card_separator_sec"/>
 
                                             <TextView
                                                 android:id="@+id/makohozi_title"
@@ -692,56 +747,6 @@
                                             android:background="@color/card_separator"/>
 
                                         <RelativeLayout
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content">
-
-                                            <View
-                                                android:layout_width="match_parent"
-                                                android:layout_height="1dp"
-                                                android:layout_marginRight="8dp"
-                                                android:layout_marginBottom="16dp"
-                                                android:id="@+id/separator_two"
-                                                android:background="@color/card_separator"/>
-
-                                            <TextView
-                                                android:id="@+id/uzito_title"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/roboto_bold"
-                                                android:layout_below="@id/separator_two"
-                                                android:text="Uzito"
-                                                android:layout_marginLeft="8dp"
-                                                android:textColor="@color/card_grid_text"
-                                                android:textSize="16dp" />
-
-                                            <EditText
-                                                android:id="@+id/monthly_uzito_value"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_below="@id/uzito_title"
-                                                android:background="@drawable/border_one"
-                                                android:hint="Uzito kwa Kg"
-                                                android:inputType="numberDecimal"
-                                                android:textColorHint="@color/card_grid_tex"
-                                                android:fontFamily="@font/roboto_regular"
-                                                android:gravity="start"
-                                                android:layout_margin="8dp"
-                                                android:padding="8dp"
-                                                android:textSize="16sp" />
-
-                                        </RelativeLayout>
-
-                                        <View
-                                            android:layout_width="1dp"
-                                            android:layout_height="match_parent"
-                                            android:layout_marginLeft="4dp"
-                                            android:layout_marginRight="4dp"
-                                            android:layout_marginTop="8dp"
-                                            android:layout_marginBottom="8dp"
-                                            android:background="@color/card_separator"/>
-
-                                        <RelativeLayout
                                             android:id="@+id/finished_previous_month_layout"
                                             android:layout_width="0dp"
                                             android:layout_weight="1"
@@ -753,7 +758,7 @@
                                                 android:layout_marginRight="8dp"
                                                 android:layout_marginBottom="16dp"
                                                 android:id="@+id/separator_three"
-                                                android:background="@color/card_separator"/>
+                                                android:background="@color/card_separator_sec"/>
 
 
                                             <TextView
