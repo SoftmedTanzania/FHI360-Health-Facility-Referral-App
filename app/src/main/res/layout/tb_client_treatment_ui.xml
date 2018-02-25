@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app_ms="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@color/card_separator_third"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/treatment_info"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="5dp"
+            android:layout_below="@id/heading"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/card_separator" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <RelativeLayout
+                android:id="@+id/treatment_type_wrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="8dp">
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/spin_matibabu"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:divider="@null"
+                    android:textSize="14sp"
+                    app_ms:ms_alignLabels="false"
+                    app_ms:ms_alwaysShowFloatingLabel="true"
+                    app_ms:ms_arrowColor="@color/black"
+                    app_ms:ms_arrowSize="12dp"
+                    app_ms:ms_baseColor="@color/card_grid_tex"
+                    app_ms:ms_enableErrorLabel="false"
+                    app_ms:ms_enableFloatingLabel="true"
+                    app_ms:ms_errorColor="@color/red_500"
+                    app_ms:ms_floatingLabelColor="@color/white"
+                    app_ms:ms_floatingLabelText="Matibabu"
+                    app_ms:ms_highlightColor="@color/card_grid_text"
+                    app_ms:ms_hint="Matibabu"
+                    app_ms:ms_hintColor="#b3b3b3"
+                    app_ms:ms_hintTextSize="14sp"
+                    app_ms:ms_multiline="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="32dp"
+                    android:layout_toRightOf="@id/spin_matibabu"
+                    android:fontFamily="@font/avenir_light"
+                    android:text="@string/treatment_type"
+                    android:textColor="@color/black"
+                    android:textSize="16dp" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

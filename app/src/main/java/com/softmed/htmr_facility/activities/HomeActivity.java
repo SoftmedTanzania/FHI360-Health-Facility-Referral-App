@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -87,6 +88,9 @@ public class HomeActivity extends BaseActivity {
     private AppDatabase database;
     private Endpoints.PatientServices patientServices;
     private Endpoints.ReferalService referalService;
+
+    private RequestManager mRequestManager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +98,7 @@ public class HomeActivity extends BaseActivity {
         setupviews();
 
         database = AppDatabase.getDatabase(this);
+        mRequestManager= Glide.with(this);
 
         session.checkLogin();
 
@@ -176,10 +181,10 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onChanged(@Nullable List<PostOffice> postOffices) {
                 if (postOffices.size() > 0){
-                    unsynced.setText("Unsynced Data : "+postOffices.size());
+                    unsynced.setText(getResources().getString(R.string.unsynced_data)+" "+postOffices.size());
                     unsynced.setTextColor(getResources().getColor(R.color.orange_400));
                 }else {
-                    unsynced.setText("Data Synced");
+                    unsynced.setText(getResources().getString(R.string.data_synced));
                     unsynced.setTextColor(getResources().getColor(R.color.green_600));
                 }
 
@@ -403,26 +408,30 @@ public class HomeActivity extends BaseActivity {
 
         View ccmView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView ccmTitle = (TextView) ccmView.findViewById(R.id.title_text);
-        ccmTitle.setText("OPD");
+        ccmTitle.setText(getResources().getString(R.string.fragment_opd));
         ImageView iv3    = (ImageView) ccmView.findViewById(R.id.icon);
         iv3.setColorFilter(this.getResources().getColor(R.color.white));
-        Glide.with(this).load(R.mipmap.ic_face).into(iv3);
+        if (!HomeActivity.this.isFinishing()){
+            Glide.with(this).load(R.mipmap.ic_face).into(iv3);
+        }
         tabLayout.getTabAt(0).setCustomView(ccmView);
 
         View homeView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView homeTitle = (TextView) homeView.findViewById(R.id.title_text);
         ImageView iv    = (ImageView) homeView.findViewById(R.id.icon);
 //        iv.setColorFilter(this.getResources().getColor(R.color.colorPrimary));
-        Glide.with(this).load(R.mipmap.ic_hiv).into(iv);
-        homeTitle.setText("Huduma za VVU/Ukimwi");
+        if (!HomeActivity.this.isFinishing())
+            Glide.with(this).load(R.mipmap.ic_hiv).into(iv);
+        homeTitle.setText(getResources().getString(R.string.fragment_hiv));
         tabLayout.getTabAt(1).setCustomView(homeView);
 
         View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
-        newsTitle.setText("Kifua Kikuu");
+        newsTitle.setText(getResources().getString(R.string.fragment_tb));
         ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
         iv2.setColorFilter(this.getResources().getColor(R.color.white));
-        Glide.with(this).load(R.mipmap.ic_tb).into(iv2);
+        if (!HomeActivity.this.isFinishing())
+            Glide.with(this).load(R.mipmap.ic_tb).into(iv2);
         tabLayout.getTabAt(2).setCustomView(newsView);
 
     }
@@ -510,7 +519,7 @@ public class HomeActivity extends BaseActivity {
             super.onPreExecute();
             manualSync.setVisibility(View.INVISIBLE);
             syncProgressBar.setVisibility(View.VISIBLE);
-            unsynced.setText("Taarifa zinaoanishwa..");
+            unsynced.setText(getResources().getString(R.string.data_syncing));
             unsynced.setTextColor(getResources().getColor(R.color.white));
         }
 
@@ -530,7 +539,7 @@ public class HomeActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             manualSync.setVisibility(View.VISIBLE);
             syncProgressBar.setVisibility(View.INVISIBLE);
-            unsynced.setText("Data Synced!");
+            unsynced.setText(getResources().getString(R.string.data_synced));
             unsynced.setTextColor(getResources().getColor(R.color.white));
             checkPostOfficeData();
             super.onPostExecute(aVoid);

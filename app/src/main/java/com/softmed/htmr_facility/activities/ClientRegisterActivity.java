@@ -75,8 +75,8 @@ public class ClientRegisterActivity extends BaseActivity {
         }
 
         dialog = new ProgressDialog(ClientRegisterActivity.this, 0);
-        dialog.setTitle("Saving");
-        dialog.setMessage("Loading. Please wait...");
+        dialog.setTitle(getResources().getString(R.string.saving));
+        dialog.setMessage(getResources().getString(R.string.loading_please_wait));
 
         //dialog = ProgressDialog.show(TbRegisterActivity.this, "Saving",
         //        "Loading. Please wait...", true);

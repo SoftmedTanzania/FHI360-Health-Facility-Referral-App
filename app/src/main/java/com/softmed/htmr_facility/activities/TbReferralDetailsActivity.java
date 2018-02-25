@@ -116,9 +116,9 @@ public class TbReferralDetailsActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    saveButton.setText("Ingiza : Kliniki ya TB");
+                    saveButton.setText(getResources().getString(R.string.enroll_tb_clinic));
                 }else {
-                    saveButton.setText("Hifadhi");
+                    saveButton.setText(getResources().getString(R.string.btn_save));
                 }
             }
         });

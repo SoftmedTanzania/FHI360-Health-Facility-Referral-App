@@ -99,7 +99,7 @@
                                         android:layout_marginLeft="32dp"
                                         android:layout_marginTop="16dp"
                                         android:textColor="@color/black"
-                                        android:text="Taarifa za Rufaa"
+                                        android:text="@string/referral_information"
                                         android:textSize="42sp"
                                         android:id="@+id/heading"
                                         android:fontFamily="@font/roboto_bold"/>
@@ -150,7 +150,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Miaka"
+                                            android:text="@string/age"
                                             android:layout_marginTop="8dp"
                                             android:textSize="16sp"
                                             android:id="@+id/client_age_title"
@@ -172,7 +172,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Jinsia"
+                                            android:text="@string/sex"
                                             android:layout_marginTop="8dp"
                                             android:textSize="16sp"
                                             android:layout_below="@id/client_age_title"
@@ -202,7 +202,7 @@
                                             android:fontFamily="@font/roboto_bold"
                                             android:id="@+id/mwenyekiti_name_title"
                                             android:textColor="@color/card_grid_text"
-                                            android:text="m/kiti kitongoji"/>
+                                            android:text="@string/veo"/>
 
                                         <TextView
                                             android:layout_width="wrap_content"
@@ -228,7 +228,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Kata"
+                                            android:text="@string/ward"
                                             android:layout_marginTop="8dp"
                                             android:textSize="16sp"
                                             android:id="@+id/client_kata_title"
@@ -250,7 +250,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Kijiji"
+                                            android:text="@string/village"
                                             android:layout_below="@id/client_kata_title"
                                             android:textSize="14sp"
                                             android:layout_marginTop="8dp"
@@ -328,7 +328,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Map Cue"
+                                            android:text="@string/map_cue"
                                             android:layout_marginTop="8dp"
                                             android:textSize="16sp"
                                             android:id="@+id/client_kitongoji_title"
@@ -363,7 +363,7 @@
                                     android:layout_height="wrap_content"
                                     android:textSize="16sp"
                                     android:id="@+id/referer_title"
-                                    android:text="Taarifa za rufaa"
+                                    android:text="@string/heading_referral_info"
                                     android:textColor="@color/card_title_text"
                                     android:layout_marginLeft="32dp"
                                     android:layout_marginTop="8dp"
@@ -395,7 +395,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Sababu ya Rufaa"
+                                            android:text="@string/referral_reasib"
                                             android:id="@+id/sababu_ya_rufaa_title"
                                             android:textColor="@color/card_title_text"
                                             android:textSize="14sp"
@@ -471,7 +471,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Viashiria"
+                                            android:text="@string/indicators"
                                             android:id="@+id/viashiria_title"
                                             android:textColor="@color/card_title_text"
                                             android:textSize="14sp"
@@ -503,7 +503,7 @@
                                             android:layout_height="wrap_content"
                                             android:id="@+id/clinical_information_title"
                                             android:textSize="14sp"
-                                            android:text="Taarifa Nyingine za Kliniki"
+                                            android:text="@string/other_clinical_information"
                                             android:fontFamily="@font/roboto_condensed"
                                             android:textColor="@color/card_title_text"/>
 
@@ -539,7 +539,7 @@
                                     android:textSize="16sp"
                                     android:textColor="@color/card_title_text"
                                     android:fontFamily="@font/roboto_bold"
-                                    android:text="Mrejesho wa Rufaa"/>
+                                    android:text="@string/heading_referral_feedback"/>
 
 
                                 <View
@@ -631,7 +631,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/service_offered_title"
-                                            android:text="Huduma iliyotolewa"
+                                            android:text="@string/heading_service_given"
                                             android:fontFamily="@font/avenir_light"
                                             android:textSize="18sp"
                                             android:textColor="@color/card_title_text"/>
@@ -663,7 +663,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/service_advice_title"
-                                            android:text="Maelezo mengine/Ushauri"
+                                            android:text="@string/other_infotmation_and_advice"
                                             android:fontFamily="@font/avenir_light"
                                             android:textSize="18sp"
                                             android:textColor="@color/card_title_text"/>
@@ -693,7 +693,7 @@
                                         android:layout_height="60dp"
                                         android:layout_alignParentRight="true"
                                         android:layout_marginRight="16dp"
-                                        android:text="Forward Referral"
+                                        android:text="@string/btn_forward_referral"
                                         android:layout_centerVertical="true"
                                         android:id="@+id/referal_button"
                                         android:fontFamily="@font/roboto_regular"
@@ -710,7 +710,7 @@
                                         android:fontFamily="@font/roboto_regular"
                                         android:layout_marginRight="16dp"
                                         android:textColor="@color/card_grid_text"
-                                        android:text="Cancel"/>
+                                        android:text="@string/btn_cancel"/>
 
                                 </RelativeLayout>
 

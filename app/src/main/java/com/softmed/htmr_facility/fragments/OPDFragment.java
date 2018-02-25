@@ -114,10 +114,10 @@ public class OPDFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().getCountReferralsByService(OPD_SERVICE_ID)+" New referrals unattended";
-            chwCount = "CHW : "+database.referalModel().getCountReferralsBySource(new int[] {CHW_TO_FACILITY});
-            hfCount = "Health Facility : "+database.referalModel().getCountReferralsBySource(new int[] {INTRAFACILITY, INTERFACILITY});
-            feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
+            referralCounts = database.referalModel().getCountReferralsByService(OPD_SERVICE_ID)+" "+getResources().getString(R.string.new_referrals_unattended);
+            chwCount = getResources().getString(R.string.chw)+" : "+database.referalModel().getCountReferralsBySource(new int[] {CHW_TO_FACILITY});
+            hfCount = getResources().getString(R.string.health_facility)+" : "+database.referalModel().getCountReferralsBySource(new int[] {INTRAFACILITY, INTERFACILITY});
+            feedbackCount = getResources().getString(R.string.pending_feedback)+" : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
             return null;
         }
 

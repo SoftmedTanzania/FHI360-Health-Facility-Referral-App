@@ -110,10 +110,10 @@ public class HivFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(HIV_SERVICE_ID)+" New referrals unattended";
-            feedbackCount = "Pending Feedback : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
-            chwCount = "CHW : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[]{CHW_TO_FACILITY});
-            hfCount = "Health Facility : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
+            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(HIV_SERVICE_ID)+" "+getResources().getString(R.string.new_referrals_unattended);
+            feedbackCount = getResources().getString(R.string.pending_feedback)+" : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
+            chwCount = getResources().getString(R.string.chw)+" : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[]{CHW_TO_FACILITY});
+            hfCount = getResources().getString(R.string.health_facility)+" : "+database.referalModel().getCountReferralsByType(HIV_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
             return null;
         }
 

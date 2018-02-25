@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.softmed.htmr_facility.activities.MainActivity">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +52,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Click to sync 6 Entries "
+                        android:text="@string/click_to_sync_entries"
                         android:textColor="@color/white"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="8dp"
@@ -80,7 +79,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Referral System"
+                            android:text="@string/referral_system"
                             android:textColor="@color/white"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="4dp"

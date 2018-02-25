@@ -25,6 +25,6 @@
         android:id="@+id/title_text"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="2dp"
-        android:text="HOME"/>
+        android:text="@string/home"/>
 
 </LinearLayout>

@@ -11,30 +11,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <activity android:name="com.softmed.htmr_facility.activities.MainActivity"
-            >
-        </activity>
-
         <activity android:name="com.softmed.htmr_facility.activities.LoaderActivity">
         </activity>
 
         <activity android:name="com.softmed.htmr_facility.activities.ReferalListActivityOld"
-            android:parentActivityName="com.softmed.htmr_facility.activities.MainActivity"
+            android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name="com.softmed.htmr_facility.activities.ReferedClientsActivity"
-            android:parentActivityName="com.softmed.htmr_facility.activities.MainActivity"
+            android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name="com.softmed.htmr_facility.activities.NewReferalsActivity"
-            android:parentActivityName="com.softmed.htmr_facility.activities.MainActivity"
+            android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name="com.softmed.htmr_facility.activities.ClientsDetailsActivity"
             android:parentActivityName="com.softmed.htmr_facility.activities.ReferalListActivityOld"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name="com.softmed.htmr_facility.activities.LoginActivity">
+        <activity android:name="com.softmed.htmr_facility.activities.LoginActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="locale">
         </activity>
 
         <activity android:name="com.softmed.htmr_facility.activities.HomeActivity"

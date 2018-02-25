@@ -1,5 +1,8 @@
 package com.softmed.htmr_facility.base;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.dom.objects.Patient;
@@ -36,27 +40,40 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public static Typeface Julius, Avenir, RobotoCondenced, RobotoCondencedItalic, RobotoThin, RobotoLight, RosarioRegular, RobotoMedium, athletic, FunRaiser;
-    public static Typeface CabinSketchRegular, CabinSketchBold;
-
+    public static final String LOCALE_KEY = "localekey";
+    public static final String LOCALE_PREF_KEY = "localePref";
+    //public static final String ENGLISH_LOCALE = "en-rUS";
+    //public static final String SWAHILI_LOCALE = "sw";
+    public static final String ENGLISH_LOCALE = "en";
+    public static final String SWAHILI_LOCALE = "sw";
     public Retrofit retrofit;
     public Endpoints apiEndpoints;
-
     public static AppDatabase baseDatabase;
-
+    public Locale locale;
+    public SharedPreferences localeSp;
     // Session Manager Class
     public static SessionManager session;
-
     final public static DatePickerDialog toDatePicker = new DatePickerDialog();
     final public static DatePickerDialog fromDatePicker = new DatePickerDialog();
     final public static DatePickerDialog datePickerDialog = new DatePickerDialog();
-
     final public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setuptypeface();
+
+        localeSp = getSharedPreferences(LOCALE_PREF_KEY, MODE_PRIVATE);
+
+        String localeString = localeSp.getString(LOCALE_KEY, SWAHILI_LOCALE);
+        Log.d("language", "From SP : "+localeString);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        if (! "".equals(localeString) && ! config.locale.getLanguage().equals(localeString)) {
+            Locale locale = new Locale(localeString);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            Log.d("language", "Setting Swahili locale");
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
 
         // Session class instance
         session = new SessionManager(getApplicationContext());
@@ -374,22 +391,6 @@ public class BaseActivity extends AppCompatActivity {
 
         return body;
 
-    }
-
-
-    public void setuptypeface(){
-        Julius = Typeface.createFromAsset(this.getAssets(), "JuliusSansOne-Regular.ttf");
-        Avenir = Typeface.createFromAsset(this.getAssets(), "avenir-light.ttf");
-        RobotoCondenced = Typeface.createFromAsset(this.getAssets(), "Roboto-Condensed.ttf");
-        RobotoCondencedItalic = Typeface.createFromAsset(this.getAssets(), "Roboto-CondensedItalic.ttf");
-        RobotoThin = Typeface.createFromAsset(this.getAssets(), "Roboto-Thin.ttf");
-        RobotoLight = Typeface.createFromAsset(this.getAssets(), "Roboto-Light.ttf");
-        RobotoMedium = Typeface.createFromAsset(this.getAssets(), "Roboto-Medium.ttf");
-        RosarioRegular = Typeface.createFromAsset(this.getAssets(), "Rosario-Regular.ttf");
-        athletic = Typeface.createFromAsset(this.getAssets(), "athletic.ttf");
-        FunRaiser = Typeface.createFromAsset(this.getAssets(), "Fun-Raiser.ttf");
-        CabinSketchRegular = Typeface.createFromAsset(this.getAssets(), "CabinSketch-Regular.ttf");
-        CabinSketchBold = Typeface.createFromAsset(this.getAssets(), "CabinSketch-Bold.ttf");
     }
 
 }

@@ -1,12 +1,21 @@
 package com.softmed.htmr_facility.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,7 +28,9 @@ import com.rey.material.widget.ProgressView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.api.Endpoints;
@@ -34,14 +45,23 @@ import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
 import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
+import com.softmed.htmr_facility.fragments.HealthFacilityReferralListFragment;
+import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
 import com.softmed.htmr_facility.utils.SessionManager;
+
+import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
+import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
+import fr.ganfra.materialspinner.MaterialSpinner;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
+import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
 
 /**
  * Created by issy on 11/23/17.
@@ -57,6 +77,7 @@ public class LoginActivity extends BaseActivity {
     private ImageView loginBgImage, background;
     private ImageView tanzaniaLogo, usaidLogo, fhiLogo, deloitteLogo;
     private RelativeLayout credentialCard;
+    private MaterialSpinner languageSpinner;
 
     private String usernameValue, passwordValue;
     private String deviceRegistrationId = "";
@@ -65,16 +86,52 @@ public class LoginActivity extends BaseActivity {
     // Session Manager Class
     private SessionManager session;
     private UserData userData;
+    int flag = 0;
+    boolean justInitializing = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        String localeString = localeSp.getString(LOCALE_KEY, SWAHILI_LOCALE);
+        Log.d("language", "From SP : "+localeString);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        if (localeString.equals(ENGLISH_LOCALE)){
+
+            String language = ENGLISH_LOCALE;
+            String country = "US";
+            Locale locale = new Locale(language , country);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }else {
+
+            String language = SWAHILI_LOCALE;
+            String country = "TZ";
+            Locale locale = new Locale(language , country);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
         setContentView(R.layout.activity_login);
         setupview();
 
         // Session Manager
         session = new SessionManager(getApplicationContext());
 
+        final String[] status = {"English", "Kiswahili"};
+        ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, status);
+        spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        justInitializing = true;
+        languageSpinner.setAdapter(spinAdapter);
+        if (localeString.equals(ENGLISH_LOCALE)){
+            justInitializing = true;
+            languageSpinner.setSelection(1, false);
+        }else {
+            justInitializing = true;
+            languageSpinner.setSelection(2, false);
+        }
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +141,52 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+
+        SharedPreferences.Editor editor = localeSp.edit();
+
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("language", "On listener");
+                if (!justInitializing){
+                    Log.d("language", "Inside Flag");
+                    if (i == 0){
+                        //English
+                        Log.d("language", "Changing is SP to English");
+                        editor.putString(LOCALE_KEY, ENGLISH_LOCALE);
+                        editor.apply();
+                        setLocale(new Locale(ENGLISH_LOCALE, "US"));
+                    }else if (i == 1){
+                        Log.d("language", "Changing is SP to Swahili");
+                        //Swahili
+                        editor.putString(LOCALE_KEY, SWAHILI_LOCALE);
+                        editor.apply();
+                        setLocale(new Locale(SWAHILI_LOCALE, "TZ"));
+                    }else {
+
+                    }
+                }else{
+                    justInitializing = false;
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+    public void setLocale(Locale locale){
+        Configuration configuration = getBaseContext().getResources().getConfiguration();
+        Locale.setDefault(locale);
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration,
+                getBaseContext().getResources().getDisplayMetrics());
+        Log.d("language", "After changing the configuration");
+        recreate();
 
     }
 
@@ -121,15 +224,14 @@ public class LoginActivity extends BaseActivity {
 
     private void loginUser(){
 
-        loginButton.setText("Loading Data...");
+        loginButton.setText(getResources().getString(R.string.loading_data));
         loginMessages.setVisibility(View.VISIBLE);
-        loginMessages.setText("Loggin in..");
+        loginMessages.setText(getResources().getString(R.string.loging_in));
 
         //Use Retrofit to make http request calls
         Endpoints.LoginService loginService =
                 ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue, null);
         Call<LoginResponse> call = loginService.basicLogin();
-        Log.d("BTC", "calling...");
         call.enqueue(new Callback<LoginResponse >() {
 
 
@@ -140,11 +242,9 @@ public class LoginActivity extends BaseActivity {
                     // user object available
 
                     loginMessages.setTextColor(getResources().getColor(R.color.green_a700));
-                    loginMessages.setText("Success..");
+                    loginMessages.setText(getResources().getString(R.string.success));
 
                     LoginResponse loginResponse = response.body();
-                    Log.d("BTC", "FacilityID is : "+loginResponse.getTeam().getTeam().getLocation().getUuid());
-                    Log.d("BTC", "UserID is : "+loginResponse.getUser().getAttributes().getPersonUUID());
 
                     userData = new UserData();
                     userData.setUserUIID(loginResponse.getUser().getAttributes().getPersonUUID());
@@ -164,12 +264,10 @@ public class LoginActivity extends BaseActivity {
                             loginResponse.getTeam().getTeam().getLocation().getUuid());
 
                 } else {
-                    // error response, no access to resource?
-                    Log.d("BTC", "responce is error : "+response.toString());
-                    loginMessages.setText("Error Loging in");
+                    loginMessages.setText(getResources().getString(R.string.error_logging_in));
                     loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
                     loginProgress.setVisibility(View.GONE);
-                    loginButton.setText("Login");
+                    loginButton.setText(getResources().getString(R.string.login));
                 }
             }
 
@@ -216,14 +314,13 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new retrofit2.Callback() {
             @Override
             public void onResponse(retrofit2.Call call, Response response) {
-                Log.d("FCMService", "Registering Device, Response Code : "+response.code());
                 new AddUserData(baseDatabase).execute(userData);
             }
 
             @Override
             public void onFailure(retrofit2.Call call, Throwable t) {
                 new AddUserData(baseDatabase).execute(userData);
-                loginMessages.setText("Device may have not registered\nYou might miss important Notifications");
+                loginMessages.setText(getResources().getString(R.string.device_registration_warning));
                 loginMessages.setTextColor(getResources().getColor(R.color.red_600));
             }
         });
@@ -231,8 +328,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void callReferralList(){
-        Log.d("ReferralCheck", "Begin the call");
-        loginMessages.setText("Initializing Data...");
+        loginMessages.setText(getResources().getString(R.string.initializing_data));
         loginMessages.setTextColor(getResources().getColor(R.color.amber_a700));
 
         if (session.isLoggedIn()){
@@ -433,6 +529,8 @@ public class LoginActivity extends BaseActivity {
 
     private void setupview(){
 
+        languageSpinner = (MaterialSpinner) findViewById(R.id.spin_language);
+
         credentialCard = (RelativeLayout) findViewById(R.id.credential_card);
         credentialCard.setBackground(new LargeDiagonalCutPathDrawable(50));
 
@@ -453,7 +551,7 @@ public class LoginActivity extends BaseActivity {
 
         loginButton = (Button) findViewById(R.id.login_button);
 
-        usernameEt = (EditText) findViewById(R.id.username_et);
+        usernameEt = (EditText) findViewById(R.id.user_username_et);
         passwordEt = (EditText) findViewById(R.id.password_et);
     }
 

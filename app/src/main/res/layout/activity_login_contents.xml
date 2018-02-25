@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app_ms="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,6 +43,46 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="52dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/ic_language"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp"/>
+
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spin_language"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:textSize="12sp"
+                app_ms:ms_hintTextSize="14sp"
+                app_ms:ms_alwaysShowFloatingLabel="true"
+                app_ms:ms_multiline="false"
+                app_ms:ms_hint="@string/language"
+                app_ms:ms_enableFloatingLabel="true"
+                app_ms:ms_enableErrorLabel="false"
+                app_ms:ms_floatingLabelText="@string/language"
+                app_ms:ms_baseColor="@color/white"
+                app_ms:ms_highlightColor="@color/colorPrimary"
+                app_ms:ms_errorColor="@color/red_500"
+                app_ms:ms_hintColor="#b3b3b3"
+                app_ms:ms_arrowColor="@color/white"
+                app_ms:ms_arrowSize="12dp"
+                app_ms:ms_alignLabels="false"
+                app_ms:ms_floatingLabelColor="@color/white"/>
+
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="400dp"
             android:layout_height="400dp"
@@ -67,7 +108,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_below="@id/lock_ico"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Login"
+                android:text="@string/login"
                 android:id="@+id/login_title"
                 android:textColor="@color/black"/>
 
@@ -78,7 +119,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_below="@id/login_title"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Enter username and password"
+                android:text="@string/enter_username_and_password"
                 android:id="@+id/login_msg"
                 android:textColor="@color/card_grid_text"/>
 
@@ -99,12 +140,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="32dp"
-                        android:hint="Username"
-                        android:id="@+id/username_et"
+                        android:hint="@string/username"
+                        android:id="@+id/user_username_et"
                         android:textColor="@color/card_title_text"
                         android:textColorHint="@color/card_grid_text"
                         android:textSize="24sp"
                         android:fontFamily="@font/roboto_regular"
+                        app:et_inputId="@+id/username"
                         app:et_dividerHeight="1dp"
                         app:et_supportTextSize="20sp"
                         app:et_supportTextColor="@color/black"
@@ -117,14 +159,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:id="@+id/password_et"
                         android:textColor="@color/card_title_text"
                         android:textColorHint="@color/card_grid_tex"
                         android:textSize="24sp"
                         android:inputType="textPassword"
-                        android:fontFamily="@font/avenir_light"
+                        android:fontFamily="@font/roboto_regular"
                         android:layout_gravity="center_vertical"
+                        app:et_inputId="@+id/password"
                         app:et_dividerHeight="1dp"
                         app:et_supportTextSize="20sp"
                         app:et_supportTextColor="@color/black"
@@ -153,7 +196,7 @@
                     android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:id="@+id/login_button"
                     android:textColor="@color/white"
                     android:textAllCaps="false"
@@ -267,7 +310,6 @@
                 android:src="@drawable/fhi360"/>
 
         </LinearLayout>
-
 
     </RelativeLayout>
 

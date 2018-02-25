@@ -54,12 +54,12 @@ public class AppointmentActivity extends BaseActivity {
         if (toolbar!=null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Patient Appointment");
+            getSupportActionBar().setTitle(getResources().getString(R.string.client_appointment));
         }
 
-        appointmentTypeList.add("All");
-        appointmentTypeList.add("CTC");
-        appointmentTypeList.add("TB");
+        appointmentTypeList.add(getResources().getString(R.string.all));
+        appointmentTypeList.add(getResources().getString(R.string.ctc));
+        appointmentTypeList.add(getResources().getString(R.string.tb));
         appointmentTypeAdapter = new mAdapter(this, R.layout.subscription_plan_items_drop_down, appointmentTypeList);
         appointmentType.setAdapter(appointmentTypeAdapter);
 

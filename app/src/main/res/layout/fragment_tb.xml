@@ -52,7 +52,7 @@
                             android:layout_marginRight="16dp"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
-                            android:text="TB Referral List"/>
+                            android:text="@string/referrals_list"/>
 
 
                         <TextView
@@ -65,7 +65,7 @@
                             android:layout_marginRight="16dp"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/card_grid_text"
-                            android:text="7 Referals Unattended"/>
+                            android:text=""/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                                 android:layout_marginRight="16dp"
                                 android:fontFamily="@font/roboto_regular"
                                 android:textColor="@color/card_grid_tex"
-                                android:text="Chw : 3"/>
+                                android:text=""/>
 
                             <View
                                 android:layout_width="1dp"
@@ -98,7 +98,7 @@
                                 android:fontFamily="@font/roboto_regular"
                                 android:layout_marginRight="16dp"
                                 android:textColor="@color/card_grid_tex"
-                                android:text="Health Facility : 1"/>
+                                android:text=""/>
 
                         </LinearLayout>
 
@@ -149,7 +149,7 @@
                             android:layout_toRightOf="@id/tb_refered_clients_icon"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
-                            android:text="Referrals Issued"/>
+                            android:text="@string/referrals_issued"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -160,7 +160,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/card_grid_text"
-                            android:text="Pending Feedback : 0"/>
+                            android:text=""/>
 
                     </LinearLayout>
 
@@ -209,7 +209,7 @@
                         android:id="@+id/tb_new_referals_text"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
-                        android:text="Tb Client List"/>
+                        android:text="@string/clients_list"/>
 
                 </RelativeLayout>
 

@@ -7,8 +7,6 @@
     android:background="@color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -66,7 +64,7 @@
                                         android:layout_marginLeft="32dp"
                                         android:layout_marginTop="16dp"
                                         android:fontFamily="@font/roboto_bold"
-                                        android:text="Taarifa za Mteja"
+                                        android:text="@string/client_inforamtion"
                                         android:textColor="@color/black"
                                         android:textSize="42sp" />
 
@@ -119,7 +117,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"
                                             android:fontFamily="@font/roboto_bold"
-                                            android:text="Miaka"
+                                            android:text="@string/age"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="16sp" />
 
@@ -142,7 +140,7 @@
                                             android:layout_below="@id/client_age_title"
                                             android:layout_marginTop="8dp"
                                             android:fontFamily="@font/roboto_bold"
-                                            android:text="Jinsia"
+                                            android:text="@string/sex"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="16sp" />
 
@@ -166,7 +164,7 @@
                                             android:layout_below="@id/patient_gender_value"
                                             android:layout_marginTop="8dp"
                                             android:fontFamily="@font/roboto_bold"
-                                            android:text="m/kiti kitongoji"
+                                            android:text="@string/veo"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="16sp" />
 
@@ -197,7 +195,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"
                                             android:fontFamily="@font/roboto_bold"
-                                            android:text="Kata"
+                                            android:text="@string/ward"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="16sp" />
 
@@ -220,7 +218,7 @@
                                             android:layout_below="@id/client_kata_title"
                                             android:layout_marginTop="8dp"
                                             android:fontFamily="@font/roboto_bold"
-                                            android:text="Kijiji"
+                                            android:text="@string/village"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="14sp" />
 
@@ -297,7 +295,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"
                                             android:fontFamily="@font/roboto_bold"
-                                            android:text="Map Cue"
+                                            android:text="@string/map_cue"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="16sp" />
 
@@ -331,7 +329,7 @@
                                     android:layout_marginLeft="32dp"
                                     android:layout_marginTop="8dp"
                                     android:fontFamily="@font/roboto_bold"
-                                    android:text="Taarifa za Msaidizi"
+                                    android:text="@string/supporter_information"
                                     android:textColor="@color/card_title_text"
                                     android:textSize="16sp" />
 
@@ -355,7 +353,7 @@
                                         android:layout_marginLeft="16dp"
                                         android:layout_marginTop="16dp"
                                         android:fontFamily="@font/roboto_bold"
-                                        android:text="Majina"
+                                        android:text="@string/names"
                                         android:textColor="@color/card_grid_text"
                                         android:textSize="16sp" />
 
@@ -380,7 +378,7 @@
                                         android:layout_marginLeft="16dp"
                                         android:layout_marginTop="8dp"
                                         android:fontFamily="@font/roboto_bold"
-                                        android:text="Namba ya Simu"
+                                        android:text="@string/phone_number"
                                         android:textColor="@color/card_grid_text"
                                         android:textSize="16sp" />
 
@@ -405,7 +403,7 @@
                                         android:layout_marginLeft="16dp"
                                         android:layout_marginTop="8dp"
                                         android:fontFamily="@font/roboto_bold"
-                                        android:text="Mahusiano"
+                                        android:text="@string/relationship"
                                         android:textColor="@color/card_grid_text"
                                         android:textSize="16sp" />
 
@@ -437,7 +435,7 @@
                                         android:layout_marginRight="16dp"
                                         android:background="@drawable/border_one"
                                         android:fontFamily="@font/roboto_regular"
-                                        android:text="Toa Rufaa"
+                                        android:text="@string/issue_referral"
                                         android:textColor="@color/card_title_text" />
 
                                     <Button
@@ -449,7 +447,7 @@
                                         android:layout_toLeftOf="@id/referal_button"
                                         android:background="@drawable/border_two"
                                         android:fontFamily="@font/roboto_regular"
-                                        android:text="Cancel"
+                                        android:text="@string/btn_cancel"
                                         android:textColor="@color/black" />
 
 

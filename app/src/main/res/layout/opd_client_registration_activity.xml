@@ -98,7 +98,7 @@
                                         android:layout_marginLeft="32dp"
                                         android:layout_marginTop="16dp"
                                         android:textColor="@color/black"
-                                        android:text="Fomu ya usajili mteja mpya"
+                                        android:text="@string/new_client_registration_form"
                                         android:textSize="42sp"
                                         android:id="@+id/client_name"
                                         android:layout_centerVertical="true"
@@ -144,7 +144,7 @@
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/card_grid_text"
                                         android:fontFamily="@font/roboto_bold"
-                                        android:text="Taarifa za Awali"/>
+                                        android:text="@string/initial_information"/>
 
 
                                 </RelativeLayout>
@@ -168,7 +168,7 @@
                                             android:layout_width="0dp"
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content"
-                                            android:hint="Jina"
+                                            android:hint="@string/first_name"
                                             android:id="@+id/fname_et"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
@@ -210,7 +210,7 @@
                                             android:layout_width="0dp"
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content"
-                                            android:hint="Ukoo"
+                                            android:hint="@string/surname"
                                             android:id="@+id/surname_et"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
@@ -241,7 +241,7 @@
                                             android:layout_width="0dp"
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content"
-                                            android:hint="Namba ya CTC"
+                                            android:hint="@string/ctc_number"
                                             android:id="@+id/patient_ctc_number"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
@@ -277,7 +277,7 @@
                                             android:layout_width="0dp"
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content"
-                                            android:hint="Simu"
+                                            android:hint="@string/phone_number"
                                             android:id="@+id/phone_number"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
@@ -314,10 +314,10 @@
                                             app_ms:ms_hintTextSize="14sp"
                                             app_ms:ms_alwaysShowFloatingLabel="true"
                                             app_ms:ms_multiline="false"
-                                            app_ms:ms_hint="Jinsi"
+                                            app_ms:ms_hint="@string/sex"
                                             app_ms:ms_enableFloatingLabel="true"
                                             app_ms:ms_enableErrorLabel="false"
-                                            app_ms:ms_floatingLabelText="Jinsi"
+                                            app_ms:ms_floatingLabelText="@string/sex"
                                             app_ms:ms_baseColor="@color/card_grid_tex"
                                             app_ms:ms_highlightColor="@color/card_grid_text"
                                             app_ms:ms_errorColor="@color/red_500"
@@ -331,7 +331,7 @@
                                             android:layout_width="0dp"
                                             android:layout_weight="1"
                                             android:layout_height="wrap_content"
-                                            android:hint="Tarehe ya Kuzaliwa"
+                                            android:hint="@string/date_of_birth"
                                             android:id="@+id/date_of_birth"
                                             android:textColor="@color/card_separator"
                                             android:textColorHint="@color/card_grid_tex"
@@ -355,9 +355,8 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:id="@+id/blood_cough_title"
-                                                android:layout_below="@id/flags_title"
                                                 android:layout_centerVertical="true"
-                                                android:text="Mjamzito"
+                                                android:text="@string/pregnant"
                                                 android:enabled="false"
                                                 android:layout_marginLeft="8dp"
                                                 android:textSize="14sp"
@@ -427,7 +426,7 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Taarifa za Msaidizi"
+                                            android:text="@string/supporter_information"
                                             android:id="@+id/msaidizi_title"
                                             android:textColor="@color/card_title_text"
                                             android:textSize="14sp"
@@ -521,7 +520,7 @@
                                             android:layout_height="wrap_content"
                                             android:id="@+id/other_details_title"
                                             android:textSize="14sp"
-                                            android:text="Taarifa Nyingine"
+                                            android:text="@string/other_details"
                                             android:fontFamily="@font/roboto_condensed"
                                             android:textColor="@color/card_title_text"/>
 
@@ -625,7 +624,7 @@
                                         android:layout_width="150dp"
                                         android:layout_height="50dp"
                                         android:layout_alignParentRight="true"
-                                        android:text="Hifadhi"
+                                        android:text="@string/btn_save"
                                         android:layout_centerVertical="true"
                                         android:id="@+id/save_button"
                                         android:textColor="@color/white"
@@ -642,7 +641,7 @@
                                         android:fontFamily="@font/julius_sans_one"
                                         android:layout_marginRight="16dp"
                                         android:textColor="@color/card_title_text"
-                                        android:text="Cancel"/>
+                                        android:text="@string/btn_cancel"/>
 
                                     <com.rey.material.widget.ProgressView
                                         android:layout_width="150dp"

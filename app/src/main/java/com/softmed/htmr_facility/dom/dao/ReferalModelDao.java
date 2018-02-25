@@ -29,6 +29,7 @@ public interface ReferalModelDao {
     @Query("select * from Referral where serviceId = :serviceId")
     LiveData<List<Referral>> getAllReferals(int serviceId);
 
+    //Used in OPD
     @Query("select * from Referral where referralType in (:sourceID)")
     LiveData<List<Referral>> getAllReferalsBySource(int[] sourceID);
 
@@ -101,7 +102,35 @@ public interface ReferalModelDao {
     )
     List<Referral> getFilteredTbReferals(String name, String lastName, int status, int serviceId);
 
+    //OPD Search filter
+    @Query("select * from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +
+            "Patient.patientFirstName like :fname COLLATE NOCASE or " +
+            "Patient.patientSurname like :fname COLLATE NOCASE or "+
+            "Patient.ctcNumber like :fname and "+
+            //"Referral.referralDate between :fromdt and :todt and "+
+            "Referral.referralStatus in (:status) and "+
+            "Referral.referralType in (:refType)" )
+    List<Referral> getFilteredOpdReferrals(int[] status, String fname, int[] refType);
 
+    @Query("select * from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +
+            "Patient.patientFirstName like :fname COLLATE NOCASE and " +
+            "Patient.patientSurname like :lname COLLATE NOCASE and "+
+            "Patient.ctcNumber like :ctcNumber and " +
+            "Referral.referralDate between :fromdt and :todt and "+
+            "Referral.referralStatus in (:status) and "+
+            "Referral.referralType in (:refType)" )
+    List<Referral> getFilteredOpdReferralsWithDates(int[] status, String fname, String lname, String ctcNumber, long fromdt, long todt, int[] refType);
+
+    //Other Sections search filter
+    @Query("select * from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +
+            "Patient.patientFirstName like :fname COLLATE NOCASE and " +
+            "Patient.patientSurname like :lname COLLATE NOCASE and "+
+            "Patient.ctcNumber like :ctcNumber and " +
+            "Referral.referralDate between :fromdt and :todt and "+
+            "Referral.referralStatus in (:status) and "+
+            "Referral.referralType in (:refType) and "+
+            "Referral.serviceId = :serviceID")
+    List<Referral> getFilteredHivAndTbReferrals(int[] status, String fname, String lname, String ctcNumber, long fromdt, long todt, int[] refType, int serviceID);
 
 
 }

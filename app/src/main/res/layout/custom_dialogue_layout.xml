@@ -32,7 +32,7 @@
                     android:id="@+id/patient_name_title"
                     android:fontFamily="@font/roboto_condensed"
                     android:textColor="@color/white"
-                    android:text="Rufaa kwa" />
+                    android:text="@string/referral_to" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,10 +105,10 @@
                         app_ms:ms_hintTextSize="14sp"
                         app_ms:ms_alwaysShowFloatingLabel="true"
                         app_ms:ms_multiline="false"
-                        app_ms:ms_hint="Kituo"
+                        app_ms:ms_hint="@string/health_facility"
                         app_ms:ms_enableFloatingLabel="true"
                         app_ms:ms_enableErrorLabel="false"
-                        app_ms:ms_floatingLabelText="Kituo"
+                        app_ms:ms_floatingLabelText="@string/health_facility"
                         app_ms:ms_baseColor="@color/white"
                         app_ms:ms_highlightColor="@color/colorPrimary"
                         app_ms:ms_errorColor="@color/red_500"
@@ -138,10 +138,10 @@
                         app_ms:ms_hintTextSize="14sp"
                         app_ms:ms_alwaysShowFloatingLabel="true"
                         app_ms:ms_multiline="false"
-                        app_ms:ms_hint="Chagua Huduma"
+                        app_ms:ms_hint="@string/select_service"
                         app_ms:ms_enableFloatingLabel="true"
                         app_ms:ms_enableErrorLabel="false"
-                        app_ms:ms_floatingLabelText="Chagua Huduma"
+                        app_ms:ms_floatingLabelText="@string/select_service"
                         app_ms:ms_baseColor="@color/white"
                         app_ms:ms_highlightColor="@color/colorPrimary"
                         app_ms:ms_errorColor="@color/red_500"
@@ -177,7 +177,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Chagua Viashiria"/>
+                    android:text="@string/select_indicators"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -218,7 +218,7 @@
                         android:textSize="16sp"
                         android:fontFamily="@font/avenir_light"
                         android:layout_marginTop="16dp"
-                        android:text="Sababu za Rufaa"
+                        android:text="@string/referral_reasib"
                         android:textColor="@color/white"/>
 
                     <EditText
@@ -252,7 +252,7 @@
                         android:textSize="16sp"
                         android:fontFamily="@font/avenir_light"
                         android:layout_marginTop="16dp"
-                        android:text="Taarifa zingine za Kliniki"
+                        android:text="@string/other_clinical_information"
                         android:textColor="@color/white"/>
 
                     <EditText
@@ -291,7 +291,7 @@
                     android:layout_marginRight="16dp"
                     android:id="@+id/tuma_button"
                     android:background="@drawable/border_four"
-                    android:text="Tuma"
+                    android:text="@string/btn_send"
                     android:textSize="14sp"
                     android:fontFamily="@font/rosario_regular"
                     android:layout_marginTop="32dp"/>
@@ -304,7 +304,7 @@
                     android:layout_toLeftOf="@id/tuma_button"
                     android:id="@+id/cancel_button"
                     android:background="@drawable/border_four"
-                    android:text="Cancel"
+                    android:text="@string/btn_cancel"
                     android:textSize="14sp"
                     android:fontFamily="@font/rosario_regular"
                     android:layout_marginTop="32dp"/>

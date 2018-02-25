@@ -38,6 +38,8 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
+import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
@@ -65,8 +67,15 @@ public class HealthFacilityReferralListFragment extends Fragment {
     private ReferalListRecyclerAdapter adapter;
 
     private Date fromDate, toDate;
-    private String clientName, clientCtcNumber, lastName;
-    private int selectedStatus, source, service;
+
+    //Filter Data
+    String clientName, clientCtcNumber, lastName;
+    long filterFromDate = 0;
+    long filterToDate = 0;
+    int[] selectedStatus = new int[]{};
+    //Filter Data End
+
+    private int source, service;
     private boolean notSelectedStatus, notSelectedFromDate, notSelectedTodate;
 
     private DatePickerDialog toDatePicker = new DatePickerDialog();
@@ -108,9 +117,9 @@ public class HealthFacilityReferralListFragment extends Fragment {
         setupviews(view);
 
         if (service == OPD_SERVICE_ID){
-            ctcNumberOrServiceNameTitle.setText("Huduma");
+            ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.service));
         }else{
-            ctcNumberOrServiceNameTitle.setText("Namba ya CTC");
+            ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.ctc_number));
         }
 
         final String[] status = {STATUS_COMPLETED, STATUS_NEW};
@@ -126,8 +135,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i >= 0){
-                    selectedStatus = getReferralStatusValue((String) statusSpinner.getItemAtPosition(i));
-                    Log.d("ReferalFilters", "Selected Status is : "+selectedStatus);
+                    selectedStatus = new int[]{getReferralStatusValue((String) statusSpinner.getItemAtPosition(i))};
                 }else {
                     notSelectedStatus = false;
                 }
@@ -146,7 +154,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
                     filterButton.setVisibility(View.INVISIBLE);
                     progressView.setVisibility(View.VISIBLE);
 
-                    HealthFacilityReferralListFragment.QueryReferals queryReferals = new HealthFacilityReferralListFragment.QueryReferals(clientName, lastName, clientCtcNumber, fromDate, toDate, selectedStatus, database);
+                    HealthFacilityReferralListFragment.QueryReferals queryReferals = new HealthFacilityReferralListFragment.QueryReferals(clientName, lastName, clientCtcNumber, filterFromDate, filterToDate, selectedStatus, database);
                     queryReferals.execute();
 
                 }else {
@@ -168,6 +176,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
                         Calendar fromCalendar = Calendar.getInstance();
                         fromCalendar.set(year, monthOfYear, dayOfMonth);
                         fromDate = fromCalendar.getTime();
+                        filterFromDate = fromCalendar.getTimeInMillis();
                         notSelectedFromDate = false;
                     }
 
@@ -189,6 +198,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
                         Calendar toCalendar = Calendar.getInstance();
                         toCalendar.set(year, monthOfYear, dayOfMonth);
                         toDate = toCalendar.getTime();
+                        filterToDate = toCalendar.getTimeInMillis();
                         notSelectedTodate = false;
                     }
 
@@ -239,22 +249,13 @@ public class HealthFacilityReferralListFragment extends Fragment {
     }
 
     private boolean getInputs(){
-
-        if (
-                clientNameText.getText().toString().isEmpty() &
-                        clientCtcNumberText.getText().toString().isEmpty() &
-                        clientLastName.getText().toString().isEmpty() &
-                        notSelectedFromDate &
-                        notSelectedTodate &
-                        notSelectedStatus){
-            return false;
-        }else {
-            clientName = clientNameText.getText().toString().isEmpty() ? "" : clientNameText.getText().toString();
-            clientCtcNumber = clientCtcNumberText.getText().toString().isEmpty()? "" : clientCtcNumberText.getText().toString();
-            lastName = clientLastName.getText().toString().isEmpty()? "" : clientLastName.getText().toString();
-            return true;
+        if (statusSpinner.getSelectedItemPosition() == 0){
+            selectedStatus = new int[]{0,1};
         }
-
+        clientName = clientNameText.getText().toString().isEmpty() ? "" : clientNameText.getText().toString();
+        clientCtcNumber = clientCtcNumberText.getText().toString().isEmpty()? "" : clientCtcNumberText.getText().toString();
+        lastName = clientLastName.getText().toString().isEmpty()? "" : clientLastName.getText().toString();
+        return true;
     }
 
     private class QueryReferals extends AsyncTask<Void,Void, Void> {
@@ -262,18 +263,17 @@ public class HealthFacilityReferralListFragment extends Fragment {
         String clientName, lastName, ctcNumber;
         AppDatabase db;
         List<Referral> fReferrals;
-        int referalStatus;
-        Date frmDate, toDate;
+        int[] referalStatus;
+        long frmDate, toDate;
 
-        QueryReferals(String name, String lastName, String ctc, Date dateFrom, Date dateTo, int refStatus, AppDatabase database){
+        QueryReferals(String name, String lastName, String ctc, long dateFrom, long dateTo, int[] refStatus, AppDatabase database){
             this.clientName = name;
             this.db = database;
             this.referalStatus = refStatus;
-            this.frmDate = fromDate;
+            this.frmDate = dateFrom;
             this.toDate = dateTo;
             this.lastName = lastName;
             this.ctcNumber = ctc;
-            Log.d("", "Status "+refStatus);
         }
 
         @Override
@@ -286,7 +286,21 @@ public class HealthFacilityReferralListFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            fReferrals = db.referalModel().getFilteredReferal(clientName, lastName, referalStatus, HIV_SERVICE_ID);
+            if (service == OPD_SERVICE_ID){
+                if (source == CHW_TO_FACILITY){
+                    fReferrals = db.referalModel().getFilteredOpdReferrals(selectedStatus, clientName, new int[] {CHW_TO_FACILITY});
+                }else {
+                    //fReferrals = db.referalModel().getFilteredOpdReferrals(selectedStatus, clientName, lastName, ctcNumber, frmDate, toDate, new int[] {INTERFACILITY, INTRAFACILITY});
+                    fReferrals = db.referalModel().getFilteredOpdReferrals(selectedStatus, clientName, new int[] {INTERFACILITY, INTRAFACILITY});
+                }
+            }else {
+                if (source == CHW_TO_FACILITY){
+                    fReferrals = db.referalModel().getFilteredHivAndTbReferrals(selectedStatus, clientName, lastName, ctcNumber, frmDate, toDate, new int[] {CHW_TO_FACILITY}, HIV_SERVICE_ID);
+                }else {
+                    fReferrals = db.referalModel().getFilteredHivAndTbReferrals(selectedStatus, clientName, lastName, ctcNumber, frmDate, toDate, new int[] {INTERFACILITY, INTRAFACILITY}, HIV_SERVICE_ID);
+                }
+            }
+
             return null;
         }
     }

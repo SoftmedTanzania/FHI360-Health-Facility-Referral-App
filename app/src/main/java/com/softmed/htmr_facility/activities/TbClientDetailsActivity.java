@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
@@ -70,29 +72,33 @@ import static java.util.Calendar.YEAR;
 
 public class TbClientDetailsActivity extends BaseActivity {
 
-    private LinearLayout matokeoLinearLayout;
-    private RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper, makohoziEncounterWrap;
-    private MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner;
-    private TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
-    private TextView ward, village, hamlet, medicationStatusTitle;
-    private EditText outcomeDetails;
-    private Button saveButton;
-    public ProgressDialog dialog;
-    private CheckBox medicationStatusCheckbox;
-    private ToggleSwitch testTypeToggle;
+    LinearLayout matokeoLinearLayout;
+    RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper, makohoziEncounterWrap;
+    MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner;
+    TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
+    TextView ward, village, hamlet, medicationStatusTitle, resultsDate;
+    EditText outcomeDetails, otherTestValue, monthlyPatientWeightEt;
+    Button saveButton;
+    ProgressDialog dialog;
+    CheckBox medicationStatusCheckbox;
+    ToggleSwitch testTypeToggle;
+    View encounterUI, testUI, treatmentUI, resultsUI, demographicUI, clickBlocker;
 
-    private Patient currentPatient;
-    private TbPatient currentTbPatient;
+    Patient currentPatient;
+    TbPatient currentTbPatient;
+    TbEncounters currentPatientEncounter;
 
-    private boolean patientNew;
-    private String strMatibabu, strXray, strVipimoVingine, strMakohozi, strMonth, strOutcome, strOutcomeDetails, strOutcomeDate;
-    private int medicatonStatus = -1;
-    private int encounterMonth;
-    private Context context;
-    private String[] treatmentTypes = {TREATMENT_TYPE_1, TREATMENT_TYPE_2, TREATMENT_TYPE_3, TREATMENT_TYPE_4, TREATMENT_TYPE_5};
-    private final String[] tbTypes = {TB_NEGATIVE, TB_SCANTY, TB_1_PLUS, TB_2_PLUS, TB_3_PLUS};
-    private ArrayAdapter<String> makohoziSpinnerAdapter, monthOneMakohoziAdapter;
-
+    boolean patientNew;
+    boolean activityCanExit = false;
+    int selectedTestType = 0;
+    final String[] tbTypes = {TB_NEGATIVE, TB_SCANTY, TB_1_PLUS, TB_2_PLUS, TB_3_PLUS};
+    String strMatibabu, strXray, strVipimoVingine, strMakohozi, strMonth, strOutcome, strOutcomeDetails, strOutcomeDate;
+    String otherTestValueString = "";
+    String[] treatmentTypes = {TREATMENT_TYPE_1, TREATMENT_TYPE_2, TREATMENT_TYPE_3, TREATMENT_TYPE_4, TREATMENT_TYPE_5};
+    ArrayAdapter<String> makohoziSpinnerAdapter, monthOneMakohoziAdapter;
+    Context context;
+    Calendar resultCalendar;
+    long outcomeDate = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,35 +109,36 @@ public class TbClientDetailsActivity extends BaseActivity {
         context = this;
 
         dialog = new ProgressDialog(TbClientDetailsActivity.this, 0);
-        dialog.setTitle("Saving");
-        dialog.setMessage("Loading. Please wait...");
+        dialog.setTitle(getResources().getString(R.string.saving));
+        dialog.setMessage(getResources().getString(R.string.loading_please_wait));
 
         if (getIntent().getExtras() != null){
             currentPatient = (Patient) getIntent().getSerializableExtra("patient");
             patientNew = (Boolean) getIntent().getBooleanExtra("isPatientNew", false);
-            if (currentPatient != null){
+        }
 
-                String names = currentPatient.getPatientFirstName()+
-                        " "+ currentPatient.getPatientMiddleName()+
-                        " "+ currentPatient.getPatientSurname();
+        calibrateUI(patientNew);
 
-                patientNames.setText(names);
-                patientGender.setText(currentPatient.getGender());
+        if (currentPatient != null){
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(currentPatient.getDateOfBirth());
+            String names = currentPatient.getPatientFirstName()+
+                    " "+ currentPatient.getPatientMiddleName()+
+                    " "+ currentPatient.getPatientSurname();
 
-                patientAge.setText(getDiffYears(calendar.getTime(), new Date())+"");
-                phoneNumber.setText(currentPatient.getPhone_number()==""? "" : currentPatient.getPhone_number());
-                ward.setText(currentPatient.getWard()==""? "" : currentPatient.getWard());
-                village.setText(currentPatient.getVillage() == "" ? "" : currentPatient.getVillage());
-                hamlet.setText(currentPatient.getHamlet() == "" ? "" : currentPatient.getHamlet());
-                patientWeight.setText(""); //save patient weight in patient object so as to be able to display it here
+            patientNames.setText(names);
+            patientGender.setText(currentPatient.getGender());
 
-                GetTbPatientByPatientID getTbPatientByPatientID = new GetTbPatientByPatientID(baseDatabase);
-                getTbPatientByPatientID.execute(currentPatient.getPatientId());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(currentPatient.getDateOfBirth());
 
-            }
+            patientAge.setText(getDiffYears(calendar.getTime(), new Date())+"");
+            phoneNumber.setText(currentPatient.getPhone_number()==""? "" : currentPatient.getPhone_number());
+            ward.setText(currentPatient.getWard()==""? "" : currentPatient.getWard());
+            village.setText(currentPatient.getVillage() == "" ? "" : currentPatient.getVillage());
+            hamlet.setText(currentPatient.getHamlet() == "" ? "" : currentPatient.getHamlet());
+            patientWeight.setText(""); //save patient weight in patient object so as to be able to display it here
+
+            new GetTbPatientByPatientID(baseDatabase).execute(currentPatient.getPatientId());
 
         }
 
@@ -174,24 +181,29 @@ public class TbClientDetailsActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (currentTbPatient == null){
                     Toast.makeText(TbClientDetailsActivity.this, "Tafadhali subiri data zinachakatuliwa", Toast.LENGTH_LONG).show();
+                    encouterMonthSpinner.setSelection(0);
                 }else {
-
                     makohoziSpinner.setEnabled(true);
 
+                    //Enable treatment results capture if encounter month is after the fifth month
                     if (i >= 5)
                         matokeoLinearLayout.setVisibility(View.VISIBLE);
                     else
                         matokeoLinearLayout.setVisibility(View.GONE);
 
-                    if (i == 0 || i == 2){
-                        makohoziEncounterWrap.setVisibility(View.VISIBLE);
-                    } else {
-                        finishedPreviousMonthLayout.setVisibility(View.INVISIBLE);
+                    //Enable capturing of makohozi weight if test done was through makohozi and if encounter month is month one or three
+                    if (currentTbPatient.getTestType() == 1){
+                        if (i == 0 || i == 2){
+                            makohoziEncounterWrap.setVisibility(View.VISIBLE);
+                        } else {
+                            makohoziEncounterWrap.setVisibility(View.INVISIBLE);
+                        }
+                    }else {
+                        makohoziEncounterWrap.setVisibility(View.INVISIBLE);
                     }
 
-                    GetEncounterDetails getEncounterDetails = new GetEncounterDetails(baseDatabase);
+                    new GetEncounterDetails(baseDatabase).execute((i+1)+"", currentTbPatient.getTempID()+"");
                     Log.d("Billions", "About to Get Encounters for month "+(i+1));
-                    getEncounterDetails.execute((i+1)+"", currentTbPatient.getTempID()+"");
 
                 }
             }
@@ -202,14 +214,9 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validData()){
-                    saveData();
-                }
-            }
-        });
+        if (patientNew){
+            selectedTestType = 1;
+        }
 
         testTypeToggle.setOnToggleSwitchChangeListener(new BaseToggleSwitch.OnToggleSwitchChangeListener() {
             @Override
@@ -217,37 +224,100 @@ public class TbClientDetailsActivity extends BaseActivity {
                 if (position == 0 && isChecked){
                     makohoziWrapper.setVisibility(View.VISIBLE);
                     othersWrapper.setVisibility(View.GONE);
+                    selectedTestType = 1;
                 }else if (position == 1 && isChecked){
                     makohoziWrapper.setVisibility(View.GONE);
                     othersWrapper.setVisibility(View.GONE);
+                    selectedTestType = 2;
                 }else {
                     makohoziWrapper.setVisibility(View.GONE);
                     othersWrapper.setVisibility(View.VISIBLE);
+                    selectedTestType = 3;
                 }
             }
         });
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (patientNew){
+                    //Save Test Information
+                    //Save Treatment
+                    activityCanExit = true;
+
+                    if (saveTestData()){
+                        Log.d("saveTestData", "Saved test data!");
+                        if (saveTreatmentData()){
+                            Log.d("saveTreatmentData", "Saved treatment data!");
+                            new SaveTbPatientTask(baseDatabase).execute(currentTbPatient);
+                        }
+                    }
+                }else {
+                    //Save Encounter
+                    /*If month >= 6
+                     Save Results
+                    */
+                    if (saveEncounters(currentTbPatient.getTestType())){
+                        if (currentPatientEncounter.getEncounterMonth() > 6){
+                            //Save Treatment Results;
+                            activityCanExit = false;
+                            if (saveResults()){
+                                new SaveTbPatientTask(baseDatabase).execute(currentTbPatient);
+                            }
+                        }else {
+                            activityCanExit = true;
+                        }
+                        new SaveEncounters(baseDatabase).execute(currentPatientEncounter);
+                    }
+                }
+            }
+        });
+
+        resultsDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show(getFragmentManager(),"dateOfBirth");
+                datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
+                        resultsDate.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
+                        resultCalendar = Calendar.getInstance();
+                        resultCalendar.set(year, monthOfYear, dayOfMonth);
+                        outcomeDate = resultCalendar.getTimeInMillis();
+                    }
+
+                });
+            }
+        });
 
     }
 
     private void setupviews(){
+        encounterUI = (View) findViewById(R.id.enconter_ui);
+        treatmentUI = (View) findViewById(R.id.treatment_ui);
+        testUI = (View) findViewById(R.id.test_ui);
+        resultsUI = (View) findViewById(R.id.results_ui);
+        demographicUI = (View) findViewById(R.id.demographic_ui);
+        clickBlocker = (View) findViewById(R.id.view_click_blocker);
+        clickBlocker.setVisibility(View.GONE);
+        clickBlocker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
         testTypeToggle = (ToggleSwitch) findViewById(R.id.test_type);
-
         matokeoLinearLayout = (LinearLayout) findViewById(R.id.matokep_ll);
-        //matokeoLinearLayout.setVisibility(View.GONE);
-
         makohoziWrapper = (RelativeLayout) findViewById(R.id.makohozi_wrapper);
         othersWrapper = findViewById(R.id.others_wrapper);
-
+        otherTestValue = (EditText) findViewById(R.id.other_test_value);
         makohoziEncounterWrap = (RelativeLayout) findViewById(R.id.makohozi_encounter_wrap);
-
         finishedPreviousMonthLayout = (RelativeLayout) findViewById(R.id.finished_previous_month_layout);
-
         outcomeDetails = (EditText) findViewById(R.id.other_information);
-
+        monthlyPatientWeightEt = (EditText) findViewById(R.id.monthly_uzito_value);
         saveButton = (Button) findViewById(R.id.hifadhi_taarifa);
-
         patientNames = (TextView) findViewById(R.id.names_text);
         patientGender = (TextView) findViewById(R.id.gender_text);
         patientAge = (TextView) findViewById(R.id.age_text);
@@ -257,78 +327,127 @@ public class TbClientDetailsActivity extends BaseActivity {
         village = (TextView) findViewById(R.id.village_text);
         hamlet = (TextView) findViewById(R.id.hamlet_text);
         medicationStatusTitle = (TextView) findViewById(R.id.medication_status_title);
-
+        resultsDate = (TextView) findViewById(R.id.date);
         matibabuSpinner = (MaterialSpinner) findViewById(R.id.spin_matibabu);
         matokeoSpinner = (MaterialSpinner) findViewById(R.id.spin_matokeo);
         encouterMonthSpinner = (MaterialSpinner) findViewById(R.id.spin_encounter_month);
         makohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi);
         monthOneMakohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi_month_one);
-
         medicationStatusCheckbox = (CheckBox) findViewById(R.id.medication_status);
-
     }
 
-    private boolean validData(){
+    private void calibrateUI(boolean b){
+        if (b){
+            encounterUI.setVisibility(View.GONE);
+            resultsUI.setVisibility(View.GONE);
+        }else {
+            encounterUI.setVisibility(View.VISIBLE);
+        }
+    }
 
-        if (patientNew){
+    boolean saveTestData(){
+        //Patient Test Variables
+        String makohoziWeight = "";
+        String otherTestDescription = "";
 
-            if (matibabuSpinner.getSelectedItemPosition() == -1){
-                Toast.makeText(context, "Tafadhali Jaza Aina ya matibabu", Toast.LENGTH_LONG).show();
+        TbPatient patient = currentTbPatient;
+
+        Log.d("saveTestData", "Saving test data");
+
+        //Validating input test data
+        if (selectedTestType==1){
+            if (monthOneMakohoziSpinner.getSelectedItemPosition() == 0){
+                Toast.makeText(
+                        context,
+                        "Tafadhali jaza uzito wa makohozi kabla ya matibabu",
+                        Toast.LENGTH_LONG
+                ).show();
+                Log.d("saveTestData", "Test type is makohozi and weight is not selected");
                 return false;
             }else {
-                strMatibabu = (String) matibabuSpinner.getSelectedItem();
-                Log.d("BILLION", "Matibabu selected  : "+matibabuSpinner.getSelectedItem());
+                makohoziWeight = (String) monthOneMakohoziSpinner.getSelectedItem();
             }
-
-            if (makohoziSpinner.getSelectedItemPosition() == -1){
+        }else if (selectedTestType==3){
+            if (otherTestValue.getText().toString().isEmpty()){
                 Toast.makeText(
                         context,
-                        "Tafadhali jaza hali ya makohozi ya mgonjwa",
+                        "Tafadhali eleza vipimo vilivyofanyika",
                         Toast.LENGTH_LONG
                 ).show();
+                Log.d("saveTestData", "Test type is other and there is no description");
                 return false;
+            }else {
+                otherTestDescription = otherTestValue.getText().toString();
             }
-
-        }else {
-
-            if (makohoziSpinner.getSelectedItemPosition() == -1){
-                Toast.makeText(
-                        context,
-                        "Tafadhali jaza hali ya makohozi ya mgonjwa",
-                        Toast.LENGTH_LONG
-                ).show();
-                return false;
-            }
-
+        }else if (selectedTestType == 2){
+            otherTestDescription = "";
+            makohoziWeight = "";
         }
+        patient.setTestType(selectedTestType);
+        patient.setOtherTestDetails(otherTestDescription);
+        patient.setMakohozi(makohoziWeight);
+        currentTbPatient = patient;
+
+        Log.d("saveTestData", "Done updating Patient object with test info");
 
         return true;
     }
 
-    private void saveData(){
-
-        if (patientNew){
-            currentTbPatient.setOtherTests(strVipimoVingine);
-            currentTbPatient.setTreatment_type((String) matibabuSpinner.getSelectedItem());
-            currentTbPatient.setXray(strXray);
-            currentTbPatient.setMakohozi(strMakohozi);
-            saveTbPatient();
+    boolean saveTreatmentData (){
+        //Patient Treatment Variables
+        String selectedMatibabu = "";
+        TbPatient patient = currentTbPatient;
+        if (matibabuSpinner.getSelectedItemPosition() == 0){
+            toastThis("Tafadhali Jaza Aina ya matibabu");
+            return false;
         }else {
-            saveEncounters();
+            selectedMatibabu = (String) matibabuSpinner.getSelectedItem();
         }
+        patient.setTreatment_type(selectedMatibabu);
+        currentTbPatient = patient;
+        return true;
     }
 
-    private void saveTbPatient(){
-        SaveTbPatientTask saveTbPatientTask = new SaveTbPatientTask(baseDatabase);
-        saveTbPatientTask.execute(currentTbPatient);
-    }
-
-    private void saveEncounters(){
-
+    boolean saveEncounters(int testType){
+        //TbEncounter Variables
+        String makohoziValue = "";
+        String monthlyWeight = "";
+        int encMonth;
         TbEncounters tbEncounter = new TbEncounters();
-        tbEncounter.setEncounterMonth((encouterMonthSpinner.getSelectedItemPosition()));
-        tbEncounter.setMakohozi((String) makohoziSpinner.getSelectedItem());
+        if (encouterMonthSpinner.getSelectedItemPosition() == 0){
+            toastThis("Tafadhali chagua mwezi!");
+            return false;
+        }else {
+            encMonth = encouterMonthSpinner.getSelectedItemPosition();
+        }
+
+        if (testType == 1 && (encMonth == 1 || encMonth == 3) ){
+            if (makohoziSpinner.getSelectedItemPosition() == 0){
+                toastThis("Tafadhali jaza hali ya makohozi ya mgonjwa");
+                return false;
+            }else {
+                makohoziValue = (String) makohoziSpinner.getSelectedItem();
+            }
+        }
+
+        if (monthlyPatientWeightEt.getText().toString().isEmpty()){
+            toastThis("Tafadhali jaza uzito wa mteja.");
+            return false;
+        }else {
+            monthlyWeight = monthlyPatientWeightEt.getText().toString();
+        }
+
+        tbEncounter.setEncounterMonth(encMonth);
+
+        if (testType == 1){
+            if (encMonth == 1 || encMonth == 3){
+                tbEncounter.setMakohozi(makohoziValue);
+            }else {
+                tbEncounter.setMakohozi("");
+            }
+        }
         tbEncounter.setHasFinishedPreviousMonthMedication(medicationStatusCheckbox.isChecked());
+        tbEncounter.setWeight(monthlyWeight);
 
         //This is the medication Status of this encounter to be set on the next visit
         tbEncounter.setMedicationDate(Calendar.getInstance().getTimeInMillis());
@@ -344,9 +463,42 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         tbEncounter.setId(currentPatient.getPatientId()+"_"+encouterMonthSpinner.getSelectedItemPosition());
 
-        SaveEncounters saveEncounters = new SaveEncounters(baseDatabase);
-        saveEncounters.execute(tbEncounter);
+        currentPatientEncounter = tbEncounter;
+        return true;
+    }
 
+    boolean saveResults(){
+
+        String outcomeDetailsStr = "";
+        String resultsStr = "";
+        String dateOfResultsStr = "";
+
+        if (outcomeDetails.getText().toString().isEmpty()){
+            toastThis("Tafadhali elezea majibu ya matibabu");
+            return false;
+        }else {
+            outcomeDetailsStr = outcomeDetails.getText().toString();
+        }
+
+        if (matokeoSpinner.getSelectedItemPosition() == 0){
+            toastThis("Tafadhali chagua matokeo");
+            return false;
+        }else {
+            resultsStr = (String) matokeoSpinner.getSelectedItem();
+        }
+
+        if (resultsDate.getText().toString().isEmpty()){
+            toastThis("Tafadhali chagua tarehe ya Majibu ya matibabu");
+            return false;
+        }else {
+            dateOfResultsStr = resultsDate.getText().toString();
+        }
+
+        currentTbPatient.setOutcome(resultsStr);
+        currentTbPatient.setOutcomeDate(outcomeDate);
+        currentTbPatient.setOutcomeDetails(outcomeDetailsStr);
+
+        return true;
     }
 
     private void clearFields(){
@@ -354,6 +506,8 @@ public class TbClientDetailsActivity extends BaseActivity {
         makohoziSpinner.setEnabled(true);
         medicationStatusCheckbox.setChecked(false);
         medicationStatusCheckbox.setEnabled(true);
+        monthlyPatientWeightEt.setText("");
+        monthlyPatientWeightEt.setEnabled(true);
         medicationStatusTitle.setText("Amemaliza Dawa Za Mwezi Uliopita Kikamilifu");
     }
 
@@ -373,6 +527,9 @@ public class TbClientDetailsActivity extends BaseActivity {
                 medicationStatusCheckbox.setChecked(encounter.isMedicationStatus());
                 medicationStatusTitle.setText("Alimaliza Dawa za Mwezi Huu Kikamilifu");
                 medicationStatusCheckbox.setEnabled(false);
+
+                monthlyPatientWeightEt.setText(encounter.getWeight());
+                monthlyPatientWeightEt.setEnabled(false);
 
                 for (int i=0; i<tbTypes.length; i++){
                     if (tbTypes[i].equals(encounter.getMakohozi())){
@@ -400,30 +557,6 @@ public class TbClientDetailsActivity extends BaseActivity {
             else
                 return null;
         }
-    }
-
-    class CreateTbPatient extends AsyncTask<TbPatient, Void, Void> {
-
-        AppDatabase database;
-        boolean isPatientNew;
-        List<TbEncounters> listOfPatientEncounters;
-
-        CreateTbPatient(AppDatabase db, boolean patientNew){
-            this.database = db;
-            this.isPatientNew = patientNew;
-        }
-
-        @Override
-        protected Void doInBackground(TbPatient... params) {
-            database.tbPatientModelDao().addPatient(params[0]);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void voids) {
-            super.onPostExecute(voids);
-        }
-
     }
 
     class GetTbPatientByPatientID extends AsyncTask<String, Void, TbPatient>{
@@ -454,8 +587,24 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             if (tbPatient != null){
 
-                //xray.setText(tbPatient.getXray() == null ? "" : tbPatient.getXray());
-                //otherTests.setText(tbPatient.getOtherTests() == null ? "" : tbPatient.getOtherTests());
+                int testType = tbPatient.getTestType();
+                clickBlocker.setVisibility(View.VISIBLE);
+                if (testType > 0){
+                    testTypeToggle.setCheckedTogglePosition(testType-1);
+                    testTypeToggle.setFocusableInTouchMode(false);
+
+                    if (testType == 3){
+                        otherTestValue.setText(tbPatient.getOtherTestDetails());
+                    }else if (testType == 1){
+                        for (int i=0; i<tbTypes.length; i++){
+                            if (tbPatient.getMakohozi().equals(tbTypes[i])){
+                                monthOneMakohoziSpinner.setSelection(i);
+                                monthOneMakohoziSpinner.setEnabled(false);
+                            }
+                        }
+                    }
+                }
+
                 patientWeight.setText(tbPatient.getWeight()+"" == null ? "" : tbPatient.getWeight()+"");
                 for (int i=0; i<treatmentTypes.length; i++){
                     if (treatmentTypes[i].equals(tbPatient.getTreatment_type())){
@@ -463,12 +612,12 @@ public class TbClientDetailsActivity extends BaseActivity {
                     }
                 }
 
-
-
                 if (patientNew){
                     matibabuSpinner.setEnabled(true);
+                    clickBlocker.setVisibility(View.GONE);
                 }else {
                     matibabuSpinner.setEnabled(false);
+                    clickBlocker.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -495,12 +644,17 @@ public class TbClientDetailsActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             dialog.dismiss();
-            saveEncounters();
+            if (activityCanExit){
+                Intent intent = new Intent(context, TbClientListActivity.class);
+                startActivity(intent);
+                finish();
+            }else {
+                activityCanExit = true;
+            }
         }
 
         @Override
         protected Void doInBackground(TbPatient... tbPatients) {
-
             database.tbPatientModelDao().updateTbPatient(tbPatients[0]);
             return null;
         }
@@ -511,6 +665,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         AppDatabase database;
         TbEncounters currentEncounter;
+        int mEncMonth = 0;
 
         SaveEncounters(AppDatabase db){
             this.database = db;
@@ -541,8 +696,9 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             //Save previous month medication status
             int previousmonth = encounters[0].getEncounterMonth() - 1;
-            List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousmonth+"", currentTbPatient.getTempID()+"");
+            mEncMonth = encounters[0].getEncounterMonth();
 
+            List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousmonth+"", currentTbPatient.getTempID()+"");
 
             boolean previousMonthStatus = encounters[0].isHasFinishedPreviousMonthMedication();
 
@@ -553,7 +709,6 @@ public class TbClientDetailsActivity extends BaseActivity {
                 long today = calendar.getTimeInMillis();
                 encounters1.get(0).setMedicationDate(today);
 
-                Log.d("Billions", "Saving Previous Encounter Medication Status");
                 database.tbEncounterModelDao().updatePreviousMonthMedicationStatus(encounters1.get(0));
             }
 
@@ -585,13 +740,14 @@ public class TbClientDetailsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
             dialog.dismiss();
-            Intent intent = new Intent(context, TbClientListActivity.class);
-            startActivity(intent);
-            finish();
-            super.onPostExecute(aVoid);
-
+            if (activityCanExit){
+                Intent intent = new Intent(context, TbClientListActivity.class);
+                startActivity(intent);
+                finish();
+            }else {
+                activityCanExit = true;
+            }
         }
 
         @Override
@@ -680,6 +836,10 @@ public class TbClientDetailsActivity extends BaseActivity {
         Calendar cal = Calendar.getInstance(Locale.US);
         cal.setTime(date);
         return cal;
+    }
+
+    void toastThis (String toastString){
+        Toast.makeText(TbClientDetailsActivity.this, toastString, Toast.LENGTH_LONG).show();
     }
 
 }

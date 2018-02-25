@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app_ms="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/matokep_ll"
+        android:background="@color/card_separator_third"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:textAllCaps="true"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/treatment_results"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="5dp"
+            android:layout_below="@id/heading"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/card_separator" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/results_wrap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="32dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/results"
+                        android:id="@+id/matokeo_title"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="16dp" />
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_matokeo"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:divider="@null"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_below="@id/matokeo_title"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_arrowColor="@color/black"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_baseColor="@color/card_grid_tex"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_floatingLabelColor="@color/white"
+                        app_ms:ms_floatingLabelText="Matokeo"
+                        app_ms:ms_highlightColor="@color/card_grid_text"
+                        app_ms:ms_hint="Matokeo"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_multiline="false" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/card_separator"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:drawablePadding="32dp"
+                        android:drawableRight="@mipmap/ic_date"
+                        android:fontFamily="@font/roboto_bold"
+                        android:hint="@string/date"
+                        android:textColorHint="@color/card_grid_text"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/card_separator"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="32dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/other_information_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/other_explanation"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/other_information"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/other_information_title"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/border_one"
+                        android:gravity="start"
+                        android:minLines="3"
+                        android:padding="4dp"
+                        android:textSize="16sp" />
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

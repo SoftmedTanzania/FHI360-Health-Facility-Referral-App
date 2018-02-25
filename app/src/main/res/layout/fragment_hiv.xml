@@ -51,7 +51,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/black"
-                            android:text="Referrals List"/>
+                            android:text="@string/referrals_list"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                             android:layout_marginRight="16dp"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/card_grid_text"
-                            android:text="15 Referals Unattended"/>
+                            android:text=""/>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -145,7 +145,7 @@
                             android:id="@+id/refered_clients_text"
                             android:fontFamily="@font/roboto_regular"
                             android:textColor="@color/black"
-                            android:text="Referrals Issued (CTC)"/>
+                            android:text="@string/referrals_issued_ctc"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -156,7 +156,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/card_grid_text"
-                            android:text="Pending Feedback : 0"/>
+                            android:text=""/>
 
                     </LinearLayout>
 
@@ -206,7 +206,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
-                        android:text="Clients List"/>
+                        android:text="@string/clients_list"/>
 
                 </RelativeLayout>
 

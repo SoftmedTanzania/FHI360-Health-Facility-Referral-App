@@ -4,13 +4,133 @@
     <string name="dummy_text">If the community health worker surveys and finds a family with a person who has TB they get information of all the other
         relatives that stay with the patient person and referes them to kituo cha afya with the same CBHS as the TB patient and once any of the members
         will be found with TB they will then be registered with their own CBHS number (New registration occurs here)</string>
-    <string name="home">Mwanzo</string>
-    <string name="kutoka_tarehe">Kutoka Tarehe</string>
+    <string name="home">Home</string>
 
-    <string name="village">Kijiji</string>
-    <string name="ward">Kata</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+
+    <string name="village">Village</string>
+    <string name="ward">Ward</string>
     <string name="map_cue">Map Cue</string>
-    <string name="health_facility">\n Kituo cha Afya \n</string>
-    <string name="chw">\nMtoa huduma wa Jamii \n</string>
+    <string name="health_facility">\n Health Facility \n</string>
+    <string name="chw">\nCommunity Health Worker \n</string>
+
+    <string name="text_search_field">Name or CTC#</string>
+
+    <string name="client_name">Client Name</string>
+    <string name="btn_search">Search</string>
+    <string name="appointment_date">Appointment Date</string>
+    <string name="appointment_status">Appointment Status</string>
+    <string name="age">Age</string>
+    <string name="sex">Sex</string>
+    <string name="veo">VEO</string>
+    <string name="heading_referral_info">Referral Information</string>
+    <string name="referral_reasib">Referral Reasons</string>
+    <string name="indicators">Indicators</string>
+    <string name="other_clinical_information">Other Clinical Information</string>
+    <string name="heading_referral_feedback">Referral Feedback</string>
+    <string name="test_results">Test Results</string>
+    <string name="check_if_positive">Check If Positive</string>
+    <string name="ctc_number">CTC Number</string>
+    <string name="heading_service_given">Service Given</string>
+    <string name="other_infotmation_and_advice">Other Information and Advices</string>
+    <string name="btn_forward_referral">Forward Referral</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_send">Send</string>
+    <string name="client_last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="click_to_sync_entries">Click to sync Entries</string>
+    <string name="referral_system">Referral System</string>
+    <string name="login">Login</string>
+    <string name="enter_username_and_password">Enter username and password</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="referral">Referral</string>
+    <string name="issue_referral">Issue Referral</string>
+    <string name="referral_information">Referral Information</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="client_inforamtion">Client Information</string>
+    <string name="supporter_information">Supporter Information</string>
+    <string name="names">Names</string>
+    <string name="relationship">Relationship</string>
+    <string name="referral_date">Referral Date</string>
+    <string name="service">Service</string>
+    <string name="referral_feedback_form">Referral Feedback Form</string>
+    <string name="referral_feedback">Referral Feedback</string>
+    <string name="tb_clinic_form">TB Clinic Form</string>
+    <string name="weight">Weight</string>
+    <string name="diagnostic_info">Diagnostic Information</string>
+    <string name="test_conducted">Test Conducted</string>
+
+    <string name="toggle_makohozi">Cough</string>
+    <string name="toggle_xray">X-Ray</string>
+    <string name="toggle_other">Other Test</string>
+    <string name="cough_weight">Cough weight before treatment</string>
+    <string name="treatment_info">Treatment Information</string>
+    <string name="treatment_type">Treatment Type</string>
+    <string name="encounter_details">Encounter Details</string>
+    <string name="makohozi">Cough</string>
+    <string name="finished_last_month_medications_succesfully">Finished last months medications successfully</string>
+    <string name="treatment_results">Treatment Results</string>
+    <string name="results">Results</string>
+    <string name="date">Date</string>
+    <string name="other_explanation">Other Explanations</string>
+    <string name="tb_status">TB STATUS</string>
+    <string name="referral_to">Referral To</string>
+
+    <string name="select_service">Select Service</string>
+    <string name="select_indicators">Select Indicators</string>
+    <string name="referrals_list">Referrals List</string>
+
+    <string name="referrals_unattended">Referrals Unattended</string>
+    <string name="pending_feedback">Pending Feedback</string>
+    <string name="clients_list">Clients List</string>
+    <string name="referrals_issued_ctc">Referrals Issued (CTC)</string>
+    <string name="register_client">Register Client</string>
+    <string name="referrals_issued">Referrals Issued</string>
+    <string name="status">Status</string>
+    <string name="new_client_registration_form">New Client Registration Form</string>
+    <string name="initial_information">Initial Information</string>
+    <string name="first_name">First Name</string>
+    <string name="surname">Surname</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="pregnant">Pregnant</string>
+    <string name="other_details">Other Details</string>
+    <string name="language">Language</string>
+
+    <string name="username_cannot_be_empty"> Username Cannot be empty </string>
+    <string name="password_cannot_be_empty"> Password Cannot be empty </string>
+    <string name="loading_data">Loading Data...</string>
+    <string name="loging_in">Loging In...</string>
+    <string name="success">Success</string>
+    <string name="error_logging_in">Error logging in</string>
+    <string name="device_registration_warning">
+        Device may have not registered\n
+        You might miss important Notifications
+    </string>
+    <string name="initializing_data">Initializing Data...</string>
+
+    <string name="health_facility_referrals">From Facility</string>
+    <string name="chw_referrals">From CHW</string>
+    <string name="client_appointment">Client Appointment</string>
+    <string name="all">All</string>
+    <string name="ctc">CTC</string>
+    <string name="tb">TB</string>
+
+    <string name="activity_referral_list">Referrals list</string>
+    <string name="loading_please_wait">Loading Please Wait</string>
+    <string name="saving">Saving</string>
+    <string name="data_synced">Data Synced</string>
+    <string name="unsynced_data"> Unsynced Data </string>
+
+    <string name="fragment_opd">OPD</string>
+    <string name="fragment_hiv">HIV</string> <!--Huduma za VVU/Ukimwi -->
+    <string name="fragment_tb">TB</string>
+
+    <string name="data_syncing">Syncing..</string>
+    <string name="enroll_tb_clinic">Enroll to TB Clinic</string>
+
+    <string name="new_referrals_unattended">New referrals unattended</string>
 
 </resources>
