@@ -47,12 +47,15 @@
     <string name="username">Jina</string>
     <string name="password">Neno la Siri</string>
 
+    <string name="where_they_stay">Anapokaa</string>
+
     <string name="referral">Rufaa</string>
     <string name="issue_referral">Tuma Rufaa</string>
     <string name="referral_information">Taarifa za Rufaa</string>
     <string name="btn_cancel">Ondoka</string>
     <string name="client_inforamtion">Taarifa za Mteja</string>
     <string name="supporter_information">Taarifa za Msaidizi</string>
+    <string name="supporters_name">Majina ya Msaidizi</string>
     <string name="names">Majina</string>
     <string name="relationship">Mahusiano</string>
     <string name="referral_date">Tarehe ya Rufaa</string>
@@ -94,6 +97,7 @@
     <string name="new_client_registration_form">Fomu ya Usajili wa Mteja Mpya</string>
     <string name="initial_information">Taarifa za Awali</string>
     <string name="first_name">Jina la Kwanza</string>
+    <string name="middle_name">Jina la Pili</string>
     <string name="surname">Ukoo</string>
     <string name="date_of_birth">Tarehe ya Kuzaliwa</string>
     <string name="pregnant">Mjamzito</string>
