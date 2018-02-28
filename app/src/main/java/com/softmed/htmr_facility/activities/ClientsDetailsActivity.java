@@ -356,11 +356,12 @@ public class ClientsDetailsActivity extends BaseActivity {
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
 
-            List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
+            List<Long> ids = currentReferral.getServiceIndicatorIds();
 
             //Call Patient Referral Indicators
             for (int i=0; i<ids.size(); i++){
-                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i)+"");
+                long id = Long.parseLong(ids.get(i)+"");
+                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
                 indicators.add(referralIndicator);
             }
 

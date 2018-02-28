@@ -160,7 +160,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
 
             //Call Patient Referral Indicators
             for (int i=0; i<ids.size(); i++){
-                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i)+"");
+                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i));
                 indicators.add(referralIndicator);
             }
 

@@ -137,4 +137,7 @@
 
     <string name="new_referrals_unattended">New referrals unattended</string>
 
+    <string name="new_ref">New</string>
+    <string name="attended_ref">Attended</string>
+
 </resources>

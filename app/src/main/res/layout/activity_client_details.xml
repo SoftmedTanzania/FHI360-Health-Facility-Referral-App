@@ -62,7 +62,7 @@
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="16dp"
                     android:textColor="@color/black"
-                    android:text="Taarifa za Rufaa"
+                    android:text="@string/referral_information"
                     android:textSize="42sp"
                     android:id="@+id/heading"
                     android:fontFamily="@font/roboto_bold"/>

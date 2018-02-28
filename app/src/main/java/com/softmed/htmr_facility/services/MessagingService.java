@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -33,11 +34,11 @@ import com.softmed.htmr_facility.utils.NotificationUtils;
 public class MessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MessagingService.class.getSimpleName();
+    private final int NOTIFICATION_ID = 1010;
 
     private NotificationUtils notificationUtils;
-
     private AppDatabase database;
-
+    String dataType = "";
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -118,7 +119,6 @@ public class MessagingService extends FirebaseMessagingService {
                 Log.d("handleNotification", "added Referral Feedback");
             }
 
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -143,7 +143,6 @@ public class MessagingService extends FirebaseMessagingService {
             //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
             //notificationUtils.playNotificationSound();
         } else {
-
             Intent resultIntent = new Intent(getApplicationContext(), HomeActivity.class);
             resultIntent.putExtra("message", "");
 

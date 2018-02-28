@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -226,7 +227,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
         private void bindIndicator(ReferralIndicator indicator){
             this.referralIndicator = indicator;
-            indicatorName.setText(referralIndicator.getIndicatorName());
+            indicatorName.setText(referralIndicator==null?"":referralIndicator.getIndicatorName());
         }
 
     }
@@ -300,11 +301,12 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
 
-            List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
+            List<Long> ids = currentReferral.getServiceIndicatorIds();
 
             //Call Patient Referral Indicators
             for (int i=0; i<ids.size(); i++){
-                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i)+"");
+                long id = Long.parseLong(ids.get(i)+"");
+                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
                 indicators.add(referralIndicator);
             }
 

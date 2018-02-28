@@ -126,4 +126,7 @@
 
     <string name="enroll_tb_clinic">Ingiza : Kliniki ya TB</string>
 
+    <string name="new_ref">Mpya</string>
+    <string name="attended_ref">Tayari</string>
+
 </resources>

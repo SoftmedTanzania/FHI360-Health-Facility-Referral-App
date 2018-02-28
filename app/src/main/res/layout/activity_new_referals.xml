@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.softmed.htmr_facility.activities.MainActivity">
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
@@ -28,7 +27,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="HTMR"
+                    android:text="@string/clients_list"
                     android:textColor="@color/white"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp"

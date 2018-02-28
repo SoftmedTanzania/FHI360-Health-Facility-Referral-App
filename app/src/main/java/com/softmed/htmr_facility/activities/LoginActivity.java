@@ -17,13 +17,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.rey.material.widget.EditText;
 import com.rey.material.widget.ProgressView;
 
 import org.json.JSONObject;
@@ -197,10 +197,10 @@ public class LoginActivity extends BaseActivity {
             return false;
         }
         else if (usernameEt.getText().length() <= 0){
-            Toast.makeText(this, "Username can not be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Jina haliwezi kua wazi", Toast.LENGTH_SHORT).show();
             return false;
         }else if (passwordEt.getText().length() <= 0){
-            Toast.makeText(this, "Password can not be empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Neno la siri haliwezi kuwa wazi", Toast.LENGTH_SHORT).show();
             return false;
         }
         else {

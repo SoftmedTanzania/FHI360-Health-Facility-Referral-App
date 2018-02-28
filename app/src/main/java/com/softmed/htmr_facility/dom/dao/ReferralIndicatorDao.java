@@ -29,7 +29,7 @@ public interface ReferralIndicatorDao  {
     List<ReferralIndicator> getIndicatorsByServiceId(long serviceID);
 
     @Query("select * from ReferralIndicator where referralServiceIndicatorId = :referralIndicatorID")
-    ReferralIndicator getReferralIndicatorById(String referralIndicatorID);
+    ReferralIndicator getReferralIndicatorById(long referralIndicatorID);
 
     @Insert(onConflict = REPLACE)
     void addIndicator(ReferralIndicator referralIndicator);

@@ -63,10 +63,10 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
         new TbReferralListRecyclerAdapter.patientDetailsTask(database, referral.getPatient_id(), holder.clientsNames).execute();
 
         if (referral.getReferralStatus() == 0){
-            holder.attendedFlag.setText("New");
+            holder.attendedFlag.setText("Mpya");
             holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
         }else {
-            holder.attendedFlag.setText("Attended");
+            holder.attendedFlag.setText("Tayari");
             holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
         }
 
