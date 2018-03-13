@@ -133,4 +133,21 @@ public interface ReferalModelDao {
     List<Referral> getFilteredHivAndTbReferrals(int[] status, String fname, String lname, String ctcNumber, long fromdt, long todt, int[] refType, int serviceID);
 
 
+    //REFERRAL REPORTS QUERIES
+    @Query("select count(*) from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +
+            "serviceId = :serviceIndicatorID and " +
+            "referralDate between :fromDate and :toDate and " +
+            "referralType = :referralType and " +
+            "Patient.gender = :gender")
+    int getAllReferralsByServcieAndDateRange(long serviceIndicatorID, long fromDate, long toDate, int referralType, String gender);
+
+
+    @Query("select count(*) from Referral inner join Patient on Referral.patient_id = Patient.patientId where " +
+            "serviceId = :serviceIndicatorID and " +
+            "referralDate between :fromDate and :toDate and " +
+            "referralType = :referralType and " +
+            "referralStatus = :referralStatus and " +
+            "Patient.gender = :gender")
+    int getAllReferralsByServcieDateRangeAndReferralStatus(long serviceIndicatorID, long fromDate, long toDate, int referralType, String gender, int referralStatus);
+
 }

@@ -382,14 +382,8 @@ public class HomeActivity extends BaseActivity {
             session.logoutUser();
         }
 
-        if (id == R.id.notifications){
-            //Display List Of Reminders
-            View menuItemView = findViewById(R.id.notifications); // SAME ID AS MENU ID
-            PopupMenu popupMenu = new PopupMenu(this, menuItemView);
-            popupMenu.inflate(R.menu.notification_list);
-            // ...
-            popupMenu.show();
-            // ...
+        if (id == R.id.reports){
+            startActivity(new Intent(this, ReportsActivity.class));
         }
 
         if (id == R.id.sync_data){

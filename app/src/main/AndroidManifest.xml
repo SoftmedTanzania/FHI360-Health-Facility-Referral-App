@@ -85,7 +85,7 @@
             android:exported="false"/>
 
         <activity android:name="com.softmed.htmr_facility.activities.TbClientListActivity"
-            android:parentActivityName="com.softmed.htmr_facility.activities.MainActivity"
+            android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name="com.softmed.htmr_facility.activities.TbClientDetailsActivity"
@@ -102,6 +102,9 @@
 
         <activity android:name=".activities.PatientDetailsActivity"
             android:parentActivityName=".activities.NewReferalsActivity"/>
+
+        <activity android:name=".activities.ReportsActivity"
+            android:parentActivityName=".activities.HomeActivity"/>
 
     </application>
 

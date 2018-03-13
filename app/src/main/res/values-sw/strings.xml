@@ -129,4 +129,12 @@
     <string name="new_ref">Mpya</string>
     <string name="attended_ref">Tayari</string>
 
+    <string name="reports_activity">Ripoti</string>
+
+    <string name="attended_appointments">Waliofika</string>
+    <string name="missed_appointments">Waliokosa</string>
+    <string name="total">Jumla</string>
+    <string name="male">Wanaume</string>
+    <string name="female">Wanawake</string>
+
 </resources>

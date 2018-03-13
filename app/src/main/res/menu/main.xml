@@ -14,11 +14,11 @@
         app:showAsAction="never"
         android:icon="@mipmap/ic_action_sync"/>
 
-    <item android:id="@+id/notifications"
-        android:title="Notifications"
+    <item android:id="@+id/reports"
+        android:title="Reports"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:icon="@mipmap/ic_action_notifications"/>
+        android:icon="@mipmap/ic_action_reports"/>
 
     <item android:id="@+id/reminder"
         android:title="Reminder"
