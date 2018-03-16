@@ -64,6 +64,9 @@ dependencies {
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.bignerdranch.android:recyclerview-multiselect:0.2'
     compile 'us.belka:androidtoggleswitch:1.2.2'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
 }
 repositories {
     mavenCentral()

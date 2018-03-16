@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:paddingTop="4dp"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="4dp"
+        android:paddingLeft="16dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_margin="2dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:id="@+id/range_from">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/date_from_icon"
+                    android:src="@mipmap/ic_calendar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="From"
+                    android:id="@+id/date_range_from"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:fontFamily="@font/avenir_light"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/card_title_text"
+            android:textSize="14sp"
+            android:fontFamily="@font/avenir_light"/>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_margin="2dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:id="@+id/range_to">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/date_to_icon"
+                    android:src="@mipmap/ic_calendar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="To"
+                    android:id="@+id/date_range_to"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:fontFamily="@font/avenir_light"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="220dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/card_separator"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/title"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="CHW Referrals Summary"/>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/title"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/chw_referrals_bar_chart"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/interfacility_chart_title"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="Inter-facility Referrals Summary"/>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_below="@id/interfacility_chart_title"
+                    android:id="@+id/interfacility_bar_chart"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/card_separator"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/intrafacility_title"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="Intra-facility Referrals Summary"/>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/intrafacility_pie_chart"
+                    android:layout_below="@id/intrafacility_title"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

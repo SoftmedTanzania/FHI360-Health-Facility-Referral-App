@@ -1,7 +1,6 @@
 package com.softmed.htmr_facility.activities;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,22 +8,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.customviews.NonSwipeableViewPager;
-import com.softmed.htmr_facility.fragments.HivFragment;
-import com.softmed.htmr_facility.fragments.OPDFragment;
-import com.softmed.htmr_facility.fragments.TbFragment;
 import com.softmed.htmr_facility.fragments.reports.ChwReferralsReportFragment;
 import com.softmed.htmr_facility.fragments.reports.InterFacilityReferralReportFragment;
 import com.softmed.htmr_facility.fragments.reports.IntraFacilityReferralsReportFragment;
+import com.softmed.htmr_facility.fragments.reports.ReportChartsFragment;
 import com.softmed.htmr_facility.fragments.reports.TbAppointmentReportsFragment;
 
 import java.util.ArrayList;
@@ -71,16 +65,11 @@ public class ReportsActivity extends BaseActivity {
     }
 
     private void setUpTabs(){
-        View tbAppointmentsReportsTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView reportTitle = (TextView) tbAppointmentsReportsTab.findViewById(R.id.title_text);
-        reportTitle.setText("Tb Appointments Report"); //TODO language
-        tabLayout.getTabAt(0).setCustomView(tbAppointmentsReportsTab);
-        ImageView iv0    = (ImageView) tbAppointmentsReportsTab.findViewById(R.id.icon);
-        iv0.setVisibility(View.GONE);
-        //iv3.setColorFilter(this.getResources().getColor(R.color.white));
-        //if (!HomeActivity.this.isFinishing()){
-        //Glide.with(this).load(R.mipmap.ic_face).into(iv3);
-        //}
+
+        View reportChartsTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView chartsTitle = (TextView) reportChartsTab.findViewById(R.id.title_text);
+        chartsTitle.setText("Charts"); //TODO language
+        tabLayout.getTabAt(0).setCustomView(reportChartsTab);
 
         View chwReferralsReportTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView chwReportTitle = (TextView) chwReferralsReportTab.findViewById(R.id.title_text);
@@ -100,17 +89,25 @@ public class ReportsActivity extends BaseActivity {
         TextView intraFacilityReferralsReportTitle = (TextView) intraFacilityReferralsReportTab.findViewById(R.id.title_text);
         intraFacilityReferralsReportTitle.setText("Intra Facility Referrals Report"); //TODO language
         tabLayout.getTabAt(3).setCustomView(intraFacilityReferralsReportTab);
-        ImageView iv3    = (ImageView) intraFacilityReferralsReportTab.findViewById(R.id.icon);
+        ImageView iv3 = (ImageView) intraFacilityReferralsReportTab.findViewById(R.id.icon);
         iv3.setVisibility(View.GONE);
+
+        View tbAppointmentsReportsTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView reportTitle = (TextView) tbAppointmentsReportsTab.findViewById(R.id.title_text);
+        reportTitle.setText("Tb Appointments Report"); //TODO language
+        tabLayout.getTabAt(4).setCustomView(tbAppointmentsReportsTab);
+        ImageView iv0    = (ImageView) tbAppointmentsReportsTab.findViewById(R.id.icon);
+        iv0.setVisibility(View.GONE);
 
     }
 
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new TbAppointmentReportsFragment(), "tb_appointments_report");
+        adapter.addFragment(new ReportChartsFragment(), "reports_chard_fragment");
         adapter.addFragment(new ChwReferralsReportFragment(), "chw_referrals_report");
         adapter.addFragment(new InterFacilityReferralReportFragment(), "inter_facility_referrals_report");
         adapter.addFragment(new IntraFacilityReferralsReportFragment(), "intra_facility_referrals_report");
+        adapter.addFragment(new TbAppointmentReportsFragment(), "tb_appointments_report");
         viewPager.setAdapter(adapter);
     }
 

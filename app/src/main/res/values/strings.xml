@@ -148,4 +148,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="total_received_referrals">Total Received Referrals</string>
+
+    <string name="patient_referral_notification">You Received a new Referral</string>
+    <string name="new_client_notification">New Client Registered</string>
+    <string name="referral_feedback_notification">Referral Feedback Received</string>
+
 </resources>

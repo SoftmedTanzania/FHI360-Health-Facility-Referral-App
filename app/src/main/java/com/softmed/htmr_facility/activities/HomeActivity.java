@@ -218,7 +218,7 @@ public class HomeActivity extends BaseActivity {
                                 Log.d("POST_DATA_TYPE_PATIENT", patient1.getPatientFirstName());
 
                                 /**
-                                 * TODO: 1: Update patient object with the new patient id (Delete old insert new)
+                                 * DONE: 1: Update patient object with the new patient id (Delete old insert new)
                                  * TODO: 2: Update all referrals with this patient ID to the newly created patient ID
                                  */
 

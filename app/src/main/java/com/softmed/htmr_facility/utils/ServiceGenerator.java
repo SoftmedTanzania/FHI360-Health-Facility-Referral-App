@@ -16,8 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "http://45.56.90.103:8080/opensrp/"; // Development
-//    public static final String API_BASE_URL = "http://139.162.151.34:8080/opensrp/"; // Online
+//    public static final String API_BASE_URL = "http://45.56.90.103:8080/opensrp/"; // Development
+    public static final String API_BASE_URL = "http://139.162.151.34:8080/opensrp/"; // Online
 //    public static final String API_BASE_URL = "http://192.`168.2.8:8080/opensrp/"; //Local
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

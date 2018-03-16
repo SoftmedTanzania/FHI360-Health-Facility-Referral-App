@@ -257,6 +257,10 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         referral.setServiceIndicatorIds(indicatorIDs);
 
+        Log.d("green", referral.getFromFacilityId()+"");
+        System.out.print(referral);
+
+        //TODO: Remove comments to send referral
         SaveReferral saveReferral = new SaveReferral(database);
         saveReferral.execute(referral);
 
@@ -265,12 +269,16 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     private boolean getCurrentInputs(){
         Log.d("IssueReferral", spinnerService.getSelectedItemPosition()+" Service Selected Position");
         Log.d("IssueReferral", spinnerToHealthFacility.getSelectedItemPosition()+" To Facility Selected Position");
-        if (spinnerService.getSelectedItemPosition() == 0){
-            toastThis("Chagua huduma ya kutoa rufaa");
-            return false;
+        if (referralType == FACILITY_TO_CHW){
+            serviceID = -1;
         }else {
-            ReferralServiceIndicators services = (ReferralServiceIndicators) spinnerService.getSelectedItem();
-            serviceID = Integer.parseInt(services.getServiceId()+"");
+            if (spinnerService.getSelectedItemPosition() == 0){
+                toastThis("Chagua huduma ya kutoa rufaa");
+                return false;
+            }else {
+                ReferralServiceIndicators services = (ReferralServiceIndicators) spinnerService.getSelectedItem();
+                serviceID = Integer.parseInt(services.getServiceId()+"");
+            }
         }
 
         /*if (spinnerReferralDestination.getSelectedItemPosition() == 2) {

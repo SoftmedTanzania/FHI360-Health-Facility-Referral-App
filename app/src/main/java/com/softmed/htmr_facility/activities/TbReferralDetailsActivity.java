@@ -298,7 +298,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
                 database.patientModel().updatePatient(currentPatient);
 
                 PostOffice patientPost = new PostOffice();
-                patientPost.setPost_id(referal.getReferral_id());
+                patientPost.setPost_id(currentPatient.getPatientId());
                 patientPost.setPost_data_type(POST_DATA_TYPE_PATIENT);
                 patientPost.setSyncStatus(ENTRY_NOT_SYNCED);
 
@@ -309,7 +309,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
                 database.tbPatientModelDao().addPatient(tbPatient);
 
                 PostOffice tbPatientPost = new PostOffice();
-                tbPatientPost.setPost_id(referal.getReferral_id());
+                tbPatientPost.setPost_id(currentPatient.getPatientId());
                 tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
                 tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
 

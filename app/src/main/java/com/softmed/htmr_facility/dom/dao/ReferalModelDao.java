@@ -150,4 +150,14 @@ public interface ReferalModelDao {
             "Patient.gender = :gender")
     int getAllReferralsByServcieDateRangeAndReferralStatus(long serviceIndicatorID, long fromDate, long toDate, int referralType, String gender, int referralStatus);
 
+
+    /*
+    Used For the graph report
+     */
+    @Query("select count(*) from Referral where " +
+            "serviceId = :serviceIndicatorID and " +
+            "referralDate between :fromDate and :toDate and " +
+            "referralType = :referralType")
+    int getTotalReceivedReferralsByServiceID(long serviceIndicatorID, long fromDate, long toDate, int referralType);
+
 }

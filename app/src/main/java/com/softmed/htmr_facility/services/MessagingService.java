@@ -92,7 +92,7 @@ public class MessagingService extends FirebaseMessagingService {
             JSONObject data = new JSONObject(json.toString());
             String type = data.getString("type");
             if (type.equals("PatientReferral")){
-                triggerNotification("Umepokea Rufaa Mpya");
+                triggerNotification(getResources().getString(R.string.patient_referral_notification));
                 patient = gson.fromJson(data.getJSONObject("patientsDTO").toString(), Patient.class);
                 database.patientModel().addPatient(patient);
                 Log.d("handleNotification", "added a patient");
@@ -104,7 +104,7 @@ public class MessagingService extends FirebaseMessagingService {
                     Log.d("handleNotification", "added Patient's Referral");
                 }
             }else if (type.equals("PatientRegistration")){
-                triggerNotification("Umepokea Mteja Mpya");
+                triggerNotification(getResources().getString(R.string.new_client_notification));
                 JSONObject patientDTOS = new JSONObject(json.toString());
                 patient = gson.fromJson(patientDTOS.toString(), Patient.class);
                 database.patientModel().addPatient(patient);
@@ -112,7 +112,7 @@ public class MessagingService extends FirebaseMessagingService {
 
             }else if (type.equals("ReferralFeedback")){
                 Log.d("handleNotification", "Received Feedback");
-                triggerNotification("Umepokea Mrejesho wa Rufaa");
+                triggerNotification(getResources().getString(R.string.referral_feedback_notification));
                 JSONObject referralDTOS = new JSONObject(json.toString());
                 referral = gson.fromJson(referralDTOS.toString(), Referral.class);
                 database.referalModel().addReferal(referral);
