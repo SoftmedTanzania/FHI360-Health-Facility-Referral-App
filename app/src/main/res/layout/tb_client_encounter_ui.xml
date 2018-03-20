@@ -35,29 +35,164 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <fr.ganfra.materialspinner.MaterialSpinner
-                android:id="@+id/spin_encounter_month"
-                android:layout_width="130dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
-                android:layout_marginTop="8dp"
-                android:divider="@null"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/avenir_light"
+                android:textColor="@color/card_title_text"
                 android:textSize="14sp"
-                app_ms:ms_alignLabels="false"
-                app_ms:ms_alwaysShowFloatingLabel="true"
-                app_ms:ms_arrowColor="@color/black"
-                app_ms:ms_arrowSize="12dp"
-                app_ms:ms_baseColor="@color/card_grid_tex"
-                app_ms:ms_enableErrorLabel="false"
-                app_ms:ms_enableFloatingLabel="true"
-                app_ms:ms_errorColor="@color/red_500"
-                app_ms:ms_floatingLabelColor="@color/white"
-                app_ms:ms_floatingLabelText="Mwezi"
-                app_ms:ms_highlightColor="@color/card_grid_text"
-                app_ms:ms_hint="Mwezi"
-                app_ms:ms_hintColor="#b3b3b3"
-                app_ms:ms_hintTextSize="14sp"
-                app_ms:ms_multiline="false" />
+                android:text="@string/previous_encounters"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@color/card_separator"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card_separator"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="Month"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/card_title_text"
+                        android:fontFamily="@font/avenir_light"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/weight"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/card_title_text"
+                        android:fontFamily="@font/avenir_light"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/makohozi"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/card_title_text"
+                        android:fontFamily="@font/avenir_light"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/finished_last_month_medications_succesfully"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textColor="@color/card_title_text"
+                        android:fontFamily="@font/avenir_light"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card_separator"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@color/card_separator"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    android:id="@+id/previous_encounters_recycler_view"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:id="@+id/empty_previous_encounters"
+                    android:textColor="@color/card_light_text"
+                    android:text="@string/no_previous_encounters_recorded"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/avenir_light"
+            android:textColor="@color/card_title_text"
+            android:textSize="14sp"
+            android:text="@string/new_encounter"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,6 +205,65 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:id="@+id/separator_four"
+                        android:background="@color/card_separator_sec"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:id="@+id/month_title"
+                        android:layout_below="@id/separator_four"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="16sp"
+                        android:text="@string/month"/>
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_encounter_month"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:textSize="14sp"
+                        android:layout_below="@id/month_title"
+                        android:layout_marginTop="16dp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_arrowColor="@color/black"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_baseColor="@color/card_grid_tex"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_floatingLabelColor="@color/white"
+                        app_ms:ms_floatingLabelText="Mwezi"
+                        app_ms:ms_highlightColor="@color/card_grid_text"
+                        app_ms:ms_hint="Mwezi"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_multiline="false" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/card_separator"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:layout_height="wrap_content">
 
                     <View

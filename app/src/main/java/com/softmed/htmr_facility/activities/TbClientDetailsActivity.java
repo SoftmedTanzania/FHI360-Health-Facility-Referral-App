@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,13 +80,14 @@ public class TbClientDetailsActivity extends BaseActivity {
     RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper, makohoziEncounterWrap;
     MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner;
     TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
-    TextView ward, village, hamlet, medicationStatusTitle, resultsDate;
+    TextView ward, village, hamlet, medicationStatusTitle, resultsDate, emptyPreviousMonthEncounter;
     EditText outcomeDetails, otherTestValue, monthlyPatientWeightEt;
     Button saveButton;
     ProgressDialog dialog;
     CheckBox medicationStatusCheckbox;
     ToggleSwitch testTypeToggle;
     View encounterUI, testUI, treatmentUI, resultsUI, demographicUI, clickBlocker;
+    RecyclerView previousEncounters;
 
     Patient currentPatient;
     TbPatient currentTbPatient;
@@ -328,12 +333,17 @@ public class TbClientDetailsActivity extends BaseActivity {
         hamlet = (TextView) findViewById(R.id.hamlet_text);
         medicationStatusTitle = (TextView) findViewById(R.id.medication_status_title);
         resultsDate = (TextView) findViewById(R.id.date);
+        emptyPreviousMonthEncounter = (TextView) findViewById(R.id.empty_previous_encounters);
         matibabuSpinner = (MaterialSpinner) findViewById(R.id.spin_matibabu);
         matokeoSpinner = (MaterialSpinner) findViewById(R.id.spin_matokeo);
         encouterMonthSpinner = (MaterialSpinner) findViewById(R.id.spin_encounter_month);
         makohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi);
         monthOneMakohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi_month_one);
         medicationStatusCheckbox = (CheckBox) findViewById(R.id.medication_status);
+
+        previousEncounters = (RecyclerView) findViewById(R.id.previous_encounters_recycler_view);
+        previousEncounters.setLayoutManager(new LinearLayoutManager(this));
+        previousEncounters.hasFixedSize();
     }
 
     private void calibrateUI(boolean b){
@@ -511,6 +521,37 @@ public class TbClientDetailsActivity extends BaseActivity {
         medicationStatusTitle.setText("Amemaliza Dawa Za Mwezi Uliopita Kikamilifu");
     }
 
+    class GetPreviousEncounters extends AsyncTask<String, Void, List<TbEncounters>>{
+
+        @Override
+        protected List<TbEncounters> doInBackground(String... strings) {
+            List<TbEncounters> previousEncounters = new ArrayList<>();
+            String tbPatientID = strings[0];
+
+            previousEncounters = baseDatabase.tbEncounterModelDao().getEncounterByPatientID(tbPatientID);
+
+            return previousEncounters;
+        }
+
+        @Override
+        protected void onPostExecute(List<TbEncounters> tbEncounters) {
+            super.onPostExecute(tbEncounters);
+            //Display encounters in recycler view
+            Log.d("PreviousEncounters", tbEncounters.size()+"");
+            if (tbEncounters.size() > 0){
+                emptyPreviousMonthEncounter.setVisibility(View.GONE);
+                previousEncounters.setVisibility(View.VISIBLE);
+
+                PreviousEncountersRecyclerAdapter adapter = new PreviousEncountersRecyclerAdapter(TbClientDetailsActivity.this, tbEncounters);
+                previousEncounters.setAdapter(adapter);
+
+            }else {
+                previousEncounters.setVisibility(View.GONE);
+                emptyPreviousMonthEncounter.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     class GetEncounterDetails extends AsyncTask<String, Void, TbEncounters>{
 
         AppDatabase database;
@@ -586,6 +627,8 @@ public class TbClientDetailsActivity extends BaseActivity {
             super.onPostExecute(tbPatient);
 
             if (tbPatient != null){
+
+                new GetPreviousEncounters().execute(tbPatient.getTempID());
 
                 int testType = tbPatient.getTestType();
                 clickBlocker.setVisibility(View.VISIBLE);
@@ -840,6 +883,89 @@ public class TbClientDetailsActivity extends BaseActivity {
 
     void toastThis (String toastString){
         Toast.makeText(TbClientDetailsActivity.this, toastString, Toast.LENGTH_LONG).show();
+    }
+
+    class PreviousEncountersRecyclerAdapter extends RecyclerView.Adapter<PreviousEncountersRecyclerAdapter.ViewHolder> {
+
+        private List<TbEncounters> mData;
+        private LayoutInflater mInflater;
+        //private ItemClickListener mClickListener;
+
+        // data is passed into the constructor
+        PreviousEncountersRecyclerAdapter(Context context, List<TbEncounters> data) {
+            this.mInflater = LayoutInflater.from(context);
+            this.mData = data;
+        }
+
+        // inflates the row layout from xml when needed
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = mInflater.inflate(R.layout.previous_encounters_list_item, parent, false);
+            return new ViewHolder(view);
+        }
+
+        // binds the data to the TextView in each row
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            TbEncounters encounter = mData.get(position);
+            holder.month.setText(encounter.getEncounterMonth()+"");
+            holder.weight.setText(encounter.getWeight());
+            holder.spatum.setText(encounter.getMakohozi());
+            if (encounter.isMedicationStatus()){
+                holder.finishedMedications.setText(context.getResources().getString(R.string.finished));
+            }else {
+                holder.finishedMedications.setText(context.getResources().getString(R.string.didnt_finished));
+                holder.finishedMedications.setTextColor(context.getResources().getColor(R.color.red_500));
+            }
+        }
+
+        // total number of rows
+        @Override
+        public int getItemCount() {
+            return mData.size();
+        }
+
+
+        // stores and recycles views as they are scrolled off screen
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView month, weight, spatum, finishedMedications;
+
+            ViewHolder(View itemView) {
+                super(itemView);
+                month = itemView.findViewById(R.id.previous_month);
+                weight = itemView.findViewById(R.id.previous_weight);
+                spatum = itemView.findViewById(R.id.previous_spatum);
+                finishedMedications = itemView.findViewById(R.id.finished_previous_medications);
+
+                itemView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+                //if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            }
+        }
+
+        // convenience method for getting data at click position
+        TbEncounters getItem(int id) {
+            return mData.get(id);
+        }
+
+        // allows clicks events to be caught
+        /*
+        void setClickListener(ItemClickListener itemClickListener) {
+            this.mClickListener = itemClickListener;
+        }
+
+        // parent activity will implement this method to respond to click events
+        public interface ItemClickListener {
+            void onItemClick(View view, int position);
+        }*/
+
+        private void updateData(List<TbEncounters> updatedData){
+            this.mData = updatedData;
+        }
+
     }
 
 }

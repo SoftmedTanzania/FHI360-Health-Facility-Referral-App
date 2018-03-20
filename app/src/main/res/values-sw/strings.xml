@@ -144,4 +144,12 @@
     <string name="tb_clients_list">Orodha ya Wateja wa Kifua Kikuu</string>
     <string name="hiv_client_list">Orodha ya Wateja wa CTC</string>
 
+    <string name="month">Chagua Mwezi</string>
+    <string name="no_previous_encounters_recorded">Hakuna ufuatiliaji uliorekodiwa</string>
+    <string name="previous_encounters">Ufuatiliaji wa miezi iliyopita</string>
+    <string name="new_encounter">Ufuatiliaji Mpya</string>
+
+    <string name="finished">Amemaliza</string>
+    <string name="didnt_finished">Hajamaliza</string>
+
 </resources>

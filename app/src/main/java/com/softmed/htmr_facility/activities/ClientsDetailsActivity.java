@@ -148,30 +148,28 @@ public class ClientsDetailsActivity extends BaseActivity {
     }
 
     private void saveReferalInformation(boolean isForwardingReferral){
-        if (servicesOfferedEt.getText().toString().isEmpty()){
+        /*if (servicesOfferedEt.getText().toString().isEmpty()){
             Toast.makeText(this, "Tafadhali jaza huduma uliyoitoa", Toast.LENGTH_LONG).show();
         }else {
+        */
+        String serviceOferedString = servicesOfferedEt.getText().toString();
+        String otherInformation = otherInformationEt.getText().toString();
 
-            String serviceOferedString = servicesOfferedEt.getText().toString();
-            String otherInformation = otherInformationEt.getText().toString();
+        clientCTCNumber = ctcNumberEt.getText().toString();
 
-            clientCTCNumber = ctcNumberEt.getText().toString();
+        boolean result = hivStatus.isChecked();
 
-            boolean result = hivStatus.isChecked();
+        currentReferral.setTestResults(result);
+        currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
+        currentReferral.setServiceGivenToPatient(serviceOferedString);
+        currentReferral.setOtherNotesAndAdvices(otherInformation);
 
-            currentReferral.setTestResults(result);
-            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
-            currentReferral.setServiceGivenToPatient(serviceOferedString);
-            currentReferral.setOtherNotesAndAdvices(otherInformation);
+        //Show progress bar
+        saveProgress.setVisibility(View.VISIBLE);
+        saveButton.setVisibility(View.INVISIBLE);
 
-            //Show progress bar
-            saveProgress.setVisibility(View.VISIBLE);
-            saveButton.setVisibility(View.INVISIBLE);
-
-            UpdateReferralTask updateReferralTask = new UpdateReferralTask(currentReferral, baseDatabase);
-            updateReferralTask.execute(isForwardingReferral, isNewCase);
-
-        }
+        UpdateReferralTask updateReferralTask = new UpdateReferralTask(currentReferral, baseDatabase);
+        updateReferralTask.execute(isForwardingReferral, isNewCase);
     }
 
     private void callReferralFragmentDialogue(Patient patient){

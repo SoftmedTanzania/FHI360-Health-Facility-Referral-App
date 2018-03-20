@@ -156,4 +156,12 @@
     <string name="tb_clients_list">List Of TB Clients</string>
     <string name="hiv_client_list">List Of CTC Clients</string>
 
+    <string name="month">Select Month</string>
+    <string name="no_previous_encounters_recorded">No Previous Encounters Recorded</string>
+    <string name="previous_encounters">Previous Months Encounters</string>
+    <string name="new_encounter">New Encounters</string>
+
+    <string name="finished">Finished</string>
+    <string name="didnt_finished">Did Not Finish</string>
+
 </resources>
