@@ -89,7 +89,7 @@
 
     <string name="referrals_unattended">Rufaa Mpya</string>
     <string name="pending_feedback">Pending Feedback</string>
-    <string name="clients_list">Orodha ya Wateja</string>
+    <string name="clients_list">Orodha ya Wateja wa Kituo</string>
     <string name="referrals_issued_ctc">Rufaa Zilizotolewa (CTC)</string>
     <string name="register_client">Sajili Mteja</string>
     <string name="referrals_issued">Rufaa Zilizotolewa</string>
@@ -140,5 +140,8 @@
     <string name="patient_referral_notification">Umepokea Rufaa Mpya</string>
     <string name="new_client_notification">Umepokea Mteja Mpya</string>
     <string name="referral_feedback_notification">Umepokea Mrejesho wa Rufaa</string>
+
+    <string name="tb_clients_list">Orodha ya Wateja wa Kifua Kikuu</string>
+    <string name="hiv_client_list">Orodha ya Wateja wa CTC</string>
 
 </resources>

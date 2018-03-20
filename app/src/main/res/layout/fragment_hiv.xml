@@ -69,6 +69,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
+                            android:visibility="gone"
                             android:layout_marginTop="4dp">
 
                             <TextView
@@ -99,7 +100,6 @@
                                 android:text=""/>
 
                         </LinearLayout>
-
 
                     </LinearLayout>
 
@@ -206,7 +206,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
-                        android:text="@string/clients_list"/>
+                        android:text="@string/hiv_client_list"/>
 
                 </RelativeLayout>
 

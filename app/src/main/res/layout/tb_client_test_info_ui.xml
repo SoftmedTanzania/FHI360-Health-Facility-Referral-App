@@ -71,11 +71,11 @@
                     custom:textToggleCenter="@string/toggle_xray"
                     custom:textToggleLeft="@string/toggle_makohozi"
                     custom:textToggleRight="@string/toggle_other"
-                    custom:toggleWidth="125dp" />
+                    custom:toggleWidth="130dp" />
 
                 <View
                     android:layout_width="378dp"
-                    android:layout_height="38dp"
+                    android:layout_height="50dp"
                     android:background="@color/transparent"
                     android:id="@+id/view_click_blocker"/>
 

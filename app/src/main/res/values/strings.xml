@@ -66,7 +66,7 @@
     <string name="diagnostic_info">Diagnostic Information</string>
     <string name="test_conducted">Test Conducted</string>
 
-    <string name="toggle_makohozi">Cough</string>
+    <string name="toggle_makohozi">Sputum for AFB</string>
     <string name="toggle_xray">X-Ray</string>
     <string name="toggle_other">Other Test</string>
     <string name="cough_weight">Cough weight before treatment</string>
@@ -88,7 +88,7 @@
 
     <string name="referrals_unattended">Referrals Unattended</string>
     <string name="pending_feedback">Pending Feedback</string>
-    <string name="clients_list">Clients List</string>
+    <string name="clients_list">Facility Clients List</string>
     <string name="referrals_issued_ctc">Referrals Issued (CTC)</string>
     <string name="register_client">Register Client</string>
     <string name="referrals_issued">Referrals Issued</string>
@@ -152,5 +152,8 @@
     <string name="patient_referral_notification">You Received a new Referral</string>
     <string name="new_client_notification">New Client Registered</string>
     <string name="referral_feedback_notification">Referral Feedback Received</string>
+
+    <string name="tb_clients_list">List Of TB Clients</string>
+    <string name="hiv_client_list">List Of CTC Clients</string>
 
 </resources>

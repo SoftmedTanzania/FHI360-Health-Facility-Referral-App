@@ -51,6 +51,7 @@ public class TbClientListActivity extends BaseActivity {
         if (toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getResources().getString(R.string.tb_clients_list));
         }
 
         adapter = new TbClientListAdapter(new ArrayList<Patient>(), this, TB_SERVICE_ID);

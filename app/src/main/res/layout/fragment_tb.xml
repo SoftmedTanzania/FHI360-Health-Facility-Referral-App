@@ -209,7 +209,7 @@
                         android:id="@+id/tb_new_referals_text"
                         android:textColor="@color/black"
                         android:layout_centerVertical="true"
-                        android:text="@string/clients_list"/>
+                        android:text="@string/tb_clients_list"/>
 
                 </RelativeLayout>
 

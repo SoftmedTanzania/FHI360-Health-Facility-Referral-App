@@ -54,6 +54,7 @@ public class TbReferalListActivity extends BaseActivity {
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setVisibility(View.GONE);
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -78,20 +79,20 @@ public class TbReferalListActivity extends BaseActivity {
         homeTitle.setText(getResources().getString(R.string.health_facility_referrals));
         tabLayout.getTabAt(0).setCustomView(homeView);
 
-        View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        /*View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
         newsTitle.setText(getResources().getString(R.string.chw_referrals));
         ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
         iv2.setColorFilter(getResources().getColor(R.color.white));
         Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);
-        tabLayout.getTabAt(1).setCustomView(newsView);
+        tabLayout.getTabAt(1).setCustomView(newsView);*/
 
     }
 
     public void setupViewPager(ViewPager viewPager) {
         TbReferalListActivity.ViewPagerAdapter adapter = new TbReferalListActivity.ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(TbReferralListFragment.newInstance(INTERFACILITY), "hf");
-        adapter.addFragment(TbReferralListFragment.newInstance(CHW_TO_FACILITY), "chw");
+        //adapter.addFragment(TbReferralListFragment.newInstance(CHW_TO_FACILITY), "chw");
         viewPager.setAdapter(adapter);
     }
 
