@@ -26,6 +26,7 @@ import com.softmed.htmr_facility.fragments.HealthFacilityReferralListFragment;
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
+import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 
 /**
  * Created by issy on 12/10/17.
@@ -66,7 +67,7 @@ public class ReferralListActivity extends BaseActivity {
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        if (serviceID == HIV_SERVICE_ID){
+        if (serviceID == HIV_SERVICE_ID || serviceID == LAB_SERVICE_ID){
             tabLayout.setVisibility(View.GONE);
         }
         tabLayout.post(new Runnable() {

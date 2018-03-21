@@ -48,6 +48,7 @@ import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.fragments.HivFragment;
+import com.softmed.htmr_facility.fragments.LabFragment;
 import com.softmed.htmr_facility.fragments.OPDFragment;
 import com.softmed.htmr_facility.fragments.TbFragment;
 import com.softmed.htmr_facility.utils.AlarmReceiver;
@@ -400,33 +401,40 @@ public class HomeActivity extends BaseActivity {
 
     public void setupTabIcons() {
 
-        View ccmView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView ccmTitle = (TextView) ccmView.findViewById(R.id.title_text);
-        ccmTitle.setText(getResources().getString(R.string.fragment_opd));
-        ImageView iv3    = (ImageView) ccmView.findViewById(R.id.icon);
-        iv3.setColorFilter(this.getResources().getColor(R.color.white));
+        View opdTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView opdTabTitle = opdTabView.findViewById(R.id.title_text);
+        opdTabTitle.setText(getResources().getString(R.string.fragment_opd));
+        ImageView opdIcon    = opdTabView.findViewById(R.id.icon);
+        opdIcon.setColorFilter(this.getResources().getColor(R.color.white));
         if (!HomeActivity.this.isFinishing()){
-            Glide.with(this).load(R.mipmap.ic_face).into(iv3);
+            Glide.with(this).load(R.mipmap.ic_face).into(opdIcon);
         }
-        tabLayout.getTabAt(0).setCustomView(ccmView);
+        tabLayout.getTabAt(0).setCustomView(opdTabView);
 
-        View homeView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView homeTitle = (TextView) homeView.findViewById(R.id.title_text);
-        ImageView iv    = (ImageView) homeView.findViewById(R.id.icon);
-//        iv.setColorFilter(this.getResources().getColor(R.color.colorPrimary));
+        View ctcTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView ctcTabTitle = ctcTabView.findViewById(R.id.title_text);
+        ImageView ctcIcon    = ctcTabView.findViewById(R.id.icon);
         if (!HomeActivity.this.isFinishing())
-            Glide.with(this).load(R.mipmap.ic_hiv).into(iv);
-        homeTitle.setText(getResources().getString(R.string.fragment_hiv));
-        tabLayout.getTabAt(1).setCustomView(homeView);
+            Glide.with(this).load(R.mipmap.ic_hiv).into(ctcIcon);
+        ctcTabTitle.setText(getResources().getString(R.string.fragment_hiv));
+        tabLayout.getTabAt(1).setCustomView(ctcTabView);
 
-        View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
-        newsTitle.setText(getResources().getString(R.string.fragment_tb));
-        ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
-        iv2.setColorFilter(this.getResources().getColor(R.color.white));
+        View tbTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView tbTabTitle = tbTabView.findViewById(R.id.title_text);
+        tbTabTitle.setText(getResources().getString(R.string.fragment_tb));
+        ImageView tbIcon    = tbTabView.findViewById(R.id.icon);
         if (!HomeActivity.this.isFinishing())
-            Glide.with(this).load(R.mipmap.ic_tb).into(iv2);
-        tabLayout.getTabAt(2).setCustomView(newsView);
+            Glide.with(this).load(R.mipmap.ic_tb).into(tbIcon);
+        tabLayout.getTabAt(2).setCustomView(tbTabView);
+
+        View labTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView labTitle = labTabView.findViewById(R.id.title_text);
+        labTitle.setText(getResources().getString(R.string.lab));
+        ImageView labIcon    = labTabView.findViewById(R.id.icon);
+        labIcon.setColorFilter(this.getResources().getColor(R.color.white));
+        if (!HomeActivity.this.isFinishing())
+            Glide.with(this).load(R.mipmap.ic_lab).into(labIcon);
+        tabLayout.getTabAt(3).setCustomView(labTabView);
 
     }
 
@@ -435,6 +443,7 @@ public class HomeActivity extends BaseActivity {
         adapter.addFragment(new OPDFragment(), "opd");
         adapter.addFragment(new HivFragment(), "hiv");
         adapter.addFragment(new TbFragment(), "tb");
+        adapter.addFragment(new LabFragment(), "lab");
         viewPager.setAdapter(adapter);
     }
 

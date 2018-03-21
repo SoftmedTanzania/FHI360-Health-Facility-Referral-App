@@ -15,6 +15,7 @@ import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
+import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
@@ -31,6 +32,8 @@ public class ReferalListViewModel extends AndroidViewModel{
     private final LiveData<List<Referral>> hivReferredClientsList;
     private final LiveData<List<Referral>> tbReferredClientsList;
     private final LiveData<List<Referral>> referredClientsList;
+
+    private final LiveData<List<Referral>> labReferalListHfSource;
 
     private final LiveData<List<Referral>> referalListHfSource;
     private final LiveData<List<Referral>> referalListChwSource;
@@ -54,6 +57,8 @@ public class ReferalListViewModel extends AndroidViewModel{
         tbReferredClientsList = appDatabase.referalModel().getReferredClients(TB_SERVICE_ID, BaseActivity.getThisFacilityId());
         referredClientsList = appDatabase.referalModel().getReferredClients(OPD_SERVICE_ID, BaseActivity.getThisFacilityId());
 
+        labReferalListHfSource = appDatabase.referalModel().getReferralsBySourceId(LAB_SERVICE_ID, new int[]{INTERFACILITY, INTRAFACILITY});
+
         referalListHfSource = appDatabase.referalModel().getReferralsBySourceId(HIV_SERVICE_ID, new int[]{INTERFACILITY, INTRAFACILITY});
         referalListChwSource = appDatabase.referalModel().getReferralsBySourceId(HIV_SERVICE_ID, new int[] {CHW_TO_FACILITY});
         //referalListHfSource = appDatabase.referalModel().getHivReferralsBySourceId(HIV_SERVICE_ID, new int[]{INTERFACILITY, INTRAFACILITY}, OPD_SERVICE_ID);
@@ -73,6 +78,10 @@ public class ReferalListViewModel extends AndroidViewModel{
 
     public LiveData<List<Referral>> getReferalListHfSource() {
         return referalListHfSource;
+    }
+
+    public LiveData<List<Referral>> getlabReferalListHfSource() {
+        return labReferalListHfSource;
     }
 
     public LiveData<List<Referral>> getReferalListChwSource() {

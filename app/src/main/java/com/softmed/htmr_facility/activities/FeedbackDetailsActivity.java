@@ -156,7 +156,8 @@ public class FeedbackDetailsActivity extends BaseActivity {
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
 
-            List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
+            //..List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
+            List<Long> ids = currentReferral.getServiceIndicatorIds();
 
             //Call Patient Referral Indicators
             for (int i=0; i<ids.size(); i++){

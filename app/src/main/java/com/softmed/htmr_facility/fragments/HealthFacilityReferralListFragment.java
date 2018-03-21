@@ -40,6 +40,7 @@ import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
+import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
@@ -226,7 +227,14 @@ public class HealthFacilityReferralListFragment extends Fragment {
                 });
             }
 
-        }else {
+        } else if (service == LAB_SERVICE_ID){ //If Service is Lab, list all lab referrals originated from either interfacility or intrafacility
+            listViewModel.getlabReferalListHfSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
+                @Override
+                public void onChanged(@Nullable List<Referral> referrals) {
+                    adapter.addItems(referrals);
+                }
+            });
+        } else {
             if (source == CHW_TO_FACILITY){
                 listViewModel.getReferalListChwSource().observe(HealthFacilityReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
