@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.base;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -40,6 +41,8 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 public class BaseActivity extends AppCompatActivity {
 
+    public static Typeface  Avenir_Light;
+
     public static final String LOCALE_KEY = "localekey";
     public static final String LOCALE_PREF_KEY = "localePref";
     //public static final String ENGLISH_LOCALE = "en-rUS";
@@ -74,6 +77,8 @@ public class BaseActivity extends AppCompatActivity {
             Log.d("language", "Setting Swahili locale");
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
+
+        setupTypeface(this);
 
         // Session class instance
         session = new SessionManager(getApplicationContext());
@@ -390,6 +395,12 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         return body;
+
+    }
+
+    public static void setupTypeface(Context ctx){
+        //2017
+        Avenir_Light    = Typeface.createFromAsset(ctx.getAssets(), "avenir-light.ttf");
 
     }
 
