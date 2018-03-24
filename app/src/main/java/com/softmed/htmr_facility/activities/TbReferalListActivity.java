@@ -24,7 +24,10 @@ import com.softmed.htmr_facility.customviews.NonSwipeableViewPager;
 import com.softmed.htmr_facility.fragments.TbReferralListFragment;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
+import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 12/6/17.
@@ -62,6 +65,14 @@ public class TbReferalListActivity extends BaseActivity {
                 setupTabIcons();
             }
         });
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null){
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            String title = getString(R.string.referral_list_tb_title);
+            getSupportActionBar().setTitle(title);
+        }
 
     }
 

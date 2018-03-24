@@ -8,9 +8,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -27,6 +30,8 @@ import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 12/10/17.
@@ -61,6 +66,16 @@ public class ReferralListActivity extends BaseActivity {
         if (toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            String title = "";
+            if(serviceID==OPD_SERVICE_ID){
+                title = getString(R.string.referral_list_opd_title);
+            }else if(serviceID==HIV_SERVICE_ID){
+                title = getString(R.string.referral_list_hiv_title);
+            }else if(serviceID==TB_SERVICE_ID){
+                title = getString(R.string.referral_list_tb_title);
+            }
+            getSupportActionBar().setTitle(title);
         }
 
         viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
@@ -78,6 +93,16 @@ public class ReferralListActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupviews(){

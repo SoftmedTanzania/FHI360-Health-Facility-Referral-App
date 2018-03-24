@@ -68,7 +68,7 @@ public class ReferalListViewModel extends AndroidViewModel{
         referalListChwSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, new int[] {CHW_TO_FACILITY});
 
         allReferralListFromChw = appDatabase.referalModel().getAllReferalsBySource(new int[] {CHW_TO_FACILITY});
-        allReferralListFromHealthFacilities = appDatabase.referalModel().getAllReferalsBySource(new int[] {INTRAFACILITY, INTERFACILITY});
+        allReferralListFromHealthFacilities = appDatabase.referalModel().getAllReferalsBySource(new int[] {INTERFACILITY});
 
     }
 

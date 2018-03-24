@@ -126,6 +126,7 @@ public class HomeActivity extends BaseActivity {
 
         viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
+        viewPager.setOffscreenPageLimit(4);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.post(new Runnable() {
