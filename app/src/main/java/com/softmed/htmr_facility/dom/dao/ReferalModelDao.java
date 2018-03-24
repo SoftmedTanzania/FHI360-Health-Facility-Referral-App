@@ -54,6 +54,9 @@ public interface ReferalModelDao {
     @Query("select count(*) from Referral where referralStatus = 0 and referralSource = :service")
     int getCountReferralsByService(int service);
 
+    @Query("select count(*) from Referral where referralStatus = 0 and (referralType = 1 or referralType = 3)")
+    int getOPDReferralsCount();
+
     @Query("select count(*) from Referral where referralStatus = 0")
     int geCounttUnattendedReferals();
 
