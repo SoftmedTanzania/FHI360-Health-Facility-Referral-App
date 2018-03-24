@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -134,17 +135,28 @@ public class ReportChartsFragment extends Fragment {
         //pieChart.setUsePercentValues(true);
         //pieChart.setHoleColor(Color.BLUE);
         //pieChart.setCenterTextColor(Color.BLACK);
-        intrafacilityPieChart.setHoleRadius(25f);
-        intrafacilityPieChart.setTransparentCircleAlpha(0);
+        intrafacilityPieChart.setHoleRadius(60f);
+        intrafacilityPieChart.setTransparentCircleAlpha(5);
         intrafacilityPieChart.setCenterText("Intra-facility Summary");
-        intrafacilityPieChart.setCenterTextSize(10);
+        intrafacilityPieChart.setCenterTextSize(16);
+        intrafacilityPieChart.setCenterTextTypeface(BaseActivity.Avenir_Light);
+        intrafacilityPieChart.getDescription().setEnabled(false);
 
-        chwBarChart.getAxisLeft().setDrawGridLines(false);
+        //chwBarChart.getAxisLeft().setDrawGridLines(false);
         chwBarChart.getAxisRight().setDrawGridLines(false);
         chwBarChart.getXAxis().setDrawGridLines(false);
+        chwBarChart.setDrawValueAboveBar(false);
+        chwBarChart.getDescription().setEnabled(false);
+        chwBarChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+
+
+        interFacilityBarChart.getAxisRight().setDrawGridLines(false);
+        interFacilityBarChart.getXAxis().setDrawGridLines(false);
+        interFacilityBarChart.setDrawValueAboveBar(false);
+        interFacilityBarChart.getDescription().setEnabled(false);
+        interFacilityBarChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 
         //chwBarChart.setDrawBarShadow(false);
-        //chwBarChart.setDrawValueAboveBar(true);
         //chwBarChart.getDescription().setEnabled(false);
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
@@ -228,6 +240,10 @@ public class ReportChartsFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+
+                List<RowView> newColums = new ArrayList<>();
+                List<RowView> newInterfacilityColumns = new ArrayList<>();
+
                 ArrayList<BarEntry> entries = new ArrayList<>();
                 ArrayList<BarEntry> interfacilityEntries = new ArrayList<>();
                 ArrayList<BarEntry> intrafacilityEntries = new ArrayList<>();
@@ -239,17 +255,27 @@ public class ReportChartsFragment extends Fragment {
                 for (int i = 0; i<rowViewList.size();i++){
                     RowView rowView = rowViewList.get(i);
                     if (rowView.getReferralCount() > 0){
-                        entries.add(new BarEntry(i, rowViewList.get(i).getReferralCount()));
-                        labels.add(rowViewList.get(i).getRowName());
+                        newColums.add(rowView);
                     }
+                }
+
+                for (int i=0; i<newColums.size(); i++){
+                    entries.add(new BarEntry(i, newColums.get(i).getReferralCount()));
+                    labels.add(newColums.get(i).getRowName());
+                    Log.d("charts", "Added to new is  : "+labels.get(i));
                 }
 
                 for (int i=0; i<interfacilityRowViewList.size(); i++){
                     RowView rowView = interfacilityRowViewList.get(i);
                     if (rowView.getReferralCount() > 0){
-                        interfacilityEntries.add(new BarEntry(i, rowView.getReferralCount()));
-                        interfacilityLabels.add(rowView.getRowName());
+                        newInterfacilityColumns.add(rowView);
                     }
+                }
+
+                for (int i=0; i<newInterfacilityColumns.size(); i++){
+                    interfacilityEntries.add(new BarEntry(i, newInterfacilityColumns.get(i).getReferralCount()));
+                    interfacilityLabels.add(newInterfacilityColumns.get(i).getRowName());
+                    Log.d("charts", "Added to newInterfacilityColumns is  : "+interfacilityLabels.get(i));
                 }
 
                 ArrayList<PieEntry> yEntrys = new ArrayList<>();
@@ -303,6 +329,12 @@ public class ReportChartsFragment extends Fragment {
 
                 //intrafacilityData.setValueTextSize(10f);
                 //intrafacilityData.setBarWidth(0.9f);
+
+                interfacilityData.setBarWidth(0.6f);
+                interfacilityData.setValueTextSize(10f);
+
+                data.setBarWidth(0.6f);
+                data.setValueTextSize(10f);
 
                 chwBarChart.setTouchEnabled(false);
                 chwBarChart.setData(data);

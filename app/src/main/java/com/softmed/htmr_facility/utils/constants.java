@@ -59,7 +59,7 @@ public class constants {
     public static final int OPD_SERVICE_ID = 0;
     public static final int HIV_SERVICE_ID = 2;
     public static final int TB_SERVICE_ID = 1;
-    public static final int MALARIA_SERVICE_ID = 3;
+    public static final int LAB_SERVICE_ID = 11;
 
     public static final int CHW_TO_FACILITY = 1;
     public static final int INTRAFACILITY = 2;

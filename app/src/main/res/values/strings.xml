@@ -163,5 +163,6 @@
 
     <string name="finished">Finished</string>
     <string name="didnt_finished">Did Not Finish</string>
+    <string name="lab">Laboratory</string>
 
 </resources>

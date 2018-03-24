@@ -70,6 +70,8 @@ public class ReportsActivity extends BaseActivity {
         TextView chartsTitle = (TextView) reportChartsTab.findViewById(R.id.title_text);
         chartsTitle.setText("Charts"); //TODO language
         tabLayout.getTabAt(0).setCustomView(reportChartsTab);
+        ImageView iv    = (ImageView) reportChartsTab.findViewById(R.id.icon);
+        iv.setVisibility(View.GONE);
 
         View chwReferralsReportTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView chwReportTitle = (TextView) chwReferralsReportTab.findViewById(R.id.title_text);
