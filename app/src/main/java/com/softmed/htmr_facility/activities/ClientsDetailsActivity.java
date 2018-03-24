@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,12 @@ import android.widget.Toast;
 
 import com.rey.material.widget.ProgressView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import com.softmed.htmr_facility.R;
@@ -54,7 +59,7 @@ public class ClientsDetailsActivity extends BaseActivity {
     public ProgressView saveProgress;
     private CheckBox hivStatus;
     private RecyclerView indicatorsRecyclerView;
-    public TextView clientNames, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
+    public TextView clientNames,clientAgeValue, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
     public Dialog referalDialogue;
 
     private int service;
@@ -63,6 +68,7 @@ public class ClientsDetailsActivity extends BaseActivity {
     private boolean isNewCase = false;
     private boolean isCTCNumberEmpty = false;
     private String clientCTCNumber;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -206,6 +212,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         saveButton = (Button) findViewById(R.id.save_button);
         referButton = (Button) findViewById(R.id.referal_button);
         clientNames = (TextView) findViewById(R.id.client_name);
+        clientAgeValue = (TextView) findViewById(R.id.client_age_value);
         referalReasons = (TextView) findViewById(R.id.sababu_ya_rufaa_value);
 
     }
@@ -375,6 +382,19 @@ public class ClientsDetailsActivity extends BaseActivity {
                 String wardTitle = getResources().getString(R.string.ward);
                 String villageTitle = getResources().getString(R.string.village);
                 String mapCueTitle = getResources().getString(R.string.map_cue);
+
+                try {
+                    Calendar cal = Calendar.getInstance();
+                    Calendar today = Calendar.getInstance();
+                    cal.setTimeInMillis(patient.getDateOfBirth());
+
+                    int age = today.get(Calendar.YEAR) - cal.get(Calendar.YEAR);
+                    Integer ageInt = new Integer(age);
+                    clientAgeValue.setText(ageInt.toString());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 wardText.setText(patient.getWard() == null ? "N/A " : patient.getWard());
                 villageText.setText(patient.getVillage() == null ? "N/A " : patient.getVillage());

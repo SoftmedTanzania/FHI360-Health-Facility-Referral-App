@@ -13,6 +13,8 @@ import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -41,6 +43,19 @@ public class PatientDetailsActivity extends BaseActivity {
         }
 
         if (currentPatient != null){
+
+            try {
+                Calendar cal = Calendar.getInstance();
+                Calendar today = Calendar.getInstance();
+                cal.setTimeInMillis(currentPatient.getDateOfBirth());
+
+                int age = today.get(Calendar.YEAR) - cal.get(Calendar.YEAR);
+                Integer ageInt = new Integer(age);
+                clientAge.setText(ageInt.toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             clientNames.setText(currentPatient.getPatientFirstName()+" "+currentPatient.getPatientSurname());
             clientGender.setText(currentPatient.getGender() == null? "n/a" : currentPatient.getGender());

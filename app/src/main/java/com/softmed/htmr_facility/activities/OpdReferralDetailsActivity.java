@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.softmed.htmr_facility.R;
@@ -50,7 +51,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
     public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName;
     private EditText servicesOfferedEt, otherInformationEt;
     private RecyclerView indicatorsRecyclerView;
-    public TextView clientNames, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
+    public TextView clientNames, wardText,clientAge, villageText, hamletText, patientGender, otherClinicalInformationValue;
     public Dialog referalDialogue;
 
     private int service;
@@ -158,6 +159,8 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         indicatorsRecyclerView.setHasFixedSize(true);
         otherClinicalInformationValue = (TextView) findViewById(R.id.other_clinical_inforamtion_value);
 
+
+        clientAge = (TextView) findViewById(R.id.client_age_value);
         servicesOfferedEt = (EditText) findViewById(R.id.service_offered_et);
         otherInformationEt = (EditText) findViewById(R.id.other_information_et);
 
@@ -318,6 +321,19 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             super.onPostExecute(aVoid);
             clientNames.setText(patientNames);
             if (patient != null){
+
+                try {
+                    Calendar cal = Calendar.getInstance();
+                    Calendar today = Calendar.getInstance();
+                    cal.setTimeInMillis(patient.getDateOfBirth());
+
+                    int age = today.get(Calendar.YEAR) - cal.get(Calendar.YEAR);
+                    Integer ageInt = new Integer(age);
+                    clientAge.setText(ageInt.toString());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 String wardTitle = getResources().getString(R.string.ward);
                 String villageTitle = getResources().getString(R.string.village);

@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.rey.material.widget.ProgressView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,7 +65,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
     public ProgressView saveProgress;
     private CheckBox tbStatus;
     private RecyclerView indicatorsRecyclerView;
-    public TextView clientNames, wardText, villageText, hamletText, patientGender, otherClunucalInformationValue;
+    public TextView clientNames, clientAge,wardText, villageText, hamletText, patientGender, otherClunucalInformationValue;
 
     public Dialog referalDialogue;
 
@@ -200,6 +201,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
         referButton = (Button) findViewById(R.id.referal_button);
 
         clientNames = (TextView) findViewById(R.id.client_name);
+        clientAge = (TextView) findViewById(R.id.client_age_value);
 
         referalReasons = (TextView) findViewById(R.id.sababu_ya_rufaa_value);
 
@@ -371,6 +373,20 @@ public class TbReferralDetailsActivity extends BaseActivity {
             Log.d("reckless", "Done background!"+patientNames);
             clientNames.setText(patientNames);
             if (patient != null){
+
+                try {
+                    Calendar cal = Calendar.getInstance();
+                    Calendar today = Calendar.getInstance();
+                    cal.setTimeInMillis(patient.getDateOfBirth());
+
+                    int age = today.get(Calendar.YEAR) - cal.get(Calendar.YEAR);
+                    Integer ageInt = new Integer(age);
+                    clientAge.setText(ageInt.toString());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 wardText.setText(patient.getWard() == null ? "" : patient.getWard());
                 villageText.setText(patient.getVillage() == null ? "" : patient.getVillage());
                 hamletText.setText(patient.getHamlet() == null ? "" : patient.getHamlet());
