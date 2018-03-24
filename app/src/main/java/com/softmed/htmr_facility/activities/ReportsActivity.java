@@ -109,6 +109,7 @@ public class ReportsActivity extends BaseActivity {
         adapter.addFragment(new IntraFacilityReferralsReportFragment(), "intra_facility_referrals_report");
         adapter.addFragment(new TbAppointmentReportsFragment(), "tb_appointments_report");
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(10);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
