@@ -88,7 +88,7 @@
     <string name="referrals_list">Orodha ya Rufaa</string>
 
     <string name="referrals_unattended">Rufaa Mpya</string>
-    <string name="pending_feedback">Pending Feedback</string>
+    <string name="pending_feedback">Rufaa zinazosubiri Majibu</string>
     <string name="clients_list">Orodha ya Wateja wa Kituo</string>
     <string name="referrals_issued_ctc">Rufaa Zilizotolewa (CTC)</string>
     <string name="register_client">Sajili Mteja</string>
@@ -152,5 +152,8 @@
     <string name="finished">Amemaliza</string>
     <string name="didnt_finished">Hajamaliza</string>
     <string name="lab">Maabara</string>
+
+    <string name="positive">Chanya</string>
+    <string name="negative">Hasi</string>
 
 </resources>

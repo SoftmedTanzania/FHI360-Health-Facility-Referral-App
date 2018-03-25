@@ -149,33 +149,30 @@
                                 android:background="@color/card_separator"/>
 
                             <RelativeLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="16dp"
-                                android:paddingLeft="16dp"
-                                android:paddingTop="4dp"
-                                android:paddingBottom="4dp">
+                                android:layout_marginTop="16dp"
+                                android:layout_marginLeft="32dp"
+                                android:layout_below="@id/hiv_status_title"
+                                android:id="@+id/results_input_wrap">
 
-                                <TextView
+                                <belka.us.androidtoggleswitch.widgets.ToggleSwitch
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/hiv_status_title"
-                                    android:layout_marginTop="16dp"
-                                    android:text="@string/test_results"
                                     android:textSize="14sp"
-                                    android:fontFamily="@font/avenir_light"
-                                    android:textColor="@color/card_title_text"/>
+                                    android:id="@+id/test_results_toggle"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:gravity="center_vertical"
+                                    custom:toggleWidth="120dp"
+                                    custom:cornerRadius="0dp"
+                                    custom:textToggleLeft="@string/negative"
+                                    custom:textToggleRight="@string/positive"
+                                    custom:activeBgColor="@color/colorPrimary"
+                                    custom:activeTextColor="@android:color/white"
+                                    custom:inactiveBgColor="@color/card_separator_sec"
+                                    custom:inactiveTextColor="@android:color/black"
+                                    custom:separatorColor="@color/card_light_text"/>
 
-                                <CheckBox
-                                    android:id="@+id/hiv_status"
-                                    android:layout_width="35dp"
-                                    android:layout_height="35dp"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginLeft="16dp"
-                                    android:layout_marginRight="4dp"
-                                    android:layout_toRightOf="@+id/hiv_status_title"
-                                    android:checked="false"
-                                    android:background="@drawable/checkbox"/>
 
                             </RelativeLayout>
 

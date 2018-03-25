@@ -484,8 +484,9 @@ public class LoginActivity extends BaseActivity {
                 service.setActive(response.isActive());
                 service.setCategory(response.getCategory());
                 service.setServiceName(response.getServiceName());
+                service.setServiceNameSw(response.getServiceNameSw());
 
-                for (ReferralIndicator indicator : response.getIndicators()){
+                for (ReferralIndicator   indicator : response.getIndicators()){
                     indicator.setServiceID(response.getServiceId());
                     baseDatabase.referralIndicatorDao().addIndicator(indicator);
                 }

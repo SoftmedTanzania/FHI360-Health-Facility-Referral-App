@@ -568,7 +568,35 @@
                                         android:fontFamily="@font/avenir_light"
                                         android:textColor="@color/card_title_text"/>
 
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_below="@id/hiv_status_title"
+                                        android:id="@+id/results_input_wrap">
+
+                                        <belka.us.androidtoggleswitch.widgets.ToggleSwitch
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textSize="14sp"
+                                            android:id="@+id/test_results_toggle"
+                                            android:fontFamily="@font/roboto_regular"
+                                            android:gravity="center_vertical"
+                                            custom:toggleWidth="120dp"
+                                            custom:cornerRadius="0dp"
+                                            custom:textToggleLeft="@string/negative"
+                                            custom:textToggleRight="@string/positive"
+                                            custom:activeBgColor="@color/colorPrimary"
+                                            custom:activeTextColor="@android:color/white"
+                                            custom:inactiveBgColor="@color/card_separator_sec"
+                                            custom:inactiveTextColor="@android:color/black"
+                                            custom:separatorColor="@color/card_light_text"/>
+
+
+                                    </RelativeLayout>
+
                                     <CheckBox
+                                        android:visibility="gone"
                                         android:id="@+id/hiv_status"
                                         android:layout_width="35dp"
                                         android:layout_height="35dp"
@@ -579,6 +607,7 @@
                                         android:background="@drawable/checkbox" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_toRightOf="@id/hiv_status"
@@ -595,7 +624,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="16dp"
                                         android:layout_marginRight="16dp"
-                                        android:layout_below="@id/hiv_status_title"
+                                        android:layout_below="@id/results_input_wrap"
                                         android:id="@+id/ctc_number_et"
                                         android:hint="@string/ctc_number"
                                         android:textColorHint="@color/card_light_text"
@@ -703,11 +732,11 @@
                                         android:layout_height="60dp"
                                         android:id="@+id/save_button"
                                         android:layout_centerVertical="true"
-                                        android:background="@drawable/border_three"
+                                        android:background="@drawable/border_two"
                                         android:layout_toLeftOf="@id/referal_button"
                                         android:fontFamily="@font/roboto_regular"
                                         android:layout_marginRight="16dp"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/card_title_text"
                                         android:text="@string/btn_save"/>
 
                                     <com.rey.material.widget.ProgressView

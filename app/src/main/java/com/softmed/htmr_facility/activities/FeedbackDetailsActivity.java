@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
+
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 
 /**
@@ -48,6 +50,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
     public TextView clientNames,clientAge, wardText, villageText, hamletText, patientGender;
     private Button referralButton, cancelButton;
     private RecyclerView indicatorsRecyclerView;
+    ToggleSwitch testResultsToggle;
 
     private Referral currentReferral;
     private Patient currentPatient;
@@ -69,10 +72,15 @@ public class FeedbackDetailsActivity extends BaseActivity {
                     otherInformationEt.setText(currentReferral.getOtherNotesAndAdvices());
                     otherInformationEt.setEnabled(false);
 
-                    hivStatus.setEnabled(false);
+                    //Disable Test Result Toggle
+                    testResultsToggle.setEnabled(false);
 
                 }
-                hivStatus.setChecked(currentReferral.isTestResults());
+
+                if (currentReferral.isTestResults()){
+                    testResultsToggle.setCheckedTogglePosition(1);
+                }
+
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "" : currentReferral.getVillageLeader());
                 referrerName.setText(currentReferral.getServiceProviderUIID() == null ? "" : currentReferral.getServiceProviderUIID());
@@ -109,34 +117,33 @@ public class FeedbackDetailsActivity extends BaseActivity {
 
     private void setupviews(){
 
-        indicatorsRecyclerView = (RecyclerView) findViewById(R.id.indicators_linear_recycler);
+        testResultsToggle = findViewById(R.id.test_results_toggle);
+
+        indicatorsRecyclerView = findViewById(R.id.indicators_linear_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         indicatorsRecyclerView.setLayoutManager(layoutManager);
         indicatorsRecyclerView.setHasFixedSize(true);
 
-        referralButton = (Button) findViewById(R.id.referal_button);
-        cancelButton = (Button) findViewById(R.id.cancel_button);
+        referralButton =  findViewById(R.id.referal_button);
+        cancelButton =  findViewById(R.id.cancel_button);
 
-        hivStatus = (CheckBox) findViewById(R.id.hiv_status);
-        hivStatus.setEnabled(false);
-
-        servicesOfferedEt = (EditText) findViewById(R.id.service_offered_et);
+        servicesOfferedEt = findViewById(R.id.service_offered_et);
         servicesOfferedEt.setEnabled(false);
-        otherInformationEt = (EditText) findViewById(R.id.other_information_et);
+        otherInformationEt =  findViewById(R.id.other_information_et);
         otherInformationEt.setEnabled(false);
 
-        referrerName = (TextView) findViewById(R.id.referer_name_value);
-        villageLeaderValue = (TextView) findViewById(R.id.mwenyekiti_name_value);
+        referrerName =  findViewById(R.id.referer_name_value);
+        villageLeaderValue = findViewById(R.id.mwenyekiti_name_value);
 
-        patientGender = (TextView) findViewById(R.id.patient_gender_value);
-        wardText = (TextView) findViewById(R.id.client_kata_value);
-        villageText = (TextView) findViewById(R.id.client_kijiji_value);
-        hamletText = (TextView) findViewById(R.id.client_kitongoji_value);
+        patientGender =  findViewById(R.id.patient_gender_value);
+        wardText = findViewById(R.id.client_kata_value);
+        villageText =  findViewById(R.id.client_kijiji_value);
+        hamletText = findViewById(R.id.client_kitongoji_value);
 
-        clientNames = (TextView) findViewById(R.id.client_name);
-        clientAge = (TextView) findViewById(R.id.client_age_value);
+        clientNames = findViewById(R.id.client_name);
+        clientAge = findViewById(R.id.client_age_value);
 
-        referalReasons = (TextView) findViewById(R.id.sababu_ya_rufaa_value);
+        referalReasons = findViewById(R.id.sababu_ya_rufaa_value);
 
     }
 

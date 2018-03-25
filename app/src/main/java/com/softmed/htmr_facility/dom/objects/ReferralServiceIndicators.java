@@ -24,6 +24,9 @@ public class ReferralServiceIndicators implements Serializable {
     @SerializedName("serviceName")
     private String serviceName;
 
+    @SerializedName("serviceNameSw")
+    private String serviceNameSw;
+
     @SerializedName("category")
     private String category;
 
@@ -62,4 +65,11 @@ public class ReferralServiceIndicators implements Serializable {
         isActive = active;
     }
 
+    public String getServiceNameSw() {
+        return serviceNameSw;
+    }
+
+    public void setServiceNameSw(String serviceNameSw) {
+        this.serviceNameSw = serviceNameSw;
+    }
 }

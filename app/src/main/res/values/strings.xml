@@ -168,4 +168,7 @@
     <string name="referral_list_hiv_title">Orodha ya rufaa  kliniki ya Vvu/Ukimwi</string>
     <string name="referral_list_tb_title">Orodha ya rufaa kliniki ya Kifua Kikuuu</string>
 
+    <string name="positive">Positive</string>
+    <string name="negative">Negative</string>
+
 </resources>

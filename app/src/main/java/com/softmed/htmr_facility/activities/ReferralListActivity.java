@@ -82,6 +82,7 @@ public class ReferralListActivity extends BaseActivity {
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+        //If service is OPD show CHW tab if its any other show only the default HF Tab
         if (serviceID == HIV_SERVICE_ID || serviceID == LAB_SERVICE_ID){
             tabLayout.setVisibility(View.GONE);
         }

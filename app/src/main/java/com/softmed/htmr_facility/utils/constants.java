@@ -9,6 +9,9 @@ public class constants {
     public static String BASE_URL = "http://45.56.90.103:8080/opensrp/";
     //public static String BASE_URL = "http://192.168.43.251:8080/opensrp/";
 
+    public static final String SWAHILI_LOCALE = "sw";
+    public static final String ENGLISH_LOCALE = "en";
+
     public static final String STATUS_COMPLETED = "Tayari";
     public static final String STATUS_NEW = "Mpya";
     public static final String STATUS_PENDING = "Bado";

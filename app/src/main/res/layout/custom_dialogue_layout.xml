@@ -156,6 +156,7 @@
             </LinearLayout>
 
             <View
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:id="@+id/indicators_separator"
@@ -168,6 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:id="@+id/indicators_wrapper">
 
                 <TextView

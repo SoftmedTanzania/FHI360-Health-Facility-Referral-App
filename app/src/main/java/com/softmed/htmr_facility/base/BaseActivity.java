@@ -55,7 +55,7 @@ public class BaseActivity extends AppCompatActivity {
     public Endpoints apiEndpoints;
     public static AppDatabase baseDatabase;
     public Locale locale;
-    public SharedPreferences localeSp;
+    public static SharedPreferences localeSp;
     // Session Manager Class
     public static SessionManager session;
     final public static DatePickerDialog toDatePicker = new DatePickerDialog();
@@ -63,13 +63,15 @@ public class BaseActivity extends AppCompatActivity {
     final public static DatePickerDialog datePickerDialog = new DatePickerDialog();
     final public static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    static String localeString = "";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         localeSp = getSharedPreferences(LOCALE_PREF_KEY, MODE_PRIVATE);
 
-        String localeString = localeSp.getString(LOCALE_KEY, SWAHILI_LOCALE);
+        localeString = localeSp.getString(LOCALE_KEY, SWAHILI_LOCALE);
         Log.d("language", "From SP : "+localeString);
         Configuration config = getBaseContext().getResources().getConfiguration();
         if (! "".equals(localeString) && ! config.locale.getLanguage().equals(localeString)) {
@@ -104,6 +106,10 @@ public class BaseActivity extends AppCompatActivity {
         }else {
             return "Nyingine";
         }
+    }
+
+    public static String getLocaleString(){
+        return localeString;
     }
 
     public static RequestBody getReferralFeedbackRequestBody(Referral referral, UserData userData){

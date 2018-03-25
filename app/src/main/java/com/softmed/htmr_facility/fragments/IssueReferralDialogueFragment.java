@@ -255,7 +255,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             indicatorIDs.add(indicator.getReferralServiceIndicatorId());
         }
 
-        referral.setServiceIndicatorIds(indicatorIDs);
+        //Commented because facility referrals do not account for indicators | untill the requirement is stated otherwise
+        //referral.setServiceIndicatorIds(indicatorIDs);
 
         Log.d("green", referral.getFromFacilityId()+"");
         System.out.print(referral);
@@ -280,22 +281,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                 serviceID = Integer.parseInt(services.getServiceId()+"");
             }
         }
-
-        /*if (spinnerReferralDestination.getSelectedItemPosition() == 2) {
-            if (spinnerToHealthFacility.getSelectedItemPosition() == 0) {
-                toastThis("Chagua Kituo cha afya cha kutuma rufaa");
-                return false;
-            } else {
-                HealthFacilities hf = (HealthFacilities) spinnerToHealthFacility.getSelectedItem();
-                toHealthFacilityID = hf.getOpenMRSUIID();
-            }
-        }else if (spinnerReferralDestination.getSelectedItemPosition() == 0){
-            toastThis("Chagua ruffaa inapokwenda kabla ya kuendelea");
-            return false;
-        }else{
-            //TODO referral destination selected to go to CHW, handle the implementation accordingly
-            return  true;
-        }*/
 
         if (referralReasons.getText().toString().isEmpty()){
             toastThis("Tafadhali andika sababu za rufaa");
@@ -335,6 +320,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         serviceAndFacilityWrap = (LinearLayout) v.findViewById(R.id.service_and_facility_wrap);
         indicatorsWrap = (LinearLayout) v.findViewById(R.id.indicators_wrapper);
+        indicatorsWrap.setVisibility(View.GONE);
 
         indicatorSeparator = (View) v.findViewById(R.id.indicators_separator);
 
