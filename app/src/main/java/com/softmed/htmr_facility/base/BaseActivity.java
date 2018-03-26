@@ -137,9 +137,12 @@ public class BaseActivity extends AppCompatActivity {
             object.put("referralStatus", referral.getReferralStatus());
 
             JSONArray serviceIndicatorsArray = new JSONArray();
-            for (int i=0; i< referral.getServiceIndicatorIds().size(); i++){
-                long indicator = Long.parseLong(referral.getServiceIndicatorIds().get(i)+"");
-                serviceIndicatorsArray.put(indicator);
+
+            if (referral.getServiceIndicatorIds() != null){
+                for (int i=0; i< referral.getServiceIndicatorIds().size(); i++){
+                    long indicator = Long.parseLong(referral.getServiceIndicatorIds().get(i)+"");
+                    serviceIndicatorsArray.put(indicator);
+                }
             }
 
             object.put("serviceIndicatorIds", serviceIndicatorsArray);

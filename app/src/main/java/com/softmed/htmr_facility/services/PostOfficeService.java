@@ -299,6 +299,7 @@ public class PostOfficeService extends IntentService {
             database.tbPatientModelDao().deleteAPatient(tbPatient);
 
             TbPatient tbPatient1 = patientResponces[0].getTbPatient();
+            tbPatient1.setTempID(" ");
             List<PatientAppointment> appointments = patientResponces[0].getPatientAppointments();
 
             List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());

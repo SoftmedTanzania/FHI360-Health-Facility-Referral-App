@@ -2,6 +2,7 @@ package com.softmed.htmr_facility.activities;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
@@ -60,6 +61,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
@@ -502,8 +504,29 @@ public class HomeActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Patient... patients) {
 
+
+            //RE
+            List<Referral> oldPatientReferrals = new ArrayList<>();
+            oldPatientReferrals = database.referalModel().getReferalsByPatientId(patients[0].getPatientId()).getValue();
+
+            for (int i=0; i<oldPatientReferrals.size(); i++){
+                Referral ref = oldPatientReferrals.get(i);
+                if (ref.getPatient_id() != patients[1].getPatientId()){
+                    ref.setPatient_id(patients[1].getPatientId());
+
+                    PostOffice postOffice = new PostOffice();
+                    postOffice.setPost_id(ref.getReferral_id());
+                    postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
+                    postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+                    database.postOfficeModelDao().addPostEntry(postOffice);
+                }
+
+            }
+
             //Delete the old object
             database.patientModel().deleteAPatient(patients[0]);
+
             //Insert server's patient reference
             database.patientModel().addPatient(patients[1]);
 

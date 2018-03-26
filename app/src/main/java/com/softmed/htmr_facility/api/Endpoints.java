@@ -8,6 +8,7 @@ import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
+import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
 import okhttp3.RequestBody;
 import retrofit2.Call;
