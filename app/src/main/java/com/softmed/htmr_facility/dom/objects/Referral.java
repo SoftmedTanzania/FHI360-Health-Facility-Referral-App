@@ -42,6 +42,14 @@ public class Referral implements Serializable{
     @SerializedName("serviceId")
     private int serviceId;
 
+    /*
+    Lab Test
+    This field is only used upon issuing lab referrals to keep track
+    of what test user at the lab is suppose to conduct on a client
+     */
+    @SerializedName("lab_test")
+    private int labTest;
+
     @SerializedName("referralUUID")
     private String referralUUID;
 
@@ -289,5 +297,13 @@ public class Referral implements Serializable{
 
     public void setReferralType(int referralType) {
         this.referralType = referralType;
+    }
+
+    public int getLabTest() {
+        return labTest;
+    }
+
+    public void setLabTest(int labTest) {
+        this.labTest = labTest;
     }
 }

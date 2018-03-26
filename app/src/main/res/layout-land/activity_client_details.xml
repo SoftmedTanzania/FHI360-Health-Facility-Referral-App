@@ -3,6 +3,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app_ms="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.softmed.htmr_facility.activities.ClientsDetailsActivity"
     android:background="@color/transparent"
@@ -558,40 +559,65 @@
                                     android:paddingTop="4dp"
                                     android:paddingBottom="4dp">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/hiv_status_title"
-                                        android:layout_marginTop="16dp"
-                                        android:text="@string/test_results"
-                                        android:textSize="14sp"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:textColor="@color/card_title_text"/>
-
                                     <RelativeLayout
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="16dp"
-                                        android:layout_below="@id/hiv_status_title"
                                         android:id="@+id/results_input_wrap">
 
-                                        <belka.us.androidtoggleswitch.widgets.ToggleSwitch
+                                        <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:textSize="14sp"
-                                            android:id="@+id/test_results_toggle"
-                                            android:fontFamily="@font/roboto_regular"
-                                            android:gravity="center_vertical"
-                                            custom:toggleWidth="120dp"
-                                            custom:cornerRadius="0dp"
-                                            custom:textToggleLeft="@string/negative"
-                                            custom:textToggleRight="@string/positive"
-                                            custom:activeBgColor="@color/colorPrimary"
-                                            custom:activeTextColor="@android:color/white"
-                                            custom:inactiveBgColor="@color/card_separator_sec"
-                                            custom:inactiveTextColor="@android:color/black"
-                                            custom:separatorColor="@color/card_light_text"/>
+                                            android:textSize="16sp"
+                                            android:textColor="@color/card_grid_tex"
+                                            android:fontFamily="@font/avenir_light"
+                                            android:id="@+id/lab_test_type_title"
+                                            android:text="@string/lab_test_type_title"/>
 
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textSize="16sp"
+                                            android:textColor="@color/card_grid_tex"
+                                            android:fontFamily="@font/roboto_condensed_italic"
+                                            android:id="@+id/lab_test_type"
+                                            android:layout_below="@id/lab_test_type_title"
+                                            android:layout_marginTop="8dp"/>
+
+                                        <View
+                                            android:layout_width="1dp"
+                                            android:layout_height="50dp"
+                                            android:layout_centerVertical="true"
+                                            android:background="@color/card_title_text"
+                                            android:layout_toRightOf="@id/lab_test_type_title"
+                                            android:layout_marginLeft="32dp"
+                                            android:id="@+id/lab_test_separator"/>
+
+                                        <fr.ganfra.materialspinner.MaterialSpinner
+                                            android:id="@+id/spin_test_results"
+                                            android:layout_width="200dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerVertical="true"
+                                            android:layout_marginLeft="32dp"
+                                            android:layout_toRightOf="@id/lab_test_separator"
+                                            android:divider="@null"
+                                            android:textSize="14sp"
+                                            app_ms:ms_hintTextSize="14sp"
+                                            app_ms:ms_alwaysShowFloatingLabel="true"
+                                            app_ms:ms_multiline="false"
+                                            app_ms:ms_hint="@string/select_test_results"
+                                            app_ms:ms_enableFloatingLabel="true"
+                                            app_ms:ms_enableErrorLabel="false"
+                                            app_ms:ms_floatingLabelText="@string/test_results"
+                                            app_ms:ms_baseColor="@color/colorPrimary"
+                                            app_ms:ms_highlightColor="@color/colorPrimary"
+                                            app_ms:ms_errorColor="@color/red_500"
+                                            app_ms:ms_hintColor="@color/card_grid_text"
+                                            app_ms:ms_arrowColor="@color/colorPrimary"
+                                            app_ms:ms_arrowSize="12dp"
+                                            app_ms:ms_alignLabels="false"
+                                            app_ms:ms_floatingLabelColor="@color/colorPrimary"/>
 
                                     </RelativeLayout>
 
@@ -718,7 +744,19 @@
                                     <Button
                                         android:layout_width="200dp"
                                         android:layout_height="60dp"
+                                        android:id="@+id/save_button"
+                                        android:layout_centerVertical="true"
+                                        android:background="@drawable/border_two"
                                         android:layout_alignParentRight="true"
+                                        android:fontFamily="@font/roboto_regular"
+                                        android:layout_marginRight="16dp"
+                                        android:textColor="@color/card_title_text"
+                                        android:text="@string/btn_save"/>
+
+                                    <Button
+                                        android:layout_width="200dp"
+                                        android:layout_height="60dp"
+                                        android:layout_toLeftOf="@id/save_button"
                                         android:layout_marginRight="16dp"
                                         android:text="@string/issue_referral"
                                         android:layout_centerVertical="true"
@@ -726,18 +764,6 @@
                                         android:fontFamily="@font/roboto_regular"
                                         android:textColor="@color/card_title_text"
                                         android:background="@drawable/border_one"/>
-
-                                    <Button
-                                        android:layout_width="200dp"
-                                        android:layout_height="60dp"
-                                        android:id="@+id/save_button"
-                                        android:layout_centerVertical="true"
-                                        android:background="@drawable/border_two"
-                                        android:layout_toLeftOf="@id/referal_button"
-                                        android:fontFamily="@font/roboto_regular"
-                                        android:layout_marginRight="16dp"
-                                        android:textColor="@color/card_title_text"
-                                        android:text="@string/btn_save"/>
 
                                     <com.rey.material.widget.ProgressView
                                         android:layout_width="200dp"

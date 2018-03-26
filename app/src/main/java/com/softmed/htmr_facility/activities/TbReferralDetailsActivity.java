@@ -355,13 +355,14 @@ public class TbReferralDetailsActivity extends BaseActivity {
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
 
-            List<Long> ids = currentReferral.getServiceIndicatorIds();
-
-            //Call Patient Referral Indicators
-            for (int i=0; i<ids.size(); i++){
-                long id = Long.parseLong(ids.get(i)+"");
-                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
-                indicators.add(referralIndicator);
+            if (currentReferral.getServiceIndicatorIds() != null){
+                List<Long> ids = currentReferral.getServiceIndicatorIds();
+                //Call Patient Referral Indicators
+                for (int i=0; i<ids.size(); i++){
+                    long id = Long.parseLong(ids.get(i)+"");
+                    ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
+                    indicators.add(referralIndicator);
+                }
             }
 
             return null;

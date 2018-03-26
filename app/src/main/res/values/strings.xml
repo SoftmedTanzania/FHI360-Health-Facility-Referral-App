@@ -171,4 +171,18 @@
     <string name="positive">Positive</string>
     <string name="negative">Negative</string>
 
+    <string name="hiv">HIV</string>
+
+    <string name="select_lab_test">Select test to be conducted</string>
+
+    <string name="select_test_results">Select Test Results</string>
+    <string name="please_add_test_results">Please add test Results</string>
+    <string name="input_required">Input Required</string>
+
+    <string name="lab_test_type_title"> Test Type </string>
+    <string name="unspecified_test_type">Unspecified</string>
+    <string name="waiting_for_results">Waiting For Results..</string>
+
+    <string name="received_at_tb_clinic">Received Successfully at TB Clinic</string>
+
 </resources>

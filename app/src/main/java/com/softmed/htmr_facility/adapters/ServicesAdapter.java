@@ -28,7 +28,7 @@ import static com.softmed.htmr_facility.utils.constants.SWAHILI_LOCALE;
 
 public class ServicesAdapter extends ArrayAdapter<ReferralServiceIndicators> {
 
-    List<ReferralServiceIndicators> items = new ArrayList<>();
+    static List<ReferralServiceIndicators> items = new ArrayList<>();
     Context act;
 
     public ServicesAdapter(Context context, int resource, List<ReferralServiceIndicators> mItems) {
@@ -85,6 +85,10 @@ public class ServicesAdapter extends ArrayAdapter<ReferralServiceIndicators> {
         this.items = null;
         this.items = newItems;
         this.notifyDataSetChanged();
+    }
+
+    public static ReferralServiceIndicators getServiceByPosition(int position){
+        return items.get(position);
     }
 
 }

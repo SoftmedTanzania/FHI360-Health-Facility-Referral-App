@@ -45,10 +45,14 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 import static com.softmed.htmr_facility.utils.SessionManager.KEY_UUID;
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.FACILITY_TO_CHW;
+import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
+import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE;
+import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_NEW;
+import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 1/6/18.
@@ -59,13 +63,13 @@ import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_NEW;
 
 public class IssueReferralDialogueFragment extends DialogFragment{
 
-    private TextView patientNames;
+    private TextView patientNames, takeHivTest, takeMalariaTest, takeTBTest;
     private MaterialSpinner spinnerService, spinnerToHealthFacility;
     private EditText referralReasons, otherClinicalInformation;
     private Button cancelButton, issueButton;
     private RecyclerView indicatorsRecycler;
     private ToggleSwitch referralToToggle;
-    private LinearLayout serviceAndFacilityWrap, indicatorsWrap;
+    private LinearLayout serviceAndFacilityWrap, indicatorsWrap, labTestsWrap;
     private View indicatorSeparator;
 
     private Patient currentPatient;
@@ -88,6 +92,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     private int referralType;
     private String forwardUUID;
+    private int TEST_TO_TAKE = 0;
 
     public IssueReferralDialogueFragment() {}
 
@@ -133,6 +138,36 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         new getFacilitiesAndServices(this.getContext()).execute();
 
+        takeHivTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TEST_TO_TAKE = HIV_SERVICE_ID;
+                takeHivTest.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                takeMalariaTest.setBackground(getResources().getDrawable(R.drawable.border_indicators_unselected));
+                takeTBTest.setBackground(getResources().getDrawable(R.drawable.border_indicators_unselected));
+            }
+        });
+
+        takeTBTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TEST_TO_TAKE = TB_SERVICE_ID;
+                takeTBTest.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                takeMalariaTest.setBackground(getResources().getDrawable(R.drawable.border_indicators_unselected));
+                takeHivTest.setBackground(getResources().getDrawable(R.drawable.border_indicators_unselected));
+            }
+        });
+
+        takeMalariaTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TEST_TO_TAKE = MALARIA_SERVICE_ID;
+                takeMalariaTest.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                takeTBTest.setBackground(getResources().getDrawable(R.drawable.border_indicators_unselected));
+                takeHivTest.setBackground(getResources().getDrawable(R.drawable.border_indicators_unselected));
+            }
+        });
+
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,9 +194,21 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                 * */
 
                 if (i != -1){
+
+                    ReferralServiceIndicators serviceIndicator = (ReferralServiceIndicators) adapterView.getSelectedItem();
+                    if (serviceIndicator.getServiceId() == 11){
+                        //If lab service, display the test selection
+                        labTestsWrap.setVisibility(View.VISIBLE);
+                    }else {
+                        labTestsWrap.setVisibility(View.GONE);
+                    }
+
                     selectedIndicators.clear();
                     ReferralServiceIndicators service = (ReferralServiceIndicators) adapterView.getSelectedItem();
                     new getServiceIndicator(database).execute(service.getServiceId());
+
+
+
                 }
 
             }
@@ -192,7 +239,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             }
         });
 
-
         referralToToggle.setOnToggleSwitchChangeListener(new ToggleSwitch.OnToggleSwitchChangeListener(){
 
             @Override
@@ -200,12 +246,12 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                 Log.d("sia", position+" "+isChecked);
                 if (position == 1){
                     serviceAndFacilityWrap.setVisibility(View.GONE);
-                    indicatorsWrap.setVisibility(View.GONE);
+                    //indicatorsWrap.setVisibility(View.GONE);
                     indicatorSeparator.setVisibility(View.GONE);
                     referralType = FACILITY_TO_CHW;
                 }else {
                     serviceAndFacilityWrap.setVisibility(View.VISIBLE);
-                    indicatorsWrap.setVisibility(View.VISIBLE);
+                    //indicatorsWrap.setVisibility(View.VISIBLE);
                     indicatorSeparator.setVisibility(View.VISIBLE);
                     referralType = INTERFACILITY;
                 }
@@ -300,6 +346,9 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     private void setupviews(View v) {
 
+        labTestsWrap = v.findViewById(R.id.lab_test_wrap);
+        labTestsWrap.setVisibility(View.GONE);
+
         indicatorsRecycler = (RecyclerView) v.findViewById(R.id.indicators_recycler);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(IssueReferralDialogueFragment.this.getContext(), 3);
         indicatorsRecycler.setLayoutManager(layoutManager);
@@ -321,6 +370,10 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         serviceAndFacilityWrap = (LinearLayout) v.findViewById(R.id.service_and_facility_wrap);
         indicatorsWrap = (LinearLayout) v.findViewById(R.id.indicators_wrapper);
         indicatorsWrap.setVisibility(View.GONE);
+
+        takeHivTest = v.findViewById(R.id.hiv_test);
+        takeMalariaTest = v.findViewById(R.id.malaria_test);
+        takeTBTest = v.findViewById(R.id.tb_test);
 
         indicatorSeparator = (View) v.findViewById(R.id.indicators_separator);
 
@@ -424,10 +477,10 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             IndicatorsRecyclerAdapter adapter = new IndicatorsRecyclerAdapter(getContext(), referralIndicators);
             indicatorsRecycler.setAdapter(adapter);
             if (referralIndicators.size() <= 0){
-                indicatorsWrap.setVisibility(View.GONE);
+                //indicatorsWrap.setVisibility(View.GONE);
                 indicatorSeparator.setVisibility(View.GONE);
             }else {
-                indicatorsWrap.setVisibility(View.VISIBLE);
+                //indicatorsWrap.setVisibility(View.VISIBLE);
                 indicatorSeparator.setVisibility(View.VISIBLE);
             }
         }

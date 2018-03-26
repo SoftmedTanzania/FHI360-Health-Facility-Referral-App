@@ -30,13 +30,13 @@ public interface ReferalModelDao {
     LiveData<List<Referral>> getAllReferals(int serviceId);
 
     //Used in OPD
-    @Query("select * from Referral where referralType in (:sourceID)")
+    @Query("select * from Referral where referralType in (:sourceID) and referralStatus = 0")
     LiveData<List<Referral>> getAllReferalsBySource(int[] sourceID);
 
-    @Query("select * from Referral where serviceId = :serviceId and referralType in (:SourceID)")
+    @Query("select * from Referral where serviceId = :serviceId and referralStatus = 0 and referralType in (:SourceID)")
     LiveData<List<Referral>> getReferralsBySourceId(int serviceId, int[] SourceID);
 
-    @Query("select * from Referral where +'('+ ctcNumber IS NOT NULL or referralSource =:referralSource +')' and  serviceId = :serviceId and referralType in (:SourceID)")
+    @Query("select * from Referral where +'('+ ctcNumber IS NOT NULL or referralSource =:referralSource +')' and referralStatus = 0 and serviceId = :serviceId and referralType in (:SourceID)")
     LiveData<List<Referral>> getHivReferralsBySourceId(int serviceId, int[] SourceID, int referralSource);
 
     @Query("select * from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId order by referralStatus desc")

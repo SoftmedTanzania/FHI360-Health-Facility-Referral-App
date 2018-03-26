@@ -11,12 +11,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.TbClientDetailsActivity;
 import com.softmed.htmr_facility.activities.TbReferralDetailsActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.TbPatient;
+
+import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
+import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 
 /**
  * Created by issy on 12/14/17.
@@ -77,9 +88,27 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, TbReferralDetailsActivity.class);
+
+                /**
+                 *  Steps:
+                 *
+                 *  End current referral with default values : Service Given = RECEIVED SUCCESSFULLY
+                 *  Add referral entry to postman
+                 *  Update Existing Patient Object to CURRENTLY ON TB CLINIC
+                 *  Add patient entry to postman
+                 *  Create a new TB Client with current patient ID
+                 *  Add TbPatient entry to postman
+                 *
+                 *  Call @TbPatientActivity.java passing current Patient and the newly created TbPatient
+                 *
+                 */
+
+                new EnrollPatientToTbClinic(database).execute(referral);
+
+                /*Intent intent = new Intent(context, TbReferralDetailsActivity.class);
                 intent.putExtra("referal", referral);
-                context.startActivity(intent);
+                context.startActivity(intent);*/
+
             }
         });
 
@@ -119,11 +148,7 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
 
     }
 
-    private void setNames(String names){
-        mViewHolder.clientsNames.setText(names);
-    }
-
-    private static class patientDetailsTask extends AsyncTask<Void, Void, Void> {
+    static class patientDetailsTask extends AsyncTask<Void, Void, Void> {
 
         String patientNames, patientId;
         AppDatabase db;
@@ -150,6 +175,70 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
             //adapter.notifyDataSetChanged();
         }
 
+    }
+
+    class EnrollPatientToTbClinic extends AsyncTask<Referral, Void, Void>{
+
+        AppDatabase database;
+        Patient patient;
+        TbPatient tbPatient;
+
+        EnrollPatientToTbClinic(AppDatabase db){
+            this.database = db;
+        }
+
+        @Override
+        protected Void doInBackground(Referral... referrals) {
+            Referral currentReferral = referrals[0];
+
+            //End Current Referral
+            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
+            currentReferral.setServiceGivenToPatient(context.getResources().getString(R.string.received_at_tb_clinic));
+            currentReferral.setOtherNotesAndAdvices("");
+            database.referalModel().updateReferral(currentReferral);
+
+            //Add Post office entry
+            PostOffice postOffice = new PostOffice();
+            postOffice.setPost_id(currentReferral.getReferral_id());
+            postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
+            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(postOffice);
+
+            //Update patient to currently on TB Clinic
+            patient = database.patientModel().getPatientById(currentReferral.getPatient_id());
+            patient.setCurrentOnTbTreatment(true);
+            //TODO : handle CTC Number input at the clinic
+            database.patientModel().updatePatient(patient);
+
+            PostOffice patientPost = new PostOffice();
+            patientPost.setPost_id(patient.getPatientId());
+            patientPost.setPost_data_type(POST_DATA_TYPE_PATIENT);
+            patientPost.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(patientPost);
+
+            //Create a new Tb Patient and add to post office
+            tbPatient = new TbPatient();
+            tbPatient.setPatientId(Long.parseLong(patient.getPatientId()));
+            tbPatient.setTempID(UUID.randomUUID()+"");
+            database.tbPatientModelDao().addPatient(tbPatient);
+
+            PostOffice tbPatientPost = new PostOffice();
+            tbPatientPost.setPost_id(patient.getPatientId());
+            tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
+            tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(tbPatientPost);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            //Call Tb Clinic activity passing patient and tbpatient
+            Intent intent = new Intent(context, TbClientDetailsActivity.class);
+            intent.putExtra("patient", patient);
+            intent.putExtra("isPatientNew", true);
+            context.startActivity(intent);
+        }
     }
 
 }

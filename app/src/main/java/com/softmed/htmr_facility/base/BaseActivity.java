@@ -243,14 +243,19 @@ public class BaseActivity extends AppCompatActivity {
             object.put("referralDate", referral.getReferralDate());
             object.put("facilityId", referral.getFacilityId());
             object.put("referralStatus", referral.getReferralStatus());
+            object.put("lab_test", referral.getLabTest());
 
-            JSONArray serviceIndicatorsArray = new JSONArray();
-            for (int i=0; i< referral.getServiceIndicatorIds().size(); i++){
-                long indicator = Long.parseLong(referral.getServiceIndicatorIds().get(i)+"");
-                serviceIndicatorsArray.put(indicator);
-            }
+            // Indicators are no longer used in facility level
 
-            object.put("serviceIndicatorIds", serviceIndicatorsArray);
+            /*JSONArray serviceIndicatorsArray = new JSONArray();
+            if (referral.getServiceIndicatorIds() != null){
+                for (int i=0; i< referral.getServiceIndicatorIds().size(); i++){
+                    long indicator = Long.parseLong(referral.getServiceIndicatorIds().get(i)+"");
+                    serviceIndicatorsArray.put(indicator);
+                }
+
+                object.put("serviceIndicatorIds", serviceIndicatorsArray);
+            }*/
             //object.put("healthFacilityCode", userData.getUserFacilityId());
 
             datastream = object.toString();

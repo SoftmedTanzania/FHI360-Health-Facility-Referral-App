@@ -156,4 +156,17 @@
     <string name="positive">Chanya</string>
     <string name="negative">Hasi</string>
 
+    <string name="hiv">VVU</string>
+
+    <string name="select_lab_test">Chagua kipimo cha kufanyika</string>
+    <string name="select_test_results">Chagua Majibu ya vipimo</string>
+    <string name="please_add_test_results">Tafadhali jaza majibu ya vipimo</string>
+    <string name="input_required">Tafadhali Jaza</string>
+
+    <string name="lab_test_type_title"> Aina ya Kipimo </string>
+    <string name="unspecified_test_type">Hakijatajwa</string>
+    <string name="waiting_for_results">Majibu Bado..</string>
+
+    <string name="received_at_tb_clinic">Tayari amepokelewa katika kliniki ya Kifua Kikuu</string>
+
 </resources>

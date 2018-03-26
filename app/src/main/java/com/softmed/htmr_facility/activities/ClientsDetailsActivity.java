@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,6 +37,7 @@ import java.util.UUID;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
@@ -44,15 +47,19 @@ import com.softmed.htmr_facility.utils.ListStringConverter;
 
 import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
+import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_NEGATIVE;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_POSITIVE;
 
 /**
  * Created by issy on 11/17/17.
@@ -62,14 +69,13 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
     public Button saveButton, referButton;
-    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, testResultsHint, hivStatusTitle;
+    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, testResultsHint, labTestType;
     private EditText servicesOfferedEt, otherInformationEt, ctcNumberEt;
     public ProgressView saveProgress;
-    private CheckBox hivStatus;
     private RecyclerView indicatorsRecyclerView;
     public TextView clientNames,clientAgeValue, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
     public Dialog referalDialogue;
-    ToggleSwitch resultsToggleSwitch;
+    MaterialSpinner testResultsSpinner;
 
     private int service;
     private Referral currentReferral;
@@ -101,9 +107,26 @@ public class ClientsDetailsActivity extends BaseActivity {
                     otherInformationEt.setEnabled(false);
 
                     saveButton.setEnabled(false);
-                    referButton.setVisibility(View.GONE);
-                    hivStatus.setEnabled(false);
+                    referButton.setVisibility(View.INVISIBLE);
+                    testResultsSpinner.setEnabled(false);
 
+                }
+
+                if (service == LAB_SERVICE_ID){
+                    switch (currentReferral.getLabTest()){
+                        case MALARIA_SERVICE_ID:
+                            labTestType.setText("Malaria");
+                            break;
+                        case TB_SERVICE_ID:
+                            labTestType.setText(getResources().getString(R.string.tb));
+                            break;
+                        case HIV_SERVICE_ID:
+                            labTestType.setText(getResources().getString(R.string.hiv));
+                            break;
+                        default:
+                            labTestType.setText(getResources().getString(R.string.unspecified_test_type));
+                            break;
+                    }
                 }
 
                 //hivStatus.setChecked(currentReferral.isTestResults());
@@ -125,37 +148,31 @@ public class ClientsDetailsActivity extends BaseActivity {
         referalDialogue = new Dialog(this);
         referalDialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        resultsToggleSwitch.setOnToggleSwitchChangeListener(new BaseToggleSwitch.OnToggleSwitchChangeListener() {
+        List<String> results = new ArrayList<>();
+        results.add(TEST_RESULT_POSITIVE);
+        results.add(TEST_RESULT_NEGATIVE);
+
+        ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, results);
+        testResultsSpinner.setAdapter(spinAdapter);
+        testResultsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onToggleSwitchChangeListener(int position, boolean isChecked) {
-                if (position == 0 && isChecked){
-                    //Negative
-                    Log.d("results", "Results are NEGATIVE from lab ");
-                    isNewCase = false;
-                }else {
-                    //positive
-                    Log.d("results", "Results are POSITIVE from lab ");
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0){
                     if (isCTCNumberEmpty){
                         isNewCase = true;
                     }else {
                         isNewCase = false;
                     }
+                    Log.d("result_selected", "selected results : "+adapterView.getSelectedItem());
+                }else if (i == 1){
+                    isNewCase = false;
+                    Log.d("result_selected", "selected results : "+adapterView.getSelectedItem());
                 }
             }
-        });
 
-        hivStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    if (isCTCNumberEmpty){
-                        isNewCase = true;
-                    }else {
-                        isNewCase = false;
-                    }
-                }else{
-                    isNewCase = false;
-                }
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -183,7 +200,8 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     private void setupviews(){
 
-        resultsToggleSwitch = findViewById(R.id.test_results_toggle);
+        labTestType = findViewById(R.id.lab_test_type);
+        testResultsSpinner = findViewById(R.id.spin_test_results);
 
         indicatorsRecyclerView = findViewById(R.id.indicators_linear_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -191,7 +209,6 @@ public class ClientsDetailsActivity extends BaseActivity {
         indicatorsRecyclerView.setHasFixedSize(true);
 
         otherClinicalInformationValue = findViewById(R.id.other_clinical_inforamtion_value);
-        hivStatus = findViewById(R.id.hiv_status);
         saveProgress = findViewById(R.id.save_progress);
         servicesOfferedEt = findViewById(R.id.service_offered_et);
         otherInformationEt = findViewById(R.id.other_information_et);
@@ -201,7 +218,6 @@ public class ClientsDetailsActivity extends BaseActivity {
         villageLeaderValue = findViewById(R.id.mwenyekiti_name_value);
         patientGender = findViewById(R.id.patient_gender_value);
         testResultsHint = findViewById(R.id.test_results_hint);
-        hivStatusTitle = findViewById(R.id.hiv_status_title);
         wardText = findViewById(R.id.client_kata_value);
         villageText = findViewById(R.id.client_kijiji_value);
         hamletText = findViewById(R.id.client_kitongoji_value);
@@ -217,43 +233,60 @@ public class ClientsDetailsActivity extends BaseActivity {
         switch (serviceID){
             case HIV_SERVICE_ID:
                 //Do all CTC Calibrations
-                resultsToggleSwitch.setVisibility(View.GONE);
+                testResultsSpinner.setVisibility(View.GONE);
+                labTestType.setVisibility(View.GONE);
                 break;
             case TB_SERVICE_ID:
                 //Do all TB Calibrations
-                resultsToggleSwitch.setVisibility(View.GONE);
+                labTestType.setVisibility(View.GONE);
+                testResultsSpinner.setVisibility(View.GONE);
                 break;
             case LAB_SERVICE_ID:
-                //Do all lab Calibrations
-                resultsToggleSwitch.setVisibility(View.VISIBLE);
+                /*
+                * Do all lab Calibrations
+                * Test Type = VISIBLE
+                * Cannot issue referral from lab : Issue Referral = INVISIBLE
+                * */
+                referButton.setVisibility(View.GONE);
+                labTestType.setVisibility(View.VISIBLE);
+                testResultsSpinner.setVisibility(View.VISIBLE);
                 ctcNumberEt.setVisibility(View.GONE);
                 break;
         }
     }
 
     private void saveReferalInformation(boolean isForwardingReferral){
-        /*if (servicesOfferedEt.getText().toString().isEmpty()){
-            Toast.makeText(this, "Tafadhali jaza huduma uliyoitoa", Toast.LENGTH_LONG).show();
+        if (testResultsSpinner.getSelectedItemPosition() == 0){
+            testResultsSpinner.setEnableErrorLabel(true);
+            testResultsSpinner.setError(getResources().getString(R.string.input_required));
+            testResultsSpinner.setErrorColor(getResources().getColor(R.color.red_500));
+            Toast.makeText(this, getResources().getString(R.string.please_add_test_results), Toast.LENGTH_LONG);
         }else {
-        */
-        String serviceOferedString = servicesOfferedEt.getText().toString();
-        String otherInformation = otherInformationEt.getText().toString();
+            String serviceOferedString = servicesOfferedEt.getText().toString();
+            String otherInformation = otherInformationEt.getText().toString();
 
-        clientCTCNumber = ctcNumberEt.getText().toString();
+            clientCTCNumber = ctcNumberEt.getText().toString();
 
-        boolean result = hivStatus.isChecked();
+            boolean result = false;
 
-        currentReferral.setTestResults(result);
-        currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
-        currentReferral.setServiceGivenToPatient(serviceOferedString);
-        currentReferral.setOtherNotesAndAdvices(otherInformation);
+            if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE)){
+                result = true;
+            }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE)){
+                result = false;
+            }
 
-        //Show progress bar
-        saveProgress.setVisibility(View.VISIBLE);
-        saveButton.setVisibility(View.INVISIBLE);
+            currentReferral.setTestResults(result);
+            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
+            currentReferral.setServiceGivenToPatient(serviceOferedString);
+            currentReferral.setOtherNotesAndAdvices(otherInformation);
 
-        UpdateReferralTask updateReferralTask = new UpdateReferralTask(currentReferral, baseDatabase);
-        updateReferralTask.execute(isForwardingReferral, isNewCase);
+            //Show progress bar
+            saveProgress.setVisibility(View.VISIBLE);
+            saveButton.setVisibility(View.INVISIBLE);
+
+            UpdateReferralTask updateReferralTask = new UpdateReferralTask(currentReferral, baseDatabase);
+            updateReferralTask.execute(isForwardingReferral, isNewCase);
+        }
     }
 
     private void callReferralFragmentDialogue(Patient patient){
@@ -379,7 +412,7 @@ public class ClientsDetailsActivity extends BaseActivity {
             saveButton.setVisibility(View.VISIBLE);
 
             if (isForwardingThisReferral){
-                hivStatus.setEnabled(false);
+                testResultsSpinner.setEnabled(false);
                 servicesOfferedEt.setEnabled(false);
                 otherInformationEt.setEnabled(false);
                 callReferralFragmentDialogue(currentPatient);
@@ -409,13 +442,15 @@ public class ClientsDetailsActivity extends BaseActivity {
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
 
-            List<Long> ids = currentReferral.getServiceIndicatorIds();
+            if (currentReferral.getServiceIndicatorIds() != null){
+                List<Long> ids = currentReferral.getServiceIndicatorIds();
 
-            //Call Patient Referral Indicators
-            for (int i=0; i<ids.size(); i++){
-                long id = Long.parseLong(ids.get(i)+"");
-                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
-                indicators.add(referralIndicator);
+                //Call Patient Referral Indicators
+                for (int i=0; i<ids.size(); i++){
+                    long id = Long.parseLong(ids.get(i)+"");
+                    ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
+                    indicators.add(referralIndicator);
+                }
             }
 
             return null;
@@ -451,7 +486,6 @@ public class ClientsDetailsActivity extends BaseActivity {
                 if (patient.getCtcNumber() != null){
                     //testResultsHint.setVisibility(View.VISIBLE);
                     //hivStatus.setVisibility(View.VISIBLE);
-                    hivStatusTitle.setVisibility(View.VISIBLE);
                     ctcNumberEt.setVisibility(View.VISIBLE);
 
                     ctcNumberEt.setText(patient.getCtcNumber());
@@ -463,7 +497,6 @@ public class ClientsDetailsActivity extends BaseActivity {
 
                     //testResultsHint.setVisibility(View.VISIBLE);
                     //hivStatus.setVisibility(View.VISIBLE);
-                    hivStatusTitle.setVisibility(View.VISIBLE);
                 }
             }
 

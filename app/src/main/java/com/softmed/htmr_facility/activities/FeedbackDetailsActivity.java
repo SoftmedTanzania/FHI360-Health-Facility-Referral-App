@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.softmed.htmr_facility.R;
@@ -32,7 +34,11 @@ import java.util.List;
 
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 
+import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
+import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 1/6/18.
@@ -47,10 +53,12 @@ public class FeedbackDetailsActivity extends BaseActivity {
     public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName;
     private EditText servicesOfferedEt, otherInformationEt;
     private CheckBox hivStatus;
-    public TextView clientNames,clientAge, wardText, villageText, hamletText, patientGender;
+    public TextView clientNames,clientAge, wardText, villageText, hamletText, patientGender, labTestType, waitingForResults;
     private Button referralButton, cancelButton;
     private RecyclerView indicatorsRecyclerView;
     ToggleSwitch testResultsToggle;
+    LinearLayout testTypeContainer;
+    RelativeLayout testInputContainer;
 
     private Referral currentReferral;
     private Patient currentPatient;
@@ -72,13 +80,41 @@ public class FeedbackDetailsActivity extends BaseActivity {
                     otherInformationEt.setText(currentReferral.getOtherNotesAndAdvices());
                     otherInformationEt.setEnabled(false);
 
-                    //Disable Test Result Toggle
                     testResultsToggle.setEnabled(false);
+                    testResultsToggle.setVisibility(View.VISIBLE);
+                    waitingForResults.setVisibility(View.GONE);
+                    if (currentReferral.isTestResults()){
+                        testResultsToggle.setCheckedTogglePosition(1);
+                    }
 
+                }else {
+                    //Test has not yet been conducted
+                    waitingForResults.setVisibility(View.VISIBLE);
+                    testResultsToggle.setVisibility(View.GONE);
                 }
 
-                if (currentReferral.isTestResults()){
-                    testResultsToggle.setCheckedTogglePosition(1);
+                if (currentReferral.getServiceId() == LAB_SERVICE_ID){
+
+                    testTypeContainer.setVisibility(View.VISIBLE);
+                    testInputContainer.setVisibility(View.VISIBLE);
+
+                    switch (currentReferral.getLabTest()){
+                        case MALARIA_SERVICE_ID:
+                            labTestType.setText("Malaria");
+                            break;
+                        case TB_SERVICE_ID:
+                            labTestType.setText(getResources().getString(R.string.tb));
+                            break;
+                        case HIV_SERVICE_ID:
+                            labTestType.setText(getResources().getString(R.string.hiv));
+                            break;
+                        default:
+                            labTestType.setText(getResources().getString(R.string.unspecified_test_type));
+                            break;
+                    }
+                }else {
+                    testTypeContainer.setVisibility(View.GONE);
+                    testInputContainer.setVisibility(View.GONE);
                 }
 
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
@@ -116,6 +152,12 @@ public class FeedbackDetailsActivity extends BaseActivity {
     }
 
     private void setupviews(){
+
+        testInputContainer = findViewById(R.id.results_input_container);
+        testTypeContainer = findViewById(R.id.test_type_container);
+
+        waitingForResults = findViewById(R.id.waiting_for_results);
+        labTestType = findViewById(R.id.lab_test_type);
 
         testResultsToggle = findViewById(R.id.test_results_toggle);
 
@@ -165,16 +207,17 @@ public class FeedbackDetailsActivity extends BaseActivity {
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
 
-            //..List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
-            List<Long> ids = currentReferral.getServiceIndicatorIds();
-
-            //Call Patient Referral Indicators
-            for (int i=0; i<ids.size(); i++){
-                try {
-                    ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i));
-                    indicators.add(referralIndicator);
-                }catch (Exception e){
-                    e.printStackTrace();
+            if (currentReferral.getServiceIndicatorIds() != null){
+                //..List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
+                List<Long> ids = currentReferral.getServiceIndicatorIds();
+                //Call Patient Referral Indicators
+                for (int i=0; i<ids.size(); i++){
+                    try {
+                        ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(ids.get(i));
+                        indicators.add(referralIndicator);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
 
