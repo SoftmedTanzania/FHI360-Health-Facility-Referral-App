@@ -248,6 +248,7 @@ public class ClientsDetailsActivity extends BaseActivity {
                 resultsInputContainer.setVisibility(View.GONE);
                 servicesGivenContainer.setVisibility(View.VISIBLE);
                 indicatorsContainer.setVisibility(View.GONE);
+                ctcNumberEt.setVisibility(View.VISIBLE);
                 break;
             case TB_SERVICE_ID:
                 //Do all TB Calibrations
@@ -256,6 +257,7 @@ public class ClientsDetailsActivity extends BaseActivity {
                 resultsInputContainer.setVisibility(View.GONE);
                 servicesGivenContainer.setVisibility(View.VISIBLE);
                 indicatorsContainer.setVisibility(View.GONE);
+                ctcNumberEt.setVisibility(View.GONE);
                 break;
             case LAB_SERVICE_ID:
                 /*
@@ -276,37 +278,46 @@ public class ClientsDetailsActivity extends BaseActivity {
     }
 
     private void saveReferalInformation(boolean isForwardingReferral){
-        if (testResultsSpinner.getSelectedItemPosition() == 0){
-            testResultsSpinner.setEnableErrorLabel(true);
-            testResultsSpinner.setError(getResources().getString(R.string.input_required));
-            testResultsSpinner.setErrorColor(getResources().getColor(R.color.red_500));
-            Toast.makeText(this, getResources().getString(R.string.please_add_test_results), Toast.LENGTH_LONG);
-        }else {
-            String serviceOferedString = servicesOfferedEt.getText().toString();
-            String otherInformation = otherInformationEt.getText().toString();
+        if (service == LAB_SERVICE_ID){
 
-            clientCTCNumber = ctcNumberEt.getText().toString();
+            if (testResultsSpinner.getSelectedItemPosition() == 0){
+                testResultsSpinner.setEnableErrorLabel(true);
+                testResultsSpinner.setError(getResources().getString(R.string.input_required));
+                testResultsSpinner.setErrorColor(getResources().getColor(R.color.red_500));
+                Toast.makeText(this, getResources().getString(R.string.please_add_test_results), Toast.LENGTH_LONG);
+            } else {
+                boolean result = false;
 
-            boolean result = false;
+                if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE)){
+                    result = true;
+                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE)){
+                    result = false;
+                }
 
-            if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE)){
-                result = true;
-            }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE)){
-                result = false;
+                currentReferral.setTestResults(result);
             }
 
-            currentReferral.setTestResults(result);
-            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
-            currentReferral.setServiceGivenToPatient(serviceOferedString);
-            currentReferral.setOtherNotesAndAdvices(otherInformation);
-
-            //Show progress bar
-            saveProgress.setVisibility(View.VISIBLE);
-            saveButton.setVisibility(View.INVISIBLE);
-
-            UpdateReferralTask updateReferralTask = new UpdateReferralTask(currentReferral, baseDatabase);
-            updateReferralTask.execute(isForwardingReferral, isNewCase);
         }
+
+        String serviceOferedString = servicesOfferedEt.getText().toString();
+        String otherInformation = otherInformationEt.getText().toString();
+
+        clientCTCNumber = ctcNumberEt.getText().toString();
+
+        currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
+        currentReferral.setServiceGivenToPatient(serviceOferedString);
+        currentReferral.setOtherNotesAndAdvices(otherInformation);
+
+        //Show progress bar
+        saveProgress.setVisibility(View.VISIBLE);
+        saveButton.setVisibility(View.INVISIBLE);
+
+        //Referral has already ended it cannot be chained again from here
+        referButton.setVisibility(View.GONE);
+
+        UpdateReferralTask updateReferralTask = new UpdateReferralTask(currentReferral, baseDatabase);
+        updateReferralTask.execute(isForwardingReferral, isNewCase);
+
     }
 
     private void callReferralFragmentDialogue(Patient patient){
@@ -435,6 +446,8 @@ public class ClientsDetailsActivity extends BaseActivity {
                 testResultsSpinner.setEnabled(false);
                 servicesOfferedEt.setEnabled(false);
                 otherInformationEt.setEnabled(false);
+                ctcNumberEt.setEnabled(false);
+                saveButton.setText(getResources().getString(R.string.done));
                 callReferralFragmentDialogue(currentPatient);
             }else {
                 finish();

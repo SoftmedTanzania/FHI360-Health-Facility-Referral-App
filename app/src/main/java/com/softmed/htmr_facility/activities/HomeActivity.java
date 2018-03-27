@@ -562,7 +562,7 @@ public class HomeActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
 
             try {
-                Thread.sleep(5000, 0);
+                Thread.sleep(2000, 0);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
