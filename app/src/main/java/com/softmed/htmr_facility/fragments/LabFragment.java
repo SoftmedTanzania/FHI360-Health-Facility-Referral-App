@@ -1,5 +1,7 @@
 package com.softmed.htmr_facility.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.softmed.htmr_facility.activities.ReferralListActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.AppData;
+import com.softmed.htmr_facility.viewmodels.ReferralCountViewModels;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
@@ -37,9 +40,11 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 public class LabFragment extends Fragment {
 
     CardView referralListCard, testedPatientsCard;
-    TextView labReferralCount;
+    TextView labReferralCount, labTestedClientsCount;
 
     AppDatabase database;
+
+    ReferralCountViewModels referralCountViewModels;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,8 +66,6 @@ public class LabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Handle Class Here
 
-        new ReferalCountsTask().execute();
-
         referralListCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +75,6 @@ public class LabFragment extends Fragment {
             }
         });
 
-
         testedPatientsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,33 +83,30 @@ public class LabFragment extends Fragment {
             }
         });
 
+        referralCountViewModels = ViewModelProviders.of(this).get(ReferralCountViewModels.class);
+        referralCountViewModels.getLabReferralCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                labReferralCount.setText(integer+" "+getResources().getString(R.string.new_referrals_unattended));
+            }
+        });
+
+        referralCountViewModels.getLabTestedClients().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                labTestedClientsCount.setText(integer+" ");
+            }
+        });
+
     }
 
     private void setupviews(View rootView){
+
         referralListCard = rootView.findViewById(R.id.lab_referral_list_card);
         testedPatientsCard = rootView.findViewById(R.id.lab_tested_patients_card);
 
         labReferralCount = rootView.findViewById(R.id.lab_referal_count_text);
-
-    }
-
-    private class ReferalCountsTask extends AsyncTask<Void, Void, Void> {
-
-        String referralCounts = "";
-        String feedbackCount = "";
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().geCounttUnattendedReferalsByService(LAB_SERVICE_ID)+" "+getResources().getString(R.string.new_referrals_unattended);
-            feedbackCount = getResources().getString(R.string.pending_feedback)+" : "+database.referalModel().geCountPendingReferalFeedback(LAB_SERVICE_ID, BaseActivity.getThisFacilityId());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            labReferralCount.setText(referralCounts);
-            super.onPostExecute(aVoid);
-        }
+        labTestedClientsCount = rootView.findViewById(R.id.lab_tested_clients_count_text);
 
     }
 

@@ -106,6 +106,19 @@
                         android:textColor="@color/black"
                         android:text="@string/tested_patients"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/lab_tested_clients_count_text"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@color/card_grid_text"
+                        android:text=""/>
+
+
                 </LinearLayout>
 
             </RelativeLayout>

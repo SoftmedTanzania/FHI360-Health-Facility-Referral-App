@@ -1,8 +1,11 @@
 package com.softmed.htmr_facility.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import com.softmed.htmr_facility.activities.ClientRegisterActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.utils.constants;
+import com.softmed.htmr_facility.viewmodels.ReferralCountViewModels;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
@@ -34,9 +38,10 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 public class TbFragment extends Fragment {
 
     private CardView referalListCard, newReferalsCard, referredListCard, tbRegister;
-    private TextView referalCountText, referalFeedbackCount, toolbarTitle, chwReferralCounts, hfReferralCount;
+    private TextView referalCountText, referalFeedbackCount, toolbarTitle;
 
     AppDatabase database;
+    ReferralCountViewModels referralCountViewModels;
 
     public TbFragment(){}
 
@@ -53,8 +58,6 @@ public class TbFragment extends Fragment {
         rootView    = inflater.inflate(R.layout.fragment_tb, container, false);
         setUpView(rootView);
 
-        new ReferalCountsTask().execute();
-
         referalListCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +71,6 @@ public class TbFragment extends Fragment {
                 startActivity(new Intent(TbFragment.this.getActivity(), TbClientListActivity.class));
             }
         });
-
 
         referredListCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +90,22 @@ public class TbFragment extends Fragment {
             }
         });
 
+        referralCountViewModels = ViewModelProviders.of(this).get(ReferralCountViewModels.class);
+        referralCountViewModels.getTbReferralCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                referalCountText.setText(integer+" "+getResources().getString(R.string.new_referrals_unattended));
+            }
+        });
+
+        referralCountViewModels.getTbFeedbackReferralsCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                referalFeedbackCount.setText(getResources().getString(R.string.pending_feedback)+" : "+integer);
+            }
+        });
+
+
         return rootView;
     }
 
@@ -98,8 +116,6 @@ public class TbFragment extends Fragment {
         tbRegister = (CardView) v.findViewById(R.id.tb_register);
 
         referalCountText = (TextView) v.findViewById(R.id.tb_referal_count_text);
-        chwReferralCounts = (TextView) v.findViewById(R.id.tb_chw_referal_count_text);
-        hfReferralCount = (TextView) v.findViewById(R.id.tb_hf_referal_count_text);
         referalFeedbackCount = (TextView) v.findViewById(R.id.tb_referal_feedback_count);
 
     }
@@ -107,15 +123,11 @@ public class TbFragment extends Fragment {
     private class ReferalCountsTask extends AsyncTask<Void, Void, Void> {
 
         String referralCounts = "";
-        String chwCount = "";
-        String hfCount = "";
         String feedbackCount = "";
 
         @Override
         protected Void doInBackground(Void... voids) {
             referralCounts = database.referalModel().geCounttUnattendedReferalsByService(TB_SERVICE_ID)+" "+getResources().getString(R.string.new_referrals_unattended);
-            chwCount = getResources().getString(R.string.chw)+" : "+database.referalModel().getCountReferralsByType(TB_SERVICE_ID, new int[]{CHW_TO_FACILITY});
-            hfCount = getResources().getString(R.string.health_facility)+" : "+database.referalModel().getCountReferralsByType(TB_SERVICE_ID, new int[] {INTERFACILITY, INTRAFACILITY});
             feedbackCount = getResources().getString(R.string.pending_feedback)+" : "+database.referalModel().geCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.getThisFacilityId());
             return null;
         }
@@ -123,8 +135,6 @@ public class TbFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             referalCountText.setText(referralCounts);
-            chwReferralCounts.setText(chwCount);
-            hfReferralCount.setText(hfCount);
             referalFeedbackCount.setText(feedbackCount);
             super.onPostExecute(aVoid);
         }
