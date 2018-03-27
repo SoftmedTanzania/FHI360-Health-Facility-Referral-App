@@ -57,7 +57,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
     Button referralButton, cancelButton;
     RecyclerView indicatorsRecyclerView;
     ToggleSwitch testResultsToggle;
-    LinearLayout testTypeContainer;
+    LinearLayout testTypeContainer, serviceGivenContainer;
     RelativeLayout testInputContainer;
 
     private Referral currentReferral;
@@ -97,6 +97,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
 
                     testTypeContainer.setVisibility(View.VISIBLE);
                     testInputContainer.setVisibility(View.VISIBLE);
+                    serviceGivenContainer.setVisibility(View.GONE);
 
                     switch (currentReferral.getLabTest()){
                         case MALARIA_SERVICE_ID:
@@ -115,6 +116,7 @@ public class FeedbackDetailsActivity extends BaseActivity {
                 }else {
                     testTypeContainer.setVisibility(View.GONE);
                     testInputContainer.setVisibility(View.GONE);
+                    serviceGivenContainer.setVisibility(View.VISIBLE);
                 }
 
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
@@ -159,6 +161,8 @@ public class FeedbackDetailsActivity extends BaseActivity {
                 //Do nothing
             }
         });
+
+        serviceGivenContainer = findViewById(R.id.service_given_container);
 
         testInputContainer = findViewById(R.id.results_input_container);
         testTypeContainer = findViewById(R.id.test_type_container);

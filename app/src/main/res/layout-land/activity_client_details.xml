@@ -323,6 +323,7 @@
                                     <RelativeLayout
                                         android:layout_width="0dp"
                                         android:layout_weight="1"
+                                        android:visibility="invisible"
                                         android:layout_height="wrap_content">
 
                                         <TextView
