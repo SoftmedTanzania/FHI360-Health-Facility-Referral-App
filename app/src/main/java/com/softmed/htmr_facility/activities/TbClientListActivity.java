@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class TbClientListActivity extends BaseActivity {
     private TbClientListAdapter adapter;
     private EditText clientFNameInput, clientLNameInput, clientCTCNumberInput, clientVillageInput;
     private Button filterButton;
+    TextView activityTitle;
 
     private String clientFirstNameValue, clientLastNameValue, clientCTCNumberValue, clientVillageValue;
     private PatientsListViewModel patientsListViewModel;
@@ -45,14 +47,15 @@ public class TbClientListActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_referals);
+        setContentView(R.layout.activity_tb_clients_list);
         setupview();
 
         if (toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getResources().getString(R.string.tb_clients_list));
         }
+
+        activityTitle.setText(getResources().getString(R.string.clients_list)+" | "+getResources().getString(R.string.tb));
 
         adapter = new TbClientListAdapter(new ArrayList<Patient>(), this, TB_SERVICE_ID);
         patientsListViewModel = ViewModelProviders.of(this).get(PatientsListViewModel.class);
@@ -115,6 +118,8 @@ public class TbClientListActivity extends BaseActivity {
     }
 
     private void setupview(){
+
+        activityTitle = findViewById(R.id.activity_title);
 
         filterButton = (Button) findViewById(R.id.filter_button);
 

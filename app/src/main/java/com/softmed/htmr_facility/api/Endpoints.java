@@ -56,8 +56,14 @@ public class Endpoints {
 
     public interface PatientServices{
 
+        @GET("get-facility-tb-patients/{facilityUUID}")
+        Call<List<PatientResponce>> getTbPatientsList(@Path("facilityUUID") String facilityUUID);
+
         @POST("save-patients")
         Call<Patient> postPatient(@Body RequestBody p);
+
+        @POST("save-tb-patient")
+        Call<Void> postTbPatient(@Body RequestBody tp);
 
         @POST("save-tb-encounters")
         Call<TbEncounters> postEncounter(@Body RequestBody e);

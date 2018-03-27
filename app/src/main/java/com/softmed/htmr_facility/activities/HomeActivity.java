@@ -67,6 +67,8 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
+import static com.softmed.htmr_facility.utils.constants.RESPONCE_CREATED;
+import static com.softmed.htmr_facility.utils.constants.RESPONCE_SUCCESS;
 
 /**
  * Created by issy on 12/4/17.
@@ -249,21 +251,25 @@ public class HomeActivity extends BaseActivity {
                     final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(getTbPatientRequestBody(patient, tbPatient, userData));
+                    Call call = patientServices.postTbPatient(getTbPatientRequestBody(patient, tbPatient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
-                            PatientResponce patientResponce = (PatientResponce) response.body();
+                            //PatientResponce patientResponce = (PatientResponce) response.body();
                             //Store Received Patient Information, TbPatient as well as PatientAppointments
-                            if (response.body()!=null){
-                                Log.d("POST_DATA_TYPE_TP", response.body().toString());
+                            Log.d("POST_DATA_TYPE_TP","Responce Code : "+response.code());
+                            if (response.code() == RESPONCE_SUCCESS){
+                                //Tb Patient have been saved
 
-                                new ReplaceTbPatientAndAppointments(database, patient, tbPatient).execute(patientResponce);
-
+                                //new ReplaceTbPatientAndAppointments(database, patient, tbPatient).execute(patientResponce);
                                 new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
 
                             }else {
-                                Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
+                                try{
+                                    Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
                             }
 
                         }
@@ -509,17 +515,19 @@ public class HomeActivity extends BaseActivity {
             List<Referral> oldPatientReferrals = new ArrayList<>();
             oldPatientReferrals = database.referalModel().getReferalsByPatientId(patients[0].getPatientId()).getValue();
 
-            for (int i=0; i<oldPatientReferrals.size(); i++){
-                Referral ref = oldPatientReferrals.get(i);
-                if (ref.getPatient_id() != patients[1].getPatientId()){
-                    ref.setPatient_id(patients[1].getPatientId());
+            if (oldPatientReferrals != null){
+                for (int i=0; i<oldPatientReferrals.size(); i++){
+                    Referral ref = oldPatientReferrals.get(i);
+                    if (ref.getPatient_id() != patients[1].getPatientId()){
+                        ref.setPatient_id(patients[1].getPatientId());
 
-                    PostOffice postOffice = new PostOffice();
-                    postOffice.setPost_id(ref.getReferral_id());
-                    postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
-                    postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+                        PostOffice postOffice = new PostOffice();
+                        postOffice.setPost_id(ref.getReferral_id());
+                        postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
+                        postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
-                    database.postOfficeModelDao().addPostEntry(postOffice);
+                        database.postOfficeModelDao().addPostEntry(postOffice);
+                    }
                 }
 
             }

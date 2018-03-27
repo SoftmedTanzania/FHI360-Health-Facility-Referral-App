@@ -37,7 +37,7 @@ public class Referral implements Serializable{
     private String referralReason;
 
     /*
-    Malaria, Tb or Hiv
+    Malaria, Tb , Hiv, Lab
      */
     @SerializedName("serviceId")
     private int serviceId;
@@ -47,7 +47,7 @@ public class Referral implements Serializable{
     This field is only used upon issuing lab referrals to keep track
     of what test user at the lab is suppose to conduct on a client
      */
-    @SerializedName("lab_test")
+    @SerializedName("labTest")
     private int labTest;
 
     @SerializedName("referralUUID")

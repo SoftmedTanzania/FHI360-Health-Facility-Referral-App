@@ -44,6 +44,8 @@ public class ReferalListViewModel extends AndroidViewModel{
     private final LiveData<List<Referral>> allReferralListFromChw;
     private final LiveData<List<Referral>> allReferralListFromHealthFacilities;
 
+    private final LiveData<List<Referral>> allTestedClients;
+
     private AppDatabase appDatabase;
 
     public ReferalListViewModel(Application application){
@@ -70,6 +72,12 @@ public class ReferalListViewModel extends AndroidViewModel{
         allReferralListFromChw = appDatabase.referalModel().getAllReferalsBySource(new int[] {CHW_TO_FACILITY});
         allReferralListFromHealthFacilities = appDatabase.referalModel().getAllReferalsBySource(new int[] {INTERFACILITY});
 
+        allTestedClients = appDatabase.referalModel().getAllTestedReferrals();
+
+    }
+
+    public LiveData<List<Referral>> getAllTestedClients() {
+        return allTestedClients;
     }
 
     public LiveData<List<Referral>> getTbReferalList() {

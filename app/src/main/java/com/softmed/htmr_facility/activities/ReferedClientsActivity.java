@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rey.material.widget.ProgressView;
@@ -34,6 +35,7 @@ import com.softmed.htmr_facility.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
@@ -53,6 +55,7 @@ public class ReferedClientsActivity extends BaseActivity {
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
     private ProgressView progressView;
     private Button filterButton;
+    TextView activityTitle;
 
     private Date fromDate, toDate;
     private String clientName, clientCtcNumber, lastName;
@@ -76,7 +79,24 @@ public class ReferedClientsActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null){
             serviceID = getIntent().getIntExtra("service_id", 0);
-            Log.d("MIMI", serviceID+"" );
+            String title = "";
+
+            switch (serviceID){
+                case OPD_SERVICE_ID:
+                    title = getResources().getString(R.string.referrals_issued)+" OPD";
+                    break;
+                case HIV_SERVICE_ID:
+                    title = getResources().getString(R.string.referrals_issued)+" | "+getResources().getString(R.string.hiv);
+                    break;
+                case TB_SERVICE_ID:
+                    title = getResources().getString(R.string.referrals_issued)+" | "+getResources().getString(R.string.tb);
+                    break;
+                default:
+                    title = getResources().getString(R.string.referrals_issued);
+            }
+
+            activityTitle.setText(title);
+
         }
 
         final String[] status = {STATUS_COMPLETED, STATUS_NEW};
@@ -130,14 +150,6 @@ public class ReferedClientsActivity extends BaseActivity {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
-
                         fromDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar fromCalendar = Calendar.getInstance();
                         fromCalendar.set(year, monthOfYear, dayOfMonth);
@@ -158,14 +170,6 @@ public class ReferedClientsActivity extends BaseActivity {
                 toDatePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
 
                         toDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar toCalendar = Calendar.getInstance();
@@ -223,6 +227,9 @@ public class ReferedClientsActivity extends BaseActivity {
     }
 
     private void setupview(){
+
+        activityTitle = findViewById(R.id.activity_title);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         filterButton = (Button) findViewById(R.id.filter_button);

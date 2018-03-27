@@ -38,12 +38,16 @@ import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.customviews.LargeDiagonalCutPathDrawable;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
+import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
+import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
+import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
 import com.softmed.htmr_facility.fragments.HealthFacilityReferralListFragment;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
@@ -82,6 +86,7 @@ public class LoginActivity extends BaseActivity {
     private String usernameValue, passwordValue;
     private String deviceRegistrationId = "";
     private Endpoints.ReferalService referalService;
+    private Endpoints.PatientServices patientService;
 
     // Session Manager Class
     private SessionManager session;
@@ -258,6 +263,7 @@ public class LoginActivity extends BaseActivity {
                             loginResponse.getTeam().getTeam().getLocation().getUuid());
 
                     referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
+                    patientService = ServiceGenerator.createService(Endpoints.PatientServices.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
 
                     sendRegistrationToServer(deviceRegistrationId,
                             loginResponse.getUser().getAttributes().getPersonUUID(),
@@ -377,6 +383,22 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
+    public void callTbPatientServices(){
+        Call<List<PatientResponce>> call = patientService.getTbPatientsList(session.getKeyHfid());
+        call.enqueue(new Callback<List<PatientResponce>>() {
+            @Override
+            public void onResponse(Call<List<PatientResponce>> call, Response<List<PatientResponce>> response) {
+                List<PatientResponce> patientList = response.body();
+
+            }
+
+            @Override
+            public void onFailure(Call<List<PatientResponce>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void getHealthFacilities(){
 
         Call<List<HealthFacilities>> call = referalService.getHealthFacilities();
@@ -398,7 +420,39 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    public class addReferralsAsyncTask extends AsyncTask<Void, Void, Void> {
+    class addTbPatientTask extends AsyncTask<List<PatientResponce>, Void, Void>{
+
+        List<PatientResponce> responces;
+
+        @Override
+        protected Void doInBackground(List<PatientResponce>[] lists) {
+            responces = lists[0];
+
+            for (PatientResponce _responce : responces){
+                Patient patient = _responce.getPatient();
+                baseDatabase.patientModel().addPatient(patient);
+
+                TbPatient tbPatient = _responce.getTbPatient();
+                baseDatabase.tbPatientModelDao().addPatient(tbPatient);
+
+                List<PatientAppointment> appointments = _responce.getPatientAppointments();
+                for (PatientAppointment _appointment : appointments){
+                    baseDatabase.appointmentModelDao().addAppointment(_appointment);
+                }
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+    }
+
+    class addReferralsAsyncTask extends AsyncTask<Void, Void, Void> {
 
         List<ReferalResponce> results;
 

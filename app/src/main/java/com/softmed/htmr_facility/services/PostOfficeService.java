@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import com.softmed.htmr_facility.activities.HomeActivity;
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
@@ -30,6 +31,7 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
+import static com.softmed.htmr_facility.utils.constants.RESPONCE_SUCCESS;
 
 /**
  * Created by issy on 1/6/18.
@@ -109,10 +111,22 @@ public class PostOfficeService extends IntentService {
                     final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(BaseActivity.getTbPatientRequestBody(patient, tbPatient, userData));
+                    Call call = patientServices.postTbPatient(BaseActivity.getTbPatientRequestBody(patient, tbPatient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
+
+                            if (response.code() == RESPONCE_SUCCESS){
+                                //new ReplaceTbPatientAndAppointments(database, patient, tbPatient).execute(patientResponce);
+
+                                new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
+
+                            }else {
+                                Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
+                            }
+
+                            /*
+                             *  OLD - 27th March '18
                             PatientResponce patientResponce = (PatientResponce) response.body();
                             //Store Received Patient Information, TbPatient as well as PatientAppointments
                             if (response.body()!=null){
@@ -124,7 +138,7 @@ public class PostOfficeService extends IntentService {
 
                             }else {
                                 Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
-                            }
+                            }*/
 
                         }
 

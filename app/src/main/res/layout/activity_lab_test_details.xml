@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.softmed.htmr_facility.activities.MainActivity"
     android:background="@color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -91,7 +92,7 @@
                                     android:layout_marginLeft="32dp"
                                     android:layout_marginTop="16dp"
                                     android:textColor="@color/black"
-                                    android:text="@string/referral_feedback_form"
+                                    android:text="@string/lab_test_form"
                                     android:textSize="42sp"
                                     android:id="@+id/heading"
                                     android:fontFamily="@font/roboto_bold"/>
@@ -136,7 +137,7 @@
                                 android:textSize="14sp"
                                 android:textColor="@color/card_title_text"
                                 android:fontFamily="@font/roboto_condensed"
-                                android:text="@string/referral_feedback"/>
+                                android:text="@string/lab_test_feedback"/>
 
                             <View
                                 android:layout_width="60dp"
@@ -237,83 +238,10 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/white"
-                                android:orientation="horizontal"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:layout_marginBottom="8dp">
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/white"
-                                    android:padding="16dp"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/service_offered_title"
-                                        android:text="@string/heading_service_given"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:textSize="18sp"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <EditText
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="8dp"
-                                        android:id="@+id/service_offered_et"
-                                        android:minLines="4"
-                                        android:gravity="start"
-                                        android:padding="8dp"
-                                        android:textSize="14sp"
-                                        android:textColor="@color/card_grid_text"
-                                        android:background="@drawable/border_one" />
-
-                                </LinearLayout>
-
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:background="@color/white"
-                                    android:orientation="vertical"
-                                    android:padding="16dp"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/service_advice_title"
-                                        android:text="@string/other_infotmation_and_advice"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:textSize="18sp"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <EditText
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="8dp"
-                                        android:id="@+id/other_information_et"
-                                        android:minLines="4"
-                                        android:padding="8dp"
-                                        android:textSize="14sp"
-                                        android:gravity="start"
-                                        android:textColor="@color/card_grid_text"
-                                        android:background="@drawable/border_one" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
                                 android:background="@color/card_separator_third"
                                 android:paddingLeft="32dp"
                                 android:paddingRight="32dp"
+                                android:layout_marginTop="32dp"
                                 android:orientation="horizontal">
 
                                 <RelativeLayout
@@ -533,125 +461,6 @@
                                 android:layout_marginLeft="4dp"
                                 android:layout_marginRight="4dp"/>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="14sp"
-                                android:id="@+id/referer_title"
-                                android:text="@string/referral_information"
-                                android:textColor="@color/card_title_text"
-                                android:layout_marginLeft="32dp"
-                                android:layout_marginTop="8dp"
-                                android:fontFamily="@font/roboto_condensed"/>
-
-                            <View
-                                android:layout_width="60dp"
-                                android:layout_height="5dp"
-                                android:id="@+id/strip_three"
-                                android:layout_marginLeft="32dp"
-                                android:layout_marginTop="8dp"
-                                android:background="@color/card_separator"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:background="@color/white"
-                                android:layout_marginLeft="16dp"
-                                android:padding="16dp">
-
-                                <RelativeLayout
-                                    android:layout_width="0dp"
-                                    android:layout_weight="0.3"
-                                    android:layout_marginRight="16dp"
-                                    android:background="@color/white"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/referral_reasib"
-                                        android:id="@+id/sababu_ya_rufaa_title"
-                                        android:textColor="@color/card_title_text"
-                                        android:textSize="14sp"
-                                        android:fontFamily="@font/roboto_condensed"/>
-
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@id/sababu_ya_rufaa_title">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:textColor="@color/card_grid_text"
-                                            android:fontFamily="@font/avenir_light"
-                                            android:textSize="16sp"
-                                            android:id="@+id/sababu_ya_rufaa_value"
-                                            android:text="@string/dummy_text"/>
-
-                                    </RelativeLayout>
-
-                                </RelativeLayout>
-
-                                <View
-                                    android:layout_width="1dp"
-                                    android:layout_height="match_parent"
-                                    android:background="@color/card_separator"
-                                    android:layout_marginTop="16dp"
-                                    android:layout_marginBottom="16dp"
-                                    android:layout_marginRight="16dp"/>
-
-                                <RelativeLayout
-                                    android:layout_width="0dp"
-                                    android:layout_weight="0.3"
-                                    android:layout_height="wrap_content">
-
-                                    <android.support.v7.widget.RecyclerView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/viashiria_title"
-                                        android:id="@+id/indicators_linear_recycler"/>
-
-                                </RelativeLayout>
-
-                                <View
-                                    android:layout_width="1dp"
-                                    android:layout_height="match_parent"
-                                    android:background="@color/card_separator"
-                                    android:layout_marginTop="16dp"
-                                    android:layout_marginBottom="16dp"
-                                    android:layout_marginRight="16dp"/>
-
-                                <RelativeLayout
-                                    android:layout_width="0dp"
-                                    android:layout_weight="0.3"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/clinical_information_title"
-                                        android:textSize="14sp"
-                                        android:text="@string/other_clinical_information"
-                                        android:fontFamily="@font/roboto_condensed"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@+id/clinical_information_title"
-                                        android:layout_marginTop="8dp"
-                                        android:textSize="14sp"
-                                        android:text="N/A"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:textColor="@color/card_title_text"/>
-
-                                </RelativeLayout>
-
-
-                            </LinearLayout>
-
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="100dp">
@@ -659,24 +468,12 @@
                                 <Button
                                     android:layout_width="200dp"
                                     android:layout_height="60dp"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_marginRight="16dp"
-                                    android:text="@string/btn_forward_referral"
-                                    android:layout_centerVertical="true"
-                                    android:id="@+id/referal_button"
-                                    android:fontFamily="@font/roboto_regular"
-                                    android:textColor="@color/card_title_text"
-                                    android:background="@drawable/border_one"/>
-
-                                <Button
-                                    android:layout_width="200dp"
-                                    android:layout_height="60dp"
                                     android:id="@+id/cancel_button"
                                     android:layout_centerVertical="true"
                                     android:background="@drawable/border_two"
-                                    android:layout_toLeftOf="@id/referal_button"
                                     android:fontFamily="@font/roboto_regular"
                                     android:layout_marginRight="16dp"
+                                    android:layout_alignParentRight="true"
                                     android:textColor="@color/black"
                                     android:text="@string/btn_cancel"/>
 

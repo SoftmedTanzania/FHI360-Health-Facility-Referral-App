@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.viewmodels.PatientsListViewModel;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 
 /**
  * Created by issy on 11/16/17.
@@ -28,6 +30,7 @@ public class NewReferalsActivity extends BaseActivity {
     private Toolbar toolbar;
     private RecyclerView patientsRecycler;
     private PatientsListAdapter adapter;
+    TextView activityTitle;
 
     private PatientsListViewModel patientsListViewModel;
     private int service;
@@ -47,6 +50,20 @@ public class NewReferalsActivity extends BaseActivity {
         }
 
         setupview();
+
+        String title= "";
+        switch (service){
+            case HIV_SERVICE_ID:
+                title = getResources().getString(R.string.clients_list)+" | "+getResources().getString(R.string.hiv);
+                break;
+            case OPD_SERVICE_ID:
+                title = getResources().getString(R.string.clients_list)+" | OPD";
+                break;
+            default:
+                break;
+        }
+
+        activityTitle.setText(title);
 
         if (toolbar != null){
             setSupportActionBar(toolbar);
@@ -78,6 +95,8 @@ public class NewReferalsActivity extends BaseActivity {
 
     private void setupview(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        activityTitle = findViewById(R.id.activity_title);
 
         patientsRecycler = (RecyclerView) findViewById(R.id.patients_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

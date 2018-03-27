@@ -13,8 +13,8 @@
     <string name="village">Kijiji</string>
     <string name="ward">Kata</string>
     <string name="map_cue">Map Cue</string>
-    <string name="health_facility">\n Kituo cha Afya \n</string>
-    <string name="chw">\nMtoa Huduma Wa Jamii \n</string>
+    <string name="health_facility">Kituo cha Afya</string>
+    <string name="chw">Mtoa Huduma Wa Jamii</string>
 
     <string name="text_search_field">Jina au CTC#</string>
 
@@ -153,6 +153,11 @@
     <string name="didnt_finished">Hajamaliza</string>
     <string name="lab">Maabara</string>
 
+    <string name="referral_list_opd_title">Orodha ya rufaa za Kituo | OPD</string>
+    <string name="referral_list_hiv_title">Orodha ya rufaa  kliniki ya Vvu/Ukimwi</string>
+    <string name="referral_list_tb_title">Orodha ya rufaa kliniki ya Kifua Kikuuu</string>
+    <string name="referral_list_lab_title">Orodha ya rufaa za Maabara</string>
+
     <string name="positive">Chanya</string>
     <string name="negative">Hasi</string>
 
@@ -168,5 +173,13 @@
     <string name="waiting_for_results">Majibu Bado..</string>
 
     <string name="received_at_tb_clinic">Tayari amepokelewa katika kliniki ya Kifua Kikuu</string>
+    <string name="tested_patients">Waliopimwa</string>
+
+    <string name="lab_tested_patients">Wateja waliopimwa | MAABARA</string>
+
+    <string name="lab_test_form">Fomu ya kipimo cha maabara</string>
+    <string name="lab_test_feedback">Majibu ya Maabara</string>
+
+
 
 </resources>

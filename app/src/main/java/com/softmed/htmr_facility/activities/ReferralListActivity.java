@@ -74,8 +74,12 @@ public class ReferralListActivity extends BaseActivity {
                 title = getString(R.string.referral_list_hiv_title);
             }else if(serviceID==TB_SERVICE_ID){
                 title = getString(R.string.referral_list_tb_title);
+            }else if (serviceID==LAB_SERVICE_ID){
+                title = getResources().getString(R.string.referral_list_lab_title);
             }
-            getSupportActionBar().setTitle(title);
+
+            toolbarTitle.setText(title);
+
         }
 
         viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
@@ -107,7 +111,7 @@ public class ReferralListActivity extends BaseActivity {
     }
 
     private void setupviews(){
-
+        toolbarTitle = findViewById(R.id.activity_title);
     }
 
     public void setupTabIcons() {

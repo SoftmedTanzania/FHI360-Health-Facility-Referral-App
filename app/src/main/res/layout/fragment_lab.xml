@@ -70,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/lab_refered_clients_card"
+            android:id="@+id/lab_tested_patients_card"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="2dp">
@@ -78,14 +78,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/light_blue_050">
+                android:background="@color/white">
 
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="32dp"
-                    android:src="@mipmap/ic_refered_blue"
+                    android:src="@mipmap/ic_new_green"
                     android:id="@+id/refered_clients_icon"/>
 
                 <LinearLayout
@@ -104,18 +104,7 @@
                         android:id="@+id/refered_clients_text"
                         android:fontFamily="@font/roboto_regular"
                         android:textColor="@color/black"
-                        android:text="@string/referrals_issued"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:id="@+id/lab_referal_feedback_count"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:textColor="@color/card_grid_text"
-                        android:text=""/>
+                        android:text="@string/tested_patients"/>
 
                 </LinearLayout>
 

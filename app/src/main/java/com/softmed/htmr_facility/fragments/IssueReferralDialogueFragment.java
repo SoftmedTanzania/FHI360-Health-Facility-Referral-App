@@ -297,6 +297,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setReferralStatus(REFERRAL_STATUS_NEW);
         referral.setOtherClinicalInformation(otherClinicalInformationValue);
 
+        referral.setLabTest(TEST_TO_TAKE);
+
         for (ReferralIndicator indicator : selectedIndicators){
             indicatorIDs.add(indicator.getReferralServiceIndicatorId());
         }
@@ -314,8 +316,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     }
 
     private boolean getCurrentInputs(){
-        Log.d("IssueReferral", spinnerService.getSelectedItemPosition()+" Service Selected Position");
-        Log.d("IssueReferral", spinnerToHealthFacility.getSelectedItemPosition()+" To Facility Selected Position");
         if (referralType == FACILITY_TO_CHW){
             serviceID = -1;
         }else {
@@ -328,14 +328,9 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             }
         }
 
-        if (referralReasons.getText().toString().isEmpty()){
-            toastThis("Tafadhali andika sababu za rufaa");
-            return false;
-        }else {
-            referralReasonsValue = referralReasons.getText().toString();
-        }
+        referralReasonsValue = referralReasons.getText().toString().equals("") ? "N/A" : referralReasons.getText().toString();
+        otherClinicalInformationValue = otherClinicalInformation.getText().toString().equals("") ? "N/A" : otherClinicalInformation.getText().toString();
 
-        otherClinicalInformationValue = otherClinicalInformation.getText().toString();
         return true;
 
     }

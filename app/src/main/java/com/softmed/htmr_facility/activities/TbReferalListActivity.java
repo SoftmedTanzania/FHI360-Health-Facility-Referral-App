@@ -42,7 +42,7 @@ public class TbReferalListActivity extends BaseActivity {
     private TabLayout tabLayout;
     public static NonSwipeableViewPager viewPager;
     private Toolbar toolbar;
-    private TextView toolbarTitle;
+    private TextView activityTitle;
 
     AppDatabase database;
 
@@ -71,9 +71,9 @@ public class TbReferalListActivity extends BaseActivity {
         if (toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            String title = getString(R.string.referral_list_tb_title);
-            getSupportActionBar().setTitle(title);
         }
+
+        activityTitle.setText(getResources().getString(R.string.referral_list_tb_title));
 
     }
 
@@ -89,7 +89,7 @@ public class TbReferalListActivity extends BaseActivity {
 
 
     private void setupview(){
-
+        activityTitle = findViewById(R.id.activity_title);
     }
 
     public void setupTabIcons() {

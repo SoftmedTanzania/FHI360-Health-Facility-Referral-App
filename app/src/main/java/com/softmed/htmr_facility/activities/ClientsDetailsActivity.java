@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +78,8 @@ public class ClientsDetailsActivity extends BaseActivity {
     public TextView clientNames,clientAgeValue, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
     public Dialog referalDialogue;
     MaterialSpinner testResultsSpinner;
+    RelativeLayout resultsInputContainer, indicatorsContainer;
+    LinearLayout servicesGivenContainer;
 
     private int service;
     private Referral currentReferral;
@@ -111,6 +115,8 @@ public class ClientsDetailsActivity extends BaseActivity {
                     testResultsSpinner.setEnabled(false);
 
                 }
+
+                Log.d("avalanche", currentReferral.getLabTest()+" = LAB TEST");
 
                 if (service == LAB_SERVICE_ID){
                     switch (currentReferral.getLabTest()){
@@ -203,6 +209,10 @@ public class ClientsDetailsActivity extends BaseActivity {
         labTestType = findViewById(R.id.lab_test_type);
         testResultsSpinner = findViewById(R.id.spin_test_results);
 
+        resultsInputContainer = findViewById(R.id.results_input_wrap);
+        servicesGivenContainer =  findViewById(R.id.service_given_container);
+        indicatorsContainer = findViewById(R.id.indicators_container);
+
         indicatorsRecyclerView = findViewById(R.id.indicators_linear_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         indicatorsRecyclerView.setLayoutManager(layoutManager);
@@ -235,22 +245,32 @@ public class ClientsDetailsActivity extends BaseActivity {
                 //Do all CTC Calibrations
                 testResultsSpinner.setVisibility(View.GONE);
                 labTestType.setVisibility(View.GONE);
+                resultsInputContainer.setVisibility(View.GONE);
+                servicesGivenContainer.setVisibility(View.VISIBLE);
+                indicatorsContainer.setVisibility(View.GONE);
                 break;
             case TB_SERVICE_ID:
                 //Do all TB Calibrations
                 labTestType.setVisibility(View.GONE);
                 testResultsSpinner.setVisibility(View.GONE);
+                resultsInputContainer.setVisibility(View.GONE);
+                servicesGivenContainer.setVisibility(View.VISIBLE);
+                indicatorsContainer.setVisibility(View.GONE);
                 break;
             case LAB_SERVICE_ID:
                 /*
-                * Do all lab Calibrations
+                * Calibrations
                 * Test Type = VISIBLE
                 * Cannot issue referral from lab : Issue Referral = INVISIBLE
+                * Lab does not have services given and advices
                 * */
                 referButton.setVisibility(View.GONE);
                 labTestType.setVisibility(View.VISIBLE);
                 testResultsSpinner.setVisibility(View.VISIBLE);
                 ctcNumberEt.setVisibility(View.GONE);
+                resultsInputContainer.setVisibility(View.VISIBLE);
+                servicesGivenContainer.setVisibility(View.GONE);
+                indicatorsContainer.setVisibility(View.GONE);
                 break;
         }
     }

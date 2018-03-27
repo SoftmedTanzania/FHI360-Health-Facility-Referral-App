@@ -49,13 +49,13 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 public class FeedbackDetailsActivity extends BaseActivity {
 
-    private Toolbar toolbar;
-    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName;
-    private EditText servicesOfferedEt, otherInformationEt;
-    private CheckBox hivStatus;
-    public TextView clientNames,clientAge, wardText, villageText, hamletText, patientGender, labTestType, waitingForResults;
-    private Button referralButton, cancelButton;
-    private RecyclerView indicatorsRecyclerView;
+    Toolbar toolbar;
+    TextView ctcNumber, referalReasons, villageLeaderValue, referrerName;
+    EditText servicesOfferedEt, otherInformationEt;
+    CheckBox hivStatus;
+    TextView clientNames,clientAge, wardText, villageText, hamletText, patientGender, labTestType, waitingForResults;
+    Button referralButton, cancelButton;
+    RecyclerView indicatorsRecyclerView;
     ToggleSwitch testResultsToggle;
     LinearLayout testTypeContainer;
     RelativeLayout testInputContainer;
@@ -152,6 +152,13 @@ public class FeedbackDetailsActivity extends BaseActivity {
     }
 
     private void setupviews(){
+
+        findViewById(R.id.fake_click).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Do nothing
+            }
+        });
 
         testInputContainer = findViewById(R.id.results_input_container);
         testTypeContainer = findViewById(R.id.test_type_container);

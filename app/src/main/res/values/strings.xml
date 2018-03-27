@@ -12,8 +12,8 @@
     <string name="village">Village</string>
     <string name="ward">Ward</string>
     <string name="map_cue">Map Cue</string>
-    <string name="health_facility">\n Health Facility \n</string>
-    <string name="chw">\nCommunity Health Worker \n</string>
+    <string name="health_facility">Health Facility</string>
+    <string name="chw"> Community Health Worker</string>
 
     <string name="text_search_field">Name or CTC#</string>
 
@@ -164,9 +164,11 @@
     <string name="finished">Finished</string>
     <string name="didnt_finished">Did Not Finish</string>
     <string name="lab">Laboratory</string>
-    <string name="referral_list_opd_title">Orodha ya rufaa OPD</string>
-    <string name="referral_list_hiv_title">Orodha ya rufaa  kliniki ya Vvu/Ukimwi</string>
-    <string name="referral_list_tb_title">Orodha ya rufaa kliniki ya Kifua Kikuuu</string>
+
+    <string name="referral_list_opd_title">List Of Facility Referrals | OPD</string>
+    <string name="referral_list_hiv_title">List of CTC Referrals</string>
+    <string name="referral_list_tb_title">List of TB Referrals</string>
+    <string name="referral_list_lab_title">List Of Lab Referrals</string>
 
     <string name="positive">Positive</string>
     <string name="negative">Negative</string>
@@ -184,5 +186,11 @@
     <string name="waiting_for_results">Waiting For Results..</string>
 
     <string name="received_at_tb_clinic">Received Successfully at TB Clinic</string>
+    <string name="tested_patients">Tested Patients</string>
+
+    <string name="lab_tested_patients">Tested Clients | LAB</string>
+    <string name="lab_test_form">Lab Test Form</string>
+
+    <string name="lab_test_feedback">Lab Test Feedback</string>
 
 </resources>

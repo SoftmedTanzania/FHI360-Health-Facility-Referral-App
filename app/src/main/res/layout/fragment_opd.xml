@@ -39,8 +39,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/tb_refered_clients_icon"
                         android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tb_refered_clients_icon"
                         android:orientation="vertical">
 
                         <TextView
@@ -57,7 +57,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
+                            android:textSize="12sp"
                             android:fontFamily="@font/roboto_regular"
                             android:id="@+id/referal_count_text"
                             android:layout_marginLeft="16dp"
@@ -66,40 +66,41 @@
                             android:textColor="@color/card_grid_text"
                             android:text=""/>
 
+                        <View
+                            android:layout_width="150dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/red_200"/>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp">
+                            android:layout_marginRight="4dp"
+                            android:layout_marginTop="4dp"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="13sp"
+                                android:textSize="12sp"
                                 android:id="@+id/chw_referal_count_text"
                                 android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
+                                android:layout_marginRight="4dp"
                                 android:fontFamily="@font/roboto_regular"
-                                android:textColor="@color/card_grid_tex"
-                                android:text=""/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="13dp"
-                                android:background="@color/red_400"/>
+                                android:textColor="@color/card_grid_tex"/>
 
                             <TextView
-                                android:layout_weight="1"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="13sp"
+                                android:textSize="12sp"
                                 android:id="@+id/hf_referal_count_text"
                                 android:layout_marginLeft="16dp"
                                 android:fontFamily="@font/roboto_regular"
-                                android:layout_marginRight="16dp"
+                                android:layout_marginRight="4dp"
+                                android:layout_marginTop="2dp"
                                 android:textColor="@color/card_grid_tex"
-                                android:text=""/>
+                                android:text="Kituo cha afya : 2"/>
 
                         </LinearLayout>
 

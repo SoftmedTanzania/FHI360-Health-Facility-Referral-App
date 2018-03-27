@@ -246,7 +246,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("referralDate", referral.getReferralDate());
             object.put("facilityId", referral.getFacilityId());
             object.put("referralStatus", referral.getReferralStatus());
-            object.put("lab_test", referral.getLabTest());
+            object.put("labTest", referral.getLabTest());
 
             // Indicators are no longer used in facility level
 

@@ -106,6 +106,14 @@
         <activity android:name=".activities.ReportsActivity"
             android:parentActivityName=".activities.HomeActivity"/>
 
+        <activity android:name=".activities.LabTestedPatients"
+            android:parentActivityName=".activities.HomeActivity"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity android:name=".activities.LabTestDetailsActivity"
+            android:parentActivityName=".activities.LabTestedPatients"
+            android:windowSoftInputMode="stateHidden"/>
+
     </application>
 
 </manifest>

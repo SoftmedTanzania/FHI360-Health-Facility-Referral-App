@@ -31,8 +31,9 @@
                     android:textColor="@color/white"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp"
-                    android:textSize="14sp"
-                    android:id="@+id/app_name"/>
+                    android:textSize="20sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:id="@+id/activity_title"/>
 
             </RelativeLayout>
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.LabTestedPatients;
 import com.softmed.htmr_facility.activities.ReferedClientsActivity;
 import com.softmed.htmr_facility.activities.ReferralListActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
@@ -35,8 +36,8 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 public class LabFragment extends Fragment {
 
-    CardView referralListCard, referredClientsCard;
-    TextView labReferralCount, referalFeedbackCount;
+    CardView referralListCard, testedPatientsCard;
+    TextView labReferralCount;
 
     AppDatabase database;
 
@@ -72,11 +73,10 @@ public class LabFragment extends Fragment {
         });
 
 
-        referredClientsCard.setOnClickListener(new View.OnClickListener() {
+        testedPatientsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LabFragment.this.getActivity(), ReferedClientsActivity.class);
-                intent.putExtra("service_id", LAB_SERVICE_ID);
+                Intent intent = new Intent(LabFragment.this.getActivity(), LabTestedPatients.class);
                 startActivity(intent);
             }
         });
@@ -85,10 +85,9 @@ public class LabFragment extends Fragment {
 
     private void setupviews(View rootView){
         referralListCard = rootView.findViewById(R.id.lab_referral_list_card);
-        referredClientsCard = rootView.findViewById(R.id.lab_refered_clients_card);
+        testedPatientsCard = rootView.findViewById(R.id.lab_tested_patients_card);
 
         labReferralCount = rootView.findViewById(R.id.lab_referal_count_text);
-        referalFeedbackCount = rootView.findViewById(R.id.lab_referal_feedback_count);
 
     }
 
@@ -107,7 +106,6 @@ public class LabFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             labReferralCount.setText(referralCounts);
-            referalFeedbackCount.setText(feedbackCount);
             super.onPostExecute(aVoid);
         }
 
