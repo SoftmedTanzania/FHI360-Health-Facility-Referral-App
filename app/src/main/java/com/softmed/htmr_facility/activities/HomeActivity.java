@@ -55,6 +55,7 @@ import com.softmed.htmr_facility.fragments.TbFragment;
 import com.softmed.htmr_facility.utils.AlarmReceiver;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
+import com.softmed.htmr_facility.utils.SessionManager;
 import com.softmed.htmr_facility.viewmodels.PostOfficeListViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,7 +106,11 @@ public class HomeActivity extends BaseActivity {
         database = AppDatabase.getDatabase(this);
         mRequestManager= Glide.with(this);
 
-        session.checkLogin();
+        SessionManager sessionManager = new SessionManager(this);
+        if (!sessionManager.isLoggedIn()){
+            sessionManager.checkLogin();
+            finish();
+        }
 
         patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
                 session.getUserName(),
@@ -390,6 +395,7 @@ public class HomeActivity extends BaseActivity {
 
         if (id == R.id.logout){
             session.logoutUser();
+            finish();
         }
 
         if (id == R.id.reports){

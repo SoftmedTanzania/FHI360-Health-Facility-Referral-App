@@ -662,19 +662,6 @@
                                 android:layout_height="100dp">
 
                                 <Button
-                                    android:visibility="gone"
-                                    android:layout_width="200dp"
-                                    android:layout_height="60dp"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_marginRight="16dp"
-                                    android:text="@string/btn_forward_referral"
-                                    android:layout_centerVertical="true"
-                                    android:id="@+id/referal_button"
-                                    android:fontFamily="@font/roboto_regular"
-                                    android:textColor="@color/card_title_text"
-                                    android:background="@drawable/border_one"/>
-
-                                <Button
                                     android:layout_width="200dp"
                                     android:layout_height="60dp"
                                     android:id="@+id/cancel_button"
@@ -686,6 +673,17 @@
                                     android:textColor="@color/black"
                                     android:text="@string/btn_cancel"/>
 
+                                <Button
+                                    android:layout_width="200dp"
+                                    android:layout_height="60dp"
+                                    android:layout_toLeftOf="@id/cancel_button"
+                                    android:layout_marginRight="16dp"
+                                    android:text="@string/btn_forward_referral"
+                                    android:layout_centerVertical="true"
+                                    android:id="@+id/referal_button"
+                                    android:fontFamily="@font/roboto_regular"
+                                    android:textColor="@color/card_title_text"
+                                    android:background="@drawable/border_one"/>
 
                             </RelativeLayout>
 

@@ -86,11 +86,13 @@ public class FeedbackDetailsActivity extends BaseActivity {
                     if (currentReferral.isTestResults()){
                         testResultsToggle.setCheckedTogglePosition(1);
                     }
+                    referralButton.setVisibility(View.VISIBLE);
 
                 }else {
                     //Test has not yet been conducted
                     waitingForResults.setVisibility(View.VISIBLE);
                     testResultsToggle.setVisibility(View.GONE);
+                    referralButton.setVisibility(View.GONE);
                 }
 
                 if (currentReferral.getServiceId() == LAB_SERVICE_ID){
@@ -207,6 +209,9 @@ public class FeedbackDetailsActivity extends BaseActivity {
         AppDatabase db;
         List<ReferralIndicator> indicators =  new ArrayList<>();
 
+        boolean referralAlreadyChained = false;
+        List<Referral> chainedReferrals = new ArrayList<>();
+
         patientDetailsTask(AppDatabase database, String patientID){
             this.db = database;
             this.patientId = patientID;
@@ -217,6 +222,15 @@ public class FeedbackDetailsActivity extends BaseActivity {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
+
+            chainedReferrals = db.referalModel().listOfChainedReferrals(currentReferral.getReferralUUID(), currentReferral.getReferralDate());
+            if (chainedReferrals != null){
+                if (chainedReferrals.size() > 0){
+                    referralAlreadyChained = true;
+                }else {
+                    referralAlreadyChained = false;
+                }
+            }
 
             if (currentReferral.getServiceIndicatorIds() != null){
                 //..List<Long> ids = ListStringConverter.stringToSomeObjectList(currentReferral.getServiceIndicatorIds()+"");
@@ -238,7 +252,19 @@ public class FeedbackDetailsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Log.d("reckless", "Done background!"+patientNames);
+
+            //Hide the refer button for already chained referrals
+            if (referralAlreadyChained){
+                referralButton.setVisibility(View.GONE);
+            }else{
+                if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
+                    referralButton.setVisibility(View.VISIBLE);
+                }else {
+                    referralButton.setVisibility(View.GONE);
+                }
+            }
+
+
             clientNames.setText(patientNames);
             if (patient != null){
 

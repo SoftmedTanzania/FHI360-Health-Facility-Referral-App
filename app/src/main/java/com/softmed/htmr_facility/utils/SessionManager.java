@@ -51,6 +51,8 @@ public class SessionManager {
     //Change this
     public static final String USER_PASS = "userPassword";
 
+    public static boolean sessionActive = false;
+
 
     /**
      * Create login session
@@ -112,14 +114,16 @@ public class SessionManager {
         if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
+
             // Closing all the Activities
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
             // Add new Flag to start new Activity
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             // Staring Login Activity
             _context.startActivity(i);
+
         }
 
     }
@@ -131,6 +135,7 @@ public class SessionManager {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
+        sessionActive = false;
 
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);

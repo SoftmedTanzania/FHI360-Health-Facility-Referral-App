@@ -45,23 +45,12 @@ public interface ReferalModelDao {
     @Query("select * from Referral where referralStatus = 0 and serviceId = :serviceId order by referralDate desc")
     LiveData<List<Referral>> getUnattendedReferals(int serviceId);
 
-    @Query("select count(*) from Referral where referralStatus = 0 and referralType in (:sourceID)")
-    int getCountReferralsBySource(int[] sourceID);
-
-    @Query("select count(*) from Referral where referralStatus = 0 and referralSource = :service")
-    int getCountReferralsByService(int service);
-
-    @Query("select count(*) from Referral where referralStatus = 0 and (referralType = 1 or referralType = 3)")
-    int getOPDReferralsCount();
-
-    @Query("select count(*) from Referral where referralStatus = 0")
-    int geCounttUnattendedReferals();
-
     @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId")
     int geCounttUnattendedReferalsByService(int serviceId);
 
-    @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and referralType in (:referralType)")
-    int getCountReferralsByType(int serviceId, int[] referralType);
+    //Check if referral has already been chained
+    @Query("select * from Referral where referralUUID = :currentReferralUUID and referralDate > :currentReferralDate")
+    List<Referral> listOfChainedReferrals(String currentReferralUUID, long currentReferralDate);
 
     /*
     Live Updating Referral Summaries
