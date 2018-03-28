@@ -122,24 +122,23 @@ public class OpdReferralDetailsActivity extends BaseActivity {
     }
 
     private void saveReferalInformation(boolean isForwardingReferral){
-        if (servicesOfferedEt.getText().toString().isEmpty()){
-            Toast.makeText(this, "Tafadhali jaza huduma uliyoitoa", Toast.LENGTH_LONG).show();
-        }else {
 
-            String serviceOferedString = servicesOfferedEt.getText().toString();
-            String otherInformation = otherInformationEt.getText().toString();
+        String serviceOferedString = servicesOfferedEt.getText().toString();
+        String otherInformation = otherInformationEt.getText().toString();
 
-            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
-            currentReferral.setServiceGivenToPatient(serviceOferedString);
-            currentReferral.setOtherNotesAndAdvices(otherInformation);
+        currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
+        currentReferral.setServiceGivenToPatient(serviceOferedString);
+        currentReferral.setOtherNotesAndAdvices(otherInformation);
 
-            //Show progress bar
-            cancelButton.setVisibility(View.INVISIBLE);
+        //Show progress bar
+        cancelButton.setVisibility(View.INVISIBLE);
 
-            OpdReferralDetailsActivity.UpdateReferralTask updateReferralTask = new OpdReferralDetailsActivity.UpdateReferralTask(currentReferral, baseDatabase);
-            updateReferralTask.execute(isForwardingReferral, isNewCase);
+        //Do not allow further forward of this referral at this point
+        referButton.setVisibility(View.GONE);
 
-        }
+        OpdReferralDetailsActivity.UpdateReferralTask updateReferralTask = new OpdReferralDetailsActivity.UpdateReferralTask(currentReferral, baseDatabase);
+        updateReferralTask.execute(isForwardingReferral, isNewCase);
+
     }
 
     private void callReferralFragmentDialogue(Patient patient){
@@ -281,6 +280,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             if (isForwardingThisReferral){
                 servicesOfferedEt.setEnabled(false);
                 otherInformationEt.setEnabled(false);
+                cancelButton.setText(getResources().getString(R.string.done));
                 callReferralFragmentDialogue(currentPatient);
             }else {
                 finish();
