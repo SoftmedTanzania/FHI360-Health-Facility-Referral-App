@@ -380,7 +380,11 @@ public class ClientsDetailsActivity extends BaseActivity {
 
         private void bindIndicator(ReferralIndicator indicator){
             this.referralIndicator = indicator;
-            indicatorName.setText(referralIndicator.getIndicatorName());
+            if (BaseActivity.getLocaleString().equals(ENGLISH_LOCALE)){
+                indicatorName.setText(referralIndicator.getIndicatorName());
+            }else {
+                indicatorName.setText(referralIndicator.getIndicatorNameSw());
+            }
         }
 
     }

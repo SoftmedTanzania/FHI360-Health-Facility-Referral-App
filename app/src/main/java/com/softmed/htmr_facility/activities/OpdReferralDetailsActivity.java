@@ -230,7 +230,11 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
         private void bindIndicator(ReferralIndicator indicator){
             this.referralIndicator = indicator;
-            indicatorName.setText(referralIndicator==null?"":referralIndicator.getIndicatorName());
+            if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+                indicatorName.setText(referralIndicator==null?"":referralIndicator.getIndicatorName());
+            }else {
+                indicatorName.setText(referralIndicator==null?"":referralIndicator.getIndicatorNameSw());
+            }
         }
 
     }
