@@ -438,7 +438,7 @@ public class HomeActivity extends BaseActivity {
 
         View labTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView labTitle = labTabView.findViewById(R.id.title_text);
-        labTitle.setText(getResources().getString(R.string.lab));
+        labTitle.setText(getResources().getString(R.string.fragment_lab));
         ImageView labIcon    = labTabView.findViewById(R.id.icon);
         labIcon.setColorFilter(this.getResources().getColor(R.color.white));
         if (!HomeActivity.this.isFinishing())

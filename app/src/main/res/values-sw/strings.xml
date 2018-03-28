@@ -121,6 +121,7 @@
     <string name="fragment_opd">OPD</string>
     <string name="fragment_hiv">VVU/Ukimwi</string> <!--Huduma za  -->
     <string name="fragment_tb">Kifua Kikuu</string>
+    <string name="fragment_lab">MAABARA</string>
 
     <string name="data_syncing">Taarifa Zinaoanishwa</string>
 
