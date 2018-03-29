@@ -94,7 +94,6 @@ public interface ReferalModelDao {
     @Delete
     void deleteReferal(Referral referral);
 
-
     /**
      *LAB QUERIES
      */
