@@ -61,7 +61,9 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_NEGATIVE;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_NEGATIVE_SW;
 import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_POSITIVE;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_POSITIVE_SW;
 
 /**
  * Created by issy on 11/17/17.
@@ -156,8 +158,14 @@ public class ClientsDetailsActivity extends BaseActivity {
         referalDialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         List<String> results = new ArrayList<>();
-        results.add(TEST_RESULT_POSITIVE);
-        results.add(TEST_RESULT_NEGATIVE);
+
+        if (getLocaleString().equals(SWAHILI_LOCALE)){
+            results.add(TEST_RESULT_POSITIVE_SW);
+            results.add(TEST_RESULT_NEGATIVE_SW);
+        }else if (getLocaleString().equals(ENGLISH_LOCALE)){
+            results.add(TEST_RESULT_POSITIVE);
+            results.add(TEST_RESULT_NEGATIVE);
+        }
 
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, results);
         testResultsSpinner.setAdapter(spinAdapter);
@@ -289,9 +297,9 @@ public class ClientsDetailsActivity extends BaseActivity {
             } else {
                 boolean result = false;
 
-                if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE)){
+                if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE_SW)){
                     result = true;
-                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE)){
+                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE_SW)){
                     result = false;
                 }
 

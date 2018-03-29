@@ -23,6 +23,9 @@ public class constants {
     public static final String TEST_RESULT_POSITIVE = "Positive";
     public static final String TEST_RESULT_NEGATIVE = "Negative";
 
+    public static final String TEST_RESULT_POSITIVE_SW = "Chanya";
+    public static final String TEST_RESULT_NEGATIVE_SW = "Hasi";
+
     public static final String TREATMENT_TYPE_1 = "2RHZE/4RH";
     public static final String TREATMENT_TYPE_2 = "2RHZ/4RH";
     public static final String TREATMENT_TYPE_3 = "2SRHZE/1RHZE/5RHE";
