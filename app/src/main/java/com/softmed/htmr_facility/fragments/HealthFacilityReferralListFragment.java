@@ -61,7 +61,7 @@ public class HealthFacilityReferralListFragment extends Fragment {
     private RecyclerView clientRecyclerView;
     private MaterialSpinner statusSpinner;
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
-    private TextView ctcNumberOrServiceNameTitle;
+    private TextView ctcNumberOrServiceNameTitle, referralReasonTitle;
     private ProgressView progressView;
     private Button filterButton;
 
@@ -117,10 +117,21 @@ public class HealthFacilityReferralListFragment extends Fragment {
         service = getArguments().getInt("service");
         setupviews(view);
 
-        if (service == OPD_SERVICE_ID){
-            ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.service));
-        }else{
-            ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.ctc_number));
+        switch (service){
+            case OPD_SERVICE_ID:
+                ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.service));
+                referralReasonTitle.setText(getResources().getString(R.string.referral_reasib));
+                break;
+            case LAB_SERVICE_ID:
+                referralReasonTitle.setText(getResources().getString(R.string.lab_test_type_title));
+                ctcNumberOrServiceNameTitle.setText("");
+                break;
+            case HIV_SERVICE_ID:
+                referralReasonTitle.setText(getResources().getString(R.string.referral_reasib));
+                ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.ctc_number));
+                break;
+            default:
+                break;
         }
 
         final String[] status = {STATUS_COMPLETED, STATUS_NEW};
@@ -313,8 +324,9 @@ public class HealthFacilityReferralListFragment extends Fragment {
         }
     }
 
-
     private void setupviews(View v){
+
+        referralReasonTitle = v.findViewById(R.id.referral_reasons);
 
         ctcNumberOrServiceNameTitle = (TextView) v.findViewById(R.id.ctc_number);
 

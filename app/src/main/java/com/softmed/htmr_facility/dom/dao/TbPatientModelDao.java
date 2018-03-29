@@ -26,7 +26,7 @@ public interface TbPatientModelDao  {
     @Query("select * from TbPatient")
     LiveData<List<TbPatient>> getAllTbPatients();
 
-    @Query("select * from TbPatient where patientId = :id")
+    @Query("select * from TbPatient where healthFacilityPatientId = :id")
     TbPatient getTbPatientById(String id);
 
     @Insert(onConflict = REPLACE)

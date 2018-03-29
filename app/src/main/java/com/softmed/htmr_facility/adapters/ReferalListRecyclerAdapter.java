@@ -20,7 +20,10 @@ import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Referral;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 11/17/17.
@@ -84,7 +87,29 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             }
 
             holder.ctcNumber.setText(referral.getCtcNumber());
-            holder.referralReasons.setText(referral.getReferralReason());
+            if (serviceID == LAB_SERVICE_ID){
+                holder.ctcNumber.setText("");
+                int labTest = referral.getLabTest();
+                String labTestName;
+                switch (labTest){
+                    case HIV_SERVICE_ID:
+                        labTestName = context.getResources().getString(R.string.hiv);
+                        break;
+                    case TB_SERVICE_ID:
+                        labTestName = context.getResources().getString(R.string.tb);
+                        break;
+                    case MALARIA_SERVICE_ID:
+                        labTestName = "Malaria";
+                        break;
+                    default:
+                        labTestName = context.getResources().getString(R.string.unspecified_test_type);
+                        break;
+                }
+                holder.referralReasons.setText(labTestName);
+            }else {
+                holder.ctcNumber.setText(referral.getCtcNumber());
+                holder.referralReasons.setText(referral.getReferralReason());
+            }
 
             holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
 

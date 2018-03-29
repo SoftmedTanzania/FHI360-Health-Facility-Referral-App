@@ -44,6 +44,7 @@ import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
+import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
@@ -389,7 +390,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<PatientResponce>> call, Response<List<PatientResponce>> response) {
                 List<PatientResponce> patientList = response.body();
-
+                new addTbPatientTask().execute(patientList);
             }
 
             @Override
@@ -429,15 +430,29 @@ public class LoginActivity extends BaseActivity {
             responces = lists[0];
 
             for (PatientResponce _responce : responces){
+
                 Patient patient = _responce.getPatient();
+                patient.setCurrentOnTbTreatment(true);
                 baseDatabase.patientModel().addPatient(patient);
 
                 TbPatient tbPatient = _responce.getTbPatient();
+                Log.d("msosi", "Inserting tb patient : "+tbPatient.getHealthFacilityPatientId());
+                Log.d("msosi", "Sputum Weight : "+tbPatient.getMakohozi());
                 baseDatabase.tbPatientModelDao().addPatient(tbPatient);
+
+                //Delete all appointments with these patient's IDs
+                baseDatabase.appointmentModelDao().deleteAppointmentByPatientID(patient.getPatientId());
 
                 List<PatientAppointment> appointments = _responce.getPatientAppointments();
                 for (PatientAppointment _appointment : appointments){
+                    Log.d("msosi", "Inserting appointment on : "+_appointment.getAppointmentDate());
                     baseDatabase.appointmentModelDao().addAppointment(_appointment);
+                }
+
+                List<TbEncounters> listOfEncounters = _responce.getTbEncounters();
+                for (TbEncounters encounter : listOfEncounters){
+                    //TODO: Add TB Encounters
+                    baseDatabase.tbEncounterModelDao().addEncounter(encounter);
                 }
 
             }
@@ -448,6 +463,12 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            loginMessages.setText("");
+            loginProgress.setVisibility(View.GONE);
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            LoginActivity.this.finish();
         }
 
     }
@@ -486,12 +507,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            loginMessages.setText("");
-            loginProgress.setVisibility(View.GONE);
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            finish();
+            callTbPatientServices();
         }
     }
 

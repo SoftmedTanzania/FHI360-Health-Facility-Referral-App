@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.TbPatient;
 
 /**
  *  Created by issy on 11/28/17.
@@ -21,6 +22,8 @@ public class PatientsListViewModel extends AndroidViewModel{
 
     private final LiveData<List<Patient>> patientsList, tbPatientsOnly, hivPatientsOnly;
 
+    private final LiveData<List<TbPatient>> tbPatients;
+
     private AppDatabase appDatabase;
 
     public PatientsListViewModel(Application application) {
@@ -29,6 +32,9 @@ public class PatientsListViewModel extends AndroidViewModel{
         patientsList = appDatabase.patientModel().getAllPatients();
         tbPatientsOnly = appDatabase.patientModel().getTbPatients(true);
         hivPatientsOnly = appDatabase.patientModel().getHivClients(true);
+
+        tbPatients = appDatabase.tbPatientModelDao().getAllTbPatients();
+
     }
 
     public LiveData<List<Patient>> getPatientsList() {
@@ -41,6 +47,10 @@ public class PatientsListViewModel extends AndroidViewModel{
 
     public LiveData<List<Patient>> getHivPatientsOnly() {
         return hivPatientsOnly;
+    }
+
+    public LiveData<List<TbPatient>> getTbPatients() {
+        return tbPatients;
     }
 
     public void deleteItem(Patient patient) {

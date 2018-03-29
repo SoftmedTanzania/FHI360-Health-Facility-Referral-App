@@ -1,6 +1,7 @@
 package com.softmed.htmr_facility.dom.objects;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
@@ -13,15 +14,16 @@ import java.io.Serializable;
  * @issyzac issyzac.iz@gmail.com
  * On Project HFReferralApp
  */
-
-@Entity(primaryKeys = { "tbPatientID", "encounterMonth" })
+@Entity
 public class TbEncounters implements Serializable {
 
+    @PrimaryKey
+    @NonNull
     private String id;
 
     @NonNull
     @SerializedName("tbPatientId")
-    private String tbPatientID;
+    private long tbPatientID;
 
     @NonNull
     @SerializedName("encounterMonth")
@@ -48,13 +50,25 @@ public class TbEncounters implements Serializable {
     @SerializedName("scheduledDate")
     private long scheduledDate;
 
+    @SerializedName("encounterYear")
+    private int encounterYear;
 
-    public String getTbPatientID() {
+
+    @NonNull
+    public long getTbPatientID() {
         return tbPatientID;
     }
 
-    public void setTbPatientID(String tbPatientID) {
+    public void setTbPatientID(@NonNull long tbPatientID) {
         this.tbPatientID = tbPatientID;
+    }
+
+    public int getEncounterYear() {
+        return encounterYear;
+    }
+
+    public void setEncounterYear(int encounterYear) {
+        this.encounterYear = encounterYear;
     }
 
     public String getMakohozi() {

@@ -194,7 +194,7 @@ public class BaseActivity extends AppCompatActivity {
 
         try {
 
-            object.put("tbPatientId", Long.parseLong(encounters.getTbPatientID()));
+            object.put("tbPatientId", encounters.getTbPatientID());
             object.put("makohozi", encounters.getMakohozi());
             object.put("appointmentId", encounters.getAppointmentId());
             object.put("encounterMonth", encounters.getEncounterMonth());
@@ -202,6 +202,8 @@ public class BaseActivity extends AppCompatActivity {
             object.put("scheduledDate", encounters.getScheduledDate());
             object.put("medicationDate", encounters.getMedicationDate());
             object.put("medicationStatus", encounters.isMedicationStatus());
+            object.put("weight", encounters.getWeight());
+            object.put("encounterYear", encounters.getEncounterYear());
 
             datastream = object.toString();
 
@@ -353,6 +355,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("patientType", tbPatient.getPatientType());
             object.put("transferType", tbPatient.getTransferType());
             object.put("referralType", tbPatient.getReferralType());
+            object.put("testType", tbPatient.getTestType());
             object.put("veo", tbPatient.getVeo());
             object.put("weight", tbPatient.getWeight());
             object.put("xray", tbPatient.getXray());

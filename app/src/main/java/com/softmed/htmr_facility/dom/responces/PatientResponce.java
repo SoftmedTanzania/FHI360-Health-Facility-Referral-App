@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
+import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 
 /**
@@ -26,6 +27,9 @@ public class PatientResponce implements Serializable{
 
     @SerializedName("patientsAppointmentsDTOS")
     private List<PatientAppointment> patientAppointments;
+
+    @SerializedName("tbEncounterDTOS")
+    private List<TbEncounters> tbEncounters;
 
     PatientResponce(){}
 
@@ -51,5 +55,13 @@ public class PatientResponce implements Serializable{
 
     public void setPatientAppointments(List<PatientAppointment> patientAppointments) {
         this.patientAppointments = patientAppointments;
+    }
+
+    public List<TbEncounters> getTbEncounters() {
+        return tbEncounters;
+    }
+
+    public void setTbEncounters(List<TbEncounters> tbEncounters) {
+        this.tbEncounters = tbEncounters;
     }
 }

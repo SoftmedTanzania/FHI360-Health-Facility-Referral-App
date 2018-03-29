@@ -89,21 +89,11 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
             @Override
             public void onClick(View view) {
 
-                /**
-                 *  Steps:
-                 *
-                 *  End current referral with default values : Service Given = RECEIVED SUCCESSFULLY
-                 *  Add referral entry to postman
-                 *  Update Existing Patient Object to CURRENTLY ON TB CLINIC
-                 *  Add patient entry to postman
-                 *  Create a new TB Client with current patient ID
-                 *  Add TbPatient entry to postman
-                 *
-                 *  Call @TbPatientActivity.java passing current Patient and the newly created TbPatient
-                 *
-                 */
-
-                new EnrollPatientToTbClinic(database).execute(referral);
+                //Call Tb Clinic activity passing patient and tbpatient
+                Intent intent = new Intent(context, TbClientDetailsActivity.class);
+                intent.putExtra("referral", referral);
+                intent.putExtra("isPatientNew", true);
+                context.startActivity(intent);
 
                 /*Intent intent = new Intent(context, TbReferralDetailsActivity.class);
                 intent.putExtra("referal", referral);
@@ -133,6 +123,7 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
 
         TextView clientsNames, attendedFlag, ctcNumber, referralReasons, referralDate;
         View viewItem;
+        Patient currentPatient;
 
         public ListViewItemViewHolder(View itemView){
             super(itemView);
@@ -143,7 +134,10 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
             referralDate = (TextView) itemView.findViewById(R.id.ref_date);
             ctcNumber = (TextView) itemView.findViewById(R.id.ctc_number);
             referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
+        }
 
+        void setCurrentPatient(Patient p){
+            this.currentPatient = p;
         }
 
     }
@@ -153,6 +147,7 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
         String patientNames, patientId;
         AppDatabase db;
         TextView mText;
+        Patient patient;
 
         patientDetailsTask(AppDatabase database, String patientID, TextView namesInstance){
             this.db = database;
@@ -172,73 +167,10 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
             super.onPostExecute(aVoid);
             Log.d("reckless", "Done background !"+patientNames);
             mText.setText(patientNames);
+
             //adapter.notifyDataSetChanged();
         }
 
-    }
-
-    class EnrollPatientToTbClinic extends AsyncTask<Referral, Void, Void>{
-
-        AppDatabase database;
-        Patient patient;
-        TbPatient tbPatient;
-
-        EnrollPatientToTbClinic(AppDatabase db){
-            this.database = db;
-        }
-
-        @Override
-        protected Void doInBackground(Referral... referrals) {
-            Referral currentReferral = referrals[0];
-
-            //End Current Referral
-            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
-            currentReferral.setServiceGivenToPatient(context.getResources().getString(R.string.received_at_tb_clinic));
-            currentReferral.setOtherNotesAndAdvices("");
-            database.referalModel().updateReferral(currentReferral);
-
-            //Add Post office entry
-            PostOffice postOffice = new PostOffice();
-            postOffice.setPost_id(currentReferral.getReferral_id());
-            postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
-            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
-            database.postOfficeModelDao().addPostEntry(postOffice);
-
-            //Update patient to currently on TB Clinic
-            patient = database.patientModel().getPatientById(currentReferral.getPatient_id());
-            patient.setCurrentOnTbTreatment(true);
-            //TODO : handle CTC Number input at the clinic
-            database.patientModel().updatePatient(patient);
-
-            PostOffice patientPost = new PostOffice();
-            patientPost.setPost_id(patient.getPatientId());
-            patientPost.setPost_data_type(POST_DATA_TYPE_PATIENT);
-            patientPost.setSyncStatus(ENTRY_NOT_SYNCED);
-            database.postOfficeModelDao().addPostEntry(patientPost);
-
-            //Create a new Tb Patient and add to post office
-            tbPatient = new TbPatient();
-            tbPatient.setPatientId(Long.parseLong(patient.getPatientId()));
-            tbPatient.setTempID(UUID.randomUUID()+"");
-            database.tbPatientModelDao().addPatient(tbPatient);
-
-            PostOffice tbPatientPost = new PostOffice();
-            tbPatientPost.setPost_id(patient.getPatientId());
-            tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
-            tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
-            database.postOfficeModelDao().addPostEntry(tbPatientPost);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            //Call Tb Clinic activity passing patient and tbpatient
-            Intent intent = new Intent(context, TbClientDetailsActivity.class);
-            intent.putExtra("patient", patient);
-            intent.putExtra("isPatientNew", true);
-            context.startActivity(intent);
-        }
     }
 
 }

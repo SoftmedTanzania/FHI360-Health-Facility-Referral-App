@@ -306,7 +306,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
                 //TODO: Create a new TbClient Object with basic parameters
                 TbPatient tbPatient = new TbPatient();
-                tbPatient.setPatientId(Long.parseLong(currentPatient.getPatientId()));
+                tbPatient.setHealthFacilityPatientId(Long.parseLong(currentPatient.getPatientId()));
                 tbPatient.setTempID(UUID.randomUUID()+"");
                 database.tbPatientModelDao().addPatient(tbPatient);
 

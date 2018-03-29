@@ -1,6 +1,7 @@
 package com.softmed.htmr_facility.dom.objects;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
@@ -26,20 +27,25 @@ public class PatientAppointment implements Serializable{
     @SerializedName("appointment_id")
     private Long appointmentID;
 
+    @SerializedName("healthFacilityPatientId")
     private String patientID;
 
-    @SerializedName("appointment_date")
+    @SerializedName("appointmentDate")
     @TypeConverters(DateConverter.class)
     private long appointmentDate;
 
     @SerializedName("appointmentType")
     private int appointmentType;
 
-    @SerializedName("is_cancelled")
+    @SerializedName("isCancelled")
     private boolean cancelled;
 
     @SerializedName("status")
     private String status;
+
+    @Ignore
+    @SerializedName("cancelled")
+    private boolean _cancelled;
 
     private String appointmentEncounterMonth;
 
@@ -92,6 +98,14 @@ public class PatientAppointment implements Serializable{
         this.appointmentEncounterMonth = appointmentEncounterMonth;
     }
 
+    public boolean is_cancelled() {
+        return _cancelled;
+    }
+
+    public void set_cancelled(boolean _cancelled) {
+        this._cancelled = _cancelled;
+    }
+
     public int getAppointmentType() {
         return appointmentType;
     }
@@ -99,4 +113,5 @@ public class PatientAppointment implements Serializable{
     public void setAppointmentType(int appointmentType) {
         this.appointmentType = appointmentType;
     }
+
 }
