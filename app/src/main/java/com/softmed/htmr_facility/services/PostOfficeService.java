@@ -200,13 +200,17 @@ public class PostOfficeService extends IntentService {
 
                 } else if (data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)) {
 
-                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterById(data.getPost_id());
                     for (TbEncounters e : encounter){
 
                         Call call = patientServices.postEncounter(BaseActivity.getTbEncounterRequestBody(e));
                         call.enqueue(new Callback() {
                             @Override
                             public void onResponse(Call call, Response response) {
+                                if (response != null){
+                                    TbEncounters encounter = (TbEncounters) response.body();
+                                    //resaveEncounter and Delete the old one for data integrity
+                                }
                                 Log.d("POST_DATA_TE", "Response Received : "+response.body());
                             }
 

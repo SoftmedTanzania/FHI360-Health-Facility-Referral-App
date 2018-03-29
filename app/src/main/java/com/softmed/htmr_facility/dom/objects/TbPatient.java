@@ -24,10 +24,10 @@ public class TbPatient implements Serializable{
     /*
     This is the ID of tbPatient table
      */
-    @NonNull
     private String tempID;
 
     @PrimaryKey(autoGenerate = false)
+    @SerializedName("healthFacilityPatientId")
     private long patientId;
 
     @SerializedName("tbPatientId")
@@ -48,7 +48,7 @@ public class TbPatient implements Serializable{
     2 = X-Ray
     3 = Other
     */
-    @SerializedName("test_type")
+    @SerializedName("testType")
     private int testType;
 
     private String otherTestDetails;
@@ -65,7 +65,7 @@ public class TbPatient implements Serializable{
     @SerializedName("makohozi")
     private String makohozi;
 
-    @SerializedName("other_tests")
+    @SerializedName("otherTestsDetails")
     private String otherTests;
 
     @SerializedName("treatment_type")
@@ -74,11 +74,11 @@ public class TbPatient implements Serializable{
     @SerializedName("outcome")
     private String outcome;
 
-    @SerializedName("outcome_date")
+    @SerializedName("outcomeDate")
     @TypeConverters(DateConverter.class)
     private long outcomeDate;
 
-    @SerializedName("outcome_details")
+    @SerializedName("outcomeDetails")
     private String outcomeDetails;
 
     @SerializedName("isPregnant")

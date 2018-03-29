@@ -10,6 +10,7 @@ import com.softmed.htmr_facility.base.BaseActivity;
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
+import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
 import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
@@ -54,15 +55,15 @@ public class ReferralCountViewModels extends AndroidViewModel {
         opdFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(OPD_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //HIV
-        hivReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(HIV_SERVICE_ID);
+        hivReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(HIV_SERVICE_ID, new int[] {INTRAFACILITY});
         hivFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //TB
-        tbReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(TB_SERVICE_ID);
+        tbReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(TB_SERVICE_ID, new int[] {INTRAFACILITY});
         tbFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //LAB
-        labReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(LAB_SERVICE_ID);
+        labReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(LAB_SERVICE_ID, new int[] {INTRAFACILITY});
         labTestedClients = database.referalModel().getLiveCountTestedClients(LAB_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
     }

@@ -114,7 +114,6 @@ public class TbClientListActivity extends BaseActivity {
 
             return true;
         }
-
     }
 
     private void setupview(){

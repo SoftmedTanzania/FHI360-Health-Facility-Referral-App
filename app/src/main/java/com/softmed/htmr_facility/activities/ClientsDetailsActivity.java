@@ -383,7 +383,7 @@ public class ClientsDetailsActivity extends BaseActivity {
             if (BaseActivity.getLocaleString().equals(ENGLISH_LOCALE)){
                 indicatorName.setText(referralIndicator.getIndicatorName());
             }else {
-                indicatorName.setText(referralIndicator.getIndicatorNameSw());
+
             }
         }
 

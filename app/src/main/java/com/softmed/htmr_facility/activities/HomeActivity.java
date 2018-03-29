@@ -112,6 +112,8 @@ public class HomeActivity extends BaseActivity {
             finish();
         }
 
+        Log.d("msosi", session.getKeyHfid()+"");
+
         patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
                 session.getUserName(),
                 session.getUserPass(),
@@ -281,7 +283,7 @@ public class HomeActivity extends BaseActivity {
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
-                            Log.d("patient_response", t.getMessage());
+                            Log.d("patient_response", "Error : "+t.getStackTrace());
                         }
                     });
 
@@ -341,7 +343,12 @@ public class HomeActivity extends BaseActivity {
 
                 }else if(data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)){
 
-                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+                    Log.d("POST_DATA_REFERRAL_FB", data.getPost_data_type());
+
+                    //List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
+
+                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterById(data.getPost_id());
+
                     for (TbEncounters e : encounter){
 
                         Call call = patientServices.postEncounter(BaseActivity.getTbEncounterRequestBody(e));
@@ -350,15 +357,14 @@ public class HomeActivity extends BaseActivity {
                             public void onResponse(Call call, Response response) {
                                 Log.d("POST_DATA_TE", "Response Received : "+response.body());
 
-                                new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+                                //new DeletePOstData(database).execute(data); //TODO REMOVE THIS
 
                             }
 
                             @Override
                             public void onFailure(Call call, Throwable t) {
-                                Log.d("POST_DATA_TE", "Error : "+t.getMessage());
-
-                                new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+                                t.printStackTrace();
+                                //new DeletePOstData(database).execute(data); //TODO REMOVE THIS
 
                             }
                         });

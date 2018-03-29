@@ -56,4 +56,7 @@ public interface PatientAppointmentModelDao {
     @Delete
     void deleteAppointment(PatientAppointment appointment);
 
+    @Query("delete from PatientAppointment where patientID = :patientID")
+    void deleteAppointmentByPatientID(String patientID);
+
 }

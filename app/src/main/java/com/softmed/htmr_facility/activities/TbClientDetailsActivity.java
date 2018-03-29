@@ -190,6 +190,13 @@ public class TbClientDetailsActivity extends BaseActivity {
                 }else {
                     makohoziSpinner.setEnabled(true);
 
+                    //Hide Finished previous month medication for month one
+                    if (i == 0){
+                        finishedPreviousMonthLayout.setVisibility(View.INVISIBLE);
+                    }else {
+                        finishedPreviousMonthLayout.setVisibility(View.VISIBLE);
+                    }
+
                     //Enable treatment results capture if encounter month is after the fifth month
                     if (i >= 5)
                         matokeoLinearLayout.setVisibility(View.VISIBLE);
@@ -207,7 +214,7 @@ public class TbClientDetailsActivity extends BaseActivity {
                         makohoziEncounterWrap.setVisibility(View.INVISIBLE);
                     }
 
-                    new GetEncounterDetails(baseDatabase).execute((i+1)+"", currentTbPatient.getTempID()+"");
+                    new GetEncounterDetails(baseDatabase, (i+1)+"").execute(currentTbPatient.getPatientId());
                     Log.d("Billions", "About to Get Encounters for month "+(i+1));
 
                 }
@@ -268,6 +275,7 @@ public class TbClientDetailsActivity extends BaseActivity {
                             //Save Treatment Results;
                             activityCanExit = false;
                             if (saveResults()){
+                                Log.d("Billions", "Saving tb patient for outcome");
                                 new SaveTbPatientTask(baseDatabase).execute(currentTbPatient);
                             }
                         }else {
@@ -423,7 +431,9 @@ public class TbClientDetailsActivity extends BaseActivity {
         String makohoziValue = "";
         String monthlyWeight = "";
         int encMonth;
-        TbEncounters tbEncounter = new TbEncounters();
+        int encYear;
+
+        //Encounter Month
         if (encouterMonthSpinner.getSelectedItemPosition() == 0){
             toastThis("Tafadhali chagua mwezi!");
             return false;
@@ -431,6 +441,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             encMonth = encouterMonthSpinner.getSelectedItemPosition();
         }
 
+        //Sputum for AFB
         if (testType == 1 && (encMonth == 1 || encMonth == 3) ){
             if (makohoziSpinner.getSelectedItemPosition() == 0){
                 toastThis("Tafadhali jaza hali ya makohozi ya mgonjwa");
@@ -440,6 +451,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         }
 
+        //Monthly Weight
         if (monthlyPatientWeightEt.getText().toString().isEmpty()){
             toastThis("Tafadhali jaza uzito wa mteja.");
             return false;
@@ -447,7 +459,13 @@ public class TbClientDetailsActivity extends BaseActivity {
             monthlyWeight = monthlyPatientWeightEt.getText().toString();
         }
 
+        TbEncounters tbEncounter = new TbEncounters();
+        tbEncounter.setTbPatientID(currentTbPatient.getPatientId());
         tbEncounter.setEncounterMonth(encMonth);
+        tbEncounter.setEncounterYear(Calendar.getInstance().get(Calendar.YEAR));
+        String newID = tbEncounter.getTbPatientID()+"_"+tbEncounter.getEncounterMonth()+"_"+tbEncounter.getEncounterYear();
+        Log.d("EncID", "New ID Structure : "+newID);
+        tbEncounter.setId(newID);
 
         if (testType == 1){
             if (encMonth == 1 || encMonth == 3){
@@ -466,7 +484,6 @@ public class TbClientDetailsActivity extends BaseActivity {
         //Generate Appointment Schedule and assign temporary appointment ID
         tbEncounter.setAppointmentId(-1);
         tbEncounter.setScheduledDate(Calendar.getInstance().getTimeInMillis());
-        tbEncounter.setTbPatientID(currentTbPatient.getTempID()+"");
 
         Calendar calendar = Calendar.getInstance();
         long today = calendar.getTimeInMillis();
@@ -521,12 +538,12 @@ public class TbClientDetailsActivity extends BaseActivity {
         medicationStatusTitle.setText("Amemaliza Dawa Za Mwezi Uliopita Kikamilifu");
     }
 
-    class GetPreviousEncounters extends AsyncTask<String, Void, List<TbEncounters>>{
+    class GetPreviousEncounters extends AsyncTask<Long, Void, List<TbEncounters>>{
 
         @Override
-        protected List<TbEncounters> doInBackground(String... strings) {
+        protected List<TbEncounters> doInBackground(Long... ids) {
             List<TbEncounters> previousEncounters = new ArrayList<>();
-            String tbPatientID = strings[0];
+            Long tbPatientID = ids[0];
 
             previousEncounters = baseDatabase.tbEncounterModelDao().getEncounterByPatientID(tbPatientID);
 
@@ -552,12 +569,14 @@ public class TbClientDetailsActivity extends BaseActivity {
         }
     }
 
-    class GetEncounterDetails extends AsyncTask<String, Void, TbEncounters>{
+    class GetEncounterDetails extends AsyncTask<Long, Void, TbEncounters>{
 
         AppDatabase database;
+        String encMonth;
 
-        GetEncounterDetails(AppDatabase db){
+        GetEncounterDetails(AppDatabase db, String encounterMonth){
             this.database = db;
+            this.encMonth = encounterMonth;
         }
 
         @Override
@@ -586,13 +605,13 @@ public class TbClientDetailsActivity extends BaseActivity {
         }
 
         @Override
-        protected TbEncounters doInBackground(String... strings) {
+        protected TbEncounters doInBackground(Long... ids) {
             Log.d("Billions", "On Encounters background");
 
-            List<TbEncounters> allEncounters = database.tbEncounterModelDao().getEncounterByPatientID(strings[1]);
+            List<TbEncounters> allEncounters = database.tbEncounterModelDao().getEncounterByPatientID(ids[0]);
             Log.d("Billions", "All Encounters Size "+allEncounters.size());
 
-            List<TbEncounters> encounter = database.tbEncounterModelDao().getMonthEncounter(strings[0], strings[1]);
+            List<TbEncounters> encounter = database.tbEncounterModelDao().getMonthEncounter(encMonth, ids[0]);
             if (encounter.size() > 0)
                 return encounter.get(0);
             else
@@ -628,11 +647,15 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             if (tbPatient != null){
 
-                new GetPreviousEncounters().execute(tbPatient.getTempID());
+                new GetPreviousEncounters().execute(tbPatient.getPatientId());
 
                 int testType = tbPatient.getTestType();
                 clickBlocker.setVisibility(View.VISIBLE);
+                Log.d("EncID", "Test Type Outside = "+testType);
+
                 if (testType > 0){
+                    Log.d("EncID", "Test Type = "+testType);
+
                     testTypeToggle.setCheckedTogglePosition(testType-1);
                     testTypeToggle.setFocusableInTouchMode(false);
 
@@ -640,6 +663,8 @@ public class TbClientDetailsActivity extends BaseActivity {
                         otherTestValue.setText(tbPatient.getOtherTestDetails());
                     }else if (testType == 1){
                         for (int i=0; i<tbTypes.length; i++){
+
+                            Log.d("EncID", "Patient Spatum = "+tbPatient.getMakohozi()+" : Current = "+tbTypes[i]);
                             if (tbPatient.getMakohozi().equals(tbTypes[i])){
                                 monthOneMakohoziSpinner.setSelection(i);
                                 monthOneMakohoziSpinner.setEnabled(false);
@@ -741,7 +766,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             int previousmonth = encounters[0].getEncounterMonth() - 1;
             mEncMonth = encounters[0].getEncounterMonth();
 
-            List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousmonth+"", currentTbPatient.getTempID()+"");
+            List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousmonth+"", currentTbPatient.getPatientId());
 
             boolean previousMonthStatus = encounters[0].isHasFinishedPreviousMonthMedication();
 
@@ -851,13 +876,20 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             /*
             Appointment is the last thing so send patient data to PostOffice
-             */
+
+            UPDATED: This sends patient object to server every time an encounter and hence an appointment
+            is saved, remove this
+            */
+
+            /*
             PostOffice postOffice = new PostOffice();
             postOffice.setPost_id(currentPatient.getPatientId());
             postOffice.setPost_data_type(POST_DATA_TYPE_PATIENT);
             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
             database.postOfficeModelDao().addPostEntry(postOffice);
+
+            */
 
             return null;
         }
