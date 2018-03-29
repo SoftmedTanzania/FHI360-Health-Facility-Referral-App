@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -74,6 +75,16 @@ public class LabTestedPatients extends BaseActivity {
         testedPatientsRecyclerView.setHasFixedSize(true);
 
         toolbar = findViewById(R.id.toolbar);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class TestedClientsAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
