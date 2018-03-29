@@ -134,7 +134,6 @@
                                     android:layout_centerVertical="true"
                                     android:layout_marginRight="16dp"
                                     android:layout_toLeftOf="@id/hifadhi_taarifa"
-                                    android:onClick="finish"
                                     android:background="@drawable/border_two"
                                     android:fontFamily="@font/roboto_regular"
                                     android:text="@string/btn_cancel"

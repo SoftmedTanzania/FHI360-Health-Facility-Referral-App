@@ -436,7 +436,7 @@ public class LoginActivity extends BaseActivity {
                 baseDatabase.patientModel().addPatient(patient);
 
                 TbPatient tbPatient = _responce.getTbPatient();
-                Log.d("msosi", "Inserting tb patient : "+tbPatient.getPatientId());
+                Log.d("msosi", "Inserting tb patient : "+tbPatient.getHealthFacilityPatientId());
                 Log.d("msosi", "Sputum Weight : "+tbPatient.getMakohozi());
                 baseDatabase.tbPatientModelDao().addPatient(tbPatient);
 
@@ -452,6 +452,7 @@ public class LoginActivity extends BaseActivity {
                 List<TbEncounters> listOfEncounters = _responce.getTbEncounters();
                 for (TbEncounters encounter : listOfEncounters){
                     //TODO: Add TB Encounters
+                    baseDatabase.tbEncounterModelDao().addEncounter(encounter);
                 }
 
             }

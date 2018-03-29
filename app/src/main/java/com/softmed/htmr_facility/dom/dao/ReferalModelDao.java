@@ -64,7 +64,7 @@ public interface ReferalModelDao {
     @Query("select count(*) from Referral where referralStatus = 0 and (referralType = 1 or referralType = 3)")
     LiveData<Integer> getLiveOPDReferralsCount();
 
-    @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and referralSource in (:sourceID)")
+    @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and referralType in (:sourceID)")
     LiveData<Integer> getLiveCountUnattendedReferalsByService(int serviceId, int[] sourceID);
 
     @Query("select count(*) from Referral where referralStatus = 1 and serviceId = :serviceID and fromFacilityId = :fromFacilityID")

@@ -31,11 +31,11 @@ import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 
 public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
 
-    List<Patient> items;
+    List<TbPatient> items;
     private Context context;
     private int serviceID;
 
-    public TbClientListAdapter(List<Patient> mItems, Context context, int serviceId){
+    public TbClientListAdapter(List<TbPatient> mItems, Context context, int serviceId){
         this.items = mItems;
         this.serviceID = serviceId;
     }
@@ -58,21 +58,21 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int itemPosition){
 
-        final Patient patient = getItem(itemPosition);
+        final TbPatient tbPatient = getItem(itemPosition);
+
         TbClientListAdapter.ListViewItemViewHolder holder = (TbClientListAdapter.ListViewItemViewHolder) viewHolder;
 
-        holder.clientFirstName.setText(patient.getPatientFirstName());
-        holder.clientLastName.setText(patient.getPatientSurname());
-        holder.clientVillage.setText(patient.getVillage());
-        holder.clientPhoneNumber.setText(patient.getPhone_number());
-        holder.clientGender.setText(patient.getGender());
+        holder.clientTreatment.setText(tbPatient.getTreatment_type());
+
+        new GetPatientDetails(AppDatabase.getDatabase(context), holder).execute(tbPatient);
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //UpdatePatientInformation and save data
                 Intent intent = new Intent(context, TbClientDetailsActivity.class);
-                intent.putExtra("patient", patient);
+                intent.putExtra("patient", holder.patient);
                 intent.putExtra("isPatientNew", false);
                 context.startActivity(intent);
             }
@@ -81,11 +81,10 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         holder.rufaaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callReferralFragmentDialogue(patient);
+                callReferralFragmentDialogue(holder.patient);
             }
         });
 
-        new GetTbDetails(AppDatabase.getDatabase(context), holder).execute(patient.getPatientId());
 
     }
 
@@ -98,7 +97,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     }
 
-    public void addItems (List<Patient> pat){
+    public void addItems (List<TbPatient> pat){
         this.items = pat;
         notifyDataSetChanged();
     }
@@ -108,7 +107,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         return items.size();
     }
 
-    private Patient getItem(int position){
+    private TbPatient getItem(int position){
         return items.get(position);
     }
 
@@ -117,6 +116,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         TextView clientFirstName, clientLastName, clientVillage, clientPhoneNumber, clientGender, clientTreatment;
         View viewItem;
         Button rufaaButton;
+        Patient patient;
 
         public ListViewItemViewHolder(View itemView){
             super(itemView);
@@ -135,14 +135,14 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     }
 
-    class GetTbDetails extends AsyncTask<String, Void, Void>{
+    class GetPatientDetails extends AsyncTask<TbPatient, Void, Void>{
 
-        TbPatient tbPatient;
+        Patient patient;
         AppDatabase database;
         TbClientListAdapter.ListViewItemViewHolder holder;
                 //= (TbClientListAdapter.ListViewItemViewHolder) viewHolder;
 
-        GetTbDetails(AppDatabase db, TbClientListAdapter.ListViewItemViewHolder vh){
+        GetPatientDetails(AppDatabase db, TbClientListAdapter.ListViewItemViewHolder vh){
             this.database = db;
             this.holder = vh;
         }
@@ -151,15 +151,22 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             try {
-                holder.clientTreatment.setText(tbPatient.getTreatment_type());
+                holder.patient = patient;
+
+                holder.clientFirstName.setText(patient.getPatientFirstName());
+                holder.clientLastName.setText(patient.getPatientSurname());
+                holder.clientVillage.setText(patient.getVillage());
+                holder.clientPhoneNumber.setText(patient.getPhone_number());
+                holder.clientGender.setText(patient.getGender());
+
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
 
         @Override
-        protected Void doInBackground(String... args) {
-            tbPatient = database.tbPatientModelDao().getTbPatientById(args[0]);
+        protected Void doInBackground(TbPatient... args) {
+            patient = database.patientModel().getPatientById(args[0].getHealthFacilityPatientId()+"");
             return null;
         }
     }

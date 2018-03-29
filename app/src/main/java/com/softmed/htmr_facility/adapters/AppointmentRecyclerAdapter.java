@@ -58,16 +58,18 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
         final PatientAppointment patientAppointment = getItem(itemPosition);
         AppointmentRecyclerAdapter.ListViewItemViewHolder holder = (AppointmentRecyclerAdapter.ListViewItemViewHolder) viewHolder;
 
-        GetPatientNames getPatientNames = new GetPatientNames(database, holder);
-        getPatientNames.execute(patientAppointment.getPatientID());
-        holder.appointmentDate.setText(simpleDateFormat.format(patientAppointment.getAppointmentDate()));
-        if (patientAppointment.getStatus().equals(STATUS_PENDING)){
-            holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.amber_800));
-        }else if (patientAppointment.getStatus().equals(STATUS_COMPLETED)){
-            holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.green_800));
-        }
+        if (patientAppointment != null){
+            GetPatientNames getPatientNames = new GetPatientNames(database, holder);
+            getPatientNames.execute(patientAppointment.getPatientID());
+            holder.appointmentDate.setText(simpleDateFormat.format(patientAppointment.getAppointmentDate()));
+            if (patientAppointment.getStatus().equals(STATUS_PENDING)){
+                holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.amber_800));
+            }else if (patientAppointment.getStatus().equals(STATUS_COMPLETED)){
+                holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.green_800));
+            }
 
-        holder.appointmentStatus.setText(patientAppointment.getStatus());
+            holder.appointmentStatus.setText(patientAppointment.getStatus());
+        }
 
     }
 

@@ -59,7 +59,7 @@ public class ReferralCountViewModels extends AndroidViewModel {
         hivFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //TB
-        tbReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(TB_SERVICE_ID, new int[] {INTRAFACILITY});
+        tbReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(TB_SERVICE_ID, new int[] {INTRAFACILITY, INTERFACILITY});
         tbFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //LAB

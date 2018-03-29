@@ -20,6 +20,7 @@ import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.adapters.TbClientListAdapter;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.viewmodels.PatientsListViewModel;
 
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
@@ -57,13 +58,19 @@ public class TbClientListActivity extends BaseActivity {
 
         activityTitle.setText(getResources().getString(R.string.clients_list)+" | "+getResources().getString(R.string.tb));
 
-        adapter = new TbClientListAdapter(new ArrayList<Patient>(), this, TB_SERVICE_ID);
+        adapter = new TbClientListAdapter(new ArrayList<TbPatient>(), this, TB_SERVICE_ID);
         patientsListViewModel = ViewModelProviders.of(this).get(PatientsListViewModel.class);
         patientsListViewModel.getTbPatientsOnly().observe(TbClientListActivity.this, new Observer<List<Patient>>() {
             @Override
             public void onChanged(@Nullable List<Patient> patients) {
                 patientList = patients;
-                adapter.addItems(patients);
+            }
+        });
+
+        patientsListViewModel.getTbPatients().observe(this, new Observer<List<TbPatient>>() {
+            @Override
+            public void onChanged(@Nullable List<TbPatient> tbPatients) {
+                adapter.addItems(tbPatients);
             }
         });
 
@@ -94,7 +101,7 @@ public class TbClientListActivity extends BaseActivity {
             patientsResultList.add(result1[i]);
         }
 
-        adapter.addItems(patientsResultList);
+        //adapter.addItems(patientsResultList);
 
     }
 
