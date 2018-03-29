@@ -96,36 +96,19 @@
                                         android:textColor="@color/black"
                                         android:text="@string/new_client_registration_form"
                                         android:textSize="42sp"
+                                        android:fontFamily="@font/roboto_bold"
                                         android:id="@+id/client_name"
-                                        android:layout_centerVertical="true"
-                                        android:fontFamily="@font/avenir_light"/>
+                                        android:layout_centerVertical="true"/>
 
-                                    <TextView
-                                        android:visibility="invisible"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@id/client_name"
+                                    <View
+                                        android:layout_width="200dp"
+                                        android:layout_height="5dp"
+                                        android:id="@+id/strip_one"
                                         android:layout_marginLeft="32dp"
-                                        android:layout_marginTop="16dp"
-                                        android:textSize="14sp"
-                                        android:id="@+id/cbhs_number_title"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:text="CBHS #"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <TextView
-                                        android:visibility="invisible"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="@color/card_title_text"
+                                        android:layout_marginTop="8dp"
                                         android:layout_below="@id/client_name"
-                                        android:text="0001/0001/000001"
-                                        android:textSize="14sp"
-                                        android:layout_marginLeft="16dp"
-                                        android:layout_marginTop="16dp"
-                                        android:id="@+id/cbhs_number_value"
-                                        android:layout_toRightOf="@+id/cbhs_number_title"
-                                        android:fontFamily="@font/avenir_light"/>
+                                        android:background="@color/card_separator"/>
+
 
                                 </RelativeLayout>
 
@@ -136,11 +119,21 @@
                                     android:background="@color/card_separator_third">
 
                                     <TextView
+                                        android:id="@+id/initial_information_title"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textColor="@color/card_grid_text"
+                                        android:textSize="16sp"
+                                        android:layout_marginTop="16dp"
+                                        android:textColor="@color/colorPrimary"
                                         android:fontFamily="@font/roboto_bold"
                                         android:text="@string/initial_information"/>
+                                    <View
+                                        android:layout_below="@id/initial_information_title"
+                                        android:layout_width="60dp"
+                                        android:layout_height="5dp"
+                                        android:id="@+id/strip_two"
+                                        android:layout_marginTop="8dp"
+                                        android:background="@color/card_separator"/>
 
 
                                 </RelativeLayout>
@@ -424,16 +417,23 @@
                                             android:layout_height="wrap_content"
                                             android:text="@string/supporter_information"
                                             android:id="@+id/msaidizi_title"
-                                            android:textColor="@color/card_title_text"
-                                            android:textSize="14sp"
-                                            android:fontFamily="@font/roboto_condensed"/>
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="16sp"
+                                            android:fontFamily="@font/roboto_bold"/>
+                                        <View
+                                            android:layout_below="@id/msaidizi_title"
+                                            android:layout_width="60dp"
+                                            android:layout_height="5dp"
+                                            android:id="@+id/strip_three"
+                                            android:layout_marginTop="8dp"
+                                            android:background="@color/card_separator"/>
 
                                         <com.rey.material.widget.EditText
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:hint="@string/supporters_name"
                                             android:id="@+id/care_taker_name"
-                                            android:layout_below="@id/msaidizi_title"
+                                            android:layout_below="@id/strip_three"
                                             android:layout_marginTop="8dp"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
@@ -515,10 +515,18 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/other_details_title"
-                                            android:textSize="14sp"
+                                            android:textSize="16sp"
                                             android:text="@string/other_details"
-                                            android:fontFamily="@font/roboto_condensed"
-                                            android:textColor="@color/card_title_text"/>
+                                            android:fontFamily="@font/roboto_bold"
+                                            android:textColor="@color/colorPrimary"/>
+
+                                        <View
+                                            android:layout_below="@id/other_details_title"
+                                            android:layout_width="60dp"
+                                            android:layout_height="5dp"
+                                            android:id="@+id/strip_four"
+                                            android:layout_marginTop="8dp"
+                                            android:background="@color/card_separator"/>
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -526,7 +534,7 @@
                                             android:orientation="horizontal"
                                             android:gravity="bottom"
                                             android:id="@+id/location_wrap"
-                                            android:layout_below="@id/other_details_title"
+                                            android:layout_below="@id/strip_four"
                                             android:layout_marginTop="8dp">
 
                                             <com.rey.material.widget.EditText
