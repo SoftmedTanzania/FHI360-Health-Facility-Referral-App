@@ -81,11 +81,12 @@ public class ClientsDetailsActivity extends BaseActivity {
     RelativeLayout resultsInputContainer, indicatorsContainer;
     LinearLayout servicesGivenContainer;
 
-    private int service;
-    private Referral currentReferral;
-    private Patient currentPatient;
-    private boolean isNewCase = false;
-    private boolean isCTCNumberEmpty = false;
+    int service;
+    Referral currentReferral;
+    Patient currentPatient;
+    boolean isNewCase = false;
+    boolean isCTCNumberEmpty = false;
+    boolean updatePatientObject = false;
     private String clientCTCNumber;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
@@ -299,6 +300,14 @@ public class ClientsDetailsActivity extends BaseActivity {
 
         }
 
+        if (service == HIV_SERVICE_ID){
+            if (!ctcNumberEt.getText().toString().isEmpty()){
+                currentPatient.setHivStatus(true);
+                currentPatient.setCtcNumber(ctcNumberEt.getText().toString());
+                updatePatientObject = true;
+            }
+        }
+
         String serviceOferedString = servicesOfferedEt.getText().toString();
         String otherInformation = otherInformationEt.getText().toString();
 
@@ -409,6 +418,19 @@ public class ClientsDetailsActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Boolean... booleans) {
 
+            if (updatePatientObject){
+                database.patientModel().updatePatient(currentPatient);
+
+                PostOffice postOffice = new PostOffice();
+                postOffice.setPost_id(currentPatient.getPatientId());
+                postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+                postOffice.setPost_data_type(POST_DATA_TYPE_PATIENT);
+                database.postOfficeModelDao().addPostEntry(postOffice);
+
+                updatePatientObject = false;
+
+            }
+
             isForwardingThisReferral = booleans[0];
             isNewCase = booleans[1];
 
@@ -420,7 +442,7 @@ public class ClientsDetailsActivity extends BaseActivity {
             postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
             database.postOfficeModelDao().addPostEntry(postOffice);
 
-            if (isNewCase){
+            /*if (isNewCase){
 
                 Patient patient = database.patientModel().getPatientById(referal.getPatient_id());
                 patient.setCtcNumber(clientCTCNumber);
@@ -435,7 +457,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
                 database.postOfficeModelDao().addPostEntry(postOffice1);
 
-            }
+            }*/
 
             return null;
         }
