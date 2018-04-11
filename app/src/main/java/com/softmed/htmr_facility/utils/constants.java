@@ -23,6 +23,9 @@ public class constants {
     public static final String TEST_RESULT_POSITIVE = "Positive";
     public static final String TEST_RESULT_NEGATIVE = "Negative";
 
+    public static final String TEST_RESULT_POSITIVE_SW = "Chanya";
+    public static final String TEST_RESULT_NEGATIVE_SW = "Hasi";
+
     public static final String TREATMENT_TYPE_1 = "2RHZE/4RH";
     public static final String TREATMENT_TYPE_2 = "2RHZ/4RH";
     public static final String TREATMENT_TYPE_3 = "2SRHZE/1RHZE/5RHE";
@@ -54,6 +57,7 @@ public class constants {
     public static final String POST_DATA_TYPE_PATIENT = "p";
     public static final String POST_DATA_TYPE_TB_PATIENT = "tp";
     public static final String POST_DATA_TYPE_ENCOUNTER = "e";
+    public static final String POST_DATA_TYPE_APPOINTMENTS = "a";
 
     public static final int ENTRY_NOT_SYNCED = 0;
     public static final int ENTRY_SYNCED = 1;

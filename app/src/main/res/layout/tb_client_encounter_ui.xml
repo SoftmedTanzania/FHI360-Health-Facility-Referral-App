@@ -204,35 +204,36 @@
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
                     <View
+                        android:id="@+id/separator_four"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginBottom="16dp"
-                        android:id="@+id/separator_four"
-                        android:background="@color/card_separator_sec"/>
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
 
                     <TextView
+                        android:id="@+id/month_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:id="@+id/month_title"
                         android:layout_below="@id/separator_four"
+                        android:text="@string/month"
                         android:textColor="@color/card_title_text"
                         android:textSize="16sp"
-                        android:text="@string/month"/>
+                        android:textStyle="bold" />
 
                     <fr.ganfra.materialspinner.MaterialSpinner
                         android:id="@+id/spin_encounter_month"
-                        android:layout_width="130dp"
-                        android:layout_height="wrap_content"
-                        android:divider="@null"
-                        android:textSize="14sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
                         android:layout_below="@id/month_title"
                         android:layout_marginTop="16dp"
+                        android:layout_marginRight="8dp"
+                        android:divider="@null"
+                        android:textSize="12sp"
                         app_ms:ms_alignLabels="false"
                         app_ms:ms_alwaysShowFloatingLabel="true"
                         app_ms:ms_arrowColor="@color/black"
@@ -241,10 +242,36 @@
                         app_ms:ms_enableErrorLabel="false"
                         app_ms:ms_enableFloatingLabel="true"
                         app_ms:ms_errorColor="@color/red_500"
-                        app_ms:ms_floatingLabelColor="@color/white"
+                        app_ms:ms_floatingLabelColor="@color/card_title_text"
                         app_ms:ms_floatingLabelText="Mwezi"
                         app_ms:ms_highlightColor="@color/card_grid_text"
                         app_ms:ms_hint="Mwezi"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_multiline="false" />
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_appointments"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_below="@id/spin_encounter_month"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
+                        android:divider="@null"
+                        android:textSize="12sp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_arrowColor="@color/black"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_baseColor="@color/card_grid_tex"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_floatingLabelColor="@color/card_title_text"
+                        app_ms:ms_floatingLabelText="Appointment Dated"
+                        app_ms:ms_highlightColor="@color/card_grid_text"
+                        app_ms:ms_hint="Select Appointment for this encounter"
                         app_ms:ms_hintColor="#b3b3b3"
                         app_ms:ms_hintTextSize="14sp"
                         app_ms:ms_multiline="false" />
@@ -254,34 +281,34 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/card_separator"/>
+                    android:background="@color/card_separator" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_height="wrap_content">
+                    android:layout_weight="0.5">
 
                     <View
+                        android:id="@+id/separator_two"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginBottom="16dp"
-                        android:id="@+id/separator_two"
-                        android:background="@color/card_separator_sec"/>
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
 
                     <TextView
                         android:id="@+id/uzito_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_bold"
                         android:layout_below="@id/separator_two"
-                        android:text="@string/weight"
                         android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/weight"
                         android:textColor="@color/card_grid_text"
                         android:textSize="16dp" />
 
@@ -290,17 +317,17 @@
                         android:layout_width="80dp"
                         android:layout_height="50dp"
                         android:layout_below="@id/uzito_title"
-                        android:background="@drawable/border_one"
-                        android:hint="@string/weight"
-                        android:inputType="numberDecimal"
-                        android:textColorHint="@color/card_grid_tex"
-                        android:textColor="@color/card_grid_text"
-                        android:fontFamily="@font/roboto_regular"
-                        android:gravity="center"
-                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/border_one"
+                        android:fontFamily="@font/roboto_regular"
+                        android:gravity="center"
+                        android:hint="@string/weight"
+                        android:inputType="numberDecimal"
                         android:padding="8dp"
+                        android:textColor="@color/card_grid_text"
+                        android:textColorHint="@color/card_grid_tex"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -308,33 +335,33 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/card_separator"/>
+                    android:background="@color/card_separator" />
 
                 <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:id="@+id/makohozi_encounter_wrap"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_height="wrap_content">
+                    android:layout_weight="1">
 
                     <View
+                        android:id="@+id/separator_one"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginBottom="16dp"
-                        android:id="@+id/separator_one"
-                        android:background="@color/card_separator_sec"/>
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
 
                     <TextView
                         android:id="@+id/makohozi_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_bold"
                         android:layout_below="@id/separator_one"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="@string/makohozi"
                         android:textColor="@color/card_grid_text"
                         android:textSize="16dp" />
@@ -343,8 +370,8 @@
                         android:id="@+id/spin_makohozi"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_below="@id/makohozi_title"
+                        android:layout_marginTop="8dp"
                         android:divider="@null"
                         android:textSize="14sp"
                         app_ms:ms_alignLabels="false"
@@ -368,34 +395,34 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/card_separator"/>
+                    android:background="@color/card_separator" />
 
                 <RelativeLayout
                     android:id="@+id/finished_previous_month_layout"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6">
 
                     <View
+                        android:id="@+id/separator_three"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginRight="8dp"
                         android:layout_marginBottom="16dp"
-                        android:id="@+id/separator_three"
-                        android:background="@color/card_separator_sec"/>
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
 
 
                     <TextView
                         android:id="@+id/medication_status_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_bold"
                         android:layout_below="@id/separator_three"
                         android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="@string/finished_last_month_medications_succesfully"
                         android:textColor="@color/card_grid_text"
                         android:textSize="14sp" />
@@ -405,15 +432,15 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_alignParentRight="true"
-                        android:buttonTint="@color/card_grid_tex"
                         android:layout_below="@+id/medication_status_title"
                         android:layout_marginBottom="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="8dp"
+                        android:button="@drawable/check_box_selector"
+                        android:buttonTint="@color/card_grid_tex"
                         android:checked="false"
                         android:scaleX="1"
-                        android:scaleY="1"
-                        android:button="@drawable/check_box_selector"/>
+                        android:scaleY="1" />
 
                 </RelativeLayout>
 

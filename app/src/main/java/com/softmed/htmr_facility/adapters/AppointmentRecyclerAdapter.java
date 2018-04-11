@@ -62,9 +62,9 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             GetPatientNames getPatientNames = new GetPatientNames(database, holder);
             getPatientNames.execute(patientAppointment.getPatientID());
             holder.appointmentDate.setText(simpleDateFormat.format(patientAppointment.getAppointmentDate()));
-            if (patientAppointment.getStatus().equals(STATUS_PENDING)){
+            if ((patientAppointment.getStatus()==null?"" : patientAppointment.getStatus()).equals(STATUS_PENDING)){
                 holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.amber_800));
-            }else if (patientAppointment.getStatus().equals(STATUS_COMPLETED)){
+            }else if ((patientAppointment.getStatus()==null?"" : patientAppointment.getStatus()).equals(STATUS_COMPLETED)){
                 holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.green_800));
             }
 

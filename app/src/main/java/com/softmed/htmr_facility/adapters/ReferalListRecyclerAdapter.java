@@ -18,11 +18,13 @@ import com.softmed.htmr_facility.activities.OpdReferralDetailsActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.SWAHILI_LOCALE;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
@@ -213,7 +215,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     private static class patientDetailsTask extends AsyncTask<Integer, Void, Void>{
 
-        String patientNames, patientId, serviceNameString;
+        String patientNames, patientId, serviceNameString, serviceNameStringSw;
         int serviceId;
         Referral ref;
         AppDatabase db;
@@ -232,8 +234,12 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             Log.d("reckless", "doing name search backgroundically!");
             serviceId = integers[0];
 
+            ReferralServiceIndicators indicator = db.referralServiceIndicatorsDao().getServiceById(ref.getServiceId());
+            serviceNameStringSw = indicator.getServiceNameSw();
+            serviceNameString = indicator.getServiceName();
+
             patientNames = db.patientModel().getPatientName(patientId);
-            serviceNameString = db.referralServiceIndicatorsDao().getServiceNameById(ref.getServiceId());
+
             return null;
         }
 
@@ -244,7 +250,11 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             mText.setText(patientNames);
             if (serviceId == OPD_SERVICE_ID){
                 Log.d("reckless", "Service is opd, setting service name "+serviceNameString);
-                serviceNameText.setText(serviceNameString);
+                if (BaseActivity.getLocaleString().equals(SWAHILI_LOCALE)){
+                    serviceNameText.setText(serviceNameStringSw);
+                }else {
+                    serviceNameText.setText(serviceNameString);
+                }
             }
             //adapter.notifyDataSetChanged();
         }

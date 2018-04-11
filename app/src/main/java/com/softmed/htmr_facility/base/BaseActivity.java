@@ -204,6 +204,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("medicationStatus", encounters.isMedicationStatus());
             object.put("weight", encounters.getWeight());
             object.put("encounterYear", encounters.getEncounterYear());
+            object.put("localID", encounters.getLocalID());
 
             datastream = object.toString();
 
@@ -421,6 +422,90 @@ public class BaseActivity extends AppCompatActivity {
         //2017
         Avenir_Light    = Typeface.createFromAsset(ctx.getAssets(), "avenir-light.ttf");
 
+    }
+
+    public static String getMonthName(int monthNumber){
+        String monthName = "";
+        if(localeString.equals(ENGLISH_LOCALE)){
+            switch (monthNumber){
+                case 1:
+                    monthName = "January";
+                    break;
+                case 2:
+                    monthName = "February";
+                    break;
+                case 3:
+                    monthName = "March";
+                    break;
+                case 4:
+                    monthName = "April";
+                    break;
+                case 5:
+                    monthName = "May";
+                    break;
+                case 6:
+                    monthName = "June";
+                    break;
+                case 7:
+                    monthName = "July";
+                    break;
+                case 8:
+                    monthName = "August";
+                    break;
+                case 9:
+                    monthName = "September";
+                    break;
+                case 10:
+                    monthName = "October";
+                    break;
+                case 11:
+                    monthName = "November";
+                    break;
+                case 12:
+                    monthName = "December";
+                    break;
+            }
+        }else if (localeString.equals(SWAHILI_LOCALE)){
+            switch (monthNumber){
+                case 1:
+                    monthName = "Januari";
+                break;
+                case 2:
+                    monthName = "Februari";
+                break;
+                case 3:
+                    monthName = "Machi";
+                break;
+                case 4:
+                    monthName = "Aprili";
+                break;
+                case 5:
+                    monthName = "Mei";
+                break;
+                case 6:
+                    monthName = "Juni";
+                break;
+                case 7:
+                    monthName = "Julai";
+                break;
+                case 8:
+                    monthName = "Agosti";
+                break;
+                case 9:
+                    monthName = "Septemba";
+                break;
+                case 10:
+                    monthName = "Oktoba";
+                break;
+                case 11:
+                    monthName = "Novemba";
+                break;
+                case 12:
+                    monthName = "Disemba";
+                break;
+            }
+        }
+        return monthName;
     }
 
 }

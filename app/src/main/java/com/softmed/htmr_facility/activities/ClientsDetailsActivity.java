@@ -61,7 +61,9 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_NEGATIVE;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_NEGATIVE_SW;
 import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_POSITIVE;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_POSITIVE_SW;
 
 /**
  * Created by issy on 11/17/17.
@@ -81,11 +83,12 @@ public class ClientsDetailsActivity extends BaseActivity {
     RelativeLayout resultsInputContainer, indicatorsContainer;
     LinearLayout servicesGivenContainer;
 
-    private int service;
-    private Referral currentReferral;
-    private Patient currentPatient;
-    private boolean isNewCase = false;
-    private boolean isCTCNumberEmpty = false;
+    int service;
+    Referral currentReferral;
+    Patient currentPatient;
+    boolean isNewCase = false;
+    boolean isCTCNumberEmpty = false;
+    boolean updatePatientObject = false;
     private String clientCTCNumber;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
@@ -155,8 +158,14 @@ public class ClientsDetailsActivity extends BaseActivity {
         referalDialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         List<String> results = new ArrayList<>();
-        results.add(TEST_RESULT_POSITIVE);
-        results.add(TEST_RESULT_NEGATIVE);
+
+        if (getLocaleString().equals(SWAHILI_LOCALE)){
+            results.add(TEST_RESULT_POSITIVE_SW);
+            results.add(TEST_RESULT_NEGATIVE_SW);
+        }else if (getLocaleString().equals(ENGLISH_LOCALE)){
+            results.add(TEST_RESULT_POSITIVE);
+            results.add(TEST_RESULT_NEGATIVE);
+        }
 
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, results);
         testResultsSpinner.setAdapter(spinAdapter);
@@ -288,15 +297,23 @@ public class ClientsDetailsActivity extends BaseActivity {
             } else {
                 boolean result = false;
 
-                if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE)){
+                if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE_SW)){
                     result = true;
-                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE)){
+                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE_SW)){
                     result = false;
                 }
 
                 currentReferral.setTestResults(result);
             }
 
+        }
+
+        if (service == HIV_SERVICE_ID){
+            if (!ctcNumberEt.getText().toString().isEmpty()){
+                currentPatient.setHivStatus(true);
+                currentPatient.setCtcNumber(ctcNumberEt.getText().toString());
+                updatePatientObject = true;
+            }
         }
 
         String serviceOferedString = servicesOfferedEt.getText().toString();
@@ -409,6 +426,19 @@ public class ClientsDetailsActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Boolean... booleans) {
 
+            if (updatePatientObject){
+                database.patientModel().updatePatient(currentPatient);
+
+                PostOffice postOffice = new PostOffice();
+                postOffice.setPost_id(currentPatient.getPatientId());
+                postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+                postOffice.setPost_data_type(POST_DATA_TYPE_PATIENT);
+                database.postOfficeModelDao().addPostEntry(postOffice);
+
+                updatePatientObject = false;
+
+            }
+
             isForwardingThisReferral = booleans[0];
             isNewCase = booleans[1];
 
@@ -420,7 +450,7 @@ public class ClientsDetailsActivity extends BaseActivity {
             postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
             database.postOfficeModelDao().addPostEntry(postOffice);
 
-            if (isNewCase){
+            /*if (isNewCase){
 
                 Patient patient = database.patientModel().getPatientById(referal.getPatient_id());
                 patient.setCtcNumber(clientCTCNumber);
@@ -435,7 +465,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
                 database.postOfficeModelDao().addPostEntry(postOffice1);
 
-            }
+            }*/
 
             return null;
         }
