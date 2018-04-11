@@ -362,7 +362,7 @@ public class HomeActivity extends BaseActivity {
                                 Replace the local encounter with the response encounter
                                 TODO: Update appointments also
                                 */
-                                if (response != null) {
+                                if (response.body() != null) {
 
                                     Log.d("POST_DATA_TE", "Response Received : "+response.body());
 
