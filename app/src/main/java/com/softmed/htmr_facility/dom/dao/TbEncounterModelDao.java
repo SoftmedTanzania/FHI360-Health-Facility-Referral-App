@@ -29,6 +29,9 @@ public interface TbEncounterModelDao {
     @Query("select * from TbEncounters where id = :ID")
     List<TbEncounters> getEncounterById(String ID);
 
+    @Query("select * from TbEncounters where localID = :localID")
+    List<TbEncounters> getEncounterByLocalId(String localID);
+
     @Query("select * from TbEncounters")
     LiveData<List<TbEncounters>> getAllEncounters();
 

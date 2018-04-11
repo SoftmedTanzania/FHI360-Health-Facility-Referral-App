@@ -32,6 +32,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.adapters.AppointmentSpinnerAdapter;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
@@ -54,10 +55,12 @@ import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEPONA;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMETOROKA;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_HAKUPONA;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_APPOINTMENTS;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
+import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING;
 import static com.softmed.htmr_facility.utils.constants.TB_1_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_2_PLUS;
@@ -82,9 +85,11 @@ import static java.util.Calendar.YEAR;
 
 public class TbClientDetailsActivity extends BaseActivity {
 
+    private static final String TAG = "TbClientDetailsActivity";
+
     LinearLayout matokeoLinearLayout;
     RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper, makohoziEncounterWrap;
-    MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner;
+    MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner, appointmentsSpinner;
     TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
     TextView ward, village, hamlet, medicationStatusTitle, resultsDate, emptyPreviousMonthEncounter;
     EditText outcomeDetails, otherTestValue, monthlyPatientWeightEt;
@@ -111,6 +116,7 @@ public class TbClientDetailsActivity extends BaseActivity {
     Context context;
     Calendar resultCalendar;
     long outcomeDate = 0;
+    PatientAppointment selectedEncounterAppointment;
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -186,6 +192,14 @@ public class TbClientDetailsActivity extends BaseActivity {
         monthOneMakohoziAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         monthOneMakohoziSpinner.setAdapter(makohoziSpinnerAdapter);
 
+        /*
+          get all the appointments to allow the user to select from the list of appointments which one
+          is being attended with this particular visit
+          Appointments should be the one that have not been attended to with status Pending
+         */
+
+        getUnattendedAppointments();
+
         encouterMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -222,6 +236,20 @@ public class TbClientDetailsActivity extends BaseActivity {
                     new GetEncounterDetails(baseDatabase, (i+1)+"").execute(currentTbPatient.getHealthFacilityPatientId());
                     Log.d("Billions", "About to Get Encounters for month "+(i+1));
 
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        appointmentsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i >= 0){
+                    selectedEncounterAppointment = (PatientAppointment) adapterView.getSelectedItem();
                 }
             }
 
@@ -285,6 +313,10 @@ public class TbClientDetailsActivity extends BaseActivity {
                      Save Results
                     */
                     if (saveEncounters(currentTbPatient.getTestType())){
+
+                        //Update appointment corresponding to this encounter
+                        updateAppointment(currentPatientEncounter);
+
                         if (currentPatientEncounter.getEncounterMonth() > 6){
                             //Save Treatment Results;
                             activityCanExit = false;
@@ -326,6 +358,26 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    void getUnattendedAppointments(){
+        new AsyncTask<Void, Void, Void>(){
+            List<PatientAppointment> appointments = new ArrayList<>();
+            @Override
+            protected Void doInBackground(Void... voids) {
+                appointments = baseDatabase.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, currentPatient.getPatientId());
+                Log.d(TAG, "Size of obtained appointments "+appointments.size());
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                AppointmentSpinnerAdapter adapter = new AppointmentSpinnerAdapter(TbClientDetailsActivity.this,R.layout.simple_spinner_item_black, appointments);
+                appointmentsSpinner.setAdapter(adapter);
+            }
+        }.execute();
     }
 
     void displayPatientInformation(Patient _patient){
@@ -395,6 +447,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         makohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi);
         monthOneMakohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi_month_one);
         medicationStatusCheckbox = (CheckBox) findViewById(R.id.medication_status);
+        appointmentsSpinner = findViewById(R.id.spin_appointments);
 
         previousEncounters = (RecyclerView) findViewById(R.id.previous_encounters_recycler_view);
         previousEncounters.setLayoutManager(new LinearLayoutManager(this));
@@ -473,6 +526,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         return true;
     }
 
+    @SuppressLint("StaticFieldLeak")
     boolean saveEncounters(int testType){
         //TbEncounter Variables
         String makohoziValue = "";
@@ -510,9 +564,9 @@ public class TbClientDetailsActivity extends BaseActivity {
         tbEncounter.setTbPatientID(currentTbPatient.getHealthFacilityPatientId()); //TODO:Revisit | Needs to get encounter based on TbPatientId which is assigned on the server
         tbEncounter.setEncounterMonth(encMonth);
         tbEncounter.setEncounterYear(Calendar.getInstance().get(Calendar.YEAR));
-        String newID = tbEncounter.getTbPatientID()+"_"+tbEncounter.getEncounterMonth()+"_"+tbEncounter.getEncounterYear();
-        Log.d("EncID", "New ID Structure : "+newID);
-        tbEncounter.setId(newID);
+        String localID = tbEncounter.getTbPatientID()+"_"+tbEncounter.getEncounterMonth()+"_"+tbEncounter.getEncounterYear();
+        Log.d("EncID", "New ID Structure : "+localID);
+        tbEncounter.setLocalID(localID);
 
         if (testType == 1){
             if (encMonth == 1 || encMonth == 3){
@@ -529,14 +583,18 @@ public class TbClientDetailsActivity extends BaseActivity {
         tbEncounter.setMedicationStatus(false);
 
         //Generate Appointment Schedule and assign temporary appointment ID
-        tbEncounter.setAppointmentId(0);
+        if(selectedEncounterAppointment != null){
+            //Set the appointment ID of the encounter based on the selected appointment
+            tbEncounter.setAppointmentId(selectedEncounterAppointment.getAppointmentID());
+            Log.d(TAG, "Current Encounter set appointment Id to "+selectedEncounterAppointment.getAppointmentID());
+        }
+
         tbEncounter.setScheduledDate(Calendar.getInstance().getTimeInMillis());
 
         Calendar calendar = Calendar.getInstance();
         long today = calendar.getTimeInMillis();
 
         tbEncounter.setId(currentPatient.getPatientId()+"_"+encouterMonthSpinner.getSelectedItemPosition());
-
         currentPatientEncounter = tbEncounter;
         return true;
     }
@@ -573,6 +631,87 @@ public class TbClientDetailsActivity extends BaseActivity {
         currentTbPatient.setOutcomeDetails(outcomeDetailsStr);
 
         return true;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    void updateAppointment(TbEncounters encounter){
+
+        new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                if (selectedEncounterAppointment != null){
+                    selectedEncounterAppointment.setStatus(STATUS_COMPLETED);
+                    baseDatabase.appointmentModelDao().updateAppointment(selectedEncounterAppointment);
+                    Log.d(TAG, "Appointment Updated in the database");
+
+                    //add the updated appointment to postoffice
+                    PostOffice office = new PostOffice();
+                    office.setSyncStatus(ENTRY_NOT_SYNCED);
+                    office.setPost_id(selectedEncounterAppointment.getAppointmentID()+"");
+                    office.setPost_data_type(POST_DATA_TYPE_APPOINTMENTS);
+
+                    //baseDatabase.postOfficeModelDao().addPostEntry(office); TODO: After implementing Endpoints to send single appointments updates uncomment this
+
+                    Log.d(TAG, "Appointment data added to post office ready to be synced to the server");
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }.execute();
+
+
+        /**
+         * Old fashion way of updating an appointment status after a client has visited the clinic
+         */
+        /*
+        new AsyncTask<TbEncounters, Void, Void>(){
+            @Override
+            protected Void doInBackground(TbEncounters... tbEncounters) {
+
+                List<PatientAppointment> thisPatientAppointments = new ArrayList<>();
+                thisPatientAppointments = baseDatabase.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, currentPatient.getPatientId());
+                for (PatientAppointment a : thisPatientAppointments){
+                    long appointmentDate = a.getAppointmentDate();
+                    long meddicationDate = tbEncounters[0].getMedicationDate();
+
+                    Calendar c = Calendar.getInstance();
+                    c.setTimeInMillis(appointmentDate);
+                    int month = c.get(Calendar.MONTH);
+
+                    c.setTimeInMillis(meddicationDate);
+                    int medicationMonth = c.get(Calendar.MONTH);
+
+                    if (month == medicationMonth){
+                        Log.d(TAG, "Found the appointment for this patient with month "+month+1);
+                        //If found, update the appointment status to attended
+                        a.setStatus(STATUS_COMPLETED);
+
+                        baseDatabase.appointmentModelDao().updateAppointment(a);
+
+                        PostOffice appData = new PostOffice();
+                        appData.setPost_data_type(POST_DATA_TYPE_APPOINTMENTS);
+                        appData.setPost_id(a.getAppointmentID()+"");
+                        appData.setSyncStatus(ENTRY_NOT_SYNCED);
+
+                        baseDatabase.postOfficeModelDao().addPostEntry(appData);
+
+                    }
+
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }.execute(encounter);*/
+
     }
 
     private void clearFields(){
@@ -803,7 +942,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             database.tbEncounterModelDao().addEncounter(encounters[0]);
 
             PostOffice postOffice = new PostOffice();
-            postOffice.setPost_id(encounters[0].getId());
+            postOffice.setPost_id(encounters[0].getLocalID());
             postOffice.setPost_data_type(POST_DATA_TYPE_ENCOUNTER);
             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
@@ -877,9 +1016,11 @@ public class TbClientDetailsActivity extends BaseActivity {
             String todayDate = simpleDateFormat.format(date);
 
             //List<PatientAppointment> remainingAppointments = database.appointmentModelDao().getRemainingAppointments(currentPatient.getPatientId(), todayDate);
-            List<PatientAppointment> remainingAppointments = database.appointmentModelDao().getThisPatientAppointments(currentPatient.getPatientId());
+            List<PatientAppointment> remainingAppointments = database.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, currentPatient.getPatientId());
             if (remainingAppointments.size() > 0){
                 Log.d("Billion", "Remaining appointments size is "+remainingAppointments.size());
+
+                //Delete all the records of the remaining appointments that are after today to allow regeneration of new appointments based on today's visit
                 for (int i=0;i<remainingAppointments.size();i++){
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTimeInMillis(remainingAppointments.get(i).getAppointmentDate());

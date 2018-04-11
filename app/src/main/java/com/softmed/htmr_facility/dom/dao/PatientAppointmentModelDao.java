@@ -38,6 +38,12 @@ public interface PatientAppointmentModelDao {
     @Query("select * from PatientAppointment where patientID = :patientId and appointmentDate > Date(:today)")
     List<PatientAppointment> getRemainingAppointments(String patientId, String today);
 
+    @Query("select * from PatientAppointment where patientID = :patientID and appointmentType = :type")
+    List<PatientAppointment> getAppointmentsByTypeAndPatientID(int type, String patientID);
+
+    @Query("select * from PatientAppointment where patientID = :patientID and appointmentType = :type and status = :appointmentStatus")
+    List<PatientAppointment> getAppointmentsByTypeAndPatientIDAndStatus(int type, String patientID, String appointmentStatus);
+
     @Query("select count(*) from PatientAppointment where appointmentDate between :from and :to")
     int getTotalAppointmentsByAppointmentDate(long from, long to);
 

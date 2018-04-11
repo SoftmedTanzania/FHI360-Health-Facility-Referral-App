@@ -320,10 +320,10 @@ public class PostOfficeService extends IntentService {
             tbPatient1.setTempID(" ");
             List<PatientAppointment> appointments = patientResponces[0].getPatientAppointments();
 
-            List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
-            for (int i=0; i<oldAppointments.size(); i++){
-                database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
-            }
+            //List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
+//            for (int i=0; i<oldAppointments.size(); i++){
+//                database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
+//            }
 
             //Insert server's patient reference
             database.tbPatientModelDao().addPatient(tbPatient1);

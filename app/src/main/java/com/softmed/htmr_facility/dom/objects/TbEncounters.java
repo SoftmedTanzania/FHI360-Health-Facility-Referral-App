@@ -53,6 +53,9 @@ public class TbEncounters implements Serializable {
     @SerializedName("encounterYear")
     private int encounterYear;
 
+    @SerializedName("localID")
+    private String localID;
+
 
     @NonNull
     public long getTbPatientID() {
@@ -142,5 +145,13 @@ public class TbEncounters implements Serializable {
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public String getLocalID() {
+        return localID;
+    }
+
+    public void setLocalID(String localID) {
+        this.localID = localID;
     }
 }

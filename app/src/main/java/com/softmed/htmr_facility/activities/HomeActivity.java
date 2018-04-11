@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.arch.lifecycle.LiveData;
@@ -213,7 +214,7 @@ public class HomeActivity extends BaseActivity {
             for (int i=0; i<unpostedData.size(); i++){
 
                 final PostOffice data = unpostedData.get(i);
-                Log.d("PostOfficeService", data.getPost_data_type());
+                Log.d("PostOfficeService", "Post Office Data Type "+data.getPost_data_type());
 
                 if (data.getPost_data_type().equals(POST_DATA_TYPE_PATIENT)){
 
@@ -347,24 +348,47 @@ public class HomeActivity extends BaseActivity {
 
                     //List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
 
-                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterById(data.getPost_id());
+                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByLocalId(data.getPost_id());
 
                     for (TbEncounters e : encounter){
 
                         Call call = patientServices.postEncounter(BaseActivity.getTbEncounterRequestBody(e));
                         call.enqueue(new Callback() {
+                            @SuppressLint("StaticFieldLeak")
                             @Override
                             public void onResponse(Call call, Response response) {
-                                Log.d("POST_DATA_TE", "Response Received : "+response.body());
+                                /*
+                                Receive an Encounter object as a response
+                                Replace the local encounter with the response encounter
+                                TODO: Update appointments also
+                                */
+                                if (response != null) {
 
-                                //new DeletePOstData(database).execute(data); //TODO REMOVE THIS
+                                    Log.d("POST_DATA_TE", "Response Received : "+response.body());
+
+                                    TbEncounters receivedEncounter = (TbEncounters) response.body();
+                                    new AsyncTask<TbEncounters, Void, Void>(){
+                                        @Override
+                                        protected Void doInBackground(TbEncounters... tbEncounters) {
+                                            database.tbEncounterModelDao().deleteAnEncounter(tbEncounters[0]);
+                                            database.tbEncounterModelDao().addEncounter(tbEncounters[1]);
+                                            return null;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Void aVoid) {
+                                            super.onPostExecute(aVoid);
+                                            Log.d("POST_DATA_TE", "Encounter Replaced");
+                                            new DeletePOstData(database).execute(data);
+                                        }
+                                    }.execute(e, receivedEncounter);
+                                }
 
                             }
 
                             @Override
                             public void onFailure(Call call, Throwable t) {
                                 t.printStackTrace();
-                                //new DeletePOstData(database).execute(data); //TODO REMOVE THIS
 
                             }
                         });
@@ -656,10 +680,10 @@ public class HomeActivity extends BaseActivity {
             TbPatient tbPatient1 = patientResponces[0].getTbPatient();
             List<PatientAppointment> appointments = patientResponces[0].getPatientAppointments();
 
-            List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
-            for (int i=0; i<oldAppointments.size(); i++){
-                database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
-            }
+//            List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
+//            for (int i=0; i<oldAppointments.size(); i++){
+//                database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
+//            }
 
             //Insert server's patient reference
             database.tbPatientModelDao().addPatient(tbPatient1);

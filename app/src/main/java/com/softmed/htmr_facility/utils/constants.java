@@ -57,6 +57,7 @@ public class constants {
     public static final String POST_DATA_TYPE_PATIENT = "p";
     public static final String POST_DATA_TYPE_TB_PATIENT = "tp";
     public static final String POST_DATA_TYPE_ENCOUNTER = "e";
+    public static final String POST_DATA_TYPE_APPOINTMENTS = "a";
 
     public static final int ENTRY_NOT_SYNCED = 0;
     public static final int ENTRY_SYNCED = 1;
