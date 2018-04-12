@@ -81,7 +81,7 @@ public class PostOfficeService extends IntentService {
                     //final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(BaseActivity.getPatientRequestBody(patient, userData));
+                    Call call = patientServices.postPatient(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getPatientRequestBody(patient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -111,7 +111,7 @@ public class PostOfficeService extends IntentService {
                     final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postTbPatient(BaseActivity.getTbPatientRequestBody(patient, tbPatient, userData));
+                    Call call = patientServices.postTbPatient(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getTbPatientRequestBody(patient, tbPatient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -153,7 +153,7 @@ public class PostOfficeService extends IntentService {
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = referalService.postReferral(BaseActivity.getReferralRequestBody(referral, userData));
+                    Call call = referalService.postReferral(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -181,7 +181,7 @@ public class PostOfficeService extends IntentService {
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = referalService.sendReferralFeedback(BaseActivity.getReferralFeedbackRequestBody(referral, userData));
+                    Call call = referalService.sendReferralFeedback(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getReferralFeedbackRequestBody(referral, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -203,7 +203,7 @@ public class PostOfficeService extends IntentService {
                     List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterById(data.getPost_id());
                     for (TbEncounters e : encounter){
 
-                        Call call = patientServices.postEncounter(BaseActivity.getTbEncounterRequestBody(e));
+                        Call call = patientServices.postEncounter(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getTbEncounterRequestBody(e));
                         call.enqueue(new Callback() {
                             @Override
                             public void onResponse(Call call, Response response) {

@@ -29,6 +29,9 @@ public interface TbPatientModelDao  {
     @Query("select * from TbPatient where healthFacilityPatientId = :id")
     TbPatient getTbPatientById(String id);
 
+    @Query("select * from TbPatient where tbPatientId = :tbPatientID")
+    TbPatient getTbPatientByTbPatientId(String tbPatientID);
+
     @Insert(onConflict = REPLACE)
     void addPatient(TbPatient tbPatients);
 
