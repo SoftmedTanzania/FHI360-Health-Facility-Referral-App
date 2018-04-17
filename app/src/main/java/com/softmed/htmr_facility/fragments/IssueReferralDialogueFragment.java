@@ -228,6 +228,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     if (hf.getOpenMRSUIID().equals(BaseActivity.getThisFacilityId())){
                         referralType = INTRAFACILITY;
                     }else {
+                        toHealthFacilityID = hf.getOpenMRSUIID();
                         referralType = INTERFACILITY;
                     }
                 }
@@ -327,6 +328,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                 serviceID = Integer.parseInt(services.getServiceId()+"");
             }
         }
+
+
 
         referralReasonsValue = referralReasons.getText().toString().equals("") ? "N/A" : referralReasons.getText().toString();
         otherClinicalInformationValue = otherClinicalInformation.getText().toString().equals("") ? "N/A" : otherClinicalInformation.getText().toString();
