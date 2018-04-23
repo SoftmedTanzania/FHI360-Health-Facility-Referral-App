@@ -9,6 +9,12 @@ public class constants {
     public static String BASE_URL = "http://45.56.90.103:8080/opensrp/";
     //public static String BASE_URL = "http://192.168.43.251:8080/opensrp/";
 
+    public static final String USER_ROLE_ADMIN = "htmr-admin";
+    public static final String USER_ROLE_CTC = "htmr-ctc";
+    public static final String USER_ROLE_OPD = "htmr-opd";
+    public static final String USER_ROLE_TB_CLINIC = "htmr-tb-clinic";
+    public static final String USER_ROLE_LAB = "htmr-lab";
+
     public static final String SWAHILI_LOCALE = "sw";
     public static final String ENGLISH_LOCALE = "en";
 

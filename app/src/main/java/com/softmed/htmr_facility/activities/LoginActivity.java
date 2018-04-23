@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.rey.material.widget.ProgressView;
 
 import org.json.JSONObject;
@@ -257,11 +258,17 @@ public class LoginActivity extends BaseActivity {
                     userData.setUserName(loginResponse.getUser().getUsername());
                     userData.setUserFacilityId(loginResponse.getTeam().getTeam().getLocation().getUuid());
 
+                    //Convert the list of roles to json string to store in sharedPreference
+                    List<String> roles = loginResponse.getUser().getRoles();
+                    Gson gson = new Gson();
+                    String rolesString = gson.toJson(roles);
+
                     session.createLoginSession(
                             loginResponse.getUser().getUsername(),
                             loginResponse.getUser().getAttributes().getPersonUUID(),
                             passwordValue,
-                            loginResponse.getTeam().getTeam().getLocation().getUuid());
+                            loginResponse.getTeam().getTeam().getLocation().getUuid(),
+                            rolesString);
 
                     referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
                     patientService = ServiceGenerator.createService(Endpoints.PatientServices.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());

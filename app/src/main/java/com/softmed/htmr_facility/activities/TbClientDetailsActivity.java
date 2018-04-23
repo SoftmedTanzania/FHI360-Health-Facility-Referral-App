@@ -197,7 +197,9 @@ public class TbClientDetailsActivity extends BaseActivity {
           Appointments should be the one that have not been attended to with status Pending
          */
 
-        getUnattendedAppointments();
+        if (currentTbPatient != null && currentPatient != null){
+            getUnattendedAppointments();
+        }
 
         encouterMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1228,7 +1230,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             //Create a new Tb Patient and add to post office
             tbPatient = new TbPatient();
-            tbPatient.setTbPatientId(0);
+            tbPatient.setTbPatientId(new Random().nextLong());
             tbPatient.setHealthFacilityPatientId(Long.parseLong(patient.getPatientId()));
             tbPatient.setTempID(UUID.randomUUID()+"");
             database.tbPatientModelDao().addPatient(tbPatient);

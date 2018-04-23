@@ -3,7 +3,6 @@ package com.softmed.htmr_facility.activities;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
@@ -18,7 +17,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -49,6 +47,7 @@ import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
+import com.softmed.htmr_facility.dom.responces.EncounterResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.fragments.HivFragment;
 import com.softmed.htmr_facility.fragments.LabFragment;
@@ -70,8 +69,12 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
-import static com.softmed.htmr_facility.utils.constants.RESPONCE_CREATED;
 import static com.softmed.htmr_facility.utils.constants.RESPONCE_SUCCESS;
+import static com.softmed.htmr_facility.utils.constants.USER_ROLE_ADMIN;
+import static com.softmed.htmr_facility.utils.constants.USER_ROLE_CTC;
+import static com.softmed.htmr_facility.utils.constants.USER_ROLE_LAB;
+import static com.softmed.htmr_facility.utils.constants.USER_ROLE_OPD;
+import static com.softmed.htmr_facility.utils.constants.USER_ROLE_TB_CLINIC;
 
 /**
  * Created by issy on 12/4/17.
@@ -98,6 +101,13 @@ public class HomeActivity extends BaseActivity {
     private Endpoints.ReferalService referalService;
 
     private RequestManager mRequestManager;
+
+    Boolean hivTbAdded = false;
+    Boolean tbTabAdded = false;
+    Boolean opdTabAdded = false;
+    Boolean labTabAdded = false;
+
+    List<String> indexes = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -222,7 +232,7 @@ public class HomeActivity extends BaseActivity {
                     final Patient patient = database.patientModel().getPatientById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(getPatientRequestBody(patient, userData));
+                    Call call = patientServices.postPatient(session.getServiceProviderUUID(), getPatientRequestBody(patient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -260,7 +270,7 @@ public class HomeActivity extends BaseActivity {
                     final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postTbPatient(getTbPatientRequestBody(patient, tbPatient, userData));
+                    Call call = patientServices.postTbPatient(session.getServiceProviderUUID(), getTbPatientRequestBody(patient, tbPatient, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -294,7 +304,7 @@ public class HomeActivity extends BaseActivity {
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = referalService.postReferral(BaseActivity.getReferralRequestBody(referral, userData));
+                    Call call = referalService.postReferral(session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -324,7 +334,7 @@ public class HomeActivity extends BaseActivity {
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = referalService.sendReferralFeedback(BaseActivity.getReferralFeedbackRequestBody(referral, userData));
+                    Call call = referalService.sendReferralFeedback(session.getServiceProviderUUID(), BaseActivity.getReferralFeedbackRequestBody(referral, userData));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -355,7 +365,7 @@ public class HomeActivity extends BaseActivity {
 
                     for (TbEncounters e : encounter){
 
-                        Call call = patientServices.postEncounter(BaseActivity.getTbEncounterRequestBody(e));
+                        Call call = patientServices.postEncounter(session.getServiceProviderUUID(), BaseActivity.getTbEncounterRequestBody(e));
                         call.enqueue(new Callback() {
                             @SuppressLint("StaticFieldLeak")
                             @Override
@@ -368,8 +378,10 @@ public class HomeActivity extends BaseActivity {
                                 if (response.body() != null) {
 
                                     Log.d("POST_DATA_TE", "Response Received : "+response.body());
+                                    EncounterResponse encounterResponse = (EncounterResponse) response.body();
+                                    List<PatientAppointment> listOfAppointments = encounterResponse.getPatientAppointments();
 
-                                    TbEncounters receivedEncounter = (TbEncounters) response.body();
+                                    TbEncounters receivedEncounter =  encounterResponse.getEncounter();
                                     new AsyncTask<TbEncounters, Void, Void>(){
                                         @Override
                                         protected Void doInBackground(TbEncounters... tbEncounters) {
@@ -385,6 +397,18 @@ public class HomeActivity extends BaseActivity {
                                             new DeletePOstData(database).execute(data);
                                         }
                                     }.execute(e, receivedEncounter);
+
+                                    TbPatient tbPatient = baseDatabase.tbPatientModelDao().getTbPatientByTbPatientId(receivedEncounter.getTbPatientID()+"");
+
+                                    List<PatientAppointment> appointments = baseDatabase.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, tbPatient.getHealthFacilityPatientId()+"");
+                                    for (PatientAppointment a : appointments){
+                                        baseDatabase.appointmentModelDao().deleteAppointment(a);
+                                    }
+
+                                    for (PatientAppointment appointment : listOfAppointments){
+                                        baseDatabase.appointmentModelDao().addAppointment(appointment);
+                                    }
+
                                 }
 
                             }
@@ -449,49 +473,98 @@ public class HomeActivity extends BaseActivity {
 
     public void setupTabIcons() {
 
-        View opdTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView opdTabTitle = opdTabView.findViewById(R.id.title_text);
-        opdTabTitle.setText(getResources().getString(R.string.fragment_opd));
-        ImageView opdIcon    = opdTabView.findViewById(R.id.icon);
-        opdIcon.setColorFilter(this.getResources().getColor(R.color.white));
-        if (!HomeActivity.this.isFinishing()){
-            Glide.with(this).load(R.mipmap.ic_face).into(opdIcon);
+        for (int i=0; i<indexes.size(); i++){
+            if (indexes.get(i).equals("hiv")){
+                View ctcTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView ctcTabTitle = ctcTabView.findViewById(R.id.title_text);
+                ImageView ctcIcon    = ctcTabView.findViewById(R.id.icon);
+                if (!HomeActivity.this.isFinishing())
+                    Glide.with(this).load(R.mipmap.ic_hiv).into(ctcIcon);
+                ctcTabTitle.setText(getResources().getString(R.string.fragment_hiv));
+                tabLayout.getTabAt(i).setCustomView(ctcTabView);
+            }else if (indexes.get(i).equals("opd")){
+                View opdTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView opdTabTitle = opdTabView.findViewById(R.id.title_text);
+                opdTabTitle.setText(getResources().getString(R.string.fragment_opd));
+                ImageView opdIcon    = opdTabView.findViewById(R.id.icon);
+                opdIcon.setColorFilter(this.getResources().getColor(R.color.white));
+                if (!HomeActivity.this.isFinishing()){
+                    Glide.with(this).load(R.mipmap.ic_face).into(opdIcon);
+                }
+                tabLayout.getTabAt(i).setCustomView(opdTabView);
+            }else if (indexes.get(i).equals("tb")){
+                View tbTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView tbTabTitle = tbTabView.findViewById(R.id.title_text);
+                tbTabTitle.setText(getResources().getString(R.string.fragment_tb));
+                ImageView tbIcon    = tbTabView.findViewById(R.id.icon);
+                if (!HomeActivity.this.isFinishing())
+                    Glide.with(this).load(R.mipmap.ic_tb).into(tbIcon);
+                tabLayout.getTabAt(i).setCustomView(tbTabView);
+            }else if (indexes.get(i).equals("lab")){
+                View labTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView labTitle = labTabView.findViewById(R.id.title_text);
+                labTitle.setText(getResources().getString(R.string.fragment_lab));
+                ImageView labIcon    = labTabView.findViewById(R.id.icon);
+                labIcon.setColorFilter(this.getResources().getColor(R.color.white));
+                if (!HomeActivity.this.isFinishing())
+                    Glide.with(this).load(R.mipmap.ic_lab).into(labIcon);
+                tabLayout.getTabAt(i).setCustomView(labTabView);
+            }
         }
-        tabLayout.getTabAt(0).setCustomView(opdTabView);
-
-        View ctcTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView ctcTabTitle = ctcTabView.findViewById(R.id.title_text);
-        ImageView ctcIcon    = ctcTabView.findViewById(R.id.icon);
-        if (!HomeActivity.this.isFinishing())
-            Glide.with(this).load(R.mipmap.ic_hiv).into(ctcIcon);
-        ctcTabTitle.setText(getResources().getString(R.string.fragment_hiv));
-        tabLayout.getTabAt(1).setCustomView(ctcTabView);
-
-        View tbTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView tbTabTitle = tbTabView.findViewById(R.id.title_text);
-        tbTabTitle.setText(getResources().getString(R.string.fragment_tb));
-        ImageView tbIcon    = tbTabView.findViewById(R.id.icon);
-        if (!HomeActivity.this.isFinishing())
-            Glide.with(this).load(R.mipmap.ic_tb).into(tbIcon);
-        tabLayout.getTabAt(2).setCustomView(tbTabView);
-
-        View labTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView labTitle = labTabView.findViewById(R.id.title_text);
-        labTitle.setText(getResources().getString(R.string.fragment_lab));
-        ImageView labIcon    = labTabView.findViewById(R.id.icon);
-        labIcon.setColorFilter(this.getResources().getColor(R.color.white));
-        if (!HomeActivity.this.isFinishing())
-            Glide.with(this).load(R.mipmap.ic_lab).into(labIcon);
-        tabLayout.getTabAt(3).setCustomView(labTabView);
 
     }
 
     public void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OPDFragment(), "opd");
-        adapter.addFragment(new HivFragment(), "hiv");
-        adapter.addFragment(new TbFragment(), "tb");
-        adapter.addFragment(new LabFragment(), "lab");
+        int tabIndex = 0;
+
+        List<String> userRoles = BaseActivity.getUserRoles();
+        for (String role : userRoles){
+            if (role.equals(USER_ROLE_ADMIN)){
+
+                if (!opdTabAdded){
+                    adapter.addFragment(new OPDFragment(), "opd");
+                    opdTabAdded = true;
+                    indexes.add("opd");
+                }
+
+                if (!hivTbAdded){
+                    adapter.addFragment(new HivFragment(), "hiv");
+                    hivTbAdded = true;
+                    indexes.add("hiv");
+                }
+
+                if (!tbTabAdded){
+                    adapter.addFragment(new TbFragment(), "tb");
+                    tbTabAdded = true;
+                    indexes.add("tb");
+                }
+
+                if (!labTabAdded){
+                    adapter.addFragment(new LabFragment(), "lab");
+                    labTabAdded = true;
+                    indexes.add("lab");
+                }
+
+            }else if (role.equals(USER_ROLE_CTC) && !hivTbAdded){
+                adapter.addFragment(new HivFragment(), "hiv");
+                hivTbAdded = true;
+                indexes.add("hiv");
+            }else if (role.equals(USER_ROLE_OPD) && !opdTabAdded){
+                adapter.addFragment(new OPDFragment(), "opd");
+                opdTabAdded = true;
+                indexes.add("opd");
+            }else if (role.equals(USER_ROLE_TB_CLINIC) && !tbTabAdded){
+                adapter.addFragment(new TbFragment(), "tb");
+                tbTabAdded = true;
+                indexes.add("tb");
+            }else if (role.equals(USER_ROLE_LAB) && !labTabAdded){
+                adapter.addFragment(new LabFragment(), "lab");
+                labTabAdded = true;
+                indexes.add("lab");
+            }
+        }
+
         viewPager.setAdapter(adapter);
     }
 

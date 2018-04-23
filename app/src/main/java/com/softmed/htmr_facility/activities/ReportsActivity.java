@@ -20,6 +20,7 @@ import com.softmed.htmr_facility.fragments.reports.InterFacilityReferralReportFr
 import com.softmed.htmr_facility.fragments.reports.IntraFacilityReferralsReportFragment;
 import com.softmed.htmr_facility.fragments.reports.ReportChartsFragment;
 import com.softmed.htmr_facility.fragments.reports.TbAppointmentReportsFragment;
+import com.softmed.htmr_facility.fragments.reports.TbReportsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,13 @@ public class ReportsActivity extends BaseActivity {
         ImageView iv0    = (ImageView) tbAppointmentsReportsTab.findViewById(R.id.icon);
         iv0.setVisibility(View.GONE);
 
+        View tbReportsTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+        TextView tbReportsTitle = (TextView) tbReportsTab.findViewById(R.id.title_text);
+        tbReportsTitle.setText("Tb Reports"); //TODO language
+        tabLayout.getTabAt(5).setCustomView(tbReportsTab);
+        ImageView iv5    = (ImageView) tbReportsTab.findViewById(R.id.icon);
+        iv5.setVisibility(View.GONE);
+
     }
 
     public void setupViewPager(ViewPager viewPager) {
@@ -110,6 +118,7 @@ public class ReportsActivity extends BaseActivity {
         adapter.addFragment(new InterFacilityReferralReportFragment(), "inter_facility_referrals_report");
         adapter.addFragment(new IntraFacilityReferralsReportFragment(), "intra_facility_referrals_report");
         adapter.addFragment(new TbAppointmentReportsFragment(), "tb_appointments_report");
+        adapter.addFragment(new TbReportsFragment(), "tb_reports_fragment");
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(10);
     }

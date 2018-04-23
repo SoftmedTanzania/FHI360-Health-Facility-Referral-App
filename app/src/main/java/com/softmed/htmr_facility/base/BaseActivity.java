@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.softmed.htmr_facility.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -20,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import com.softmed.htmr_facility.api.Endpoints;
@@ -108,6 +111,19 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public static List<String> getUserRoles(){
+        List<String> roles = new ArrayList<>();
+
+        Gson gson = new Gson();
+        String[] rolesArray = gson.fromJson(session.getUserRoles(), String[].class);
+        if (rolesArray != null && rolesArray.length > 0){
+            for (String role : rolesArray){
+                roles.add(role);
+            }
+        }
+        return roles;
+    }
+
     public static String getLocaleString(){
         return localeString;
     }
@@ -165,26 +181,6 @@ public class BaseActivity extends AppCompatActivity {
 
         return body;
 
-    }
-
-    public static class DeletePostData extends AsyncTask<PostOffice, Void, Void> {
-
-        AppDatabase db;
-
-        public DeletePostData(AppDatabase database){
-            this.db = database;
-        }
-
-        @Override
-        protected Void doInBackground(PostOffice... postOffices) {
-            db.postOfficeModelDao().deletePostData(postOffices[0]);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
     }
 
     public static RequestBody getTbEncounterRequestBody(TbEncounters encounters){
@@ -388,34 +384,6 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         return body;
-    }
-
-    public static RequestBody getEncounterRequestBody(TbEncounters encounters){
-        RequestBody body;
-        String datastream = "";
-        JSONObject object   = new JSONObject();
-
-        try {
-
-            object.put("", 0);
-            object.put("", 0);
-            object.put("", 0);
-            object.put("", 0);
-            object.put("", 0);
-
-            datastream = object.toString();
-
-            Log.d("PostOfficeService", datastream);
-
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            body = RequestBody.create(MediaType.parse("application/json"), datastream);
-        }
-
-        return body;
-
     }
 
     public static void setupTypeface(Context ctx){

@@ -29,6 +29,15 @@ public interface TbPatientModelDao  {
     @Query("select * from TbPatient where healthFacilityPatientId = :id")
     TbPatient getTbPatientById(String id);
 
+    @Query("select * from TbPatient where tbPatientId = :tbPatientID")
+    TbPatient getTbPatientByTbPatientId(String tbPatientID);
+
+    @Query("select count(*) from TbPatient " +
+            "inner join Patient " +
+            "on TbPatient.healthFacilityPatientId = Patient.patientId " +
+            "where TbPatient.treatment_type = :treatmentType and Patient.gender = :gender ")
+    int getCountUnderMedication(String treatmentType, String gender);
+
     @Insert(onConflict = REPLACE)
     void addPatient(TbPatient tbPatients);
 
