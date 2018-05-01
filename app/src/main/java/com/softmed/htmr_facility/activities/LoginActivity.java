@@ -1,21 +1,15 @@
 package com.softmed.htmr_facility.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,7 +23,6 @@ import com.rey.material.widget.ProgressView;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -51,23 +44,16 @@ import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
-import com.softmed.htmr_facility.fragments.HealthFacilityReferralListFragment;
-import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
 import com.softmed.htmr_facility.utils.SessionManager;
 
-import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
-import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import fr.ganfra.materialspinner.MaterialSpinner;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
-import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
 
 /**
  * Created by issy on 11/23/17.

@@ -111,9 +111,11 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentPatient != null){
+                if (currentPatient != null && !servicesOfferedEt.getText().toString().isEmpty()){
                     //Needs to save current referral feedback before issuing another referral
                     saveReferalInformation(true);
+                }else {
+                    Toast.makeText(OpdReferralDetailsActivity.this, getResources().getString(R.string.feedback_required), Toast.LENGTH_LONG).show();
                 }
 
             }

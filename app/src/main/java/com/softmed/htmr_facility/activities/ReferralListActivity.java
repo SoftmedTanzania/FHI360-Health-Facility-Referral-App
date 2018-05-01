@@ -8,12 +8,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -24,7 +22,7 @@ import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.customviews.NonSwipeableViewPager;
-import com.softmed.htmr_facility.fragments.HealthFacilityReferralListFragment;
+import com.softmed.htmr_facility.fragments.ReferralListFragment;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
@@ -138,8 +136,8 @@ public class ReferralListActivity extends BaseActivity {
 
         ReferralListActivity.ViewPagerAdapter adapter = new ReferralListActivity.ViewPagerAdapter(getSupportFragmentManager());
         
-        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
-        adapter.addFragment(HealthFacilityReferralListFragment.newInstance(CHW_TO_FACILITY, serviceID), "chw");
+        adapter.addFragment(ReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
+        adapter.addFragment(ReferralListFragment.newInstance(CHW_TO_FACILITY, serviceID), "chw");
 
         viewPager.setAdapter(adapter);
     }
