@@ -207,8 +207,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     ReferralServiceIndicators service = (ReferralServiceIndicators) adapterView.getSelectedItem();
                     new getServiceIndicator(database).execute(service.getServiceId());
 
-
-
                 }
 
             }
