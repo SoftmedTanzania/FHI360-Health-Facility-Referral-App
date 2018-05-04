@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.softmed.htmr_facility.dom.dao.AppDataModelDao;
 import com.softmed.htmr_facility.dom.dao.HealthFacilitiesModelDao;
+import com.softmed.htmr_facility.dom.dao.LoggedInSessionsModelDao;
 import com.softmed.htmr_facility.dom.dao.PatientAppointmentModelDao;
 import com.softmed.htmr_facility.dom.dao.PatientModelDao;
 import com.softmed.htmr_facility.dom.dao.PatientNotificationModelDao;
@@ -20,6 +21,7 @@ import com.softmed.htmr_facility.dom.dao.TbPatientModelDao;
 import com.softmed.htmr_facility.dom.dao.UserDataModelDao;
 import com.softmed.htmr_facility.dom.objects.AppData;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
+import com.softmed.htmr_facility.dom.objects.LoggedInSessions;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.HealthFacilityServices;
@@ -50,7 +52,8 @@ import com.softmed.htmr_facility.dom.objects.UserData;
                 HealthFacilities.class,
                 UserData.class,
                 ReferralIndicator.class,
-                ReferralServiceIndicators.class
+                ReferralServiceIndicators.class,
+                LoggedInSessions.class
         },
         version = 1)
 
@@ -92,5 +95,7 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract ReferralIndicatorDao referralIndicatorDao();
 
     public abstract ReferralServiceIndicatorsDao referralServiceIndicatorsDao();
+
+    public abstract LoggedInSessionsModelDao loggedInSessionsModelDao();
 
 }
