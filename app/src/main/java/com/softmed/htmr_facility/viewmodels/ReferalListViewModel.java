@@ -59,14 +59,14 @@ public class ReferalListViewModel extends AndroidViewModel{
         tbReferredClientsList = appDatabase.referalModel().getReferredClients(TB_SERVICE_ID, BaseActivity.getThisFacilityId());
         referredClientsList = appDatabase.referalModel().getReferredClients(OPD_SERVICE_ID, BaseActivity.getThisFacilityId());
 
-        labReferalListHfSource = appDatabase.referalModel().getReferralsBySourceId(LAB_SERVICE_ID, new int[]{INTERFACILITY, INTRAFACILITY});
+        labReferalListHfSource = appDatabase.referalModel().getReferralsBySourceId(LAB_SERVICE_ID, new int[]{INTRAFACILITY});//INTERFACILITY => Removed Interfacility from the array since all referrals originate from OPD so there will not be interfacility referrals straight to LAB
 
-        referalListHfSource = appDatabase.referalModel().getReferralsBySourceId(HIV_SERVICE_ID, new int[]{INTERFACILITY, INTRAFACILITY});
+        referalListHfSource = appDatabase.referalModel().getReferralsBySourceId(HIV_SERVICE_ID, new int[]{INTRAFACILITY}); //INTERFACILITY => Removed Interfacility from the array since all referrals originate from OPD so there will not be interfacility referrals straight to CTC
         referalListChwSource = appDatabase.referalModel().getReferralsBySourceId(HIV_SERVICE_ID, new int[] {CHW_TO_FACILITY});
         //referalListHfSource = appDatabase.referalModel().getHivReferralsBySourceId(HIV_SERVICE_ID, new int[]{INTERFACILITY, INTRAFACILITY}, OPD_SERVICE_ID);
         //referalListChwSource = appDatabase.referalModel().getHivReferralsBySourceId(HIV_SERVICE_ID, new int[] {CHW_TO_FACILITY}, OPD_SERVICE_ID);
 
-        referalListHfSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, new int[]{INTERFACILITY, INTRAFACILITY});
+        referalListHfSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, new int[]{INTRAFACILITY}); //INTERFACILITY => Removed Interfacility from the array since all referrals originate from OPD so there will not be interfacility referrals straight to TB Clinic
         referalListChwSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, new int[] {CHW_TO_FACILITY});
 
         allReferralListFromChw = appDatabase.referalModel().getAllReferalsBySource(new int[] {CHW_TO_FACILITY});

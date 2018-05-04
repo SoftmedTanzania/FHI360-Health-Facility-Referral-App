@@ -244,7 +244,7 @@ public class ReferralListFragment extends Fragment {
                     adapter.addItems(referrals);
                 }
             });
-        } else {
+        } else { //HIV Referrals
             if (source == CHW_TO_FACILITY){
                 listViewModel.getReferalListChwSource().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
