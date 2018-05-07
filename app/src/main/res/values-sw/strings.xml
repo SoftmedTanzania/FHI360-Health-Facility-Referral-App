@@ -185,4 +185,9 @@
 
     <string name="done">Maliza</string>
 
+    <string name="feedback_required"> Tafadhali jaza huduma iliyotolewa </string>
+
+    <string name="username_required">Jina haliwezi kua wazi</string>
+    <string name="password_required">Neno la siri haliwezi kuwa wazi</string>
+
 </resources>

@@ -1,21 +1,19 @@
 package com.softmed.htmr_facility.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +28,7 @@ import com.rey.material.widget.ProgressView;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,6 +38,7 @@ import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.customviews.LargeDiagonalCutPathDrawable;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
+import com.softmed.htmr_facility.dom.objects.LoggedInSessions;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
@@ -51,23 +51,16 @@ import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
-import com.softmed.htmr_facility.fragments.HealthFacilityReferralListFragment;
-import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
 import com.softmed.htmr_facility.utils.SessionManager;
 
-import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
-import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import fr.ganfra.materialspinner.MaterialSpinner;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
-import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
 
 /**
  * Created by issy on 11/23/17.
@@ -204,10 +197,10 @@ public class LoginActivity extends BaseActivity {
             return false;
         }
         else if (usernameEt.getText().length() <= 0){
-            Toast.makeText(this, "Jina haliwezi kua wazi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.username_required), Toast.LENGTH_SHORT).show();
             return false;
         }else if (passwordEt.getText().length() <= 0){
-            Toast.makeText(this, "Neno la siri haliwezi kuwa wazi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.password_required), Toast.LENGTH_SHORT).show();
             return false;
         }
         else {
@@ -229,73 +222,162 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void loginUser(){
 
-        loginButton.setText(getResources().getString(R.string.loading_data));
-        loginMessages.setVisibility(View.VISIBLE);
-        loginMessages.setText(getResources().getString(R.string.loging_in));
+        if (!isNetworkAvailable()){
+            //login locally
 
-        //Use Retrofit to make http request calls
-        Endpoints.LoginService loginService =
-                ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue, null);
-        Call<LoginResponse> call = loginService.basicLogin();
-        call.enqueue(new Callback<LoginResponse >() {
+            Log.d("LoginActivity", "Inside no network");
 
+            new AsyncTask<Void, Void, Void>(){
 
-            @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                List<LoggedInSessions> sessions = new ArrayList<>();
 
-                if (response.isSuccessful()) {
-                    // user object available
-
-                    loginMessages.setTextColor(getResources().getColor(R.color.green_a700));
-                    loginMessages.setText(getResources().getString(R.string.success));
-
-                    LoginResponse loginResponse = response.body();
-
-                    userData = new UserData();
-                    userData.setUserUIID(loginResponse.getUser().getAttributes().getPersonUUID());
-                    userData.setUserName(loginResponse.getUser().getUsername());
-                    userData.setUserFacilityId(loginResponse.getTeam().getTeam().getLocation().getUuid());
-
-                    //Convert the list of roles to json string to store in sharedPreference
-                    List<String> roles = loginResponse.getUser().getRoles();
-                    Gson gson = new Gson();
-                    String rolesString = gson.toJson(roles);
-
-                    session.createLoginSession(
-                            loginResponse.getUser().getUsername(),
-                            loginResponse.getUser().getAttributes().getPersonUUID(),
-                            passwordValue,
-                            loginResponse.getTeam().getTeam().getLocation().getUuid(),
-                            rolesString);
-
-                    referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
-                    patientService = ServiceGenerator.createService(Endpoints.PatientServices.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
-
-                    sendRegistrationToServer(deviceRegistrationId,
-                            loginResponse.getUser().getAttributes().getPersonUUID(),
-                            loginResponse.getTeam().getTeam().getLocation().getUuid());
-
-                } else {
-                    loginMessages.setText(getResources().getString(R.string.error_logging_in));
-                    loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
-                    loginProgress.setVisibility(View.GONE);
-                    loginButton.setText(getResources().getString(R.string.login));
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    sessions = baseDatabase.loggedInSessionsModelDao().loggeInUser(usernameValue, passwordValue);
+                    Log.d("LoginActivity", sessions.size()+"");
+                    return null;
                 }
-            }
 
-            @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                // something went completely south (like no internet connection)
-                try {
-                    Log.d("Error", t.getMessage());
-                }catch (NullPointerException e){
-                    e.printStackTrace();
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+
+                    if (sessions.size() > 0){
+
+                        Log.d("LoginActivity", "Session Found");
+
+                        //User logged in, update the sessions
+                        LoggedInSessions loggedInSessions = sessions.get(0);
+
+                        String userUUID = loggedInSessions.getUserId();
+                        String userName = loggedInSessions.getUserName();
+                        String facilityUUID = loggedInSessions.getFacilityUUID();
+                        String password = loggedInSessions.getUserPassword();
+                        String rolesString = loggedInSessions.getRoleString();
+
+                        userData = new UserData();
+                        userData.setUserUIID(userUUID);
+                        userData.setUserName(userName);
+                        userData.setUserFacilityId(facilityUUID);
+
+                        session.createLoginSession(
+                                userName,
+                                userUUID,
+                                password,
+                                facilityUUID,
+                                rolesString);
+
+                        //Call HomeActivity to log in user
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        LoginActivity.this.finish();
+
+                    }else {
+
+                        Toast.makeText(LoginActivity.this,
+                                "Internet required for this user to log in for the first time on this device",
+                                Toast.LENGTH_LONG).show();
+                    }
+
                 }
-            }
 
-        });
+            }.execute();
+
+        }else{
+            loginButton.setText(getResources().getString(R.string.loading_data));
+            loginMessages.setVisibility(View.VISIBLE);
+            loginMessages.setText(getResources().getString(R.string.loging_in));
+
+            //Use Retrofit to make http request calls
+            Endpoints.LoginService loginService =
+                    ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue, null);
+            Call<LoginResponse> call = loginService.basicLogin();
+            call.enqueue(new Callback<LoginResponse >() {
+
+                @SuppressLint("StaticFieldLeak")
+                @Override
+                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+
+                    if (response.isSuccessful()) {
+                        // user object available
+
+                        loginMessages.setTextColor(getResources().getColor(R.color.green_a700));
+                        loginMessages.setText(getResources().getString(R.string.success));
+
+                        LoginResponse loginResponse = response.body();
+
+                        String userName = loginResponse.getUser().getUsername();
+                        String userUUID = loginResponse.getUser().getAttributes().getPersonUUID();
+                        String facilityUUID = loginResponse.getTeam().getTeam().getLocation().getUuid();
+
+                        userData = new UserData();
+                        userData.setUserUIID(userUUID);
+                        userData.setUserName(userName);
+                        userData.setUserFacilityId(facilityUUID);
+
+                        //Convert the list of roles to json string to store in sharedPreference
+                        List<String> roles = loginResponse.getUser().getRoles();
+                        Gson gson = new Gson();
+                        String rolesString = gson.toJson(roles);
+
+                        session.createLoginSession(
+                                userName,
+                                userUUID,
+                                passwordValue,
+                                facilityUUID,
+                                rolesString);
+
+                        referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
+                        patientService = ServiceGenerator.createService(Endpoints.PatientServices.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
+
+                        //Store user's logged in session to the database
+                        LoggedInSessions loggedInSessions = new LoggedInSessions();
+                        loggedInSessions.setUserId(userUUID);
+                        loggedInSessions.setUserName(usernameValue);
+                        loggedInSessions.setLastLoggedIn(Calendar.getInstance().getTimeInMillis());
+                        loggedInSessions.setUserPassword(passwordValue);
+                        loggedInSessions.setRoleString(rolesString);
+
+                        new AsyncTask<Void, Void, Void>(){
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                baseDatabase.loggedInSessionsModelDao().addLoggedInSession(loggedInSessions);
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+                                sendRegistrationToServer(deviceRegistrationId,
+                                        loginResponse.getUser().getAttributes().getPersonUUID(),
+                                        loginResponse.getTeam().getTeam().getLocation().getUuid());
+                            }
+                        }.execute();
+
+                    } else {
+                        loginMessages.setText(getResources().getString(R.string.error_logging_in));
+                        loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
+                        loginProgress.setVisibility(View.GONE);
+                        loginButton.setText(getResources().getString(R.string.login));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<LoginResponse> call, Throwable t) {
+                    // something went completely south (like no internet connection)
+                    try {
+                        Log.d("Error", t.getMessage());
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+        }
 
     }
 
@@ -629,6 +711,13 @@ public class LoginActivity extends BaseActivity {
 
         usernameEt = (EditText) findViewById(R.id.user_username_et);
         passwordEt = (EditText) findViewById(R.id.password_et);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

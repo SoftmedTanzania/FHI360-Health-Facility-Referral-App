@@ -196,4 +196,6 @@
 
     <string name="done">Done</string>
 
+    <string name="feedback_required"> Please fill the service given to the patient </string>
+
 </resources>

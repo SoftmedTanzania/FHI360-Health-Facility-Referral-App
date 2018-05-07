@@ -274,7 +274,7 @@ public class ClientRegisterActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
 
             database.patientModel().addPatient(p);
-            //database.tbPatientModelDao().addPatient(tp);
+            //database.tbPatientModelDao().addLoggedInSession(tp);
 
             //TODO: Add patient to PostOffice and set Sync Status
             PostOffice po = new PostOffice();

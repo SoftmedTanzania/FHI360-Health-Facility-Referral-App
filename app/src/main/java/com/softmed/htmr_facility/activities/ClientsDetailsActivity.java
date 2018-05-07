@@ -286,6 +286,8 @@ public class ClientsDetailsActivity extends BaseActivity {
         }
     }
 
+
+    //TODO => This method needs code restructuring
     private void saveReferalInformation(boolean isForwardingReferral){
         if (service == LAB_SERVICE_ID){
 

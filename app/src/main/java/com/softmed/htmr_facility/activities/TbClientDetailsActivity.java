@@ -66,6 +66,7 @@ import static com.softmed.htmr_facility.utils.constants.TB_1_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_2_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_3_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_SCANTY;
+import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TREATMENT_TYPE_1;
 import static com.softmed.htmr_facility.utils.constants.TREATMENT_TYPE_2;
 import static com.softmed.htmr_facility.utils.constants.TREATMENT_TYPE_3;
@@ -88,7 +89,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
     LinearLayout matokeoLinearLayout;
     RelativeLayout finishedPreviousMonthLayout, makohoziWrapper, othersWrapper, makohoziEncounterWrap;
-    MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner, appointmentsSpinner;
+    private MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner, appointmentsSpinner;
     TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
     TextView ward, village, hamlet, medicationStatusTitle, resultsDate, emptyPreviousMonthEncounter;
     EditText outcomeDetails, otherTestValue, monthlyPatientWeightEt;
@@ -190,16 +191,6 @@ public class TbClientDetailsActivity extends BaseActivity {
         monthOneMakohoziAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, tbTypes);
         monthOneMakohoziAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         monthOneMakohoziSpinner.setAdapter(makohoziSpinnerAdapter);
-
-        /*
-          get all the appointments to allow the user to select from the list of appointments which one
-          is being attended with this particular visit
-          Appointments should be the one that have not been attended to with status Pending
-         */
-
-        if (currentTbPatient != null && currentPatient != null){
-            getUnattendedAppointments();
-        }
 
         encouterMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -367,6 +358,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             List<PatientAppointment> appointments = new ArrayList<>();
             @Override
             protected Void doInBackground(Void... voids) {
+                Log.d(TAG, "Querying list of appointments");
                 appointments = baseDatabase.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, currentPatient.getPatientId());
                 Log.d(TAG, "Size of obtained appointments "+appointments.size());
                 return null;
@@ -723,6 +715,10 @@ public class TbClientDetailsActivity extends BaseActivity {
         monthlyPatientWeightEt.setText("");
         monthlyPatientWeightEt.setEnabled(true);
         medicationStatusTitle.setText("Amemaliza Dawa Za Mwezi Uliopita Kikamilifu");
+
+        appointmentsSpinner.setSelection(0);
+        appointmentsSpinner.setEnabled(true);
+
     }
 
     class GetPreviousEncounters extends AsyncTask<Long, Void, List<TbEncounters>>{
@@ -777,6 +773,8 @@ public class TbClientDetailsActivity extends BaseActivity {
 
                 monthlyPatientWeightEt.setText(encounter.getWeight());
                 monthlyPatientWeightEt.setEnabled(false);
+
+                appointmentsSpinner.setEnabled(false);
 
                 for (int i=0; i<tbTypes.length; i++){
                     if (tbTypes[i].equals(encounter.getMakohozi())){
@@ -859,6 +857,13 @@ public class TbClientDetailsActivity extends BaseActivity {
                         }
                     }
                 }
+
+                /*
+                get all the appointments to allow the user to select from the list of appointments which one
+                is being attended with this particular visit
+                Appointments should be the one that have not been attended to with status Pending
+                */
+                getUnattendedAppointments();
 
                 patientWeight.setText(tbPatient.getWeight()+"" == null ? "" : tbPatient.getWeight()+"");
                 for (int i=0; i<treatmentTypes.length; i++){
@@ -1056,7 +1061,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
                 appointment.setAppointmentID(number);
                 appointment.setPatientID(currentPatient.getPatientId());
-
+                appointment.setAppointmentType(2);
                 database.appointmentModelDao().addAppointment(appointment);
 
                 Log.d("Billions", "Saving appointment for "+simpleDateFormat.format(appointment.getAppointmentDate()));
