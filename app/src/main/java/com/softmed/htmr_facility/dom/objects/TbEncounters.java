@@ -26,8 +26,8 @@ public class TbEncounters implements Serializable {
     private long tbPatientID;
 
     @NonNull
-    @SerializedName("encounterMonth")
-    private int encounterMonth;
+    @SerializedName("encounterNumber")
+    private int encounterNumber;
 
     @SerializedName("makohozi")
     private String makohozi;
@@ -115,12 +115,12 @@ public class TbEncounters implements Serializable {
     }
 
     @NonNull
-    public int getEncounterMonth() {
-        return encounterMonth;
+    public int getEncounterNumber() {
+        return encounterNumber;
     }
 
-    public void setEncounterMonth(@NonNull int encounterMonth) {
-        this.encounterMonth = encounterMonth;
+    public void setEncounterNumber(@NonNull int encounterNumber) {
+        this.encounterNumber = encounterNumber;
     }
 
     public long getAppointmentId() {

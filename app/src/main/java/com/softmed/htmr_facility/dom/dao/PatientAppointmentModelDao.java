@@ -44,6 +44,9 @@ public interface PatientAppointmentModelDao {
     @Query("select * from PatientAppointment where patientID = :patientID and appointmentType = :type and status = :appointmentStatus")
     List<PatientAppointment> getAppointmentsByTypeAndPatientIDAndStatus(int type, String patientID, String appointmentStatus);
 
+    @Query("select * from PatientAppointment where encounterNumber = :encounterNumber and patientID = :patientID")
+    List<PatientAppointment> getAppointmentByEncounterNumberAndPatientID(int encounterNumber, String patientID);
+
     @Query("select count(*) from PatientAppointment where appointmentDate between :from and :to")
     int getTotalAppointmentsByAppointmentDate(long from, long to);
 

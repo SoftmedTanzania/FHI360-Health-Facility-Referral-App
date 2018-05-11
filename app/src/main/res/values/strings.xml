@@ -73,7 +73,7 @@
     <string name="treatment_info">Treatment Information</string>
     <string name="treatment_type">Treatment Type</string>
     <string name="encounter_details">Encounter Details</string>
-    <string name="makohozi">Cough</string>
+    <string name="makohozi">Sputum</string>
     <string name="finished_last_month_medications_succesfully">Finished last months medications successfully</string>
     <string name="treatment_results">Treatment Results</string>
     <string name="results">Results</string>
@@ -197,5 +197,7 @@
     <string name="done">Done</string>
 
     <string name="feedback_required"> Please fill the service given to the patient </string>
+
+    <string name="date_issued"> Date Issued </string>
 
 </resources>

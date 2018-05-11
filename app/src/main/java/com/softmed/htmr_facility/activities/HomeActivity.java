@@ -114,42 +114,34 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         setupviews();
 
+        //initialize the database
         database = AppDatabase.getDatabase(this);
+
+        //Glide context request manager
         mRequestManager= Glide.with(this);
-
-        SessionManager sessionManager = new SessionManager(this);
-        if (!sessionManager.isLoggedIn()){
-            sessionManager.checkLogin();
-            finish();
-        }
-
-        Log.d("msosi", session.getKeyHfid()+"");
-
-        patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
-                session.getUserName(),
-                session.getUserPass(),
-                session.getKeyHfid());
-
-        referalService = ServiceGenerator.createService(Endpoints.ReferalService.class,
-                session.getUserName(),
-                session.getUserPass(),
-                session.getKeyHfid());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null){
             setSupportActionBar(toolbar);
         }
 
+        //User Session Manager Initialization
+        SessionManager sessionManager = new SessionManager(this);
+        if (!sessionManager.isLoggedIn()){
+            sessionManager.checkLogin();
+            finish();
+        }
+
         if (session.isLoggedIn()){
             toolbarTitle.setText(session.getUserName());
         }
 
-        checkPostOfficeData();
-
+        //initialize viewpager
         viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         viewPager.setOffscreenPageLimit(4);
 
+        //initialize tablayout
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.post(new Runnable() {
             @Override
@@ -158,6 +150,20 @@ public class HomeActivity extends BaseActivity {
                 setupTabIcons();
             }
         });
+
+        //Initialize patient api call services
+        patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
+
+        //Initialize referral api call services
+        referalService = ServiceGenerator.createService(Endpoints.ReferalService.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
+
+        checkPostOfficeData();
 
         manualSync.setOnClickListener(new View.OnClickListener() {
             @Override
