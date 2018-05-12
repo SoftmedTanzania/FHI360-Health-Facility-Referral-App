@@ -474,6 +474,8 @@ public class HomeActivity extends BaseActivity {
         return true;
     }
 
+    //This is a comment
+
     public void setupTabIcons() {
 
         for (int i=0; i<indexes.size(); i++){
