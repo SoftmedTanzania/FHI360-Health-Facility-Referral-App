@@ -65,7 +65,6 @@ import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING;
 import static com.softmed.htmr_facility.utils.constants.TB_1_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_2_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_3_PLUS;
-import static com.softmed.htmr_facility.utils.constants.TB_NEGATIVE;
 import static com.softmed.htmr_facility.utils.constants.TB_SCANTY;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TREATMENT_TYPE_1;
@@ -109,7 +108,7 @@ public class TbClientDetailsActivity extends BaseActivity {
     boolean patientNew;
     boolean activityCanExit = false;
     int selectedTestType = 0;
-    final String[] tbTypes = {TB_NEGATIVE, TB_SCANTY, TB_1_PLUS, TB_2_PLUS, TB_3_PLUS};
+    final String[] tbTypes = {TB_SCANTY, TB_1_PLUS, TB_2_PLUS, TB_3_PLUS};
     String strMatibabu, strXray, strVipimoVingine, strMakohozi, strMonth, strOutcome, strOutcomeDetails, strOutcomeDate;
     String otherTestValueString = "";
     String[] treatmentTypes = {TREATMENT_TYPE_1, TREATMENT_TYPE_2, TREATMENT_TYPE_3, TREATMENT_TYPE_4, TREATMENT_TYPE_5};

@@ -94,7 +94,7 @@ public class LabFragment extends Fragment {
         referralCountViewModels.getLabTestedClients().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
-                labTestedClientsCount.setText(integer+" ");
+                labTestedClientsCount.setText(integer+" "+getResources().getString(R.string.lab_tested_patients));
             }
         });
 

@@ -34,6 +34,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
@@ -337,6 +338,8 @@ public class HomeActivity extends BaseActivity {
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
+                            Log.d(TAG,"POST_DATA_REFERRAL_FB responce object = "+new Gson().toJson(response));
+
                             Log.d("POST_DATA_REFERRAL_FB", "Outside 200 : "+response.body());
                             //database.postOfficeModelDao().deletePostData(data);
                             if (response.code() == 200){
