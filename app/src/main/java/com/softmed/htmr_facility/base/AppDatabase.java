@@ -55,7 +55,7 @@ import com.softmed.htmr_facility.dom.objects.UserData;
                 ReferralServiceIndicators.class,
                 LoggedInSessions.class
         },
-        version = 1)
+        version = 2)
 
 public abstract class AppDatabase extends RoomDatabase{
 
