@@ -76,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
-                        android:text="Month"
+                        android:text="Encounter"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/card_title_text"
@@ -94,6 +94,23 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
+                        android:text="@string/date_issued"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/card_title_text"
+                        android:fontFamily="@font/avenir_light"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
                         android:text="@string/weight"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -205,7 +222,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_weight="0.6">
 
                     <View
                         android:id="@+id/separator_four"
@@ -220,12 +237,62 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/separator_four"
-                        android:text="@string/month"
+                        android:text="Encounter"
                         android:textColor="@color/card_title_text"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/encounter_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/separator_four"
+                        android:layout_toRightOf="@id/month_title"
+                        android:layout_marginLeft="16dp"
+                        android:text="1"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/encounter_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/month_title"
+                        android:text="12/5/2018"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/appointment_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/encounter_date"
+                        android:layout_marginTop="16dp"
+                        android:text="Appointment Dated"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/encounter_appointment_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/appointment_title"
+                        android:text="10/5/2018"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold" />
 
                     <fr.ganfra.materialspinner.MaterialSpinner
+                        android:visibility="gone"
                         android:id="@+id/spin_encounter_month"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
@@ -251,6 +318,7 @@
                         app_ms:ms_multiline="false" />
 
                     <fr.ganfra.materialspinner.MaterialSpinner
+                        android:visibility="gone"
                         android:id="@+id/spin_appointments"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
@@ -346,7 +414,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_weight="1">
+                    android:layout_weight="0.7">
 
                     <View
                         android:id="@+id/separator_one"

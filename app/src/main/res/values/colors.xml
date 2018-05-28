@@ -4,10 +4,6 @@
     <color name="colorPrimaryDark">#2d69a5</color> <!-- 00838f -->
     <color name="colorAccent">#00acc1</color>
 
-    <color name="somaappPrimaryColor">#ff5722</color>
-    <color name="somaappPrimaryDarkColor">#e64a19</color>
-
-
     <array name="progress_colors">
         <item>#d81b60</item> <!-- Use with white text -->
         <item>#6a1b9a</item> <!-- Use with white text -->
