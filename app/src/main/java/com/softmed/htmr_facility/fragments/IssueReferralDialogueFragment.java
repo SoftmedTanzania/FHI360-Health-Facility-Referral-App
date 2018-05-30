@@ -111,6 +111,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.custom_dialogue_layout, container);
         database = AppDatabase.getDatabase(this.getContext());
+        this.getDialog().setCanceledOnTouchOutside(false);
         return view;
     }
 
