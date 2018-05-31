@@ -81,7 +81,7 @@ public class PostOfficeService extends IntentService {
                     //final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getPatientRequestBody(patient, userData));
+                    Call call = patientServices.postPatient(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getPatientRequestBody(patient, userData.getUserFacilityId()));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
