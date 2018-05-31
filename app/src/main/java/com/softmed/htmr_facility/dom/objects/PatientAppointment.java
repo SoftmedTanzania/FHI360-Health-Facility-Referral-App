@@ -43,6 +43,8 @@ public class PatientAppointment implements Serializable{
     @SerializedName("status")
     private String status;
 
+    private int encounterNumber;
+
     @Ignore
     @SerializedName("cancelled")
     private boolean _cancelled;
@@ -114,4 +116,11 @@ public class PatientAppointment implements Serializable{
         this.appointmentType = appointmentType;
     }
 
+    public int getEncounterNumber() {
+        return encounterNumber;
+    }
+
+    public void setEncounterNumber(int encounterNumber) {
+        this.encounterNumber = encounterNumber;
+    }
 }

@@ -3,17 +3,11 @@ package com.softmed.htmr_facility.base;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.softmed.htmr_facility.R;
@@ -29,7 +23,6 @@ import java.util.Locale;
 
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.dom.objects.Patient;
-import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
@@ -195,7 +188,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("tbPatientId", encounters.getTbPatientID());
             object.put("makohozi", encounters.getMakohozi());
             object.put("appointmentId", encounters.getAppointmentId());
-            object.put("encounterMonth", encounters.getEncounterMonth());
+            object.put("encounterMonth", encounters.getEncounterNumber());
             object.put("hasFinishedPreviousMonthMedication", encounters.isHasFinishedPreviousMonthMedication());
             object.put("scheduledDate", encounters.getScheduledDate());
             object.put("medicationDate", encounters.getMedicationDate());

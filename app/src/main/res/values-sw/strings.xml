@@ -190,4 +190,6 @@
     <string name="username_required">Jina haliwezi kua wazi</string>
     <string name="password_required">Neno la siri haliwezi kuwa wazi</string>
 
+    <string name="date_issued"> Imetolewa Tarehe </string>
+
 </resources>
