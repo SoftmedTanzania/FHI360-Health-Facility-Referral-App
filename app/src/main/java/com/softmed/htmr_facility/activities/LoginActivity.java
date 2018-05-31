@@ -334,7 +334,7 @@ public class LoginActivity extends BaseActivity {
                         referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
                         patientService = ServiceGenerator.createService(Endpoints.PatientServices.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
 
-                        //Store user's logged in session to the database
+                        //Store user's logged in session to the database to enable Offline logging in
                         LoggedInSessions loggedInSessions = new LoggedInSessions();
                         loggedInSessions.setUserId(userUUID);
                         loggedInSessions.setUserName(usernameValue);
