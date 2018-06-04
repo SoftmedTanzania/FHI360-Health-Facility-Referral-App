@@ -39,6 +39,7 @@ import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.customviews.NonSwipeableViewPager;
+import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
@@ -89,7 +90,7 @@ public class HomeActivity extends BaseActivity {
     private TabLayout tabLayout;
     public static NonSwipeableViewPager viewPager;
     private Toolbar toolbar;
-    private TextView toolbarTitle, unsynced;
+    private TextView toolbarTitle, unsynced, currentFacilityName;
     private CircularProgressView syncProgressBar;
     private ImageView manualSync;
 
@@ -108,6 +109,7 @@ public class HomeActivity extends BaseActivity {
 
     List<String> indexes = new ArrayList<>();
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +136,23 @@ public class HomeActivity extends BaseActivity {
 
         if (session.isLoggedIn()){
             toolbarTitle.setText(session.getUserName());
+            new AsyncTask<Void, Void, Void>(){
+                String hfName = "";
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    List<HealthFacilities> hfList = database.healthFacilitiesModelDao().getFacilityByOpenMRSID(session.getKeyHfid());
+                    if (hfList!=null && hfList.size() > 0){
+                        hfName = hfList.get(0).getFacilityName();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    currentFacilityName.setText(hfName);
+                }
+            }.execute();
         }
 
         //initialize viewpager
@@ -432,6 +451,8 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void setupviews(){
+
+        currentFacilityName = findViewById(R.id.current_facility_name);
 
         syncProgressBar = (CircularProgressView) findViewById(R.id.manual_sync_loader);
         syncProgressBar.setVisibility(View.INVISIBLE);

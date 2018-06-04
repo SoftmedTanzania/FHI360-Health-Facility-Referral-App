@@ -24,6 +24,9 @@ public interface HealthFacilitiesModelDao {
     @Query("select * from HealthFacilities")
     List<HealthFacilities> getAllHealthFacilities();
 
+    @Query("select * from HealthFacilities where openMRSUIID = :openMRSUUID")
+    List<HealthFacilities> getFacilityByOpenMRSID(String openMRSUUID);
+
     @Insert(onConflict = REPLACE)
     void addHealthFacility(HealthFacilities hf);
 
