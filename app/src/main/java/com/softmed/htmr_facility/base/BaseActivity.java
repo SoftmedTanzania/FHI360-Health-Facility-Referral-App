@@ -212,7 +212,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public static RequestBody getReferralRequestBody(Referral referral, UserData userData){
+    public static RequestBody getReferralRequestBody(Referral referral){
         RequestBody body;
         String datastream = "";
         JSONObject object   = new JSONObject();
@@ -224,7 +224,6 @@ public class BaseActivity extends AppCompatActivity {
             object.put("patientId", patientID);
             object.put("communityBasedHivService", referral.getCommunityBasedHivService());
             object.put("referralReason", referral.getReferralReason());
-            //object.put("ctcNumber", referral.getCtcNumber());
             object.put("serviceId", referral.getServiceId());
             object.put("referralUUID", referral.getReferralUUID());
             object.put("serviceProviderUIID", referral.getServiceProviderUIID());
@@ -241,19 +240,6 @@ public class BaseActivity extends AppCompatActivity {
             object.put("facilityId", referral.getFacilityId());
             object.put("referralStatus", referral.getReferralStatus());
             object.put("labTest", referral.getLabTest());
-
-            // Indicators are no longer used in facility level
-
-            /*JSONArray serviceIndicatorsArray = new JSONArray();
-            if (referral.getServiceIndicatorIds() != null){
-                for (int i=0; i< referral.getServiceIndicatorIds().size(); i++){
-                    long indicator = Long.parseLong(referral.getServiceIndicatorIds().get(i)+"");
-                    serviceIndicatorsArray.put(indicator);
-                }
-
-                object.put("serviceIndicatorIds", serviceIndicatorsArray);
-            }*/
-            //object.put("healthFacilityCode", userData.getUserFacilityId());
 
             datastream = object.toString();
 

@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.DialogFragment;
@@ -25,11 +26,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.adapters.HealthFacilitiesAdapter;
 import com.softmed.htmr_facility.adapters.ServicesAdapter;
+import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
@@ -38,17 +39,21 @@ import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
+import com.softmed.htmr_facility.utils.ServiceGenerator;
 
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import fr.ganfra.materialspinner.MaterialSpinner;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import static com.softmed.htmr_facility.base.BaseActivity.session;
 import static com.softmed.htmr_facility.utils.SessionManager.KEY_UUID;
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.FACILITY_TO_CHW;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
-import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE;
 import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_NEW;
@@ -94,6 +99,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     private String forwardUUID;
     private int TEST_TO_TAKE = 0;
 
+    private Endpoints.ReferalService referalService;
+
     public IssueReferralDialogueFragment() {}
 
     public static IssueReferralDialogueFragment newInstance(Patient patient, int sourceServiceId, String forwardedUUID) {
@@ -108,6 +115,16 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        referalService = ServiceGenerator.createService(Endpoints.ReferalService.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.custom_dialogue_layout, container);
         database = AppDatabase.getDatabase(this.getContext());
@@ -115,6 +132,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //this.getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -180,7 +198,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             @Override
             public void onClick(View view) {
                 if (getCurrentInputs()){
-                    createReferralObject();
+                    issueReferral();
                 }
             }
         });
@@ -265,7 +283,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         super.onSaveInstanceState(outState);
     }
 
-    private void createReferralObject(){
+    private void issueReferral(){
 
         Referral referral = new Referral();
         List<Long> indicatorIDs = new ArrayList<>();
@@ -284,7 +302,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setServiceId(serviceID);
         referral.setReferralUUID(forwardUUID);
         referral.setCtcNumber("");
-        referral.setServiceProviderUIID(BaseActivity.session.getUserDetails().get(KEY_UUID));
+        referral.setServiceProviderUIID(session.getUserDetails().get(KEY_UUID));
         referral.setServiceProviderGroup("");
         referral.setVillageLeader("");
 
@@ -293,7 +311,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         referral.setReferralDate(today);
         referral.setFacilityId(toHealthFacilityID);
-        referral.setFromFacilityId(BaseActivity.session.getKeyHfid());
+        referral.setFromFacilityId(session.getKeyHfid());
         referral.setReferralStatus(REFERRAL_STATUS_NEW);
         referral.setOtherClinicalInformation(otherClinicalInformationValue);
 
@@ -303,15 +321,83 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             indicatorIDs.add(indicator.getReferralServiceIndicatorId());
         }
 
-        //Commented because facility referrals do not account for indicators | untill the requirement is stated otherwise
-        //referral.setServiceIndicatorIds(indicatorIDs);
+        //Call online issuing of referral and then store locally
+        Call<Referral> issueReferral = referalService.postReferral(session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral));
+        issueReferral.enqueue(new Callback<Referral>() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call<Referral> call, Response<Referral> response) {
+                try {
+                    Referral receivedReferral = response.body();
+                    new AsyncTask<Referral, Void, Void>(){
+                        @Override
+                        protected Void doInBackground(Referral... referrals) {
+                            database.referalModel().addReferal(referrals[0]);
+                            return null;
+                        }
 
-        Log.d("green", referral.getFromFacilityId()+"");
-        System.out.print(referral);
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            toastThis("Referral Stored Successfully");
+                            dismiss();
+                        }
+                    }.execute(receivedReferral);
 
-        //TODO: Remove comments to send referral
-        SaveReferral saveReferral = new SaveReferral(database);
-        saveReferral.execute(referral);
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                    //Returned Null from server
+                    new AsyncTask<Referral, Void, Void>(){
+                        @Override
+                        protected Void doInBackground(Referral... args) {
+                            //Save referral in local DB
+                            PostOffice postOffice = new PostOffice();
+                            postOffice.setPost_id(args[0].getReferral_id());
+                            postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
+                            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+                            database.postOfficeModelDao().addPostEntry(postOffice);
+
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            toastThis("Referral needs to be synced manually");
+                            dismiss();
+                        }
+                    }.execute(referral);
+                }
+            }
+
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onFailure(Call<Referral> call, Throwable t) {
+                //Sending referral to server failed, store locally and Add a postOffice data
+                new AsyncTask<Referral, Void, Void>(){
+                    @Override
+                    protected Void doInBackground(Referral... args) {
+                        //Save referral in local DB
+                        PostOffice postOffice = new PostOffice();
+                        postOffice.setPost_id(args[0].getReferral_id());
+                        postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
+                        postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+                        database.postOfficeModelDao().addPostEntry(postOffice);
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+                        toastThis("Referral needs to be synced manually");
+                        dismiss();
+                    }
+                }.execute(referral);
+            }
+        });
 
     }
 
@@ -514,39 +600,6 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
             hfs = database.healthFacilitiesModelDao().getAllHealthFacilities();
             serviceIndicators = database.referralServiceIndicatorsDao().getAllServices();
-
-            return null;
-        }
-    }
-
-    class SaveReferral extends AsyncTask<Referral, Void, Void>{
-
-        AppDatabase database;
-
-        SaveReferral(AppDatabase db){
-            this.database = db;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            toastThis("Referral Stored Successfully");
-            dismiss();
-        }
-
-        @Override
-        protected Void doInBackground(Referral... referrals) {
-
-            database.referalModel().addReferal(referrals[0]);
-            List<Referral> x = database.referalModel().getAllReferralsOfThisFacility(BaseActivity.session.getKeyHfid());
-            Log.d("AllReferrals", "All referrals : "+x.size());
-
-            PostOffice postOffice = new PostOffice();
-            postOffice.setPost_id(referrals[0].getReferral_id());
-            postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
-            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
-
-            database.postOfficeModelDao().addPostEntry(postOffice);
 
             return null;
         }

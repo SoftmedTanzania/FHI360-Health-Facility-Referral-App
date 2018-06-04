@@ -153,7 +153,7 @@ public class PostOfficeService extends IntentService {
                     final Referral referral = database.referalModel().getReferalById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(sess.getUserDetails().get("uuid"));
 
-                    Call call = referalService.postReferral(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral, userData));
+                    Call call = referalService.postReferral(BaseActivity.session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
