@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.adapters.HealthFacilitiesAdapter;
 import com.softmed.htmr_facility.adapters.ServicesAdapter;
@@ -68,14 +69,16 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 public class IssueReferralDialogueFragment extends DialogFragment{
 
-    private TextView patientNames, takeHivTest, takeMalariaTest, takeTBTest;
+    private TextView patientNames, takeHivTest, takeMalariaTest, takeTBTest, saveButtonText;
     private MaterialSpinner spinnerService, spinnerToHealthFacility;
     private EditText referralReasons, otherClinicalInformation;
-    private Button cancelButton, issueButton;
+    private Button cancelButton;
+    private RelativeLayout issueButton;
     private RecyclerView indicatorsRecycler;
     private ToggleSwitch referralToToggle;
     private LinearLayout serviceAndFacilityWrap, indicatorsWrap, labTestsWrap;
     private View indicatorSeparator;
+    private CircularProgressView circularProgressView;
 
     private Patient currentPatient;
     private String referralReasonsValue, otherClinicalInformationValue, toHealthFacilityID;
@@ -197,8 +200,13 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         issueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                circularProgressView.setVisibility(View.VISIBLE);
+                saveButtonText.setVisibility(View.GONE);
                 if (getCurrentInputs()){
                     issueReferral();
+                }else {
+                    circularProgressView.setVisibility(View.GONE);
+                    saveButtonText.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -339,6 +347,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                         @Override
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
+                            circularProgressView.setVisibility(View.GONE);
+                            saveButtonText.setVisibility(View.VISIBLE);
                             toastThis("Referral Stored Successfully");
                             dismiss();
                         }
@@ -346,6 +356,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
                 }catch (NullPointerException e){
                     e.printStackTrace();
+
                     //Returned Null from server
                     new AsyncTask<Referral, Void, Void>(){
                         @Override
@@ -364,6 +375,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                         @Override
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
+                            circularProgressView.setVisibility(View.GONE);
+                            saveButtonText.setVisibility(View.VISIBLE);
                             toastThis("Referral needs to be synced manually");
                             dismiss();
                         }
@@ -392,6 +405,8 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     @Override
                     protected void onPostExecute(Void aVoid) {
                         super.onPostExecute(aVoid);
+                        circularProgressView.setVisibility(View.GONE);
+                        saveButtonText.setVisibility(View.VISIBLE);
                         toastThis("Referral needs to be synced manually");
                         dismiss();
                     }
@@ -437,16 +452,21 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         indicatorsRecycler.setLayoutManager(layoutManager);
         indicatorsRecycler.setHasFixedSize(true);
 
-        patientNames = (TextView) v.findViewById(R.id.patient_name);
+        patientNames =  v.findViewById(R.id.patient_name);
 
-        spinnerService = (MaterialSpinner) v.findViewById(R.id.spin_service);
-        spinnerToHealthFacility = (MaterialSpinner) v.findViewById(R.id.spin_to_facility);
+        spinnerService =  v.findViewById(R.id.spin_service);
+        spinnerToHealthFacility =  v.findViewById(R.id.spin_to_facility);
 
-        referralReasons = (EditText) v.findViewById(R.id.referal_reasons_text);
-        otherClinicalInformation = (EditText) v.findViewById(R.id.other_clinical_information_text);
+        referralReasons =  v.findViewById(R.id.referal_reasons_text);
+        otherClinicalInformation =  v.findViewById(R.id.other_clinical_information_text);
 
-        cancelButton = (Button) v.findViewById(R.id.cancel_button);
-        issueButton = (Button) v.findViewById(R.id.tuma_button);
+        cancelButton =  v.findViewById(R.id.cancel_button);
+        issueButton =  v.findViewById(R.id.tuma_button);
+        saveButtonText = v.findViewById(R.id.save_button_text);
+
+        circularProgressView = v.findViewById(R.id.progress_view);
+        circularProgressView.setVisibility(View.GONE);
+        saveButtonText.setVisibility(View.VISIBLE);
 
         referralToToggle = (ToggleSwitch) v.findViewById(R.id.referral_to_toggle);
 

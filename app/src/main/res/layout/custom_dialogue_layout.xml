@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app_ms="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -349,18 +350,36 @@
                 android:background="@color/cyan_900"
                 android:paddingBottom="4dp">
 
-                <Button
+                <RelativeLayout
                     android:layout_width="120dp"
                     android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
                     android:id="@+id/tuma_button"
-                    android:background="@drawable/border_four"
-                    android:text="@string/btn_send"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/rosario_regular"
-                    android:layout_marginTop="32dp"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/border_four">
+
+                    <TextView
+                        android:id="@+id/save_button_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/avenir_light"
+                        android:text="@string/btn_send"
+                        android:textStyle="bold"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/white"/>
+
+                    <com.github.rahatarmanahmed.cpv.CircularProgressView
+                        android:id="@+id/progress_view"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerInParent="true"
+                        app:cpv_animAutostart="true"
+                        app:cpv_indeterminate="true"
+                        app:cpv_color="@color/white" />
+
+                </RelativeLayout>
 
                 <Button
                     android:layout_width="120dp"
@@ -370,10 +389,13 @@
                     android:layout_toLeftOf="@id/tuma_button"
                     android:id="@+id/cancel_button"
                     android:background="@drawable/border_four"
+                    android:layout_marginTop="32dp"
+                    android:textAllCaps="false"
                     android:text="@string/btn_cancel"
                     android:textSize="14sp"
-                    android:fontFamily="@font/rosario_regular"
-                    android:layout_marginTop="32dp"/>
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
 
             </RelativeLayout>
 
