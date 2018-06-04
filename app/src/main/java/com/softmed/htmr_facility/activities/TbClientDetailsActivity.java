@@ -195,7 +195,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         monthOneMakohoziAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, tbTypes);
         monthOneMakohoziAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         monthOneMakohoziSpinner.setAdapter(makohoziSpinnerAdapter);
-
+/*
         encouterMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -255,7 +255,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             }
         });
-
+*/
         if (patientNew){
             selectedTestType = 1;
         }
@@ -265,17 +265,23 @@ public class TbClientDetailsActivity extends BaseActivity {
             @Override
             public void onToggleSwitchChangeListener(int position, boolean isChecked) {
                 if (position == 0 && isChecked){
+                    //Sputum for AFB selected
                     makohoziWrapper.setVisibility(View.VISIBLE);
                     othersWrapper.setVisibility(View.GONE);
                     selectedTestType = 1;
+                    Log.d("aways", "Test Type : "+selectedTestType);
                 }else if (position == 1 && isChecked){
+                    //X-Ray selected
                     makohoziWrapper.setVisibility(View.GONE);
                     othersWrapper.setVisibility(View.GONE);
                     selectedTestType = 2;
+                    Log.d("aways", "Test Type : "+selectedTestType);
                 }else {
+                    //Other tests selected
                     makohoziWrapper.setVisibility(View.GONE);
                     othersWrapper.setVisibility(View.VISIBLE);
                     selectedTestType = 3;
+                    Log.d("aways", "Test Type : "+selectedTestType);
                 }
             }
         });
@@ -617,10 +623,9 @@ public class TbClientDetailsActivity extends BaseActivity {
         if(selectedEncounterAppointment != null){
             //Set the appointment ID of the encounter based on the selected appointment
             tbEncounter.setAppointmentId(selectedEncounterAppointment.getAppointmentID());
+            //Scheduled date is the date of the appointment and medication date is the date of the visit to the clinic
+            tbEncounter.setScheduledDate(selectedEncounterAppointment.getAppointmentDate());
         }
-
-        //Scheduled date is the date of the appointment and medication date is the date of the visit to the clinic
-        tbEncounter.setScheduledDate(selectedEncounterAppointment.getAppointmentDate());
         tbEncounter.setMedicationDate(Calendar.getInstance().getTimeInMillis());
 
         Calendar calendar = Calendar.getInstance();
@@ -838,58 +843,6 @@ public class TbClientDetailsActivity extends BaseActivity {
         }
     }
 
-    class GetEncounterDetails extends AsyncTask<Long, Void, TbEncounters>{
-
-        AppDatabase database;
-        int encNumber;
-
-        GetEncounterDetails(AppDatabase db, int encounterMonth){
-            this.database = db;
-            this.encNumber = encounterMonth;
-        }
-
-        @Override
-        protected void onPostExecute(TbEncounters encounter) {
-            super.onPostExecute(encounter);
-            if (encounter != null){
-
-                medicationStatusCheckbox.setChecked(encounter.isMedicationStatus());
-                medicationStatusTitle.setText("Alimaliza Dawa za Mwezi Huu Kikamilifu");
-                medicationStatusCheckbox.setEnabled(false);
-
-                monthlyPatientWeightEt.setText(encounter.getWeight());
-                monthlyPatientWeightEt.setEnabled(false);
-
-                appointmentsSpinner.setEnabled(false);
-
-                for (int i=0; i<tbTypes.length; i++){
-                    if (tbTypes[i].equals(encounter.getMakohozi())){
-                        Log.d("Billions", "tb type : "+tbTypes[i]);
-                        makohoziSpinner.setSelection(i+1);
-                        makohoziSpinner.setEnabled(false);
-                    }
-                }
-            }else {
-                Log.d("Billions", "Sorry Encounter is Null");
-                clearFields();
-            }
-        }
-
-        @Override
-        protected TbEncounters doInBackground(Long... ids) {
-            Log.d("Billions", "On Encounters background");
-
-            List<TbEncounters> allEncounters = database.tbEncounterModelDao().getEncounterByPatientID(ids[0]);
-            Log.d("Billions", "All Encounters Size "+allEncounters.size());
-
-            List<TbEncounters> encounter = database.tbEncounterModelDao().getMonthEncounter(encNumber, ids[0]);
-            if (encounter.size() > 0)
-                return encounter.get(0);
-            else
-                return null;
-        }
-    }
-
     class GetTbPatientByPatientID extends AsyncTask<String, Void, TbPatient>{
 
         AppDatabase database;
@@ -926,19 +879,29 @@ public class TbClientDetailsActivity extends BaseActivity {
 
                 //Check to see the testType variable has value
                 if (testType > 0){
+
                     testTypeToggle.setCheckedTogglePosition(testType-1);
                     testTypeToggle.setFocusableInTouchMode(false);
 
-                    if (testType == 3){
-                        otherTestValue.setText(tbPatient.getOtherTestDetails());
-                    }else if (testType == 1){
-                        for (int i=0; i<tbTypes.length; i++){
-                            if (tbPatient.getMakohozi().equals(tbTypes[i])){
-                                monthOneMakohoziSpinner.setSelection(i);
-                                monthOneMakohoziSpinner.setEnabled(false);
+                    switch (testType){
+                        case 1:
+                            makohoziSpinner.setVisibility(View.VISIBLE);
+                            for (int i=0; i<tbTypes.length; i++){
+                                if (tbPatient.getMakohozi().equals(tbTypes[i])){
+                                    monthOneMakohoziSpinner.setSelection(i);
+                                    monthOneMakohoziSpinner.setEnabled(false);
+                                }
                             }
-                        }
+                            break;
+                        case 2:
+                            makohoziSpinner.setVisibility(View.GONE);
+                            break;
+                        case 3:
+                            makohoziSpinner.setVisibility(View.GONE);
+                            otherTestValue.setText(tbPatient.getOtherTestDetails());
+                            break;
                     }
+
                 }
 
                 /*

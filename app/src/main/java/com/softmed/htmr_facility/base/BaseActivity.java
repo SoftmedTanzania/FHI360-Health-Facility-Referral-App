@@ -270,7 +270,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public static RequestBody getPatientRequestBody(Patient patient, UserData userData){
+    public static RequestBody getPatientRequestBody(Patient patient, String userFacilityID){
 
         RequestBody body;
         String datastream = "";
@@ -286,28 +286,14 @@ public class BaseActivity extends AppCompatActivity {
             object.put("dateOfBirth", patient.getDateOfBirth());
             object.put("surname", patient.getPatientSurname());
             object.put("gender", patient.getGender());
-            //object.put("healthFacilityCode", "2ff3e6fb-eb85-49eb-b7b3-564ddc26b9d4");
             object.put("currentOnTbTreatment", patient.isCurrentOnTbTreatment());
-            object.put("healthFacilityCode", userData.getUserFacilityId());
+            object.put("healthFacilityCode", userFacilityID);
             object.put("communityBasedHivService", patient.getCbhs());
             object.put("ctcNumber", patient.getCtcNumber());
             object.put("hivStatus", patient.isHivStatus());
             object.put("careTakerName", patient.getCareTakerName());
             object.put("careTakerPhoneNumber", patient.getCareTakerPhoneNumber());
             object.put("careTakerRelationship", patient.getCareTakerRelationship());
-
-            /*object.put("patientType", tbPatient.getPatientType());
-            object.put("transferType", tbPatient.getTransferType());
-            object.put("referralType", tbPatient.getReferralType());
-            object.put("veo", tbPatient.getVeo());
-            object.put("weight", tbPatient.getWeight());
-            object.put("xray", tbPatient.getXray());
-            object.put("makohozi", tbPatient.getMakohozi());
-            object.put("otherTests", tbPatient.getOtherTests());
-            object.put("treatment_type", tbPatient.getTreatment_type());
-            object.put("outcome", tbPatient.getOutcome());
-            object.put("outcomeDate", tbPatient.getOutcomeDate());
-            object.put("outcomeDetails", tbPatient.getOutcomeDetails());*/
 
             datastream = object.toString();
 

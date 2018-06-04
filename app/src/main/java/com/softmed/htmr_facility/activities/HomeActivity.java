@@ -238,7 +238,7 @@ public class HomeActivity extends BaseActivity {
                     final Patient patient = database.patientModel().getPatientById(data.getPost_id());
                     final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-                    Call call = patientServices.postPatient(session.getServiceProviderUUID(), getPatientRequestBody(patient, userData));
+                    Call call = patientServices.postPatient(session.getServiceProviderUUID(), getPatientRequestBody(patient, userData.getUserFacilityId()));
                     call.enqueue(new Callback() {
                         @Override
                         public void onResponse(Call call, Response response) {
@@ -476,6 +476,8 @@ public class HomeActivity extends BaseActivity {
 
         return true;
     }
+
+    //This is a comment
 
     public void setupTabIcons() {
 

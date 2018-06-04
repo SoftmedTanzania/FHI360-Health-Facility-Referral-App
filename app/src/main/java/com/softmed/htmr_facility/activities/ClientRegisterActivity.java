@@ -1,10 +1,13 @@
 package com.softmed.htmr_facility.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,8 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.rey.material.widget.EditText;
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.api.Endpoints;
+import com.softmed.htmr_facility.utils.ServiceGenerator;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.Calendar;
@@ -28,10 +34,14 @@ import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import fr.ganfra.materialspinner.MaterialSpinner;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.FEMALE;
 import static com.softmed.htmr_facility.utils.constants.MALE;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 
 /**
@@ -43,14 +53,17 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 
 public class ClientRegisterActivity extends BaseActivity {
 
+    private final String TAG = "ClientRegisterActivity";
+
     private Toolbar toolbar;
     private MaterialSpinner genderSpinner;
     private EditText firstName, middleName, surname, phone, ward, village, hamlet, weight, mwenyekiti, careTakerName, careTakerPhone, careTakerRelationship, chbsNumber, ctcNumber;
-    private Button btnSave, btnCancel;
-    private TextView dateOfBirth;
+    private Button btnCancel;
+    private TextView dateOfBirth, saveButtonText;
     private CheckBox pregnant;
     private ProgressDialog dialog;
-    private RelativeLayout pregnantWrap;
+    private RelativeLayout pregnantWrap, saveButtonContainer;
+    private CircularProgressView circularProgressView;
 
     private Date dob;
     private String strFname, strMname, strSurname, strGender, strPhone, strWard, strVillage, strHamlet, strCbhsNumber, strCTCNumber;
@@ -58,6 +71,8 @@ public class ClientRegisterActivity extends BaseActivity {
     private boolean isPregnant;
     private boolean isTbClient = false;
     private Calendar dobCalendar;
+
+    private Endpoints.PatientServices patientServices;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +92,11 @@ public class ClientRegisterActivity extends BaseActivity {
         dialog = new ProgressDialog(ClientRegisterActivity.this, 0);
         dialog.setTitle(getResources().getString(R.string.saving));
         dialog.setMessage(getResources().getString(R.string.loading_please_wait));
+
+        patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
 
         //dialog = ProgressDialog.show(TbRegisterActivity.this, "Saving",
         //        "Loading. Please wait...", true);
@@ -120,12 +140,16 @@ public class ClientRegisterActivity extends BaseActivity {
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        saveButtonContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                saveButtonText.setVisibility(View.GONE);
+                circularProgressView.setVisibility(View.VISIBLE);
                 if (getInputs()){
                     saveData();
                 }else {
+                    saveButtonText.setVisibility(View.VISIBLE);
+                    circularProgressView.setVisibility(View.GONE);
                     Toast.makeText(ClientRegisterActivity.this,
                             "Weka taarifa zote kabla ya kuhifadhi taarifa",
                             Toast.LENGTH_LONG).show();
@@ -216,67 +240,126 @@ public class ClientRegisterActivity extends BaseActivity {
         patient.setCbhs(strCbhsNumber);
         patient.setCtcNumber(strCTCNumber);
 
-        AddNewPatient addNewPatient = new AddNewPatient(patient, baseDatabase);
-        addNewPatient.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        savePatientEndpointCall(patient);
 
     }
 
     private void setupview(){
 
-        pregnantWrap = (RelativeLayout) findViewById(R.id.pregnant_wrap);
+        circularProgressView =  findViewById(R.id.progress_view);
+        circularProgressView.stopAnimation();
+        circularProgressView.setVisibility(View.GONE);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        genderSpinner = (MaterialSpinner) findViewById(R.id.spin_gender);
+        pregnantWrap =  findViewById(R.id.pregnant_wrap);
 
-        dateOfBirth = (TextView) findViewById(R.id.date_of_birth);
+        toolbar =  findViewById(R.id.toolbar);
+        genderSpinner =  findViewById(R.id.spin_gender);
 
-        firstName = (EditText) findViewById(R.id.fname_et);
-        middleName = (EditText) findViewById(R.id.mname_et);
-        surname = (EditText) findViewById(R.id.surname_et);
-        phone = (EditText) findViewById(R.id.phone_number);
-        ward = (EditText) findViewById(R.id.ward);
-        village = (EditText) findViewById(R.id.village);
-        hamlet = (EditText) findViewById(R.id.hamlet);
-        weight = (EditText) findViewById(R.id.weight);
-        mwenyekiti = (EditText) findViewById(R.id.mwenyekiti);
+        //TextViews
+        dateOfBirth =  findViewById(R.id.date_of_birth);
+        saveButtonText = findViewById(R.id.save_button_text);
 
-        careTakerName = (EditText) findViewById(R.id.care_taker_name);
-        careTakerPhone = (EditText) findViewById(R.id.care_taker_phone);
-        careTakerRelationship = (EditText) findViewById(R.id.care_taker_relationship);
+        //EditTexts
+        firstName =  findViewById(R.id.fname_et);
+        middleName =  findViewById(R.id.mname_et);
+        surname =  findViewById(R.id.surname_et);
+        phone =  findViewById(R.id.phone_number);
+        ward =  findViewById(R.id.ward);
+        village =  findViewById(R.id.village);
+        hamlet =  findViewById(R.id.hamlet);
+        weight =  findViewById(R.id.weight);
+        mwenyekiti =  findViewById(R.id.mwenyekiti);
+        careTakerName =  findViewById(R.id.care_taker_name);
+        careTakerPhone =  findViewById(R.id.care_taker_phone);
+        careTakerRelationship =  findViewById(R.id.care_taker_relationship);
 
-        chbsNumber = (EditText) findViewById(R.id.cbhs_number);
-        ctcNumber = (EditText) findViewById(R.id.patient_ctc_number);
+        chbsNumber =  findViewById(R.id.cbhs_number);
+        ctcNumber =  findViewById(R.id.patient_ctc_number);
 
-        pregnant = (CheckBox) findViewById(R.id.is_pregnant);
+        pregnant =  findViewById(R.id.is_pregnant);
 
-        btnSave = (Button) findViewById(R.id.save_button);
-        btnCancel = (Button) findViewById(R.id.cancel_button);
+        saveButtonContainer = findViewById(R.id.save_button_container);
+        btnCancel = findViewById(R.id.cancel_button);
     }
 
-    class AddNewPatient extends AsyncTask<Void, Void, Void> {
+    private void savePatientEndpointCall(Patient _patient){
 
-        Patient p;
-        TbPatient tp;
+        Call call = patientServices.postPatient(session.getServiceProviderUUID(), getPatientRequestBody(_patient, session.getKeyHfid()));
+        call.enqueue(new Callback() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call call, Response response) {
+                //Store Received Patient Information, TbPatient as well as PatientAppointments
+                if (response.body() != null){
+                    Patient patient = (Patient) response.body();
+                    Log.d(TAG, patient.getPatientFirstName());
+                    new AsyncTask<Patient, Void, Void>(){
+                        Patient p;
+                        @Override
+                        protected Void doInBackground(Patient... patients) {
+                            p = patients[0];
+                            baseDatabase.patientModel().addPatient(p);
+                            return null;
+                        }
+                        /**
+                         * On Post Execute call the Patient info summary Activity
+                         * @param aVoid
+                         */
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            patientSummary(p);
+                        }
+                    }.execute(patient);
+
+                }else {
+                    Log.d(TAG,"Patient Responce is null "+response.body());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                Log.d("patient_response", t.getMessage());
+                //If saving patient to server has failed store patient to postman and proceed
+                savePatientToPostOffice _savePatientToPostOffice = new savePatientToPostOffice(baseDatabase);
+                _savePatientToPostOffice.execute(_patient);
+            }
+        });
+
+    }
+
+    /**
+     * This will call the patient details summary screen after the user have been saved successfully
+     * @param patient
+     */
+    void patientSummary(Patient patient){
+
+        //
+        saveButtonText.setVisibility(View.VISIBLE);
+        circularProgressView.setVisibility(View.GONE);
+
+        Intent intent = new Intent(ClientRegisterActivity.this, PatientDetailsActivity.class);
+        intent.putExtra("service", OPD_SERVICE_ID);
+        intent.putExtra("patient", patient);
+        startActivity(intent);
+        finish();
+    }
+
+    class savePatientToPostOffice extends AsyncTask<Patient, Void, Void>{
+
         AppDatabase database;
+        Patient p;
 
-        AddNewPatient(Patient patient,  AppDatabase db){
-            this.p = patient;
+        savePatientToPostOffice(AppDatabase db){
             this.database = db;
-            dialog.show();
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+        protected Void doInBackground(Patient... args) {
 
-        @Override
-        protected Void doInBackground(Void... voids) {
+            p = args[0];
 
-            database.patientModel().addPatient(p);
-            //database.tbPatientModelDao().addLoggedInSession(tp);
-
-            //TODO: Add patient to PostOffice and set Sync Status
             PostOffice po = new PostOffice();
             po.setPost_id(p.getPatientId());
             po.setPost_data_type(POST_DATA_TYPE_PATIENT);
@@ -289,18 +372,9 @@ public class ClientRegisterActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            dialog.dismiss();
-            finish();
-            /*if (isTbClient){
-                Intent intent = new Intent(ClientRegisterActivity.this, TbClientDetailsActivity.class);
-                intent.putExtra("patient", p);
-                intent.putExtra("isPatientNew", true);
-                startActivity(intent);
-                finish();
-            }else {
-                finish();
-            }*/
+            patientSummary(p);
         }
+
     }
 
 }

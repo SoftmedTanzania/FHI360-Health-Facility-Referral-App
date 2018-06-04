@@ -3,7 +3,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.softmed.htmr_facility.activities.MainActivity"
     android:background="@color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -286,7 +285,6 @@
                                     <RelativeLayout
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
-                                        android:visibility="invisible"
                                         android:layout_weight="1">
 
                                         <TextView
@@ -295,18 +293,18 @@
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"
                                             android:fontFamily="@font/roboto_bold"
-                                            android:text="@string/map_cue"
+                                            android:text="@string/phone_number"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="16sp" />
 
                                         <TextView
-                                            android:id="@+id/client_map_cue"
+                                            android:id="@+id/client_phone"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_below="@id/client_kitongoji_title"
                                             android:layout_marginTop="4dp"
                                             android:fontFamily="@font/roboto_regular"
-                                            android:text="Mkesemani"
+                                            android:text="+255645897554"
                                             android:textColor="@color/card_grid_text"
                                             android:textSize="16sp" />
 

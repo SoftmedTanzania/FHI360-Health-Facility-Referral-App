@@ -27,7 +27,7 @@ import java.util.UUID;
 public class PatientDetailsActivity extends BaseActivity {
 
     private Button cancelButton, referButton;
-    private TextView clientNames, clientAge, clientGender, clientVEO, clientWard, clientVillage, clientMapCue, careTakerName, careTakerPhone, careTakerRelationship;
+    private TextView clientNames, clientAge, clientGender, clientVEO, clientWard, clientVillage, clientMapCue, careTakerName, careTakerPhone, careTakerRelationship, clientPhone;
     private int service;
     private Patient currentPatient;
 
@@ -61,7 +61,7 @@ public class PatientDetailsActivity extends BaseActivity {
             clientGender.setText(currentPatient.getGender() == null? "n/a" : currentPatient.getGender());
             clientVillage.setText(currentPatient.getVillage() == null?"n/a":currentPatient.getVillage());
             clientWard.setText(currentPatient.getWard() == null ? "n/a" : currentPatient.getWard());
-            clientMapCue.setText(currentPatient.getHamlet() == null ? "n/a" : currentPatient.getHamlet());
+            clientPhone.setText(currentPatient.getPhone_number() == null ? "n/a" : currentPatient.getPhone_number());
             clientVEO.setText("");
 
             careTakerName.setText(currentPatient.getCareTakerName() == null ? "n/a" : currentPatient.getCareTakerName());
@@ -87,19 +87,19 @@ public class PatientDetailsActivity extends BaseActivity {
     }
 
     private void setupviews(){
-        cancelButton = (Button) findViewById(R.id.cancel_button);
-        referButton = (Button) findViewById(R.id.referal_button);
+        cancelButton =  findViewById(R.id.cancel_button);
+        referButton =  findViewById(R.id.referal_button);
 
-        clientAge = (TextView) findViewById(R.id.client_age_value);
-        clientNames = (TextView) findViewById(R.id.client_name);
-        clientGender = (TextView) findViewById(R.id.patient_gender_value);
-        clientVEO  = (TextView) findViewById(R.id.mwenyekiti_name_value);
-        clientWard = (TextView) findViewById(R.id.client_kata_value);
-        clientVillage = (TextView) findViewById(R.id.client_kijiji_value);
-        clientMapCue = (TextView) findViewById(R.id.client_map_cue);
-        careTakerName = (TextView) findViewById(R.id.care_taker_name);
-        careTakerPhone = (TextView) findViewById(R.id.care_taker_phone);
-        careTakerRelationship = (TextView) findViewById(R.id.care_taker_relationship);
+        clientAge =  findViewById(R.id.client_age_value);
+        clientNames =  findViewById(R.id.client_name);
+        clientGender =  findViewById(R.id.patient_gender_value);
+        clientVEO  =  findViewById(R.id.mwenyekiti_name_value);
+        clientWard =  findViewById(R.id.client_kata_value);
+        clientVillage =  findViewById(R.id.client_kijiji_value);
+        clientPhone = findViewById(R.id.client_phone);
+        careTakerName =  findViewById(R.id.care_taker_name);
+        careTakerPhone =  findViewById(R.id.care_taker_phone);
+        careTakerRelationship =  findViewById(R.id.care_taker_relationship);
 
     }
 
