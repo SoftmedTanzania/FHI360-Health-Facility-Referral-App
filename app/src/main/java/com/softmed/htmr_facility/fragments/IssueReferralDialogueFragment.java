@@ -270,16 +270,19 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             @Override
             public void onToggleSwitchChangeListener(int position, boolean isChecked) {
                 Log.d("sia", position+" "+isChecked);
-                if (position == 1){
-                    serviceAndFacilityWrap.setVisibility(View.GONE);
-                    //indicatorsWrap.setVisibility(View.GONE);
-                    indicatorSeparator.setVisibility(View.GONE);
-                    referralType = FACILITY_TO_CHW;
-                }else {
-                    serviceAndFacilityWrap.setVisibility(View.VISIBLE);
-                    //indicatorsWrap.setVisibility(View.VISIBLE);
-                    indicatorSeparator.setVisibility(View.VISIBLE);
-                    referralType = INTERFACILITY;
+                switch (position){
+                    case 0:
+                        //Inter-facility|intra-facility Referral
+                        serviceAndFacilityWrap.setVisibility(View.VISIBLE);
+                        indicatorSeparator.setVisibility(View.VISIBLE);
+                        referralType = INTERFACILITY;
+                        break;
+                    case 1:
+                        //Facility to CHW referrals
+                        serviceAndFacilityWrap.setVisibility(View.GONE);
+                        indicatorSeparator.setVisibility(View.GONE);
+                        referralType = FACILITY_TO_CHW;
+                        break;
                 }
             }
         });
