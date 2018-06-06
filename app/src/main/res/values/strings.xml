@@ -48,6 +48,7 @@
 
     <string name="where_they_stay">Where s/he lives</string>
 
+    <string name="issue">Refer</string>
     <string name="referral">Referral</string>
     <string name="issue_referral">Issue Referral</string>
     <string name="referral_information">Referral Information</string>
@@ -69,9 +70,10 @@
     <string name="toggle_makohozi">Sputum for AFB</string>
     <string name="toggle_xray">X-Ray</string>
     <string name="toggle_other">Other Test</string>
-    <string name="cough_weight">Cough weight before treatment</string>
+    <string name="cough_weight">Results</string>
     <string name="treatment_info">Treatment Information</string>
     <string name="treatment_type">Treatment Type</string>
+    <string name="treatment">Treatment</string>
     <string name="encounter_details">Encounter Details</string>
     <string name="makohozi">Sputum</string>
     <string name="finished_last_month_medications_succesfully">Finished last months medications successfully</string>

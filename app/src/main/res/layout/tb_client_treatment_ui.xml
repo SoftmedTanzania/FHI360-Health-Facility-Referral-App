@@ -62,9 +62,8 @@
                     app_ms:ms_enableFloatingLabel="true"
                     app_ms:ms_errorColor="@color/red_500"
                     app_ms:ms_floatingLabelColor="@color/white"
-                    app_ms:ms_floatingLabelText="Matibabu"
                     app_ms:ms_highlightColor="@color/card_grid_text"
-                    app_ms:ms_hint="Matibabu"
+                    app_ms:ms_hint="@string/treatment"
                     app_ms:ms_hintColor="#b3b3b3"
                     app_ms:ms_hintTextSize="14sp"
                     app_ms:ms_multiline="false" />

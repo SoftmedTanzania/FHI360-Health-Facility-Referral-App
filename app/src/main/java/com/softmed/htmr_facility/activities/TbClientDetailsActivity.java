@@ -110,6 +110,7 @@ public class TbClientDetailsActivity extends BaseActivity {
     boolean activityCanExit = false;
     int selectedTestType = 0; //0 -> default to 0 selected test type
     int encounterNumber = 1; //1 -> default to the first encounter
+    final String[] tbTypesFirstEncounter = {TB_SCANTY, TB_1_PLUS, TB_2_PLUS, TB_3_PLUS};
     final String[] tbTypes = {TB_NEGATIVE, TB_SCANTY, TB_1_PLUS, TB_2_PLUS, TB_3_PLUS};
     String strMatibabu, strXray, strVipimoVingine, strMakohozi, strMonth, strOutcome, strOutcomeDetails, strOutcomeDate;
     String otherTestValueString = "";
@@ -188,7 +189,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         encounterMonthSpinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         encouterMonthSpinner.setAdapter(encounterMonthSpinnerAdapter);
 
-        makohoziSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, tbTypes);
+        makohoziSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, tbTypesFirstEncounter);
         makohoziSpinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         makohoziSpinner.setAdapter(makohoziSpinnerAdapter);
 
@@ -887,9 +888,9 @@ public class TbClientDetailsActivity extends BaseActivity {
                         case 1:
                             makohoziSpinner.setVisibility(View.VISIBLE);
                             for (int i=0; i<tbTypes.length; i++){
-                                if (tbPatient.getMakohozi().equals(tbTypes[i])){
-                                    monthOneMakohoziSpinner.setSelection(i);
-                                    monthOneMakohoziSpinner.setEnabled(false);
+                                if (tbPatient.getMakohozi().equals(tbTypesFirstEncounter[i])){
+                                    makohoziSpinner.setSelection(i);
+                                    makohoziSpinner.setEnabled(false);
                                 }
                             }
                             break;
@@ -1105,7 +1106,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
     //END..::..Background Activities
 
-    //START..::..Class Utility methods
+    //START..::..Utility methods
 
     private void clearFields(){
         makohoziSpinner.setSelection(0);
@@ -1142,7 +1143,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         Toast.makeText(TbClientDetailsActivity.this, toastString, Toast.LENGTH_LONG).show();
     }
 
-    //END..::..Class Utility methods
+    //END..::..Utility methods
 
     //START..::..Inline Classes
     class PreviousEncountersRecyclerAdapter extends RecyclerView.Adapter<PreviousEncountersRecyclerAdapter.ViewHolder> {
