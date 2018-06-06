@@ -429,13 +429,12 @@ public class LoginActivity extends BaseActivity {
 
         if (session.isLoggedIn()){
 
-            Call<List<ReferalResponce>> call = referalService.getHfReferrals();
+            Call<List<ReferalResponce>> call = referalService.getHealthFacilityReferrals(session.getKeyHfid());
             call.enqueue(new Callback<List<ReferalResponce>>() {
 
                 @Override
                 public void onResponse(Call<List<ReferalResponce>> call, Response<List<ReferalResponce>> response) {
                     //Here will handle the responce from the server
-                    //createDummyReferralData();
                     Log.d("ReferralCheck", response.body()+"");
 
                     addReferralsAsyncTask task = new addReferralsAsyncTask(response.body());

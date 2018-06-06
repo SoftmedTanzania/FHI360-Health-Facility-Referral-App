@@ -224,7 +224,7 @@
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/login_screen_logo"
             android:textSize="32sp"
-            android:text="htmr"
+            android:text="trcmis"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:fontFamily="@font/roboto_bold"/>
@@ -292,6 +292,7 @@
                 android:src="@drawable/usaid"/>
 
             <ImageView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
@@ -301,6 +302,7 @@
                 android:src="@drawable/deloitte"/>
 
             <ImageView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
