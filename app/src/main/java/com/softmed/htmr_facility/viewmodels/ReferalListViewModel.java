@@ -69,7 +69,7 @@ public class ReferalListViewModel extends AndroidViewModel{
         referalListHfSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, new int[]{INTRAFACILITY}); //INTERFACILITY => Removed Interfacility from the array since all referrals originate from OPD so there will not be interfacility referrals straight to TB Clinic
         referalListChwSourceTb = appDatabase.referalModel().getReferralsBySourceId(TB_SERVICE_ID, new int[] {CHW_TO_FACILITY});
 
-        allReferralListFromChw = appDatabase.referalModel().getAllReferalsBySource(new int[] {CHW_TO_FACILITY}, BaseActivity.getThisFacilityId());
+        allReferralListFromChw = appDatabase.referalModel().getAllReferalsBySource(new int[] {CHW_TO_FACILITY});
         allReferralListFromHealthFacilities = appDatabase.referalModel().getAllReferalsBySource(new int[] {INTERFACILITY}, BaseActivity.getThisFacilityId());
 
         allTestedClients = appDatabase.referalModel().getAllTestedReferrals();

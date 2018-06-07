@@ -119,12 +119,12 @@ public class ReferralListActivity extends BaseActivity {
         ImageView iv    = (ImageView) homeView.findViewById(R.id.icon);
         iv.setColorFilter(getResources().getColor(R.color.white));
         Glide.with(this).load(R.mipmap.ic_referals_list).into(iv);
-        homeTitle.setText(getResources().getString(R.string.health_facility_referrals));
+        homeTitle.setText(getResources().getString(R.string.chw_referrals));
         tabLayout.getTabAt(0).setCustomView(homeView);
 
         View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
-        newsTitle.setText(getResources().getString(R.string.chw_referrals));
+        newsTitle.setText(getResources().getString(R.string.health_facility_referrals));
         ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
         iv2.setColorFilter(getResources().getColor(R.color.white));
         Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);
@@ -135,9 +135,9 @@ public class ReferralListActivity extends BaseActivity {
     public void setupViewPager(ViewPager viewPager) {
 
         ReferralListActivity.ViewPagerAdapter adapter = new ReferralListActivity.ViewPagerAdapter(getSupportFragmentManager());
-        
-        adapter.addFragment(ReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
+
         adapter.addFragment(ReferralListFragment.newInstance(CHW_TO_FACILITY, serviceID), "chw");
+        adapter.addFragment(ReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
 
         viewPager.setAdapter(adapter);
     }

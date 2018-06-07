@@ -33,6 +33,10 @@ public interface ReferalModelDao {
     @Query("select * from Referral where referralType in (:sourceID) and fromFacilityId != :requestingFacilityID and referralStatus = 0 order by referralDate desc")
     LiveData<List<Referral>> getAllReferalsBySource(int[] sourceID, String requestingFacilityID);
 
+    //Only CHW referrals
+    @Query("select * from Referral where referralType in (:sourceID) and referralStatus = 0 order by referralDate desc")
+    LiveData<List<Referral>> getAllReferalsBySource(int[] sourceID);
+
     @Query("select * from Referral where serviceId = :serviceId and referralStatus = 0 and referralType in (:SourceID) order by referralDate desc")
     LiveData<List<Referral>> getReferralsBySourceId(int serviceId, int[] SourceID);
 

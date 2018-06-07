@@ -204,7 +204,6 @@ public class ReferralListFragment extends Fragment {
                 toDatePicker.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-
                         toDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar toCalendar = Calendar.getInstance();
                         toCalendar.set(year, monthOfYear, dayOfMonth);
