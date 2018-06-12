@@ -314,6 +314,7 @@ public class ClientsDetailsActivity extends BaseActivity {
             if (!ctcNumberEt.getText().toString().isEmpty()){
                 currentPatient.setHivStatus(true);
                 currentPatient.setCtcNumber(ctcNumberEt.getText().toString());
+                currentPatient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                 updatePatientObject = true;
             }
         }
@@ -326,6 +327,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
         currentReferral.setServiceGivenToPatient(serviceOferedString);
         currentReferral.setOtherNotesAndAdvices(otherInformation);
+        currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
 
         //Show progress bar
         saveProgress.setVisibility(View.VISIBLE);

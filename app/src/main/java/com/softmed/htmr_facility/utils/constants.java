@@ -67,6 +67,7 @@ public class constants {
 
     public static final int ENTRY_NOT_SYNCED = 0;
     public static final int ENTRY_SYNCED = 1;
+    public static final int DATA_CONFLICT = 2;
 
     public static final int RESPONCE_SUCCESS = 200;
     public static final int RESPONCE_CREATED = 201;

@@ -343,7 +343,11 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     new AsyncTask<Referral, Void, Void>(){
                         @Override
                         protected Void doInBackground(Referral... referrals) {
-                            database.referalModel().addReferal(referrals[0]);
+                            try {
+                                database.referalModel().addReferal(referrals[0]);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                             return null;
                         }
 

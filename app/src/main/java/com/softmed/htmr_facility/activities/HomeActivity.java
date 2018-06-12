@@ -63,6 +63,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+import static com.softmed.htmr_facility.utils.constants.DATA_CONFLICT;
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER;
@@ -258,25 +259,40 @@ public class HomeActivity extends BaseActivity {
 
                     Call call = patientServices.postPatient(session.getServiceProviderUUID(), getPatientRequestBody(patient, userData.getUserFacilityId()));
                     call.enqueue(new Callback() {
+                        @SuppressLint("StaticFieldLeak")
                         @Override
                         public void onResponse(Call call, Response response) {
                             //Store Received Patient Information, TbPatient as well as PatientAppointments
                             if (response.body()!=null){
 
-                                Patient patient1 = (Patient) response.body();
-                                Log.d("POST_DATA_TYPE_PATIENT", patient1.getPatientFirstName());
+                                Patient receivedPatient = (Patient) response.body();
+                                Log.d("POST_DATA_TYPE_PATIENT", receivedPatient.getPatientFirstName());
 
-                                /**
-                                 * DONE: 1: Update patient object with the new patient id (Delete old insert new)
-                                 * TODO: 2: Update all referrals with this patient ID to the newly created patient ID
-                                 */
-
-                                new ReplacePatientObject().execute(patient, patient1);
+                                new ReplacePatientObject().execute(patient, receivedPatient);
 
                                 new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
 
                             }else {
                                 Log.d("POST_DATA_TYPE_PATIENT","Patient Responce is null "+response.body());
+
+                                new AsyncTask<PostOffice, Void, Void>(){
+
+                                    @Override
+                                    protected Void doInBackground(PostOffice... args) {
+                                        //Increase the failed sync count
+                                        PostOffice data = args[0];
+                                        if (data.getFailedSyncCount() > 3){
+                                            data.setSyncStatus(DATA_CONFLICT);
+                                        }else {
+                                            data.setFailedSyncCount(data.getFailedSyncCount()+1);
+                                        }
+
+                                        database.postOfficeModelDao().updatePostData(data);
+
+                                        return null;
+                                    }
+                                }.execute(data);
+
                             }
 
 
@@ -330,6 +346,7 @@ public class HomeActivity extends BaseActivity {
 
                     Call call = referalService.postReferral(session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral));
                     call.enqueue(new Callback() {
+                        @SuppressLint("StaticFieldLeak")
                         @Override
                         public void onResponse(Call call, Response response) {
                             Referral receivedReferral = (Referral) response.body();
@@ -342,6 +359,28 @@ public class HomeActivity extends BaseActivity {
 
                             } else {
                                 Log.d("PostReferral", "Responce is Null : " + response.body());
+                                /**
+                                 * If response is Null ->
+                                 *      Count to see how many times response returns null, if its 3 times flag the postOffice data as conflict
+                                 */
+                                new AsyncTask<PostOffice, Void, Void>(){
+
+                                    @Override
+                                    protected Void doInBackground(PostOffice... args) {
+                                        //Increase the failed sync count
+                                        PostOffice data = args[0];
+                                        if (data.getFailedSyncCount() > 3){
+                                            data.setSyncStatus(DATA_CONFLICT);
+                                        }else {
+                                            data.setFailedSyncCount(data.getFailedSyncCount()+1);
+                                        }
+
+                                        database.postOfficeModelDao().updatePostData(data);
+
+                                        return null;
+                                    }
+                                }.execute(data);
+
                             }
                         }
 
@@ -431,6 +470,8 @@ public class HomeActivity extends BaseActivity {
                                         baseDatabase.appointmentModelDao().addAppointment(appointment);
                                     }
 
+                                }else {
+                                    Log.d("HomeActivity", "Responce is null");
                                 }
 
                             }
@@ -658,13 +699,6 @@ public class HomeActivity extends BaseActivity {
                     Referral ref = oldPatientReferrals.get(i);
                     if (ref.getPatient_id() != patients[1].getPatientId()){
                         ref.setPatient_id(patients[1].getPatientId());
-
-                        PostOffice postOffice = new PostOffice();
-                        postOffice.setPost_id(ref.getReferral_id());
-                        postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
-                        postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
-
-                        database.postOfficeModelDao().addPostEntry(postOffice);
                     }
                 }
 

@@ -23,30 +23,30 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @TypeConverters(DateConverter.class)
 public interface ReferalModelDao {
 
-    @Query("select * from Referral where fromFacilityId = :fromHfId")
+    @Query("select * from Referral where fromFacilityId = :fromHfId order by updatedAt asc")
     List<Referral> getAllReferralsOfThisFacility(String fromHfId);
 
-    @Query("select * from Referral where serviceId = :serviceId order by referralDate desc")
+    @Query("select * from Referral where serviceId = :serviceId order by updatedAt asc")
     LiveData<List<Referral>> getAllReferals(int serviceId);
 
     //Used in OPD
-    @Query("select * from Referral where referralType in (:sourceID) and fromFacilityId != :requestingFacilityID and referralStatus = 0 order by referralDate desc")
+    @Query("select * from Referral where referralType in (:sourceID) and facilityId = :requestingFacilityID and referralStatus = 0 order by updatedAt asc")
     LiveData<List<Referral>> getAllReferalsBySource(int[] sourceID, String requestingFacilityID);
 
     //Only CHW referrals
-    @Query("select * from Referral where referralType in (:sourceID) and referralStatus = 0 order by referralDate desc")
+    @Query("select * from Referral where referralType in (:sourceID) and referralStatus = 0 order by updatedAt asc")
     LiveData<List<Referral>> getAllReferalsBySource(int[] sourceID);
 
-    @Query("select * from Referral where serviceId = :serviceId and referralStatus = 0 and referralType in (:SourceID) order by referralDate desc")
+    @Query("select * from Referral where serviceId = :serviceId and referralStatus = 0 and referralType in (:SourceID) order by updatedAt asc")
     LiveData<List<Referral>> getReferralsBySourceId(int serviceId, int[] SourceID);
 
-    @Query("select * from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId order by referralDate desc")
+    @Query("select * from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId order by updatedAt asc")
     LiveData<List<Referral>> getReferredClients(int serviceId, String fromFacilityId);
 
     @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and fromFacilityId = :fromFacilityId")
     int geCountPendingReferalFeedback(int serviceId, String fromFacilityId);
 
-    @Query("select * from Referral where referralStatus = 0 and serviceId = :serviceId order by referralDate desc")
+    @Query("select * from Referral where referralStatus = 0 and serviceId = :serviceId order by referralDate asc")
     LiveData<List<Referral>> getUnattendedReferals(int serviceId);
 
     @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId")
@@ -59,14 +59,17 @@ public interface ReferalModelDao {
     /*
     Live Updating Referral Summaries
      */
+    @Query("select count(*) from Referral where referralStatus = 0 and referralType in (:sourceID) and facilityId = :requestingFacilityID")
+    LiveData<Integer> getLiveCountReferralsBySource(int[] sourceID, String requestingFacilityID);
+
     @Query("select count(*) from Referral where referralStatus = 0 and referralType in (:sourceID)")
-    LiveData<Integer> getLiveCountReferralsBySource(int[] sourceID);
+    LiveData<Integer> getLiveCountReferralsBySourceChw(int[] sourceID);
 
     @Query("select count(*) from Referral where referralStatus = 0 and referralSource = :sourceServiceId and fromFacilityId = :fromFacilityId")
     LiveData<Integer> getLiveCountPendingReferalFeedback(int sourceServiceId, String fromFacilityId);
 
-    @Query("select count(*) from Referral where referralStatus = 0 and (referralType = 1 or referralType = 3)")
-    LiveData<Integer> getLiveOPDReferralsCount();
+    @Query("select count(*) from Referral where referralStatus = 0 and (referralType = 1 or referralType = 3) and facilityId = :thisFacilityId")
+    LiveData<Integer> getLiveOPDReferralsCount(String thisFacilityId);
 
     @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and referralType in (:sourceID)")
     LiveData<Integer> getLiveCountUnattendedReferalsByService(int serviceId, int[] sourceID);

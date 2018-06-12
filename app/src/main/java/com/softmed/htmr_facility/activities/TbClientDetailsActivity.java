@@ -886,11 +886,11 @@ public class TbClientDetailsActivity extends BaseActivity {
 
                     switch (testType){
                         case 1:
-                            makohoziSpinner.setVisibility(View.VISIBLE);
-                            for (int i=0; i<tbTypes.length; i++){
+                            monthOneMakohoziSpinner.setVisibility(View.VISIBLE);
+                            monthOneMakohoziSpinner.setEnabled(false);
+                            for (int i=0; i<tbTypesFirstEncounter.length; i++){
                                 if (tbPatient.getMakohozi().equals(tbTypesFirstEncounter[i])){
-                                    makohoziSpinner.setSelection(i);
-                                    makohoziSpinner.setEnabled(false);
+                                    monthOneMakohoziSpinner.setSelection(i);
                                 }
                             }
                             break;
@@ -1254,6 +1254,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
             currentReferral.setServiceGivenToPatient(context.getResources().getString(R.string.received_at_tb_clinic));
             currentReferral.setOtherNotesAndAdvices("");
+            currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
             database.referalModel().updateReferral(currentReferral);
 
             //Add Post office entry
@@ -1266,6 +1267,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             //Update patient to currently on TB Clinic
             patient = database.patientModel().getPatientById(currentReferral.getPatient_id());
             patient.setCurrentOnTbTreatment(true);
+            patient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
             //TODO : handle CTC Number input at the clinic
             database.patientModel().updatePatient(patient);
 

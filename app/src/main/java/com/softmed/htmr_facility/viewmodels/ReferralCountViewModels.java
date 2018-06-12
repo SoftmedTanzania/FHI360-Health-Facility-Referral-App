@@ -49,9 +49,9 @@ public class ReferralCountViewModels extends AndroidViewModel {
         database = AppDatabase.getDatabase(this.getApplication());
 
         //OPD
-        referralCount = database.referalModel().getLiveOPDReferralsCount();
-        opdChwReferralsCount = database.referalModel().getLiveCountReferralsBySource(new int[] {CHW_TO_FACILITY});
-        opdFacilityReferralsCount = database.referalModel().getLiveCountReferralsBySource(new int[] {INTERFACILITY});
+        referralCount = database.referalModel().getLiveOPDReferralsCount(BaseActivity.getThisFacilityId());
+        opdChwReferralsCount = database.referalModel().getLiveCountReferralsBySource(new int[] {CHW_TO_FACILITY}, BaseActivity.getThisFacilityId());
+        opdFacilityReferralsCount = database.referalModel().getLiveCountReferralsBySource(new int[] {INTERFACILITY}, BaseActivity.getThisFacilityId());
         opdFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(OPD_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //HIV
@@ -59,7 +59,7 @@ public class ReferralCountViewModels extends AndroidViewModel {
         hivFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //TB
-        tbReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(TB_SERVICE_ID, new int[] {INTRAFACILITY, INTERFACILITY});
+        tbReferralCount = database.referalModel().getLiveCountUnattendedReferalsByService(TB_SERVICE_ID, new int[] {INTRAFACILITY}); //Removed [INTERFACILITY] since all referrals land on OPD and then to the subsequent clinics
         tbFeedbackReferralsCount = database.referalModel().getLiveCountPendingReferalFeedback(TB_SERVICE_ID, BaseActivity.session.getKeyHfid());
 
         //LAB

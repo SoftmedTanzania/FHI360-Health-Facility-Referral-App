@@ -314,6 +314,8 @@ public class ClientRegisterActivity extends BaseActivity {
 
                 }else {
                     Log.d(TAG,"Patient Responce is null "+response.body());
+                    savePatientToPostOffice _savePatientToPostOffice = new savePatientToPostOffice(baseDatabase);
+                    _savePatientToPostOffice.execute(_patient);
                 }
 
             }

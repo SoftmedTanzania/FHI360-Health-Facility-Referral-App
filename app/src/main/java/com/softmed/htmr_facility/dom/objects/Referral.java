@@ -123,6 +123,9 @@ public class Referral implements Serializable{
     @SerializedName("otherClinicalInformation")
     private String otherClinicalInformation;
 
+    @SerializedName("updatedAt")
+    private long updatedAt;
+
     public Long getId() {
         return id;
     }
@@ -305,5 +308,13 @@ public class Referral implements Serializable{
 
     public void setLabTest(int labTest) {
         this.labTest = labTest;
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

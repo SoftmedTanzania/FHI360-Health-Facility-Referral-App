@@ -156,6 +156,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
             currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
             currentReferral.setServiceGivenToPatient(serviceOferedString);
             currentReferral.setOtherNotesAndAdvices(otherInformation);
+            currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
 
             //Show progress bar
             saveProgress.setVisibility(View.VISIBLE);
@@ -297,6 +298,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
                 if (!clientCtcNumber.getText().toString().isEmpty()){
                     currentPatient.setCtcNumber(clientCtcNumber.getText().toString());
                 }
+                currentPatient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                 database.patientModel().updatePatient(currentPatient);
 
                 PostOffice patientPost = new PostOffice();

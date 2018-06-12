@@ -96,6 +96,7 @@ public class MessagingService extends FirebaseMessagingService {
                 patient = gson.fromJson(data.getJSONObject("patientsDTO").toString(), Patient.class);
                 database.patientModel().addPatient(patient);
                 Log.d("handleNotification", "added a patient");
+                Log.d("handleNotification", "Name : "+patient.getPatientFirstName());
 
                 JSONArray referralsDTOS = data.getJSONArray("patientReferralsList");
                 for (int i=0; i<referralsDTOS.length(); i++){

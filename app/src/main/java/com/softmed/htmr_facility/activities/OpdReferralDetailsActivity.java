@@ -131,6 +131,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
         currentReferral.setServiceGivenToPatient(serviceOferedString);
         currentReferral.setOtherNotesAndAdvices(otherInformation);
+        currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
 
         //Show progress bar
         cancelButton.setVisibility(View.INVISIBLE);
