@@ -27,6 +27,7 @@ import com.softmed.htmr_facility.fragments.ReferralListFragment;
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
+import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
 import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
@@ -80,14 +81,10 @@ public class ReferralListActivity extends BaseActivity {
 
         }
 
-        viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
+        tabLayout =  findViewById(R.id.tabs);
+        viewPager =  findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //If service is OPD show CHW tab if its any other show only the default HF Tab
-        if (serviceID == HIV_SERVICE_ID || serviceID == LAB_SERVICE_ID){
-            tabLayout.setVisibility(View.GONE);
-        }
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -114,21 +111,36 @@ public class ReferralListActivity extends BaseActivity {
 
     public void setupTabIcons() {
 
-        View homeView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView homeTitle = (TextView) homeView.findViewById(R.id.title_text);
-        ImageView iv    = (ImageView) homeView.findViewById(R.id.icon);
-        iv.setColorFilter(getResources().getColor(R.color.white));
-        Glide.with(this).load(R.mipmap.ic_referals_list).into(iv);
-        homeTitle.setText(getResources().getString(R.string.chw_referrals));
-        tabLayout.getTabAt(0).setCustomView(homeView);
+        //If service is OPD show CHW tab if its any other show only the default HF Tab
+        if (serviceID == HIV_SERVICE_ID || serviceID == LAB_SERVICE_ID){
 
-        View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-        TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
-        newsTitle.setText(getResources().getString(R.string.health_facility_referrals));
-        ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
-        iv2.setColorFilter(getResources().getColor(R.color.white));
-        Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);
-        tabLayout.getTabAt(1).setCustomView(newsView);
+            View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+            TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
+            newsTitle.setText(getResources().getString(R.string.health_facility_referrals));
+            ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
+            iv2.setColorFilter(getResources().getColor(R.color.white));
+            Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);
+            tabLayout.getTabAt(0).setCustomView(newsView);
+
+        }else {
+
+            View homeView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+            TextView homeTitle = (TextView) homeView.findViewById(R.id.title_text);
+            ImageView iv    = (ImageView) homeView.findViewById(R.id.icon);
+            iv.setColorFilter(getResources().getColor(R.color.white));
+            Glide.with(this).load(R.mipmap.ic_referals_list).into(iv);
+            homeTitle.setText(getResources().getString(R.string.chw_referrals));
+            tabLayout.getTabAt(0).setCustomView(homeView);
+
+            View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+            TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
+            newsTitle.setText(getResources().getString(R.string.health_facility_referrals));
+            ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
+            iv2.setColorFilter(getResources().getColor(R.color.white));
+            Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);
+            tabLayout.getTabAt(1).setCustomView(newsView);
+
+        }
 
     }
 
@@ -136,8 +148,14 @@ public class ReferralListActivity extends BaseActivity {
 
         ReferralListActivity.ViewPagerAdapter adapter = new ReferralListActivity.ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(ReferralListFragment.newInstance(CHW_TO_FACILITY, serviceID), "chw");
-        adapter.addFragment(ReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
+        //If service is OPD show CHW tab if its any other show only the default HF Tab
+        if (serviceID == HIV_SERVICE_ID || serviceID == LAB_SERVICE_ID){
+            adapter.addFragment(ReferralListFragment.newInstance(INTRAFACILITY, serviceID), "hf");
+            tabLayout.setVisibility(View.GONE);
+        }else {
+            adapter.addFragment(ReferralListFragment.newInstance(CHW_TO_FACILITY, serviceID), "chw");
+            adapter.addFragment(ReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
+        }
 
         viewPager.setAdapter(adapter);
     }
