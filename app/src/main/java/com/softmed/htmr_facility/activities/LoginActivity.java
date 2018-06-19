@@ -528,14 +528,6 @@ public class LoginActivity extends BaseActivity {
                 Log.d("msosi", "Sputum Weight : "+tbPatient.getMakohozi());
                 baseDatabase.tbPatientModelDao().addPatient(tbPatient);
 
-                //Delete all appointments with these patient's IDs
-                baseDatabase.appointmentModelDao().deleteAppointmentByPatientID(patient.getPatientId());
-
-                List<PatientAppointment> appointments = _responce.getPatientAppointments();
-                for (PatientAppointment _appointment : appointments){
-                    Log.d("msosi", "Inserting appointment on : "+_appointment.getAppointmentDate());
-                    baseDatabase.appointmentModelDao().addAppointment(_appointment);
-                }
 
                 List<TbEncounters> listOfEncounters = _responce.getTbEncounters();
                 for (TbEncounters encounter : listOfEncounters){
@@ -586,6 +578,15 @@ public class LoginActivity extends BaseActivity {
                 for (Referral referral : mList.getPatientReferalList()){
                     Log.d("InitialSync", "Referal  : "+ referral.toString());
                     baseDatabase.referalModel().addReferal(referral);
+                }
+
+                //Delete all appointments with these patient's IDs
+                baseDatabase.appointmentModelDao().deleteAppointmentByPatientID(mList.getPatient().getPatientId());
+
+                List<PatientAppointment> appointments = mList.getPatientAppointments();
+                for (PatientAppointment _appointment : appointments){
+                    Log.d("Appointment", "Inserting appointment on : "+_appointment.getAppointmentDate());
+                    baseDatabase.appointmentModelDao().addAppointment(_appointment);
                 }
             }
 

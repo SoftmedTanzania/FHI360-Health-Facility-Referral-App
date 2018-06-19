@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
 
 /**
@@ -28,6 +29,9 @@ public class ReferalResponce implements Serializable {
     @SerializedName("patientReferralsList")
     private List<Referral> patientReferalList;
 
+    @SerializedName("patientsAppointmentsDTOS")
+    private List<PatientAppointment> patientAppointments;
+
     public ReferalResponce(){}
 
     public Patient getPatient() {
@@ -48,6 +52,14 @@ public class ReferalResponce implements Serializable {
 
     public List<Referral> getReferralDTOS() {
         return referralDTOS;
+    }
+
+    public List<PatientAppointment> getPatientAppointments() {
+        return patientAppointments;
+    }
+
+    public void setPatientAppointments(List<PatientAppointment> patientAppointments) {
+        this.patientAppointments = patientAppointments;
     }
 
     public void setReferralDTOS(List<Referral> referralDTOS) {
