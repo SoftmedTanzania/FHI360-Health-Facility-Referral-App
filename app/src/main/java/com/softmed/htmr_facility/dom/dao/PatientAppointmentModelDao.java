@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.dom.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -27,10 +28,10 @@ public interface PatientAppointmentModelDao {
     int getAllAppointmentsCount();
 
     @Query("select * from PatientAppointment where appointmentType = 2 and appointmentDate<:tommorrowsDate AND appointmentDate>:todaysDate order by appointmentDate asc")
-    List<PatientAppointment> getAllTbAppointments(long todaysDate, long tommorrowsDate);
+    LiveData<List<PatientAppointment>> getAllTbAppointments(long todaysDate, long tommorrowsDate);
 
     @Query("select * from PatientAppointment where appointmentType = 1 and appointmentDate<:tommorrowsDate AND appointmentDate>:todaysDate order by appointmentDate asc")
-    List<PatientAppointment> getAllCTCAppointments(long todaysDate, long tommorrowsDate);
+    LiveData<List<PatientAppointment>> getAllCTCAppointments(long todaysDate, long tommorrowsDate);
 
     @Query("select * from PatientAppointment where patientID = :patientId")
     List<PatientAppointment> getThisPatientAppointments(String patientId);

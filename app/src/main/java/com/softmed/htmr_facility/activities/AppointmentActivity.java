@@ -1,5 +1,7 @@
 package com.softmed.htmr_facility.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +25,10 @@ import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.adapters.AppointmentRecyclerAdapter;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
+import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.viewmodels.PatientsAppointmentsListViewModel;
+import com.softmed.htmr_facility.viewmodels.ReferalListViewModel;
+
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static android.view.View.GONE;
@@ -40,13 +46,13 @@ public class AppointmentActivity extends BaseActivity {
     private RecyclerView appointmentRecycler;
     private EditText patientName, fromDate, toDate;
     private MaterialSpinner statusSpinner, appointmentType;
-
     private AppointmentRecyclerAdapter adapter;
     private mAdapter appointmentTypeAdapter;
-
-    private List<PatientAppointment> appointments = new ArrayList<>();
-
+    private List<PatientAppointment> ctcAppointmentsList = new ArrayList<>();
+    private List<PatientAppointment> tbAppointmentsList = new ArrayList<>();
     private List<String> appointmentTypeList = new ArrayList<>();
+
+    private PatientsAppointmentsListViewModel listViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +72,30 @@ public class AppointmentActivity extends BaseActivity {
         appointmentType.setAdapter(appointmentTypeAdapter);
 
 
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Long todaysDate = cal.getTime().getTime();
+        Long tommorowsDate = cal.getTime().getTime()+48*60*60*1000;
+
+        listViewModel = ViewModelProviders.of(this).get(PatientsAppointmentsListViewModel.class);
+        listViewModel.getCTCAppointments(todaysDate,tommorowsDate).observe(AppointmentActivity.this, new Observer<List<PatientAppointment>>() {
+            @Override
+            public void onChanged(@Nullable List<PatientAppointment> ctcAppList) {
+                ctcAppointmentsList = ctcAppList;
+            }
+        });
+
+        listViewModel.getTBAppointments(todaysDate,tommorowsDate).observe(AppointmentActivity.this, new Observer<List<PatientAppointment>>() {
+            @Override
+            public void onChanged(@Nullable List<PatientAppointment> tbAppList ) {
+                tbAppointmentsList = tbAppList;
+            }
+        });
+
+
 
         appointmentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -75,11 +105,11 @@ public class AppointmentActivity extends BaseActivity {
                 }else if (i == 0){
                     findViewById(R.id.tb_appointments_header).setVisibility(GONE);
                     findViewById(R.id.ctc_header).setVisibility(View.VISIBLE);
-                    new GetAppointmentList().execute(0);
+                    adapter.addItems(ctcAppointmentsList,0);
                 }else {
                     findViewById(R.id.ctc_header).setVisibility(GONE);
                     findViewById(R.id.tb_appointments_header).setVisibility(View.VISIBLE);
-                    new GetAppointmentList().execute(1);
+                    adapter.addItems(tbAppointmentsList,1);
                 }
             }
 
@@ -89,12 +119,11 @@ public class AppointmentActivity extends BaseActivity {
             }
         });
 
-        adapter = new AppointmentRecyclerAdapter(appointments,this,baseDatabase);
+        adapter = new AppointmentRecyclerAdapter(ctcAppointmentsList,this,baseDatabase);
         appointmentRecycler.setAdapter(adapter);
 
         appointmentType.setSelection(1);
 
-//        new GetAppointmentList().execute(0);
 
     }
 
@@ -111,38 +140,6 @@ public class AppointmentActivity extends BaseActivity {
         patientName = (EditText) findViewById(R.id.client_name_et);
         fromDate = (EditText) findViewById(R.id.from_date_et);
         toDate = (EditText) findViewById(R.id.to_date_et);
-
-    }
-
-    class GetAppointmentList extends AsyncTask<Integer, Void, Void>{
-
-        List<PatientAppointment> list;
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            adapter.addItems(list);
-        }
-
-        @Override
-        protected Void doInBackground(Integer... types) {
-
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            Long todaysDate = cal.getTime().getTime();
-            Long tommorowsDate = cal.getTime().getTime()+48*60*60*1000;
-
-            if (types[0] == 0){
-                list = baseDatabase.appointmentModelDao().getAllCTCAppointments(todaysDate,tommorowsDate);
-            }else{
-                list = baseDatabase.appointmentModelDao().getAllTbAppointments(todaysDate,tommorowsDate);
-            }
-
-            return null;
-        }
 
     }
 

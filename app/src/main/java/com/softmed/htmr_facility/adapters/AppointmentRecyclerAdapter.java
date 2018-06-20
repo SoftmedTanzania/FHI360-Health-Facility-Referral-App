@@ -32,10 +32,12 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
     private Context context;
     private AppDatabase database;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM dd, yyyy");
+    private int type = 0;
 
     public AppointmentRecyclerAdapter(List<PatientAppointment> mItems, Context context, AppDatabase db){
         this.items = mItems;
         this.database = db;
+        this.type = type;
     }
 
     public AppointmentRecyclerAdapter(){}
@@ -75,8 +77,9 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     }
 
-    public void addItems (List<PatientAppointment> pat){
+    public void addItems (List<PatientAppointment> pat,int type){
         this.items = pat;
+        this.type = type;
         notifyDataSetChanged();
     }
 
@@ -127,8 +130,10 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
         protected String doInBackground(String... strings) {
             Patient patient = database.patientModel().getPatientById(strings[0]);
 
-//            return patient.getPatientFirstName()+" "+patient.getPatientMiddleName()+" "+patient.getPatientSurname();
-            return patient.getCtcNumber();
+            if(type==1)
+                return patient.getPatientFirstName()+" "+patient.getPatientMiddleName()+" "+patient.getPatientSurname();
+            else
+                return patient.getCtcNumber();
 
         }
     }
