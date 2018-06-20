@@ -20,17 +20,17 @@ import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 @Dao
 public interface PatientAppointmentModelDao {
 
-    @Query("select * from PatientAppointment order by appointmentDate asc")
-    List<PatientAppointment> getAllAppointments();
+    @Query("select * from PatientAppointment where appointmentDate<:tommorrowsDate AND appointmentDate>:todaysDate order by appointmentDate asc")
+    List<PatientAppointment> getAllAppointments(long todaysDate, long tommorrowsDate);
 
     @Query("select count(*) from PatientAppointment order by appointmentDate asc")
     int getAllAppointmentsCount();
 
-    @Query("select * from PatientAppointment where appointmentType = 2 order by appointmentDate asc")
-    List<PatientAppointment> getAllTbAppointments();
+    @Query("select * from PatientAppointment where appointmentType = 2 and appointmentDate<:tommorrowsDate AND appointmentDate>:todaysDate order by appointmentDate asc")
+    List<PatientAppointment> getAllTbAppointments(long todaysDate, long tommorrowsDate);
 
-    @Query("select * from PatientAppointment where appointmentType = 1 order by appointmentDate asc")
-    List<PatientAppointment> getAllCTCAppointments();
+    @Query("select * from PatientAppointment where appointmentType = 1 and appointmentDate<:tommorrowsDate AND appointmentDate>:todaysDate order by appointmentDate asc")
+    List<PatientAppointment> getAllCTCAppointments(long todaysDate, long tommorrowsDate);
 
     @Query("select * from PatientAppointment where patientID = :patientId")
     List<PatientAppointment> getThisPatientAppointments(String patientId);

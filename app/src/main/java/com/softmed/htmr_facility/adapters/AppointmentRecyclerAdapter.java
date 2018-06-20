@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.AppDatabase;
+import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
@@ -58,6 +59,7 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
         final PatientAppointment patientAppointment = getItem(itemPosition);
         AppointmentRecyclerAdapter.ListViewItemViewHolder holder = (AppointmentRecyclerAdapter.ListViewItemViewHolder) viewHolder;
 
+        holder.sn.setText(String.valueOf(itemPosition+1));
         if (patientAppointment != null){
             GetPatientNames getPatientNames = new GetPatientNames(database, holder);
             getPatientNames.execute(patientAppointment.getPatientID());
@@ -89,7 +91,7 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView patientNames, appointmentDate, appointmentStatus;
+        TextView patientNames, appointmentDate, appointmentStatus,sn;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
@@ -99,6 +101,7 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             patientNames = (TextView) viewItem.findViewById(R.id.patient_appointment_name);
             appointmentDate = (TextView) viewItem.findViewById(R.id.patient_appointment_date);
             appointmentStatus = (TextView) viewItem.findViewById(R.id.patient_appointment_status);
+            sn = (TextView) viewItem.findViewById(R.id.sn);
 
         }
 
@@ -122,8 +125,11 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
         @Override
         protected String doInBackground(String... strings) {
-            String patientNames = database.patientModel().getPatientName(strings[0]);
-            return patientNames;
+            Patient patient = database.patientModel().getPatientById(strings[0]);
+
+//            return patient.getPatientFirstName()+" "+patient.getPatientMiddleName()+" "+patient.getPatientSurname();
+            return patient.getCtcNumber();
+
         }
     }
 

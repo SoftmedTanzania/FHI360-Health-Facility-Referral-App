@@ -7,6 +7,24 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:id="@+id/sn"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -42,6 +60,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">

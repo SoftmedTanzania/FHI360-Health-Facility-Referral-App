@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.softmed.htmr_facility.R;
@@ -23,6 +24,8 @@ import com.softmed.htmr_facility.adapters.AppointmentRecyclerAdapter;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import fr.ganfra.materialspinner.MaterialSpinner;
+
+import static android.view.View.GONE;
 
 /**
  * Created by issy on 12/14/17.
@@ -57,13 +60,12 @@ public class AppointmentActivity extends BaseActivity {
             getSupportActionBar().setTitle(getResources().getString(R.string.client_appointment));
         }
 
-        appointmentTypeList.add(getResources().getString(R.string.all));
         appointmentTypeList.add(getResources().getString(R.string.ctc));
         appointmentTypeList.add(getResources().getString(R.string.tb));
         appointmentTypeAdapter = new mAdapter(this, R.layout.subscription_plan_items_drop_down, appointmentTypeList);
         appointmentType.setAdapter(appointmentTypeAdapter);
 
-        appointmentType.setSelection(1);
+
 
         appointmentType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -71,11 +73,13 @@ public class AppointmentActivity extends BaseActivity {
                 if (i == -1){
 
                 }else if (i == 0){
+                    findViewById(R.id.tb_appointments_header).setVisibility(GONE);
+                    findViewById(R.id.ctc_header).setVisibility(View.VISIBLE);
                     new GetAppointmentList().execute(0);
-                }else if (i == 1){
-                    new GetAppointmentList().execute(1);
                 }else {
-                    new GetAppointmentList().execute(2);
+                    findViewById(R.id.ctc_header).setVisibility(GONE);
+                    findViewById(R.id.tb_appointments_header).setVisibility(View.VISIBLE);
+                    new GetAppointmentList().execute(1);
                 }
             }
 
@@ -88,7 +92,9 @@ public class AppointmentActivity extends BaseActivity {
         adapter = new AppointmentRecyclerAdapter(appointments,this,baseDatabase);
         appointmentRecycler.setAdapter(adapter);
 
-        new GetAppointmentList().execute(0);
+        appointmentType.setSelection(1);
+
+//        new GetAppointmentList().execute(0);
 
     }
 
@@ -120,12 +126,19 @@ public class AppointmentActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Integer... types) {
+
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            Long todaysDate = cal.getTime().getTime();
+            Long tommorowsDate = cal.getTime().getTime()+48*60*60*1000;
+
             if (types[0] == 0){
-                list = baseDatabase.appointmentModelDao().getAllAppointments();
-            }else if (types[0] == 1){
-                list = baseDatabase.appointmentModelDao().getAllCTCAppointments();
+                list = baseDatabase.appointmentModelDao().getAllCTCAppointments(todaysDate,tommorowsDate);
             }else{
-                list = baseDatabase.appointmentModelDao().getAllTbAppointments();
+                list = baseDatabase.appointmentModelDao().getAllTbAppointments(todaysDate,tommorowsDate);
             }
 
             return null;
