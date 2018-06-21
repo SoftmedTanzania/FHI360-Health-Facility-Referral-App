@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:app_ms="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -40,17 +40,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:scrollbars="none">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="?attr/actionBarSize"
             android:background="@color/white">
 
             <LinearLayout
@@ -58,6 +52,7 @@
                 android:layout_height="70dp"
                 android:background="@color/card_separator"
                 android:gravity="bottom"
+                android:id="@+id/search_bar"
                 android:orientation="horizontal">
 
                 <fr.ganfra.materialspinner.MaterialSpinner
@@ -207,97 +202,17 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_marginLeft="16dp"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_condensed"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/client_name"
-                        android:textColor="@color/black"
-                        android:text="@string/names"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"
-                        android:id="@+id/referral_reasons"
-                        android:fontFamily="@font/roboto_condensed"
-                        android:text="@string/referral_reasib"
-                        android:layout_centerVertical="true"/>
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_condensed"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/ref_date"
-                        android:layout_centerInParent="true"
-                        android:textColor="@color/black"
-                        android:text="@string/referral_date"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.2"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/roboto_condensed"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/ctc_number"
-                        android:text="@string/service"
-                        android:textColor="@color/black"/>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
+                android:layout_height="1dp"
+                android:background="@color/card_separator"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/clients_recycler"
                 android:background="@color/card_separator_third"/>
 
         </LinearLayout>
-
-    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

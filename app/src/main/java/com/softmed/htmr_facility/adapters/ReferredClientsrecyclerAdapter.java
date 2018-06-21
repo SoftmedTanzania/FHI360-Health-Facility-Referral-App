@@ -32,6 +32,9 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
     private AppDatabase database;
     private ReferredClientsrecyclerAdapter.ListViewItemViewHolder mViewHolder;
 
+    private final static int  HEADER_VIEW = 1;
+    private final static int  ITEM_VIEW = 2;
+
 
     public ReferredClientsrecyclerAdapter(List<Referral> mItems, Context context){
         this.items = mItems;
@@ -44,12 +47,18 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
         context         = viewGroup.getContext();
         View itemView   = null;
-        itemView = LayoutInflater
-                .from(viewGroup.getContext())
-                .inflate(R.layout.referred_clients_list_item, viewGroup, false);
-
-        return new ReferredClientsrecyclerAdapter.ListViewItemViewHolder(itemView);
-
+        if (viewType == HEADER_VIEW){
+            itemView = LayoutInflater
+                    .from(viewGroup.getContext())
+                    .inflate(R.layout.refered_clients_list_header, viewGroup, false);
+            return new ReferredClientsrecyclerAdapter.ListViewHeaderViewHolder(itemView);
+        }else if (viewType == ITEM_VIEW){
+            itemView = LayoutInflater
+                    .from(viewGroup.getContext())
+                    .inflate(R.layout.referred_clients_list_item, viewGroup, false);
+            return new ReferredClientsrecyclerAdapter.ListViewItemViewHolder(itemView);
+        }
+        throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
 
@@ -57,30 +66,25 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int itemPosition){
 
         final Referral referral = getItem(itemPosition);
-        ReferredClientsrecyclerAdapter.ListViewItemViewHolder holder = (ReferredClientsrecyclerAdapter.ListViewItemViewHolder) viewHolder;
-        mViewHolder = holder;
 
-        new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute();
+        if (viewHolder instanceof ReferredClientsrecyclerAdapter.ListViewItemViewHolder){
+            ReferredClientsrecyclerAdapter.ListViewItemViewHolder holder = (ReferredClientsrecyclerAdapter.ListViewItemViewHolder) viewHolder;
+            mViewHolder = holder;
 
-        if (referral.getReferralStatus() == 0){
-            holder.feedbackStatus.setText("Bado");
-            holder.feedbackStatus.setTextColor(context.getResources().getColor(R.color.amber_700));
-        }else {
-            holder.feedbackStatus.setText("Imefanikiwa");
-            holder.feedbackStatus.setTextColor(context.getResources().getColor(R.color.green_a700));
+            new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute();
+
+            holder.referralReasons.setText(referral.getReferralReason());
+            holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, FeedbackDetailsActivity.class);
+                    intent.putExtra("referal", referral);
+                    context.startActivity(intent);
+                }
+            });
         }
-
-        holder.referralReasons.setText(referral.getReferralReason());
-        holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, FeedbackDetailsActivity.class);
-                intent.putExtra("referal", referral);
-                context.startActivity(intent);
-            }
-        });
 
     }
 
@@ -91,29 +95,53 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
     @Override
     public int getItemCount(){
-        return items.size();
+        return items.size()+1;
 //        return 10;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (isPositionHeader(position))
+            return HEADER_VIEW;
+
+        return ITEM_VIEW;
+    }
+
+    private boolean isPositionHeader(int position) {
+        return position == 0;
+    }
+
     private Referral getItem(int position){
-        return items.get(position);
+        if (items.size() > 0 && position != 0){
+            return items.get(position-1);
+        }else return null;
     }
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientsNames, feedbackStatus, serviceName, referralReasons, referralDate;
+        TextView clientsNames, serviceName, referralReasons, referralDate;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
             super(itemView);
             this.viewItem   = itemView;
 
-            clientsNames = (TextView) itemView.findViewById(R.id.client_name);
-            feedbackStatus = (TextView) itemView.findViewById(R.id.feedback_status);
-            serviceName = (TextView) itemView.findViewById(R.id.service_name);
-            referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
-            referralDate = (TextView) itemView.findViewById(R.id.ref_date);
+            clientsNames =  itemView.findViewById(R.id.client_name);
+            serviceName =  itemView.findViewById(R.id.service_name);
+            referralReasons =  itemView.findViewById(R.id.referral_reasons);
+            referralDate =  itemView.findViewById(R.id.ref_date);
 
+        }
+
+    }
+
+    private class ListViewHeaderViewHolder extends RecyclerView.ViewHolder {
+
+        View viewItem;
+
+        public ListViewHeaderViewHolder(View itemView){
+            super(itemView);
+            this.viewItem = itemView;
         }
 
     }

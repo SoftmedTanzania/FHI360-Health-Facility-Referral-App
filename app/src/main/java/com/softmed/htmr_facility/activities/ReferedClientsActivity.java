@@ -248,10 +248,10 @@ public class ReferedClientsActivity extends BaseActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        clientsRecycler = (RecyclerView) findViewById(R.id.clients_recycler);
+        clientsRecycler =  findViewById(R.id.clients_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         clientsRecycler.setLayoutManager(layoutManager);
-        clientsRecycler.setHasFixedSize(true);
+        clientsRecycler.setHasFixedSize(false);
 
     }
 

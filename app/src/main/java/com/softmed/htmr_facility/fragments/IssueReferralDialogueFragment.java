@@ -322,7 +322,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         referral.setReferralDate(today);
         referral.setFacilityId(toHealthFacilityID);
-        referral.setFromFacilityId(session.getKeyHfid());
+        referral.setFromFacilityId(BaseActivity.getThisFacilityId());
         referral.setReferralStatus(REFERRAL_STATUS_NEW);
         referral.setOtherClinicalInformation(otherClinicalInformationValue);
 

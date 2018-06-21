@@ -40,7 +40,7 @@ public interface ReferalModelDao {
     @Query("select * from Referral where serviceId = :serviceId and referralStatus = 0 and referralType in (:SourceID)")
     LiveData<List<Referral>> getReferralsBySourceId(int serviceId, int[] SourceID);
 
-    @Query("select * from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId order by updatedAt asc")
+    @Query("select * from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId order by updatedAt desc")
     LiveData<List<Referral>> getReferredClients(int serviceId, String fromFacilityId);
 
     @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and fromFacilityId = :fromFacilityId")
