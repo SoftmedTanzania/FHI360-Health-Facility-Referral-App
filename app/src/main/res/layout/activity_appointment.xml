@@ -29,7 +29,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Siku za Wagojwa Kuja"
+                    android:text="@string/upcoming_appointments"
                     android:textColor="@color/white"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="4dp"
@@ -268,7 +268,6 @@
 
 
                 <RelativeLayout
-                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginLeft="8dp"
@@ -281,9 +280,8 @@
                         android:fontFamily="@font/roboto_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
-                        android:id="@+id/client_phone_number"
                         android:textColor="@color/black"
-                        android:text="@string/appointment_status"/>
+                        android:text="@string/phone_number"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -356,7 +354,6 @@
 
 
                 <RelativeLayout
-                    android:visibility="gone"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginLeft="8dp"
@@ -369,9 +366,8 @@
                         android:fontFamily="@font/roboto_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
-                        android:id="@+id/client_phone_number"
                         android:textColor="@color/black"
-                        android:text="@string/appointment_status"/>
+                        android:text="@string/phone_number"/>
                 </RelativeLayout>
 
             </LinearLayout>

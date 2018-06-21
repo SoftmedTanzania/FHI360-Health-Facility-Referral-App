@@ -58,6 +58,20 @@
                 android:id="@+id/patient_appointment_date"/>
 
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/phone"
+                android:textColor="@color/card_grid_text"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"/>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:visibility="gone"

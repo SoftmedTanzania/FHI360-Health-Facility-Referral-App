@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.softmed.htmr_facility.R;
@@ -94,7 +95,7 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView patientNames, appointmentDate, appointmentStatus,sn;
+        TextView patientNames, appointmentDate, appointmentStatus,sn,phone;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
@@ -105,12 +106,13 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             appointmentDate = (TextView) viewItem.findViewById(R.id.patient_appointment_date);
             appointmentStatus = (TextView) viewItem.findViewById(R.id.patient_appointment_status);
             sn = (TextView) viewItem.findViewById(R.id.sn);
+            phone = (TextView) viewItem.findViewById(R.id.phone);
 
         }
 
     }
 
-    class GetPatientNames extends AsyncTask<String, Void, String>{
+    class GetPatientNames extends AsyncTask<String, Void, List<String>>{
 
         AppDatabase database;
         AppointmentRecyclerAdapter.ListViewItemViewHolder holder;
@@ -121,19 +123,24 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
         }
 
         @Override
-        protected void onPostExecute(String patientNames) {
+        protected void onPostExecute(List<String> patientNames) {
             super.onPostExecute(patientNames);
-            holder.patientNames.setText(patientNames);
+            holder.patientNames.setText(patientNames.get(0));
+            holder.phone.setText(patientNames.get(1));
         }
 
         @Override
-        protected String doInBackground(String... strings) {
+        protected List<String> doInBackground(String... strings) {
             Patient patient = database.patientModel().getPatientById(strings[0]);
 
+            List<String> data = new ArrayList<>();
             if(type==1)
-                return patient.getPatientFirstName()+" "+patient.getPatientMiddleName()+" "+patient.getPatientSurname();
+                data.add(patient.getPatientFirstName()+" "+patient.getPatientMiddleName()+" "+patient.getPatientSurname());
             else
-                return patient.getCtcNumber();
+                data.add(patient.getCtcNumber());
+
+            data.add(patient.getPhone_number());
+            return data;
 
         }
     }
