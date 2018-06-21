@@ -303,7 +303,7 @@ public class ReferedClientsActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            fReferrals = db.referalModel().getFilteredReferal(clientName, lastName, referalStatus, HIV_SERVICE_ID);
+            //fReferrals = db.referalModel().getFilteredReferal(clientName, lastName, referalStatus, HIV_SERVICE_ID);
             return null;
         }
     }

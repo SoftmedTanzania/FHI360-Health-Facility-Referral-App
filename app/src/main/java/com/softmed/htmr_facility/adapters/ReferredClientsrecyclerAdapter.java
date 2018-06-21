@@ -95,8 +95,11 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
 
     @Override
     public int getItemCount(){
-        return items.size()+1;
-//        return 10;
+        if (items != null){
+            return items.size()+1;
+        }else{
+            return 0;
+        }
     }
 
     @Override
