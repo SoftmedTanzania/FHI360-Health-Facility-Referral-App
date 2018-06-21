@@ -203,7 +203,7 @@ public class ReferedClientsActivity extends BaseActivity {
                 }
             });
         } else {
-            //Get Malaria referred client list
+            //Get OPD referred client list
             listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {

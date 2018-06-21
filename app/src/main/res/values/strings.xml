@@ -129,6 +129,9 @@
     <string name="saving">Saving</string>
     <string name="data_synced">Data Synced</string>
     <string name="unsynced_data"> Unsynced Data </string>
+    <string name="sync">Sync</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
 
     <string name="fragment_opd">OPD</string>
     <string name="fragment_hiv">HIV</string> <!--Huduma za VVU/Ukimwi -->

@@ -121,6 +121,9 @@
     <string name="saving">Inahifadhi</string>
     <string name="data_synced">Taarifa Zinaoana</string>
     <string name="unsynced_data"> Taarifa Zisizooana </string>
+    <string name="sync">Oanisha</string>
+    <string name="settings">Mpangilio</string>
+    <string name="logout">Ondoka</string>
 
     <string name="fragment_opd">OPD</string>
     <string name="fragment_hiv">VVU/Ukimwi</string> <!--Huduma za  -->
