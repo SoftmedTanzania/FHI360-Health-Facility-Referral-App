@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -7,7 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.irozon.alertview.AlertActionStyle;
+import com.irozon.alertview.AlertStyle;
+import com.irozon.alertview.AlertView;
+import com.irozon.alertview.objects.AlertAction;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
@@ -80,7 +86,16 @@ public class PatientDetailsActivity extends BaseActivity {
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callReferralFragmentDialogue(currentPatient);
+                Context context = PatientDetailsActivity.this;
+                AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
+                    // Action 1 callback
+                }));
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
+                    // Action 2 callback
+                    callReferralFragmentDialogue(currentPatient);
+                }));
+                alert.show(PatientDetailsActivity.this);
             }
         });
 

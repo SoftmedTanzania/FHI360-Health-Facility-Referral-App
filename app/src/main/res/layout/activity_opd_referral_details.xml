@@ -672,7 +672,24 @@
                                             android:textSize="18sp"
                                             android:textColor="@color/card_title_text"/>
 
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:padding="8dp"
+                                            android:layout_marginTop="8dp"
+                                            android:background="@drawable/border_one">
+
+                                            <com.jaredrummler.materialspinner.MaterialSpinner
+                                                android:id="@+id/referral_feedback_spinner"
+                                                android:layout_width="match_parent"
+                                                app:ms_arrow_tint="@color/card_grid_tex"
+                                                app:ms_text_color="@color/card_grid_text"
+                                                android:layout_height="wrap_content"/>
+
+                                        </RelativeLayout>
+
                                         <EditText
+                                            android:visibility="gone"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="8dp"

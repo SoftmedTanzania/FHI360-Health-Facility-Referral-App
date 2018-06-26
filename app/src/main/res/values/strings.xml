@@ -51,6 +51,10 @@
     <string name="issue">Refer</string>
     <string name="referral">Referral</string>
     <string name="issue_referral">Issue Referral</string>
+    <string name="issue_referral_prompt">Are you sure you want to refer this client?</string>
+    <string name="answer_no">No</string>
+    <string name="answer_yes">Yes</string>
+
     <string name="referral_information">Referral Information</string>
     <string name="btn_cancel">Cancel</string>
     <string name="client_inforamtion">Client Information</string>

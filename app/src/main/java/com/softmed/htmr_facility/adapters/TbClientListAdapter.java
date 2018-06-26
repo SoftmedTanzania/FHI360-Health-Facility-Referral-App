@@ -14,7 +14,12 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.UUID;
 
+import com.irozon.alertview.AlertActionStyle;
+import com.irozon.alertview.AlertStyle;
+import com.irozon.alertview.AlertView;
+import com.irozon.alertview.objects.AlertAction;
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.PatientDetailsActivity;
 import com.softmed.htmr_facility.activities.TbClientDetailsActivity;
 import com.softmed.htmr_facility.activities.TbClientListActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
@@ -81,7 +86,16 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         holder.rufaaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callReferralFragmentDialogue(holder.patient);
+
+                AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
+                    // Action 1 callback
+                }));
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
+                    // Action 2 callback
+                    callReferralFragmentDialogue(holder.patient);
+                }));
+                alert.show((TbClientListActivity)context);
             }
         });
 

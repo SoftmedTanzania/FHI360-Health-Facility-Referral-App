@@ -26,6 +26,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.irozon.alertview.AlertActionStyle;
+import com.irozon.alertview.AlertStyle;
+import com.irozon.alertview.AlertView;
+import com.irozon.alertview.objects.AlertAction;
 import com.rey.material.widget.ProgressView;
 
 import java.text.SimpleDateFormat;
@@ -204,13 +208,19 @@ public class ClientsDetailsActivity extends BaseActivity {
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                referalDialogueEvents();
 
-                if (currentPatient != null){
-                    //Needs to save current referral feedback before issuing another referral
-                    saveReferalInformation(true);
-                }
-
+                Context context = ClientsDetailsActivity.this;
+                AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
+                    // Action 1 callback
+                }));
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
+                    // Action 2 callback
+                    if (currentPatient != null){
+                        saveReferalInformation(true);
+                    }
+                }));
+                alert.show(ClientsDetailsActivity.this);
             }
         });
 

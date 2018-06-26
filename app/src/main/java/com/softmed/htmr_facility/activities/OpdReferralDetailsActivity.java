@@ -24,6 +24,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.irozon.alertview.AlertActionStyle;
+import com.irozon.alertview.AlertStyle;
+import com.irozon.alertview.AlertView;
+import com.irozon.alertview.objects.AlertAction;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
@@ -48,17 +53,20 @@ import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETE
 public class OpdReferralDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
-    public Button cancelButton, referButton;
-    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, referralServiceName, clientPhoneNumberValue, referralDate;
+    private Button cancelButton, referButton;
+    private TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, referralServiceName, clientPhoneNumberValue, referralDate;
     private EditText servicesOfferedEt, otherInformationEt;
     private RecyclerView indicatorsRecyclerView;
-    public TextView clientNames, wardText,clientAge, villageText, hamletText, patientGender, otherClinicalInformationValue;
-    public Dialog referalDialogue;
+    private TextView clientNames, wardText,clientAge, villageText, hamletText, patientGender, otherClinicalInformationValue;
+    private Dialog referalDialogue;
+    private MaterialSpinner referralFeedbackMaterialSpinner;
 
     private int service;
     private Referral currentReferral;
     private Patient currentPatient;
     private boolean isNewCase = false;
+    private String referralFeedbackValue;
+    private ArrayList<String> mReferralFeedbackOptions = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +107,17 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mReferralFeedbackOptions.add("Received and Attended");
+        mReferralFeedbackOptions.add("Received and Referred");
+
+        referralFeedbackMaterialSpinner.setItems(mReferralFeedbackOptions);
+        referralFeedbackMaterialSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                referralFeedbackValue = mReferralFeedbackOptions.get(position);
+            }
+        });
+
         referalDialogue = new Dialog(this);
         referalDialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -113,12 +132,22 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentPatient != null && !servicesOfferedEt.getText().toString().isEmpty()){
-                    //Needs to save current referral feedback before issuing another referral
-                    saveReferalInformation(true);
-                }else {
-                    Toast.makeText(OpdReferralDetailsActivity.this, getResources().getString(R.string.feedback_required), Toast.LENGTH_LONG).show();
-                }
+
+                Context context = OpdReferralDetailsActivity.this;
+                AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
+                    // Action 1 callback
+                }));
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
+                    // Action 2 callback
+                    if (currentPatient != null){
+                        //Needs to save current referral feedback before issuing another referral
+                        saveReferalInformation(true);
+                    }else {
+                        Toast.makeText(OpdReferralDetailsActivity.this, getResources().getString(R.string.feedback_required), Toast.LENGTH_LONG).show();
+                    }
+                }));
+                alert.show(OpdReferralDetailsActivity.this);
 
             }
         });
@@ -127,7 +156,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     private void saveReferalInformation(boolean isForwardingReferral){
 
-        String serviceOferedString = servicesOfferedEt.getText().toString();
+        String serviceOferedString = referralFeedbackValue;
         String otherInformation = otherInformationEt.getText().toString();
 
         currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
@@ -175,6 +204,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         referalReasons = (TextView) findViewById(R.id.sababu_ya_rufaa_value);
 
 
+        referralFeedbackMaterialSpinner = findViewById(R.id.referral_feedback_spinner);
         referralDate = findViewById(R.id.tarehe_ya_rufaa_value);
         clientPhoneNumberValue = findViewById(R.id.client_phone_number_value);
         referralServiceName = findViewById(R.id.referral_service_name);

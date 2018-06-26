@@ -170,7 +170,7 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:layout_gravity="center_vertical">
@@ -184,12 +184,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/opensans_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
                         android:id="@+id/client_f_name"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/client_name"/>
 
                 </RelativeLayout>
@@ -203,12 +203,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/opensans_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
                         android:id="@+id/client_l_name"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/client_last_name"/>
 
                 </RelativeLayout>
@@ -263,11 +263,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/opensans_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/sex"/>
 
                 </RelativeLayout>
@@ -281,11 +281,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/opensans_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/treatment_type"/>
 
                 </RelativeLayout>
@@ -299,12 +299,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/opensans_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
                         android:id="@+id/client_phone_number"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/phone_number"/>
 
                 </RelativeLayout>
@@ -319,12 +319,12 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/avenir_light"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/opensans_bold"
                         android:layout_centerVertical="true"
                         android:layout_marginTop="16dp"
                         android:id="@+id/client_village"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/village"/>
 
                 </RelativeLayout>
@@ -339,10 +339,11 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginTop="16dp"
-                        android:fontFamily="@font/avenir_light"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/opensans_bold"
                         android:id="@+id/client_ctc_number"
                         android:text="@string/issue_referral"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/card_title_text"/>
 
                 </RelativeLayout>
 

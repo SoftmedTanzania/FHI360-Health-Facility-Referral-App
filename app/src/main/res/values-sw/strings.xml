@@ -54,6 +54,10 @@
     <string name="issue">Rufaa</string>
     <string name="referral">Rufaa</string>
     <string name="issue_referral">Tuma Rufaa</string>
+    <string name="issue_referral_prompt">Una uhakika unataka kumrufaa mteja huyu?</string>
+    <string name="answer_no">Hapana</string>
+    <string name="answer_yes">Ndiyo</string>
+
     <string name="referral_information">Taarifa za Rufaa</string>
     <string name="btn_cancel">Ondoka</string>
     <string name="client_inforamtion">Taarifa za Mteja</string>
