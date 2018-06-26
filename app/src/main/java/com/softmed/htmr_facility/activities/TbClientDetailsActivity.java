@@ -579,7 +579,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         TbEncounters tbEncounter = new TbEncounters();
 
         //Check if its the 1st or 3rd encounter and require sputum measured if the test type conducted was Sputum for AFB
-        if (testType == 1 && (encounterNumber == 1 || encounterNumber == 3) ){
+        if (testType == 1 && (encounterNumber == 1 || encounterNumber == 3 || encounterNumber == 6) ){
             if (makohoziSpinner.getSelectedItemPosition() == 0){
                 toastThis("Tafadhali jaza hali ya makohozi ya mgonjwa");
                 return false;
