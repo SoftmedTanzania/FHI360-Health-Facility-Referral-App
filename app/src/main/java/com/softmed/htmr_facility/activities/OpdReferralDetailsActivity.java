@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.softmed.htmr_facility.R;
@@ -48,7 +49,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
     public Button cancelButton, referButton;
-    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName;
+    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, referralServiceName, clientPhoneNumberValue, referralDate;
     private EditText servicesOfferedEt, otherInformationEt;
     private RecyclerView indicatorsRecyclerView;
     public TextView clientNames, wardText,clientAge, villageText, hamletText, patientGender, otherClinicalInformationValue;
@@ -86,9 +87,10 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 otherClinicalInformationValue.setText(currentReferral.getOtherClinicalInformation() == null ? "N/A" : currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "N/A" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "N/A" : currentReferral.getVillageLeader());
-                referrerName.setText(currentReferral.getServiceProviderUIID() == null ? "N/A" : currentReferral.getServiceProviderUIID());
+                Date referralDt = new Date(currentReferral.getReferralDate());
+                referralDate.setText(simpleDateFormat.format(referralDt));
 
-                new OpdReferralDetailsActivity.patientDetailsTask(baseDatabase, currentReferral.getPatient_id()).execute();
+                new OpdReferralDetailsActivity.patientDetailsTask(baseDatabase, currentReferral.getPatient_id(), currentReferral.getServiceId()).execute();
 
             }
         }
@@ -172,6 +174,10 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         clientNames = (TextView) findViewById(R.id.client_name);
         referalReasons = (TextView) findViewById(R.id.sababu_ya_rufaa_value);
 
+
+        referralDate = findViewById(R.id.tarehe_ya_rufaa_value);
+        clientPhoneNumberValue = findViewById(R.id.client_phone_number_value);
+        referralServiceName = findViewById(R.id.referral_service_name);
         wardText = (TextView) findViewById(R.id.client_kata_value);
         villageText = (TextView) findViewById(R.id.client_kijiji_value);
         hamletText = (TextView) findViewById(R.id.client_kitongoji_value);
@@ -295,20 +301,23 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     class patientDetailsTask extends AsyncTask<Void, Void, Void> {
 
-        String patientNames, patientId;
+        String patientNames, patientId, serviceName;
+        long mServiceId;
         Patient patient;
         AppDatabase db;
         List<ReferralIndicator> indicators =  new ArrayList<>();
 
-        patientDetailsTask(AppDatabase database, String patientID){
+        patientDetailsTask(AppDatabase database, String patientID, long serviceId){
             this.db = database;
             this.patientId = patientID;
+            this.mServiceId = serviceId;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
+            serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId+""));
             currentPatient = patient;
 
             List<Long> ids = currentReferral.getServiceIndicatorIds();
@@ -345,6 +354,12 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 String wardTitle = getResources().getString(R.string.ward);
                 String villageTitle = getResources().getString(R.string.village);
                 String mapCueTitle = getResources().getString(R.string.map_cue);
+
+                //Set referral Service name
+                referralServiceName.setText(serviceName);
+
+                //display clients Phone Number
+                clientPhoneNumberValue.setText(patient.getPhone_number());
 
                 wardText.setText(patient.getWard() == null ? "N/A " : patient.getWard());
                 villageText.setText(patient.getVillage() == null ? "N/A " : patient.getVillage());

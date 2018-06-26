@@ -125,6 +125,21 @@
                                         android:text="Juma Khamisi Doe"
                                         android:textColor="@color/colorPrimary"/>
 
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/strip_one"
+                                        android:layout_marginRight="32dp"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginTop="16dp"
+                                        android:textSize="24sp"
+                                        android:id="@+id/referral_service_name"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:text="Malaria"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/card_title_text"/>
+
                                 </RelativeLayout>
 
                                 <View
@@ -274,31 +289,32 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:visibility="gone"
-                                            android:fontFamily="@font/avenir_light"
+                                            android:fontFamily="@font/roboto_bold"
                                             android:textColor="@color/card_title_text"
                                             android:textSize="14sp"
-                                            android:id="@+id/referer_name_title"
-                                            android:text="Rufaa imetolewa na"/>
+                                            android:layout_marginTop="8dp"
+                                            android:layout_below="@id/client_kijiji_value"
+                                            android:id="@+id/client_phone_number"
+                                            android:text="@string/phone_number"/>
 
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_below="@id/referer_name_title"
-                                            android:id="@+id/referer_name_value"
-                                            android:layout_marginTop="4dp"
-                                            android:visibility="gone"
+                                            android:layout_below="@id/client_kijiji_value"
+                                            android:id="@+id/client_phone_number_value"
+                                            android:layout_marginTop="8dp"
+                                            android:layout_marginLeft="16dp"
+                                            android:layout_toRightOf="@id/client_phone_number"
                                             android:textColor="@color/card_title_text"
-                                            android:fontFamily="@font/avenir_light"
+                                            android:fontFamily="@font/roboto_regular"
                                             android:textSize="14sp"
-                                            android:text="Kinjekitile Ngwale" />
+                                            android:text="0766897867" />
 
                                         <TextView
                                             android:visibility="gone"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/cheo_title"
-                                            android:layout_below="@id/referer_name_value"
                                             android:textSize="14sp"
                                             android:textColor="@color/card_title_text"
                                             android:text="Cheo"
@@ -395,10 +411,30 @@
                                         <TextView
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="@string/referral_reasib"
-                                            android:id="@+id/sababu_ya_rufaa_title"
+                                            android:text="@string/referral_date"
+                                            android:id="@+id/tarehe_ya_rufaa_title"
                                             android:textColor="@color/card_title_text"
                                             android:textSize="14sp"
+                                            android:fontFamily="@font/roboto_condensed"/>
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/tarehe_ya_rufaa_value"
+                                            android:layout_below="@id/tarehe_ya_rufaa_title"
+                                            android:textColor="@color/card_title_text"
+                                            android:textSize="14sp"
+                                            android:fontFamily="@font/avenir_light"/>
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/referral_reasib"
+                                            android:id="@+id/sababu_ya_rufaa_title"
+                                            android:layout_below="@id/tarehe_ya_rufaa_value"
+                                            android:textColor="@color/card_title_text"
+                                            android:textSize="14sp"
+                                            android:layout_marginTop="16dp"
                                             android:fontFamily="@font/roboto_condensed"/>
 
                                         <RelativeLayout

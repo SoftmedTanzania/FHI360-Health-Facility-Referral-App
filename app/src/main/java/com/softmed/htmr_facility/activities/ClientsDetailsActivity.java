@@ -75,7 +75,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
     public Button saveButton, referButton;
-    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, testResultsHint, labTestType;
+    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, testResultsHint, labTestType, referralService;
     private EditText servicesOfferedEt, otherInformationEt, ctcNumberEt;
     public ProgressView saveProgress;
     private RecyclerView indicatorsRecyclerView;
@@ -121,8 +121,6 @@ public class ClientsDetailsActivity extends BaseActivity {
 
                 }
 
-                Log.d("avalanche", currentReferral.getLabTest()+" = LAB TEST");
-
                 if (service == LAB_SERVICE_ID){
                     switch (currentReferral.getLabTest()){
                         case MALARIA_SERVICE_ID:
@@ -147,7 +145,8 @@ public class ClientsDetailsActivity extends BaseActivity {
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "N/A" : currentReferral.getVillageLeader());
                 referrerName.setText(currentReferral.getServiceProviderUIID() == null ? "N/A" : currentReferral.getServiceProviderUIID());
 
-                new patientDetailsTask(baseDatabase, currentReferral.getPatient_id()).execute();
+
+                new patientDetailsTask(baseDatabase, currentReferral.getPatient_id(), currentReferral.getServiceId()).execute();
 
             }
         }
@@ -237,6 +236,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         otherInformationEt = findViewById(R.id.other_information_et);
         ctcNumberEt = findViewById(R.id.ctc_number_et);
 
+        referralService = findViewById(R.id.referral_service);
         referrerName = findViewById(R.id.referer_name_value);
         villageLeaderValue = findViewById(R.id.mwenyekiti_name_value);
         patientGender = findViewById(R.id.patient_gender_value);
@@ -501,20 +501,23 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     class patientDetailsTask extends AsyncTask<Void, Void, Void> {
 
-        String patientNames, patientId;
+        String patientNames, patientId, serviceName;
+        long referralServiceId;
         Patient patient;
         AppDatabase db;
         List<ReferralIndicator> indicators =  new ArrayList<>();
 
-        patientDetailsTask(AppDatabase database, String patientID){
+        patientDetailsTask(AppDatabase database, String patientID, long mReferralServiceId){
             this.db = database;
             this.patientId = patientID;
+            this.referralServiceId = mReferralServiceId;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
+            serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(referralServiceId+""));
             currentPatient = patient;
 
             if (currentReferral.getServiceIndicatorIds() != null){
@@ -553,6 +556,9 @@ public class ClientsDetailsActivity extends BaseActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                //display the referral service
+                referralService.setText(serviceName);
 
                 wardText.setText(patient.getWard() == null ? "N/A " : patient.getWard());
                 villageText.setText(patient.getVillage() == null ? "N/A " : patient.getVillage());
