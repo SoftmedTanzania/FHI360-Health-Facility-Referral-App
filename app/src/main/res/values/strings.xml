@@ -40,7 +40,7 @@
     <string name="client_last_name">Last Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="click_to_sync_entries">Click to sync Entries</string>
-    <string name="referral_system">Referral System</string>
+    <string name="referral_system">Facility Referral System</string>
     <string name="login">Login</string>
     <string name="enter_username_and_password">Enter username and password</string>
     <string name="username">Username</string>
@@ -86,7 +86,7 @@
 
     <string name="select_service">Select Service</string>
     <string name="select_indicators">Select Indicators</string>
-    <string name="referrals_list">Referrals List</string>
+    <string name="referrals_list">Received &amp; unattended Referrals</string>
 
     <string name="referrals_unattended">Referrals Unattended</string>
     <string name="pending_feedback">Pending Feedback</string>
@@ -95,7 +95,7 @@
     <string name="register_client">Register Client</string>
     <string name="referrals_issued">Referrals Issued</string>
     <string name="status">Status</string>
-    <string name="new_client_registration_form">New Client Registration Form</string>
+    <string name="new_client_registration_form">New Client Registration &amp; Referral Form</string>
     <string name="initial_information">Initial Information</string>
     <string name="first_name">First Name</string>
     <string name="middle_name">Middle Name</string>

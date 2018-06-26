@@ -41,7 +41,7 @@
     <string name="client_last_name">Jina la Ukoo</string>
     <string name="phone_number">Namba ya Simu</string>
     <string name="click_to_sync_entries">Bonyeza kuoanisha Taarifa</string>
-    <string name="referral_system">Mfumo wa Rufaa</string>
+    <string name="referral_system">Mfumo wa Rufaa wa Kituo cha Afya</string>
     <string name="login">Ingia</string>
     <string name="enter_username_and_password">Ingiza Jina na neno la siri</string>
     <string name="username">Jina</string>
@@ -89,7 +89,7 @@
 
     <string name="select_service">Chagua Huduma</string>
     <string name="select_indicators">Chagua Viashiria</string>
-    <string name="referrals_list">Orodha ya Rufaa</string>
+    <string name="referrals_list">Rufaa zilizopokelewa</string>
 
     <string name="referrals_unattended">Rufaa Mpya</string>
     <string name="pending_feedback">Rufaa zinazosubiri Majibu</string>
@@ -98,7 +98,7 @@
     <string name="register_client">Sajili Mteja</string>
     <string name="referrals_issued">Rufaa Zilizotolewa</string>
     <string name="status">Status</string>
-    <string name="new_client_registration_form">Fomu ya Usajili wa Mteja Mpya</string>
+    <string name="new_client_registration_form">Fomu ya Usajili na Rufaa kwa Mteja Mpya</string>
     <string name="initial_information">Taarifa za Awali</string>
     <string name="first_name">Jina la Kwanza</string>
     <string name="middle_name">Jina la Pili</string>

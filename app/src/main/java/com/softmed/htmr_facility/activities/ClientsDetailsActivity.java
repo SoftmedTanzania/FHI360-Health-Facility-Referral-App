@@ -60,6 +60,8 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDB
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_INDETERMINATE;
+import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_INDETERMINATE_SW;
 import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_NEGATIVE;
 import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_NEGATIVE_SW;
 import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_POSITIVE;
@@ -162,9 +164,11 @@ public class ClientsDetailsActivity extends BaseActivity {
         if (getLocaleString().equals(SWAHILI_LOCALE)){
             results.add(TEST_RESULT_POSITIVE_SW);
             results.add(TEST_RESULT_NEGATIVE_SW);
+            results.add(TEST_RESULT_INDETERMINATE_SW);
         }else if (getLocaleString().equals(ENGLISH_LOCALE)){
             results.add(TEST_RESULT_POSITIVE);
             results.add(TEST_RESULT_NEGATIVE);
+            results.add(TEST_RESULT_INDETERMINATE);
         }
 
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, results);
