@@ -253,16 +253,16 @@ public class FeedbackDetailsActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            //Hide the refer button for already chained referrals
-            if (referralAlreadyChained){
-                referralButton.setVisibility(View.GONE);
-            }else{
+//            //Hide the refer button for already chained referrals
+//            if (referralAlreadyChained){
+//                referralButton.setVisibility(View.GONE);
+//            }else{
                 if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
                     referralButton.setVisibility(View.VISIBLE);
                 }else {
                     referralButton.setVisibility(View.GONE);
                 }
-            }
+//            }
 
 
             clientNames.setText(patientNames);
