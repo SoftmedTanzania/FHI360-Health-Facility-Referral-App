@@ -113,7 +113,7 @@ public class LabTestedPatients extends BaseActivity {
 
             new patientDetailsTask(database, referral, holder.clientsNames, holder.testConducted).execute();
 
-            if (!referral.isTestResults()){
+            if (referral.getTestResults() == 0){
                 holder.testResult.setText(getResources().getString(R.string.negative));
                 holder.testResult.setTextColor(context.getResources().getColor(R.color.green_a700));
             }else {

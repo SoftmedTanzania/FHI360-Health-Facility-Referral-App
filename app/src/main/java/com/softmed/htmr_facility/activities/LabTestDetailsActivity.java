@@ -63,7 +63,7 @@ public class LabTestDetailsActivity extends BaseActivity {
                     testResultsToggle.setEnabled(false);
                     testResultsToggle.setVisibility(View.VISIBLE);
                     waitingForResults.setVisibility(View.GONE);
-                    if (currentReferral.isTestResults()){
+                    if (currentReferral.getTestResults() == 1){
                         testResultsToggle.setCheckedTogglePosition(1);
                     }
 

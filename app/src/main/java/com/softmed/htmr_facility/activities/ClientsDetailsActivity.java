@@ -311,12 +311,14 @@ public class ClientsDetailsActivity extends BaseActivity {
                 testResultsSpinner.setErrorColor(getResources().getColor(R.color.red_500));
                 Toast.makeText(this, getResources().getString(R.string.please_add_test_results), Toast.LENGTH_LONG);
             } else {
-                boolean result = false;
+                int result = 0;
 
                 if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE_SW)){
-                    result = true;
+                    result = 1;
                 }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE_SW)){
-                    result = false;
+                    result = 0;
+                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_INDETERMINATE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_INDETERMINATE_SW)){
+                    result = 2;
                 }
 
                 currentReferral.setTestResults(result);

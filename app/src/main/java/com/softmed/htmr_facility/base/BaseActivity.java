@@ -161,7 +161,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("referralId", referral.getReferral_id());
             object.put("serviceGivenToPatient", referral.getServiceGivenToPatient());
             object.put("otherNotes", referral.getOtherNotesAndAdvices());
-            object.put("testResults", referral.isTestResults());
+            object.put("testResults", referral.getTestResults());
             object.put("healthFacilityCode", userData.getUserFacilityId());
 
             datastream = object.toString();
@@ -232,7 +232,7 @@ public class BaseActivity extends AppCompatActivity {
             object.put("otherClinicalInformation", referral.getOtherClinicalInformation());
             object.put("otherNotes", referral.getOtherNotesAndAdvices() == null ? "" : referral.getOtherNotesAndAdvices());
             object.put("serviceGivenToPatient", referral.getServiceGivenToPatient() == null ? "" : referral.getServiceGivenToPatient());
-            object.put("testResults", referral.isTestResults()+"");
+            object.put("testResults", referral.getTestResults());
             object.put("fromFacilityId", referral.getFromFacilityId());
             object.put("referralSource", referral.getReferralSource());
             object.put("referralType", referral.getReferralType());

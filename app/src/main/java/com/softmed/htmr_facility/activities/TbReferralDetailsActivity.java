@@ -100,7 +100,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
                 }
 
-                tbStatus.setChecked(currentReferral.isTestResults());
+                tbStatus.setChecked(currentReferral.getTestResults() == 1);
 
                 otherClunucalInformationValue.setText(currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
@@ -163,7 +163,11 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
             String serviceOferedString = servicesOfferedEt.getText().toString();
             String otherInformation = otherInformationEt.getText().toString();
-            boolean results = tbStatus.isChecked();
+            int results;
+            if (tbStatus.isChecked())
+                results = 1;
+            else
+                results = 0;
 
             currentReferral.setTestResults(results);
             currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);

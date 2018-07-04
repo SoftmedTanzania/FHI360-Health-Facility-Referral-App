@@ -30,7 +30,7 @@ public interface ReferalModelDao {
     LiveData<List<Referral>> getAllReferals(int serviceId);
 
     //Used in OPD
-    @Query("select * from Referral where referralType in (:sourceID) and facilityId = :requestingFacilityID and referralStatus = 0 order by updatedAt asc")
+    @Query("select * from Referral where referralType in (:sourceID) and facilityId = :requestingFacilityID and referralStatus = 0 order by isEmergency, appointmentDate asc ")
     LiveData<List<Referral>> getAllReferalsBySource(int[] sourceID, String requestingFacilityID);
 
     //Only CHW referrals

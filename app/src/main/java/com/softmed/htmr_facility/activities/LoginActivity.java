@@ -314,6 +314,8 @@ public class LoginActivity extends BaseActivity {
                         String userUUID = loginResponse.getUser().getAttributes().getPersonUUID();
                         String facilityUUID = loginResponse.getTeam().getTeam().getLocation().getUuid();
 
+                        Log.d("CHECK_FACILITY_ID", facilityUUID);
+
                         userData = new UserData();
                         userData.setUserUIID(userUUID);
                         userData.setUserName(userName);
@@ -383,6 +385,8 @@ public class LoginActivity extends BaseActivity {
 
     private void sendRegistrationToServer(String token, String userUiid, String hfid){
 
+        Log.d("CHECK_FACILITY_ID", "Registering Device to server");
+
         SessionManager sess = new SessionManager(getApplicationContext());
 
         String datastream = "";
@@ -396,7 +400,6 @@ public class LoginActivity extends BaseActivity {
             object.put("userType", 1);
 
             datastream = object.toString();
-            Log.d("FCMService", "data "+datastream);
 
             body = RequestBody.create(MediaType.parse("application/json"), datastream);
 
@@ -415,6 +418,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(retrofit2.Call call, Throwable t) {
+
                 new AddUserData(baseDatabase).execute(userData);
                 loginMessages.setText(getResources().getString(R.string.device_registration_warning));
                 loginMessages.setTextColor(getResources().getColor(R.color.red_600));
@@ -424,6 +428,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void callReferralList(){
+
+        Log.d("CHECK_FACILITY_ID", "Calling referrals");
+
         loginMessages.setText(getResources().getString(R.string.initializing_data));
         loginMessages.setTextColor(getResources().getColor(R.color.amber_a700));
 
@@ -453,6 +460,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void callServices(){
+
+        Log.d("CHECK_FACILITY_ID", "Calling services");
+
         Call<List<ReferralServiceIndicatorsResponse>> call = referalService.getAllServices();
         call.enqueue(new Callback<List<ReferralServiceIndicatorsResponse>>() {
             @Override
@@ -611,9 +621,8 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
+            Log.d("CHECK_FACILITY_ID", "Saved user data after registering to server");
             callServices();
-
         }
 
         @Override
