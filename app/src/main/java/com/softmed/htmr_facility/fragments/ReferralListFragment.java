@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,14 +58,15 @@ public class ReferralListFragment extends Fragment {
     private ReferalListViewModel listViewModel;
 
     private Toolbar toolbar;
-    private RecyclerView clientRecyclerView;
+    private RecyclerView clientRecyclerView, emergencyClientsRecyclerView;
     private MaterialSpinner statusSpinner;
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
-    private TextView ctcNumberOrServiceNameTitle, referralReasonTitle;
+    private TextView ctcNumberOrServiceNameTitle, referralReasonTitle, emptyEmergencyReferrals, otherReferralsTitle, emergencyReferralsTitle;
     private ProgressView progressView;
     private Button filterButton;
+    private RelativeLayout emergencyReferralsContainer;
 
-    private ReferalListRecyclerAdapter adapter;
+    private ReferalListRecyclerAdapter adapter, emergencyAdapter;
 
     private Date fromDate, toDate;
 
@@ -120,14 +122,23 @@ public class ReferralListFragment extends Fragment {
             case OPD_SERVICE_ID:
                 ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.service));
                 referralReasonTitle.setText(getResources().getString(R.string.referral_reasib));
+                emergencyReferralsContainer.setVisibility(View.VISIBLE);
+                emergencyReferralsTitle.setVisibility(View.VISIBLE);
+                otherReferralsTitle.setVisibility(View.VISIBLE);
                 break;
             case LAB_SERVICE_ID:
                 referralReasonTitle.setText(getResources().getString(R.string.lab_test_type_title));
                 ctcNumberOrServiceNameTitle.setText("");
+                emergencyReferralsContainer.setVisibility(View.GONE);
+                emergencyReferralsTitle.setVisibility(View.GONE);
+                otherReferralsTitle.setVisibility(View.GONE);
                 break;
             case HIV_SERVICE_ID:
                 referralReasonTitle.setText(getResources().getString(R.string.referral_reasib));
                 ctcNumberOrServiceNameTitle.setText(getResources().getString(R.string.ctc_number));
+                emergencyReferralsContainer.setVisibility(View.GONE);
+                emergencyReferralsTitle.setVisibility(View.GONE);
+                otherReferralsTitle.setVisibility(View.GONE);
                 break;
             default:
                 break;
@@ -217,6 +228,7 @@ public class ReferralListFragment extends Fragment {
         });
 
         adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), ReferralListFragment.this.getActivity(), service);
+        emergencyAdapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), ReferralListFragment.this.getActivity(), service);
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
 
         if (service == OPD_SERVICE_ID){
@@ -224,10 +236,33 @@ public class ReferralListFragment extends Fragment {
                 listViewModel.getAllReferralListFromChw().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
-                        adapter.addItems(referrals);
+
+                        List<Referral> emergencyReferrals = new ArrayList<>();
+                        List<Referral> otherReferrals = new ArrayList<>();
+
+                        for (Referral r : referrals){
+                            if (r.isEmergency())
+                                emergencyReferrals.add(r);
+                            else
+                                otherReferrals.add(r);
+                        }
+
+                        if (emergencyReferrals.size() > 0){
+                            emptyEmergencyReferrals.setVisibility(View.GONE);
+                            emergencyClientsRecyclerView.setVisibility(View.VISIBLE);
+                        }else {
+                            emptyEmergencyReferrals.setVisibility(View.VISIBLE);
+                            emergencyClientsRecyclerView.setVisibility(View.GONE);
+                        }
+
+                        adapter.addItems(otherReferrals);
+                        emergencyAdapter.addItems(emergencyReferrals);
                     }
                 });
             }else{
+                emergencyReferralsContainer.setVisibility(View.GONE);
+                emergencyReferralsTitle.setVisibility(View.GONE);
+                otherReferralsTitle.setVisibility(View.GONE);
                 listViewModel.getAllReferralListFromHealthFacilities().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
@@ -262,6 +297,7 @@ public class ReferralListFragment extends Fragment {
         }
 
         clientRecyclerView.setAdapter(adapter);
+        emergencyClientsRecyclerView.setAdapter(emergencyAdapter);
 
     }
 
@@ -324,29 +360,30 @@ public class ReferralListFragment extends Fragment {
 
     private void setupviews(View v){
 
+        emergencyReferralsContainer = v.findViewById(R.id.emergency_referrals_container);
+        emergencyReferralsTitle  = v.findViewById(R.id.emergency_referrals_title);
+        otherReferralsTitle = v.findViewById(R.id.other_referrals_title);
         referralReasonTitle = v.findViewById(R.id.referral_reasons);
-
-        ctcNumberOrServiceNameTitle = (TextView) v.findViewById(R.id.ctc_number);
-
-        filterButton = (Button) v.findViewById(R.id.filter_button);
-
-        progressView = (ProgressView) v.findViewById(R.id.progress_bar);
+        ctcNumberOrServiceNameTitle =  v.findViewById(R.id.ctc_number);
+        filterButton =  v.findViewById(R.id.filter_button);
+        progressView =  v.findViewById(R.id.progress_bar);
         progressView.setVisibility(View.INVISIBLE);
-
-        fromDateText = (EditText) v.findViewById(R.id.from_date);
-        toDateText = (EditText) v.findViewById(R.id.to_date);
-        clientNameText = (EditText) v.findViewById(R.id.client_name_et);
-        clientCtcNumberText = (EditText) v.findViewById(R.id.client_ctc_number_et);
-        clientLastName = (EditText) v.findViewById(R.id.client_last_name_et);
-
-        statusSpinner = (MaterialSpinner) v.findViewById(R.id.spin_status);
-
-        toolbar = (Toolbar) v.findViewById(R.id.toolbar);
-
-        clientRecyclerView = (RecyclerView) v.findViewById(R.id.clients_recycler);
+        emptyEmergencyReferrals = v.findViewById(R.id.empty_emergency_referrals);
+        fromDateText =  v.findViewById(R.id.from_date);
+        toDateText =  v.findViewById(R.id.to_date);
+        clientNameText =  v.findViewById(R.id.client_name_et);
+        clientCtcNumberText =  v.findViewById(R.id.client_ctc_number_et);
+        clientLastName =  v.findViewById(R.id.client_last_name_et);
+        statusSpinner =  v.findViewById(R.id.spin_status);
+        toolbar =  v.findViewById(R.id.toolbar);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ReferralListFragment.this.getActivity());
+        clientRecyclerView =  v.findViewById(R.id.clients_recycler);
         clientRecyclerView.setLayoutManager(layoutManager);
-        clientRecyclerView.setHasFixedSize(true);
+        clientRecyclerView.setHasFixedSize(false);
+        RecyclerView.LayoutManager emergencyLayoutManager = new LinearLayoutManager(ReferralListFragment.this.getActivity());
+        emergencyClientsRecyclerView = v.findViewById(R.id.emergency_clients_recycler);
+        emergencyClientsRecyclerView.setLayoutManager(emergencyLayoutManager);
+        emergencyClientsRecyclerView.setHasFixedSize(false);
 
     }
 

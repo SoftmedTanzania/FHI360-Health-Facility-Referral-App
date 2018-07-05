@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -55,7 +56,6 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             itemView = LayoutInflater
                     .from(viewGroup.getContext())
                     .inflate(R.layout.referral_list_opd_client_item, viewGroup, false);
-//                    .inflate(R.layout.patient_list_item, viewGroup, false);
             return new ReferalListRecyclerAdapter.ListViewOPDItemViewHolder(itemView);
 
         }else {
@@ -65,7 +65,6 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
             return new ReferalListRecyclerAdapter.ListViewItemViewHolder(itemView);
         }
-
 
     }
 
@@ -130,6 +129,12 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             ReferalListRecyclerAdapter.ListViewOPDItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewOPDItemViewHolder) viewHolder;
 
             new patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute(serviceID);
+
+            if (referral.isEmergency()){
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.red_100));
+            }else {
+                holder.container.setBackgroundColor(context.getResources().getColor(R.color.white));
+            }
 
             if (referral.getReferralStatus() == 0){
                 holder.attendedFlag.setText(context.getResources().getString(R.string.new_ref));
@@ -198,16 +203,18 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
         TextView clientsNames, attendedFlag, serviceName, referralReasons, referralDate;
         View viewItem;
+        LinearLayout container;
 
         public ListViewOPDItemViewHolder(View itemView){
             super(itemView);
             this.viewItem   = itemView;
 
-            clientsNames = (TextView) itemView.findViewById(R.id.client_name);
-            attendedFlag = (TextView) itemView.findViewById(R.id.attended_flag);
-            serviceName = (TextView) itemView.findViewById(R.id.service_name);
-            referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
-            referralDate = (TextView) itemView.findViewById(R.id.ref_date);
+            clientsNames =  itemView.findViewById(R.id.client_name);
+            attendedFlag =  itemView.findViewById(R.id.attended_flag);
+            serviceName =  itemView.findViewById(R.id.service_name);
+            referralReasons =  itemView.findViewById(R.id.referral_reasons);
+            referralDate =  itemView.findViewById(R.id.ref_date);
+            container = itemView.findViewById(R.id.referral_item_container);
 
         }
 
