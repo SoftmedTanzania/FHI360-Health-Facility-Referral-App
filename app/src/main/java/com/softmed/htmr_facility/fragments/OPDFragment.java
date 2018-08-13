@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.activities.ClientRegisterActivity;
+import com.softmed.htmr_facility.activities.IssuedReferralsActivity;
 import com.softmed.htmr_facility.activities.NewReferalsActivity;
 import com.softmed.htmr_facility.activities.ReferedClientsActivity;
 import com.softmed.htmr_facility.activities.ReferralListActivity;
@@ -90,8 +91,7 @@ public class OPDFragment extends Fragment {
         opdReferedClientsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OPDFragment.this.getActivity(), ReferedClientsActivity.class);
-                intent.putExtra("service_id", OPD_SERVICE_ID);
+                Intent intent = new Intent(OPDFragment.this.getActivity(), IssuedReferralsActivity.class);
                 startActivity(intent);
             }
         });

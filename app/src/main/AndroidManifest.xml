@@ -116,6 +116,9 @@
             android:parentActivityName=".activities.LabTestedPatients"
             android:windowSoftInputMode="stateHidden"/>
 
+        <activity android:name=".activities.IssuedReferralsActivity"
+            android:parentActivityName=".activities.HomeActivity"/>
+
     </application>
 
 </manifest>

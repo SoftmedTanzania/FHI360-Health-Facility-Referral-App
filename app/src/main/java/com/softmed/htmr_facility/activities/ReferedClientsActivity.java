@@ -59,7 +59,7 @@ public class ReferedClientsActivity extends BaseActivity {
 
     private Date fromDate, toDate;
     private String clientName, clientCtcNumber, lastName;
-    private int selectedStatus, serviceID;
+    private int selectedStatus, serviceID, serviceCategory;
     private boolean notSelectedStatus, notSelectedFromDate, notSelectedTodate;
 
     private AppDatabase database;
@@ -79,6 +79,8 @@ public class ReferedClientsActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null){
             serviceID = getIntent().getIntExtra("service_id", 0);
+            serviceCategory = getIntent().getIntExtra("category", 0);
+
             String title = "";
 
             switch (serviceID){
@@ -211,7 +213,6 @@ public class ReferedClientsActivity extends BaseActivity {
                 }
             });
         }
-
 
     }
 
