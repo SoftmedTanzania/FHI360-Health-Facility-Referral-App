@@ -215,4 +215,6 @@
     <string name="lab_referrals">LAB Referrals</string>
     <string name="other_referrals">Other Referrals</string>
 
+    <string name="emergencies">Emergency Referrals</string>
+
 </resources>

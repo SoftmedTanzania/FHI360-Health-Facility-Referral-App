@@ -286,7 +286,7 @@
             android:visibility="gone"
             android:id="@+id/emergency_referrals_title"
             android:textColor="@color/card_grid_text"
-            android:text="Emergencies"/>
+            android:text="@string/emergencies"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -326,10 +326,10 @@
             android:text="Others"/>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/clients_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/clients_recycler"
-            android:background="@color/card_separator_third"/>
+            android:background="@color/card_separator_third" />
 
     </LinearLayout>
 
