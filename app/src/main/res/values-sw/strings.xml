@@ -202,4 +202,9 @@
     <string name="date_issued"> Imetolewa Tarehe </string>
     <string name="upcoming_appointments">Mahudhurio Yajayo</string>
 
+    <string name="ctc_referrals">Rufaa za CTC</string>
+    <string name="tb_referrals">Rufaa za Kifua Kikuu</string>
+    <string name="lab_referrals">Rufaa za Maabara</string>
+    <string name="other_referrals">Rufaa zinginezo</string>
+
 </resources>

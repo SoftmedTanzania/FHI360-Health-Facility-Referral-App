@@ -29,9 +29,9 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:layout_centerVertical="true"
-                    android:fontFamily="@font/roboto_bold"
+                    android:fontFamily="@font/google_sans_bold"
                     android:layout_marginLeft="4dp"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:id="@+id/activity_title"/>
 
             </RelativeLayout>

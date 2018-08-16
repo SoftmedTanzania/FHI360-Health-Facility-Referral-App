@@ -40,11 +40,31 @@ public interface ReferalModelDao {
     @Query("select * from Referral where serviceId = :serviceId and referralStatus = 0 and referralType in (:SourceID)")
     LiveData<List<Referral>> getReferralsBySourceId(int serviceId, int[] SourceID);
 
-    @Query("select * from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId order by updatedAt desc")
-    LiveData<List<Referral>> getReferredClients(int serviceId, String fromFacilityId);
+    @Query("select * from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId and serviceId in (:referralCategory) order by updatedAt desc")
+    LiveData<List<Referral>> getReferredClients(int serviceId, String fromFacilityId, int[] referralCategory); //Referral Category is used to return all clients referred to a specific service
 
     @Query("select count(*) from Referral where referralStatus = 0 and serviceId = :serviceId and fromFacilityId = :fromFacilityId")
     int geCountPendingReferalFeedback(int serviceId, String fromFacilityId);
+
+    @Query("select count(*) from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId and serviceId not in (:referralCategory)")
+    LiveData<Integer> getOtherServicesIssuedReferralCount(int serviceId, String fromFacilityId, int[] referralCategory);
+
+    /**
+     * Get Size of issued referrals based on a specific service
+     *
+     * @param serviceId
+     * @param fromFacilityId
+     * @param referralCategory
+     * @return
+     */
+    @Query("select count(*) from Referral where referralSource = :serviceId and fromFacilityId = :fromFacilityId and serviceId in (:referralCategory)")
+    LiveData<Integer> getIssuedReferralCount(int serviceId, String fromFacilityId, int[] referralCategory);
+
+    /**
+     * GEt all Unattended Referrals
+     * @param serviceId
+     * @return
+     */
 
     @Query("select * from Referral where referralStatus = 0 and serviceId = :serviceId order by referralDate asc")
     LiveData<List<Referral>> getUnattendedReferals(int serviceId);

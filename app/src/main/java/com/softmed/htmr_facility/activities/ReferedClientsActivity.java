@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.activities;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
@@ -35,6 +36,7 @@ import com.softmed.htmr_facility.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
@@ -188,25 +190,38 @@ public class ReferedClientsActivity extends BaseActivity {
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
         clientsRecycler.setAdapter(adapter);
 
-        if (serviceID == TB_SERVICE_ID){
-            listViewModel.getTbReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+        if (serviceCategory == -1){ //Other Referrals Category
+
+            //Get all non basic service Ids
+            LiveData<List<Integer>> nonBasicServiceIds = baseDatabase.referralServiceIndicatorsDao().getAllNonBasicServiceIds();
+            nonBasicServiceIds.observe(this, new Observer<List<Integer>>() {
                 @Override
-                public void onChanged(@Nullable List<Referral> referrals) {
-                    adapter.addItems(referrals);
+                public void onChanged(@Nullable List<Integer> integers) {
+                    int size = integers == null ? 0:integers.size();
+                    int[] categoryIds = new int[size];
+                    for (int i = 0; i<size; i++){
+                        int currentID = integers.get(i);
+                        if (currentID != OPD_SERVICE_ID && currentID != HIV_SERVICE_ID
+                                && currentID != TB_SERVICE_ID && currentID != LAB_SERVICE_ID){
+                            categoryIds[i] = integers.get(i);
+                        }
+                    }
+
+                    //Get referred clients from a particular service to a specific service
+                    LiveData<List<Referral>> referredClients = baseDatabase.referalModel().getReferredClients(serviceID, session.getKeyHfid(), categoryIds);
+                    referredClients.observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+                        @Override
+                        public void onChanged(@Nullable List<Referral> referrals) {
+                            adapter.addItems(referrals);
+                        }
+                    });
+
                 }
             });
-        }else if (serviceID == HIV_SERVICE_ID){
-            Log.d("MIMI", "Calling Hiv referred list of referrals");
-            listViewModel.getHivReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
-                @Override
-                public void onChanged(@Nullable List<Referral> referrals) {
-                    Log.d("MIMI", "Adding items to adapter with size : "+referrals.size());
-                    adapter.addItems(referrals);
-                }
-            });
-        } else {
-            //Get OPD referred client list
-            listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+        }else{
+            //Get referred clients from a particular service to a specific service
+            LiveData<List<Referral>> referredClients = baseDatabase.referalModel().getReferredClients(serviceID, session.getKeyHfid(), new int[] {serviceCategory});
+            referredClients.observe(this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {
                     adapter.addItems(referrals);

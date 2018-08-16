@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.IssuedReferralsActivity;
 import com.softmed.htmr_facility.activities.NewReferalsActivity;
 import com.softmed.htmr_facility.activities.ReferedClientsActivity;
 import com.softmed.htmr_facility.activities.ReferralListActivity;
@@ -26,6 +27,7 @@ import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 
 /**
  * Created by issy on 12/4/17.
@@ -75,8 +77,8 @@ public class HivFragment extends Fragment {
         referedClientsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HivFragment.this.getActivity(), ReferedClientsActivity.class);
-                intent.putExtra("service_id", HIV_SERVICE_ID);
+                Intent intent = new Intent(HivFragment.this.getActivity(), IssuedReferralsActivity.class);
+                intent.putExtra(IssuedReferralsActivity.SERVICE_ID, HIV_SERVICE_ID);
                 startActivity(intent);
             }
         });

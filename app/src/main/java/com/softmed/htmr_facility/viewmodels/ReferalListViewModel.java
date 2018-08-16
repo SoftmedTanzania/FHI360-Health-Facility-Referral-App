@@ -29,9 +29,11 @@ public class ReferalListViewModel extends AndroidViewModel{
     private final LiveData<List<Referral>> unattendedReferrals;
     private final LiveData<List<Referral>> tbReferalList;
 
+    /*
     private final LiveData<List<Referral>> hivReferredClientsList;
     private final LiveData<List<Referral>> tbReferredClientsList;
     private final LiveData<List<Referral>> referredClientsList;
+    */
 
     private final LiveData<List<Referral>> labReferalListHfSource;
 
@@ -55,9 +57,12 @@ public class ReferalListViewModel extends AndroidViewModel{
         unattendedReferrals = appDatabase.referalModel().getUnattendedReferals(HIV_SERVICE_ID);
         tbReferalList = appDatabase.referalModel().getTbReferralList(TB_SERVICE_ID);
 
+        //Implementation moved to the ReferredClientsActivity
+        /*
         hivReferredClientsList = appDatabase.referalModel().getReferredClients(HIV_SERVICE_ID, BaseActivity.getThisFacilityId());
         tbReferredClientsList = appDatabase.referalModel().getReferredClients(TB_SERVICE_ID, BaseActivity.getThisFacilityId());
         referredClientsList = appDatabase.referalModel().getReferredClients(OPD_SERVICE_ID, BaseActivity.getThisFacilityId());
+        */
 
         labReferalListHfSource = appDatabase.referalModel().getReferralsBySourceId(LAB_SERVICE_ID, new int[]{INTRAFACILITY});//INTERFACILITY => Removed Interfacility from the array since all referrals originate from OPD so there will not be interfacility referrals straight to LAB
 
@@ -98,18 +103,6 @@ public class ReferalListViewModel extends AndroidViewModel{
 
     public LiveData<List<Referral>> getReferalList(){
         return referalList;
-    }
-
-    public LiveData<List<Referral>> getHivReferredClientsList() {
-        return hivReferredClientsList;
-    }
-
-    public LiveData<List<Referral>> getReferredClientsList() {
-        return referredClientsList;
-    }
-
-    public LiveData<List<Referral>> getTbReferredClientsList() {
-        return tbReferredClientsList;
     }
 
     public LiveData<List<Referral>> getAllReferralListFromChw() {

@@ -92,6 +92,7 @@ public class OPDFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OPDFragment.this.getActivity(), IssuedReferralsActivity.class);
+                intent.putExtra(IssuedReferralsActivity.SERVICE_ID, OPD_SERVICE_ID);
                 startActivity(intent);
             }
         });

@@ -210,4 +210,9 @@
     <string name="date_issued"> Date Issued </string>
     <string name="upcoming_appointments">Upcoming Appointments</string>
 
+    <string name="ctc_referrals">CTC Referrals</string>
+    <string name="tb_referrals">TB Referrals</string>
+    <string name="lab_referrals">LAB Referrals</string>
+    <string name="other_referrals">Other Referrals</string>
+
 </resources>

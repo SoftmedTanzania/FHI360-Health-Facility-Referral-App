@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.IssuedReferralsActivity;
 import com.softmed.htmr_facility.activities.ReferedClientsActivity;
 import com.softmed.htmr_facility.activities.TbClientListActivity;
 import com.softmed.htmr_facility.activities.TbReferalListActivity;
@@ -26,6 +27,7 @@ import com.softmed.htmr_facility.viewmodels.ReferralCountViewModels;
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
@@ -75,9 +77,10 @@ public class TbFragment extends Fragment {
         referredListCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TbFragment.this.getActivity(), ReferedClientsActivity.class);
-                intent.putExtra("service_id",  constants.TB_SERVICE_ID);
-                startActivity(intent); //TODO: Implement Service Id in querying List of referred clients
+
+                Intent intent = new Intent(TbFragment.this.getActivity(), IssuedReferralsActivity.class);
+                intent.putExtra(IssuedReferralsActivity.SERVICE_ID, TB_SERVICE_ID);
+                startActivity(intent);
             }
         });
 
