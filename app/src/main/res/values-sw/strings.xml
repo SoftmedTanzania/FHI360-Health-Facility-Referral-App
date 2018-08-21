@@ -209,4 +209,13 @@
 
     <string name="emergencies"> Rudaa za Dharura </string>
 
+    <!--TB toast messages-->
+
+    <string name="specify_results">Tafadhali elezea majibu ya matibabu</string>
+    <string name="select_results">Tafadhali chagua matokeo</string>
+    <string name="select_treatment_date">Tafadhali chagua tarehe ya Majibu ya matibabu</string>
+    <string name="fill_client_weight">Tafadhali jaza uzito wa mteja</string>
+    <string name="fill_sputum_status">Tafadhali jaza hali ya makohozi ya mgonjwa</string>
+    <string name="fill_treatment_type">Tafadhali Jaza Aina ya matibabu</string>
+
 </resources>

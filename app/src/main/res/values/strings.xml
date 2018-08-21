@@ -217,4 +217,13 @@
 
     <string name="emergencies">Emergency Referrals</string>
 
+    <!--TB toast messages-->
+
+    <string name="specify_results">Please provide treatment results</string>
+    <string name="select_results">Please select results</string>
+    <string name="select_treatment_date">Please provide treatment results date</string>
+    <string name="fill_client_weight">Please fill client\'s weight</string>
+    <string name="fill_sputum_status">Please fill client sputum weight</string>
+    <string name="fill_treatment_type">Please fill treatment type</string>
+
 </resources>

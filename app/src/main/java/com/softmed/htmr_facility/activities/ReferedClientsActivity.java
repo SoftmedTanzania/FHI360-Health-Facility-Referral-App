@@ -103,7 +103,18 @@ public class ReferedClientsActivity extends BaseActivity {
 
         }
 
-        final String[] status = {STATUS_COMPLETED, STATUS_NEW};
+        String completedStatus = "";
+        String newStatus = "";
+
+        if (BaseActivity.getLocaleString().equals(ENGLISH_LOCALE)){
+            newStatus = "New";
+            completedStatus = "Attended";
+        }else {
+            newStatus = "Mpya";
+            completedStatus = "Tayari";
+        }
+
+        final String[] status = {completedStatus, newStatus};
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, status);
         spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(spinAdapter);

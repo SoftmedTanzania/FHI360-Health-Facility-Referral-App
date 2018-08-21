@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.rey.material.widget.ProgressView;
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.base.BaseActivity;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import com.softmed.htmr_facility.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
+import static com.softmed.htmr_facility.utils.constants.ENGLISH_LOCALE;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.INTERFACILITY;
 import static com.softmed.htmr_facility.utils.constants.INTRAFACILITY;
@@ -144,7 +146,18 @@ public class ReferralListFragment extends Fragment {
                 break;
         }
 
-        final String[] status = {STATUS_COMPLETED, STATUS_NEW};
+        String completedStatus = "";
+        String newStatus = "";
+
+        if (BaseActivity.getLocaleString().equals(ENGLISH_LOCALE)){
+            newStatus = "New";
+            completedStatus = "Attended";
+        }else {
+            newStatus = "Mpya";
+            completedStatus = "Tayari";
+        }
+
+        final String[] status = {completedStatus, newStatus};
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(ReferralListFragment.this.getActivity(), android.R.layout.simple_spinner_item, status);
         spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(spinAdapter);

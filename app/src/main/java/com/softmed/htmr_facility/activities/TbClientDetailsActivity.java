@@ -552,7 +552,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         String selectedMatibabu = "";
         TbPatient patient = currentTbPatient;
         if (matibabuSpinner.getSelectedItemPosition() == 0){
-            toastThis("Tafadhali Jaza Aina ya matibabu");
+            toastThis(getResources().getString(R.string.fill_treatment_type));
             return false;
         }else {
             selectedMatibabu = (String) matibabuSpinner.getSelectedItem();
@@ -581,7 +581,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         //Check if its the 1st or 3rd encounter and require sputum measured if the test type conducted was Sputum for AFB
         if (testType == 1 && (encounterNumber == 1 || encounterNumber == 3 || encounterNumber == 6) ){
             if (makohoziSpinner.getSelectedItemPosition() == 0){
-                toastThis("Tafadhali jaza hali ya makohozi ya mgonjwa");
+                toastThis(getResources().getString(R.string.fill_sputum_status));
                 return false;
             }else {
                 makohoziValue = (String) makohoziSpinner.getSelectedItem();
@@ -590,7 +590,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         //Require monthly client general body weight upon every visit
         if (monthlyPatientWeightEt.getText().toString().isEmpty()){
-            toastThis("Tafadhali jaza uzito wa mteja.");
+            toastThis(getResources().getString(R.string.fill_client_weight));
             return false;
         }else {
             monthlyWeight = monthlyPatientWeightEt.getText().toString();
@@ -648,21 +648,21 @@ public class TbClientDetailsActivity extends BaseActivity {
         String dateOfResultsStr = "";
 
         if (outcomeDetails.getText().toString().isEmpty()){
-            toastThis("Tafadhali elezea majibu ya matibabu");
+            toastThis(getResources().getString(R.string.specify_results));
             return false;
         }else {
             outcomeDetailsStr = outcomeDetails.getText().toString();
         }
 
         if (matokeoSpinner.getSelectedItemPosition() == 0){
-            toastThis("Tafadhali chagua matokeo");
+            toastThis(getResources().getString(R.string.select_results));
             return false;
         }else {
             resultsStr = (String) matokeoSpinner.getSelectedItem();
         }
 
         if (resultsDate.getText().toString().isEmpty()){
-            toastThis("Tafadhali chagua tarehe ya Majibu ya matibabu");
+            toastThis(getResources().getString(R.string.select_treatment_date));
             return false;
         }else {
             dateOfResultsStr = resultsDate.getText().toString();
@@ -799,7 +799,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             //Check if this is the 1st or 3rd visit and test type is 1 only then display the sputum for afb input elements
             if (currentTbPatient.getTestType() == 1){
-                if (encounterNumber == 1 || encounterNumber == 3){
+                if (encounterNumber == 1 || encounterNumber == 3 || encounterNumber == 6){
                     if (encounterNumber == 1)
                         finishedPreviousMonthLayout.setVisibility(View.INVISIBLE);
                 }else {
