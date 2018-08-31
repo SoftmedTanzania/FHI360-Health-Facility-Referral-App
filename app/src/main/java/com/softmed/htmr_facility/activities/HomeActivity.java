@@ -386,7 +386,7 @@ public class HomeActivity extends BaseActivity {
 
                         @Override
                         public void onFailure(Call call, Throwable t) {
-                            Log.d("PostReferral", t.getMessage());
+                            Log.d("PostReferral", "Failed "+t.getMessage());
                         }
                     });
 

@@ -18,7 +18,9 @@ import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
+import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED_VAL;
 import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING;
+import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING_VAL;
 
 /**
  * Created by issy on 1/2/18.
@@ -67,13 +69,13 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             GetPatientNames getPatientNames = new GetPatientNames(database, holder);
             getPatientNames.execute(patientAppointment.getPatientID());
             holder.appointmentDate.setText(simpleDateFormat.format(patientAppointment.getAppointmentDate()));
-            if ((patientAppointment.getStatus()==null?"" : patientAppointment.getStatus()).equals(STATUS_PENDING)){
+            if (patientAppointment.getStatus() == STATUS_PENDING_VAL){
                 holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.amber_800));
-            }else if ((patientAppointment.getStatus()==null?"" : patientAppointment.getStatus()).equals(STATUS_COMPLETED)){
+            }else if (patientAppointment.getStatus() == STATUS_COMPLETED_VAL){
                 holder.appointmentStatus.setTextColor(context.getResources().getColor(R.color.green_800));
             }
 
-            holder.appointmentStatus.setText(patientAppointment.getStatus());
+            holder.appointmentStatus.setText(patientAppointment.getStatus() == STATUS_PENDING_VAL ? "Pending" : "Attended");
         }
 
     }

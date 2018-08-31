@@ -55,7 +55,7 @@ public interface PatientAppointmentModelDao {
             "where status = :status " +
             "and Patient.gender = :gender " +
             "and appointmentDate between :from and :to")
-    int getTotalAppointmentsByAppointmentDateStatusAndGender(long from, long to, String status, String gender);
+    int getTotalAppointmentsByAppointmentDateStatusAndGender(long from, long to, int status, String gender);
 
     @Insert
     void addAppointment(PatientAppointment appointment);

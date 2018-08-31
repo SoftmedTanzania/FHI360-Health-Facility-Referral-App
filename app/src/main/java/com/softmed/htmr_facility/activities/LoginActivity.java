@@ -215,6 +215,7 @@ public class LoginActivity extends BaseActivity {
     private boolean isDeviceRegistered(){
         SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
         deviceRegistrationId = pref.getString("regId", null);
+        Log.d("DeviceId", "Device ID is "+deviceRegistrationId);
         if (deviceRegistrationId == null || deviceRegistrationId.isEmpty()){
             return false;
         }else {
@@ -413,6 +414,7 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new retrofit2.Callback() {
             @Override
             public void onResponse(retrofit2.Call call, Response response) {
+                Log.d("DeviceID", "Response from server : "+new Gson().toJson(response.body()));
                 new AddUserData(baseDatabase).execute(userData);
             }
 

@@ -40,8 +40,15 @@ public class PatientAppointment implements Serializable{
     @SerializedName("isCancelled")
     private boolean cancelled;
 
+    /**
+     *
+     *  Status Values
+     *  0 - Pending
+     *  1  - Attended
+     *
+     */
     @SerializedName("status")
-    private String status;
+    private int status;
 
     private int encounterNumber;
 
@@ -84,11 +91,11 @@ public class PatientAppointment implements Serializable{
         this.cancelled = cancelled;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

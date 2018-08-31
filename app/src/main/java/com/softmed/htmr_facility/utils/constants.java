@@ -23,6 +23,9 @@ public class constants {
     public static final String STATUS_PENDING = "Bado";
     public static final String STATUS_CANCELLED = "Imefutwa";
 
+    public static final int STATUS_COMPLETED_VAL = 1;
+    public static final int STATUS_PENDING_VAL = 0;
+
     public static final String MALE = "Male";
     public static final String FEMALE = "Female";
 

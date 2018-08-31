@@ -701,7 +701,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:id="@+id/service_offered_title"
-                                            android:text="Huduma iliyotolewa"
+                                            android:text="@string/heading_service_given"
                                             android:fontFamily="@font/avenir_light"
                                             android:textSize="18sp"
                                             android:textColor="@color/card_title_text"/>

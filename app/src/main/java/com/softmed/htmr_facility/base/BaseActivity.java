@@ -217,6 +217,8 @@ public class BaseActivity extends AppCompatActivity {
         String datastream = "";
         JSONObject object   = new JSONObject();
 
+        Log.d("PostOfficeService", new Gson().toJson(referral));
+
         try {
 
             int patientID = Integer.parseInt(referral.getPatient_id());

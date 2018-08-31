@@ -217,6 +217,8 @@
 
     <string name="emergencies">Emergency Referrals</string>
 
+    <string name="finished_treatments">Finished Treatment</string>
+
     <!--TB toast messages-->
 
     <string name="specify_results">Please provide treatment results</string>

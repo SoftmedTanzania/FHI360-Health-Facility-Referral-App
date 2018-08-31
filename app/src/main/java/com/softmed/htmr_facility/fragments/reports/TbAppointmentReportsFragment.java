@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.fragments.reports;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +23,9 @@ import java.util.Date;
 import static com.softmed.htmr_facility.utils.constants.FEMALE;
 import static com.softmed.htmr_facility.utils.constants.MALE;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
+import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED_VAL;
 import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING;
+import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING_VAL;
 
 /**
  * Created by issy on 08/03/2018.
@@ -101,18 +104,19 @@ public class TbAppointmentReportsFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 //Filter data based on range
-                loadData(rangeFromDate, rangeToDate);
+                loadData(dateFromInMillis, dateToInMillis);
             }
         });
 
         return rootView;
     }
 
-    private void loadData(Date from, Date to){
+    @SuppressLint("StaticFieldLeak")
+    private void loadData(long from, long to){
 
         //List<PatientAppointment> allAppointments = BaseActivity.baseDatabase.appointmentModelDao().getAllAppointments();
 
-        new AsyncTask<Void, Void, Void>(){
+        new AsyncTask<Long, Void, Void>(){
 
             int totalAppointmentsCount = 0;
             int totalPendingAppointmentsMale = 0;
@@ -121,33 +125,37 @@ public class TbAppointmentReportsFragment extends Fragment{
             int totalAttendedAppointmentsFemale =  0;
 
             @Override
-            protected Void doInBackground(Void... voids) {
+            protected Void doInBackground(Long... args) {
+
+                long fromDate = args[0];
+                long toDate = args[1];
+
                 totalAppointmentsCount = BaseActivity.baseDatabase.appointmentModelDao().getTotalAppointmentsByAppointmentDate(
-                        dateFromInMillis,
-                        dateToInMillis);
+                        fromDate,
+                        toDate);
 
                 totalPendingAppointmentsMale = BaseActivity.baseDatabase.appointmentModelDao().getTotalAppointmentsByAppointmentDateStatusAndGender(
-                        dateFromInMillis,
-                        dateToInMillis,
-                        STATUS_PENDING,
+                        fromDate,
+                        toDate,
+                        STATUS_PENDING_VAL,
                         MALE);
 
                 totalPendingAppointmentsFemale = BaseActivity.baseDatabase.appointmentModelDao().getTotalAppointmentsByAppointmentDateStatusAndGender(
-                        dateFromInMillis,
-                        dateToInMillis,
-                        STATUS_PENDING,
+                        fromDate,
+                        toDate,
+                        STATUS_PENDING_VAL,
                         FEMALE);
 
                 totalAttendedAppointmentsMale = BaseActivity.baseDatabase.appointmentModelDao().getTotalAppointmentsByAppointmentDateStatusAndGender(
-                        dateFromInMillis,
-                        dateToInMillis,
-                        STATUS_COMPLETED,
+                        fromDate,
+                        toDate,
+                        STATUS_COMPLETED_VAL,
                         MALE);
 
                 totalAttendedAppointmentsFemale = BaseActivity.baseDatabase.appointmentModelDao().getTotalAppointmentsByAppointmentDateStatusAndGender(
-                        dateFromInMillis,
-                        dateToInMillis,
-                        STATUS_COMPLETED,
+                        fromDate,
+                        toDate,
+                        STATUS_COMPLETED_VAL,
                         FEMALE);
 
                 return null;
@@ -162,7 +170,7 @@ public class TbAppointmentReportsFragment extends Fragment{
                 missedMale.setText(totalPendingAppointmentsMale+"");
                 missedFemale.setText(totalPendingAppointmentsFemale+"");
             }
-        }.execute();
+        }.execute(from, to);
 
     }
 

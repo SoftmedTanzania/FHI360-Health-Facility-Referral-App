@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -61,7 +62,9 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
+import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED_VAL;
 import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING;
+import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING_VAL;
 import static com.softmed.htmr_facility.utils.constants.TB_1_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_2_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_3_PLUS;
@@ -92,11 +95,11 @@ public class TbClientDetailsActivity extends BaseActivity {
     private MaterialSpinner matibabuSpinner, matokeoSpinner, makohoziSpinner, encouterMonthSpinner, monthOneMakohoziSpinner, appointmentsSpinner;
     TextView patientNames, patientGender, patientAge, patientWeight, phoneNumber;
     TextView ward, village, hamlet, medicationStatusTitle, resultsDate, emptyPreviousMonthEncounter;
-    TextView currentEncounterNumber, encounterDate, encounterAppointmentDate;
+    TextView currentEncounterNumber, encounterDate, encounterAppointmentDate, finishedTreatmentTitle;
     EditText outcomeDetails, otherTestValue, monthlyPatientWeightEt;
     Button saveButton, cancelButton;
     ProgressDialog dialog;
-    CheckBox medicationStatusCheckbox;
+    CheckBox medicationStatusCheckbox, finishedTreatmentToggle;
     ToggleSwitch testTypeToggle;
     View encounterUI, testUI, treatmentUI, resultsUI, demographicUI, clickBlocker;
     RecyclerView previousEncounters;
@@ -287,6 +290,18 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         });
 
+        //Check if the patient have finished treatment
+        finishedTreatmentToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    resultsUI.setVisibility(View.VISIBLE);
+                }else {
+                    resultsUI.setVisibility(View.GONE);
+                }
+            }
+        });
+
         //Select the date of the results of medication
         resultsDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -434,6 +449,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         treatmentUI = (View) findViewById(R.id.treatment_ui);
         testUI = (View) findViewById(R.id.test_ui);
         resultsUI = (View) findViewById(R.id.results_ui);
+        resultsUI.setVisibility(View.GONE);
         demographicUI = (View) findViewById(R.id.demographic_ui);
         clickBlocker = (View) findViewById(R.id.view_click_blocker);
         clickBlocker.setVisibility(View.GONE);
@@ -444,36 +460,52 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         });
         testTypeToggle = (ToggleSwitch) findViewById(R.id.test_type);
+
+        //LinearLayout
         matokeoLinearLayout = (LinearLayout) findViewById(R.id.matokep_ll);
+
+        //Relative Layouts
         makohoziWrapper = (RelativeLayout) findViewById(R.id.makohozi_wrapper);
         othersWrapper = findViewById(R.id.others_wrapper);
-        otherTestValue = (EditText) findViewById(R.id.other_test_value);
         makohoziEncounterWrap = (RelativeLayout) findViewById(R.id.makohozi_encounter_wrap);
         finishedPreviousMonthLayout = (RelativeLayout) findViewById(R.id.finished_previous_month_layout);
-        outcomeDetails = (EditText) findViewById(R.id.other_information);
-        monthlyPatientWeightEt = (EditText) findViewById(R.id.monthly_uzito_value);
+
+        //EditTexts
+        otherTestValue =  findViewById(R.id.other_test_value);
+        outcomeDetails =  findViewById(R.id.other_information);
+        monthlyPatientWeightEt =  findViewById(R.id.monthly_uzito_value);
+
+        //Buttons
         saveButton = findViewById(R.id.hifadhi_taarifa);
         cancelButton = findViewById(R.id.cancel_button);
-        patientNames = (TextView) findViewById(R.id.names_text);
-        patientGender = (TextView) findViewById(R.id.gender_text);
-        patientAge = (TextView) findViewById(R.id.age_text);
-        patientWeight = (TextView) findViewById(R.id.weight_text);
-        phoneNumber = (TextView) findViewById(R.id.phone_text);
-        ward = (TextView) findViewById(R.id.ward_text);
-        village = (TextView) findViewById(R.id.village_text);
-        hamlet = (TextView) findViewById(R.id.hamlet_text);
-        medicationStatusTitle = (TextView) findViewById(R.id.medication_status_title);
-        resultsDate = (TextView) findViewById(R.id.date);
-        emptyPreviousMonthEncounter = (TextView) findViewById(R.id.empty_previous_encounters);
-        matibabuSpinner = (MaterialSpinner) findViewById(R.id.spin_matibabu);
-        matokeoSpinner = (MaterialSpinner) findViewById(R.id.spin_matokeo);
-        encouterMonthSpinner = (MaterialSpinner) findViewById(R.id.spin_encounter_month);
-        makohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi);
-        monthOneMakohoziSpinner = (MaterialSpinner) findViewById(R.id.spin_makohozi_month_one);
-        medicationStatusCheckbox = (CheckBox) findViewById(R.id.medication_status);
+
+        //TextViews
+        patientNames =  findViewById(R.id.names_text);
+        patientGender =  findViewById(R.id.gender_text);
+        patientAge =  findViewById(R.id.age_text);
+        patientWeight =  findViewById(R.id.weight_text);
+        phoneNumber =  findViewById(R.id.phone_text);
+        ward =  findViewById(R.id.ward_text);
+        village =  findViewById(R.id.village_text);
+        hamlet =  findViewById(R.id.hamlet_text);
+        medicationStatusTitle =  findViewById(R.id.medication_status_title);
+        resultsDate =  findViewById(R.id.date);
+        emptyPreviousMonthEncounter =  findViewById(R.id.empty_previous_encounters);
+        finishedTreatmentTitle = findViewById(R.id.finished_treatment_title);
+
+        //Spinners
+        matibabuSpinner =  findViewById(R.id.spin_matibabu);
+        matokeoSpinner =  findViewById(R.id.spin_matokeo);
+        encouterMonthSpinner =  findViewById(R.id.spin_encounter_month);
+        makohoziSpinner =  findViewById(R.id.spin_makohozi);
+        monthOneMakohoziSpinner = findViewById(R.id.spin_makohozi_month_one);
         appointmentsSpinner = findViewById(R.id.spin_appointments);
 
-        previousEncounters = (RecyclerView) findViewById(R.id.previous_encounters_recycler_view);
+        //Checkboxes
+        medicationStatusCheckbox = findViewById(R.id.medication_status);
+        finishedTreatmentToggle = findViewById(R.id.finished_treatment_toggle);
+
+        previousEncounters =  findViewById(R.id.previous_encounters_recycler_view);
         previousEncounters.setLayoutManager(new LinearLayoutManager(this));
         previousEncounters.hasFixedSize();
     }
@@ -683,7 +715,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             protected Void doInBackground(Void... voids) {
 
                 if (selectedEncounterAppointment != null){
-                    selectedEncounterAppointment.setStatus(STATUS_COMPLETED);
+                    selectedEncounterAppointment.setStatus(STATUS_COMPLETED_VAL);
                     baseDatabase.appointmentModelDao().updateAppointment(selectedEncounterAppointment);
                     Log.d(TAG, "Appointment Updated in the database");
 
@@ -808,11 +840,13 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
 
             //Check if the encounterNumber is greater than 6 then start showing the medications results view
-            if (encounterNumber > 7)
-                resultsUI.setVisibility(View.VISIBLE);
-            else
-                resultsUI.setVisibility(View.GONE);
-
+            if (encounterNumber > 7){
+                finishedTreatmentToggle.setVisibility(View.VISIBLE);
+                finishedTreatmentTitle.setVisibility(View.VISIBLE);
+            }else {
+                finishedTreatmentToggle.setVisibility(View.GONE);
+                finishedTreatmentTitle.setVisibility(View.GONE);
+            }
 
             //Set the current encounter number so the user knows which encounter the patient came to be addressed
             currentEncounterNumber.setText(encounterNumber+"");
@@ -1070,7 +1104,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             calendar.add(DATE, 30); //Adding 30 days to the next Appointment
             nextAppointment.setAppointmentDate(calendar.getTimeInMillis());
             nextAppointment.setEncounterNumber(encNumber);
-            nextAppointment.setStatus(STATUS_PENDING);
+            nextAppointment.setStatus(STATUS_PENDING_VAL);
 
             long range = 1234567L;
             Random r = new Random();
@@ -1102,6 +1136,78 @@ public class TbClientDetailsActivity extends BaseActivity {
             return null;
         }
 
+    }
+
+    class EnrollPatientToTbClinic extends AsyncTask<Referral, Void, Void>{
+
+        AppDatabase database;
+        Patient patient;
+        TbPatient tbPatient;
+
+        EnrollPatientToTbClinic(AppDatabase db){
+            this.database = db;
+        }
+
+        @Override
+        protected Void doInBackground(Referral... referrals) {
+            Referral currentReferral = referrals[0];
+
+            //End Current Referral
+            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
+            currentReferral.setServiceGivenToPatient(context.getResources().getString(R.string.received_at_tb_clinic));
+            currentReferral.setOtherNotesAndAdvices("");
+            currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+            database.referalModel().updateReferral(currentReferral);
+
+            //Add Post office entry
+            PostOffice postOffice = new PostOffice();
+            postOffice.setPost_id(currentReferral.getReferral_id());
+            postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
+            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(postOffice);
+
+            //Update patient to currently on TB Clinic
+            patient = database.patientModel().getPatientById(currentReferral.getPatient_id());
+            patient.setCurrentOnTbTreatment(true);
+            patient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+            //TODO : handle CTC Number input at the clinic
+            database.patientModel().updatePatient(patient);
+
+            PostOffice patientPost = new PostOffice();
+            patientPost.setPost_id(patient.getPatientId());
+            patientPost.setPost_data_type(POST_DATA_TYPE_PATIENT);
+            patientPost.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(patientPost);
+
+            //Create a new Tb Patient and add to post office
+            tbPatient = new TbPatient();
+            tbPatient.setTbPatientId(new Random().nextLong());
+            tbPatient.setHealthFacilityPatientId(Long.parseLong(patient.getPatientId()));
+            tbPatient.setTempID(UUID.randomUUID()+"");
+            database.tbPatientModelDao().addPatient(tbPatient);
+            currentTbPatient = tbPatient;
+
+            PostOffice tbPatientPost = new PostOffice();
+            tbPatientPost.setPost_id(patient.getPatientId());
+            tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
+            tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(tbPatientPost);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            if (saveTestData()){
+                Log.d("saveTestData", "Saved test data!");
+                if (saveTreatmentData()){
+                    Log.d("saveTreatmentData", "Saved treatment data!");
+                    new SaveTbPatientTask(baseDatabase).execute(currentTbPatient);
+                }
+            }
+
+        }
     }
 
     //END..::..Background Activities
@@ -1234,78 +1340,6 @@ public class TbClientDetailsActivity extends BaseActivity {
             this.mData = updatedData;
         }
 
-    }
-
-    class EnrollPatientToTbClinic extends AsyncTask<Referral, Void, Void>{
-
-        AppDatabase database;
-        Patient patient;
-        TbPatient tbPatient;
-
-        EnrollPatientToTbClinic(AppDatabase db){
-            this.database = db;
-        }
-
-        @Override
-        protected Void doInBackground(Referral... referrals) {
-            Referral currentReferral = referrals[0];
-
-            //End Current Referral
-            currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
-            currentReferral.setServiceGivenToPatient(context.getResources().getString(R.string.received_at_tb_clinic));
-            currentReferral.setOtherNotesAndAdvices("");
-            currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-            database.referalModel().updateReferral(currentReferral);
-
-            //Add Post office entry
-            PostOffice postOffice = new PostOffice();
-            postOffice.setPost_id(currentReferral.getReferral_id());
-            postOffice.setPost_data_type(POST_DATA_REFERRAL_FEEDBACK);
-            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
-            database.postOfficeModelDao().addPostEntry(postOffice);
-
-            //Update patient to currently on TB Clinic
-            patient = database.patientModel().getPatientById(currentReferral.getPatient_id());
-            patient.setCurrentOnTbTreatment(true);
-            patient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
-            //TODO : handle CTC Number input at the clinic
-            database.patientModel().updatePatient(patient);
-
-            PostOffice patientPost = new PostOffice();
-            patientPost.setPost_id(patient.getPatientId());
-            patientPost.setPost_data_type(POST_DATA_TYPE_PATIENT);
-            patientPost.setSyncStatus(ENTRY_NOT_SYNCED);
-            database.postOfficeModelDao().addPostEntry(patientPost);
-
-            //Create a new Tb Patient and add to post office
-            tbPatient = new TbPatient();
-            tbPatient.setTbPatientId(new Random().nextLong());
-            tbPatient.setHealthFacilityPatientId(Long.parseLong(patient.getPatientId()));
-            tbPatient.setTempID(UUID.randomUUID()+"");
-            database.tbPatientModelDao().addPatient(tbPatient);
-            currentTbPatient = tbPatient;
-
-            PostOffice tbPatientPost = new PostOffice();
-            tbPatientPost.setPost_id(patient.getPatientId());
-            tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
-            tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
-            database.postOfficeModelDao().addPostEntry(tbPatientPost);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-            if (saveTestData()){
-                Log.d("saveTestData", "Saved test data!");
-                if (saveTreatmentData()){
-                    Log.d("saveTreatmentData", "Saved treatment data!");
-                    new SaveTbPatientTask(baseDatabase).execute(currentTbPatient);
-                }
-            }
-
-        }
     }
     //END..::..Inline Classes
 }

@@ -209,6 +209,8 @@
 
     <string name="emergencies"> Rudaa za Dharura </string>
 
+    <string name="finished_treatments">Amemaliza Matibabu</string>
+
     <!--TB toast messages-->
 
     <string name="specify_results">Tafadhali elezea majibu ya matibabu</string>
