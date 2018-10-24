@@ -240,8 +240,8 @@ public class ReferralListFragment extends Fragment {
             }
         });
 
-        adapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), ReferralListFragment.this.getActivity(), service);
-        emergencyAdapter = new ReferalListRecyclerAdapter(new ArrayList<Referral>(), ReferralListFragment.this.getActivity(), service);
+        adapter = new ReferalListRecyclerAdapter(new ArrayList<>(), ReferralListFragment.this.getActivity(), service);
+        emergencyAdapter = new ReferalListRecyclerAdapter(new ArrayList<>(), ReferralListFragment.this.getActivity(), service);
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
 
         if (service == OPD_SERVICE_ID){
@@ -273,15 +273,19 @@ public class ReferralListFragment extends Fragment {
                     }
                 });
             }else{
+
+                //Facility Referrals do not have emergency tag
                 emergencyReferralsContainer.setVisibility(View.GONE);
                 emergencyReferralsTitle.setVisibility(View.GONE);
                 otherReferralsTitle.setVisibility(View.GONE);
+
                 listViewModel.getAllReferralListFromHealthFacilities().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
                         adapter.addItems(referrals);
                     }
                 });
+
             }
 
         } else if (service == LAB_SERVICE_ID){ //If Service is Lab, list all lab referrals originated from either interfacility or intrafacility

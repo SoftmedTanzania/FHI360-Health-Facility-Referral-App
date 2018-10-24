@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,6 +73,7 @@ public class ClientRegisterActivity extends BaseActivity {
     private boolean isPregnant;
     private boolean isTbClient = false;
     private Calendar dobCalendar;
+    private int phoneNumberCounter =  0;
 
     private Endpoints.PatientServices patientServices;
 
@@ -105,6 +108,35 @@ public class ClientRegisterActivity extends BaseActivity {
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, genders);
         spinAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         genderSpinner.setAdapter(spinAdapter);
+
+        phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (i > 9){
+                    phone.setTextColor(getResources().getColor(R.color.red_400));
+                    Toast.makeText(ClientRegisterActivity.this, "Phone Number Size Exceeded!", Toast.LENGTH_SHORT).show();
+                }
+
+                if (i <= 9){
+                    phone.setTextColor(getResources().getColor(R.color.card_title_text));
+                }
+
+                if (i == 8){
+                    phone.setTextColor(getResources().getColor(R.color.card_title_text));
+                }
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         dateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override

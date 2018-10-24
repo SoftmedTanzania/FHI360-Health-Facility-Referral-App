@@ -79,7 +79,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
     public Button saveButton, referButton;
-    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, testResultsHint, labTestType, referralService;
+    public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, testResultsHint, labTestType, referralService, referralDate;
     private EditText servicesOfferedEt, otherInformationEt, ctcNumberEt;
     public ProgressView saveProgress;
     private RecyclerView indicatorsRecyclerView;
@@ -148,6 +148,7 @@ public class ClientsDetailsActivity extends BaseActivity {
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "N/A" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "N/A" : currentReferral.getVillageLeader());
                 referrerName.setText(currentReferral.getServiceProviderUIID() == null ? "N/A" : currentReferral.getServiceProviderUIID());
+                referralDate.setText(BaseActivity.simpleDateFormat.format(currentReferral.getReferralDate()));
 
 
                 new patientDetailsTask(baseDatabase, currentReferral.getPatient_id(), currentReferral.getServiceId()).execute();
@@ -246,6 +247,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         otherInformationEt = findViewById(R.id.other_information_et);
         ctcNumberEt = findViewById(R.id.ctc_number_et);
 
+        referralDate  = findViewById(R.id.referral_date);
         referralService = findViewById(R.id.referral_service);
         referrerName = findViewById(R.id.referer_name_value);
         villageLeaderValue = findViewById(R.id.mwenyekiti_name_value);

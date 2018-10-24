@@ -2,8 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.softmed.htmr_facility" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission
+        android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
 
     <application
         android:allowBackup="true"
@@ -13,8 +22,9 @@
         android:theme="@style/AppTheme"
         android:name="android.support.multidex.MultiDexApplication">
 
-        <activity android:name="com.softmed.htmr_facility.activities.LoaderActivity">
-        </activity>
+        <!-- ###################################################################################     Activities-->
+
+        <activity android:name="com.softmed.htmr_facility.activities.LoaderActivity"/>
 
         <activity android:name="com.softmed.htmr_facility.activities.ReferalListActivityOld"
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
@@ -65,27 +75,6 @@
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <service
-            android:name="com.softmed.htmr_facility.services.FirebaseInstanseIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <service android:name="com.softmed.htmr_facility.services.MessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
-        <receiver
-            android:name="com.softmed.htmr_facility.utils.AlarmReceiver"
-            android:process=":remote">
-        </receiver>
-
-        <service android:name="com.softmed.htmr_facility.services.PostOfficeService"
-            android:exported="false"/>
-
         <activity android:name="com.softmed.htmr_facility.activities.TbClientListActivity"
             android:parentActivityName=".activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
@@ -118,6 +107,59 @@
 
         <activity android:name=".activities.IssuedReferralsActivity"
             android:parentActivityName=".activities.HomeActivity"/>
+
+        <!-- ###################################################################################     Services-->
+
+        <service
+            android:name="com.softmed.htmr_facility.services.FirebaseInstanseIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name="com.softmed.htmr_facility.services.MessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name="com.softmed.htmr_facility.services.AuthenticatorService">
+
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+
+        </service>
+
+        <service android:name="com.softmed.htmr_facility.services.PostOfficeService"
+            android:exported="false"/>
+
+        <service android:name="com.softmed.htmr_facility.services.SyncService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
+        <!-- ###################################################################################     Receivers-->
+
+        <receiver android:name="com.softmed.htmr_facility.utils.AlarmReceiver"
+            android:process=":remote">
+        </receiver>
+
+        <!-- ###################################################################################     Providers-->
+
+        <provider android:name="com.softmed.htmr_facility.base.StubProvider"
+            android:authorities="com.softmed.htmr_facility.provider"
+            android:exported="false"
+            android:syncable="true"/>
 
     </application>
 

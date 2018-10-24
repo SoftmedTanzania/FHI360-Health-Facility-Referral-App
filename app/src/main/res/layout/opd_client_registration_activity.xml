@@ -269,6 +269,8 @@
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
+
+
                                         <com.rey.material.widget.EditText
                                             android:id="@+id/phone_number"
                                             android:layout_width="0dp"
@@ -281,9 +283,12 @@
                                             android:fontFamily="@font/roboto_bold"
                                             android:hint="@string/phone_number"
                                             android:inputType="phone"
+                                            android:digits="0123456789+"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
+                                            app:et_supportTextErrorColor="@color/red_400"
+                                            app:et_supportMaxChars="0"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"

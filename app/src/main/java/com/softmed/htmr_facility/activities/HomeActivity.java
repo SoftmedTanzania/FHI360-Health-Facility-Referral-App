@@ -1,11 +1,15 @@
 package com.softmed.htmr_facility.activities;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -88,6 +92,41 @@ public class HomeActivity extends BaseActivity {
 
     private final String TAG = HomeActivity.class.getSimpleName();
 
+    /**
+     * The Authority for the sync adapter's content provider
+     */
+    public static final String AUTHORITY = "com.softmed.htmr_facility.provider";
+
+    /**
+     * An account type in the form of a domain
+     */
+    public static final String ACCOUNT_TYPE = "htmr_facility.softmed.com";
+
+
+    /**
+     * The Account name
+     */
+    public static final String ACCOUNT = "trcmis";
+
+    /**
+     * Account Instance field
+     */
+    Account mAccount;
+
+    /**
+     *  Sync interval constants
+     */
+    public static final long SECONDS_PER_MINUTE = 60L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 1L;
+    public static final long SYNC_INTERVAL = SYNC_INTERVAL_IN_MINUTES * SECONDS_PER_MINUTE;
+
+    /**
+     *  Global variables
+     *  A content resolver for accessing the provider
+     */
+    ContentResolver mResolver;
+
+
     private TabLayout tabLayout;
     public static NonSwipeableViewPager viewPager;
     private Toolbar toolbar;
@@ -127,6 +166,20 @@ public class HomeActivity extends BaseActivity {
         if (toolbar != null){
             setSupportActionBar(toolbar);
         }
+
+        //Create Dummy account
+        mAccount = CreateSyncAccount(this);
+
+        mResolver = getContentResolver();
+
+        /*
+         * Turning on periodic syncing for the sync adapter
+         */
+        ContentResolver.addPeriodicSync(
+                mAccount,
+                AUTHORITY,
+                Bundle.EMPTY,
+                SYNC_INTERVAL);
 
         //User Session Manager Initialization
         SessionManager sessionManager = new SessionManager(this);
@@ -189,7 +242,23 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 //Manual Sync the data in postman
-                new SyncPostOfficeData().execute();
+
+                /**
+                 * Calling manual sync implementations
+                 */
+                //new SyncPostOfficeData().execute();
+
+                // Pass the settings flags by inserting them in a bundle
+                Bundle settingsBundle = new Bundle();
+                settingsBundle.putBoolean(
+                        ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                settingsBundle.putBoolean(
+                        ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                /*
+                 * Request the sync for the default account, authority, and
+                 * manual sync settings
+                 */
+                ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
             }
         });
 
@@ -219,8 +288,21 @@ public class HomeActivity extends BaseActivity {
             }
         };
 
+        LiveData<List<PostOffice>> postOfficeWatcher = database.postOfficeModelDao().getPostOfficeEntries();
+        postOfficeWatcher.observe(this, new Observer<List<PostOffice>>() {
+            @Override
+            public void onChanged(@Nullable List<PostOffice> postOffices) {
+                /**
+                 * Post Office data has changed, trigger sync adapter to sync data
+                 */
+                ContentResolver.requestSync(mAccount, AUTHORITY, Bundle.EMPTY);
+            }
+        });
 
-        scheduleAlarm();
+        /**
+         * Commented to stop postOfficeService from running as sync adapter is being used
+         */
+        //scheduleAlarm();
 
     }
 
@@ -678,6 +760,41 @@ public class HomeActivity extends BaseActivity {
         // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
                 INTERVAL_FIFTEEN_MINUTES, pIntent);
+    }
+
+    /**
+     * Create a dummy account for the sync Adapter
+     * @param context
+     * @return created account
+     */
+    public static Account CreateSyncAccount(Context context){
+        //Create the account type and default account
+        Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
+
+        //Get the instance of the android account manager
+        AccountManager accountManager = (AccountManager) context.getSystemService(ACCOUNT_SERVICE);
+
+        /**
+         * Add the account and the account type no password or user data
+         * If successfull return the account instance if not return the error
+         */
+        if (accountManager.addAccountExplicitly(newAccount, null, null)){
+
+            /**
+             * If you do not set the android syncable to true in the <provider> element in manifest then call
+             *          context.setIsSyncable(account, AUTHORITY, 1) here
+             */
+            Log.d("", "Account has been created successfully");
+
+        }else {
+            /**
+             * The account already exists or some other error
+             */
+            Log.d("", "Account already exist");
+        }
+
+        return newAccount;
+
     }
 
     class ReplacePatientObject extends AsyncTask<Patient, Void, Void>{

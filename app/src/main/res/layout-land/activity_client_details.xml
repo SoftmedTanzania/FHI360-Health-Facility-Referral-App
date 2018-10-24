@@ -140,11 +140,39 @@
                                         android:textStyle="bold"
                                         android:textColor="@color/card_grid_tex"/>
 
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/referral_service"
+                                        android:layout_marginRight="32dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_alignParentRight="true"
+                                        android:textSize="16sp"
+                                        android:id="@+id/referral_date"
+                                        android:fontFamily="@font/google_sans_medium"
+                                        android:text="12.1.1999"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/card_grid_tex"/>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/referral_service"
+                                        android:layout_toLeftOf="@id/referral_date"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginRight="8dp"
+                                        android:textSize="16sp"
+                                        android:fontFamily="@font/google_sans_bold"
+                                        android:text="Referral Date"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/card_grid_tex"/>
+
                                 </RelativeLayout>
 
                                 <View
                                     android:layout_width="match_parent"
-                                    android:layout_height="16dp"
+                                    android:layout_height="8dp"
                                     android:background="@color/card_separator_third"/>
 
                                 <LinearLayout
