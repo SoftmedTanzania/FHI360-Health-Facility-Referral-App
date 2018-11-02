@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="16dp"
         android:background="@color/white">
 
         <TextView
@@ -18,7 +19,7 @@
             android:layout_marginLeft="32dp"
             android:layout_marginTop="16dp"
             android:textAllCaps="true"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/google_sans_bold"
             android:text="@string/diagnostic_info"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
@@ -32,27 +33,29 @@
             android:layout_marginTop="8dp"
             android:background="@color/card_separator" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:text="@string/test_conducted"
-            android:fontFamily="@font/roboto_bold"
-            android:textSize="14sp"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/card_grid_text"/>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:text="@string/test_conducted"
+                android:fontFamily="@font/google_sans_bold"
+                android:textSize="14sp"
+                android:id="@+id/test_conducted_title"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/card_grid_text"/>
 
             <RelativeLayout
                 android:id="@+id/test_type_wrap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/test_conducted_title"
                 android:background="@color/colorPrimary"
                 android:padding="1dp">
 
@@ -71,7 +74,7 @@
                     custom:textToggleCenter="@string/toggle_xray"
                     custom:textToggleLeft="@string/toggle_makohozi"
                     custom:textToggleRight="@string/toggle_other"
-                    custom:toggleWidth="130dp" />
+                    custom:toggleWidth="130dp"/>
 
                 <View
                     android:layout_width="378dp"
@@ -87,17 +90,17 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:id="@+id/makohozi_wrapper">
 
                 <TextView
                     android:id="@+id/makohozi_month_one_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
+                    android:fontFamily="@font/google_sans_bold"
                     android:text="@string/cough_weight"
                     android:textColor="@color/card_grid_text"
-                    android:textSize="16dp" />
+                    android:textSize="14sp" />
 
                 <fr.ganfra.materialspinner.MaterialSpinner
                     android:id="@+id/spin_makohozi_month_one"
@@ -149,7 +152,6 @@
                     android:textSize="16sp" />
 
             </RelativeLayout>
-
 
         </RelativeLayout>
 

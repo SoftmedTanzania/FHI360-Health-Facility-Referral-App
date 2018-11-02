@@ -135,8 +135,8 @@
 
         </service>
 
-        <service android:name="com.softmed.htmr_facility.services.PostOfficeService"
-            android:exported="false"/>
+        <!--<service android:name="com.softmed.htmr_facility.services.PostOfficeService"-->
+            <!--android:exported="false"/>-->
 
         <service android:name="com.softmed.htmr_facility.services.SyncService"
             android:exported="true"

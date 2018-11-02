@@ -92,7 +92,7 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
                 //Call Tb Clinic activity passing patient and tbpatient
                 Intent intent = new Intent(context, TbClientDetailsActivity.class);
                 intent.putExtra("referral", referral);
-                intent.putExtra("isPatientNew", true);
+                intent.putExtra(TbClientDetailsActivity.ORIGIN_STATUS, TbClientDetailsActivity.FROM_REFERRALS);
                 context.startActivity(intent);
 
                 /*Intent intent = new Intent(context, TbReferralDetailsActivity.class);

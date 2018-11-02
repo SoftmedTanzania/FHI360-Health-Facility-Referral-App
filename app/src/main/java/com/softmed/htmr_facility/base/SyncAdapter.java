@@ -7,11 +7,9 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.softmed.htmr_facility.activities.HomeActivity;
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
@@ -43,6 +41,7 @@ import static com.softmed.htmr_facility.utils.constants.RESPONCE_SUCCESS;
 public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     ContentResolver mContentResolver;
+
     AppDatabase mDatabase;
     SessionManager mSession;
     Endpoints.PatientServices patientServices;
@@ -50,6 +49,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     public SyncAdapter(Context context, boolean autoInitialize){
         super(context, autoInitialize);
+
+        Log.d("HomeActivity", "SyncAdapter: Sync adapter has started");
 
         logthat("Sync Adapter started!");
 
@@ -101,6 +102,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
             List<PostOffice> unpostedData = new ArrayList<>();
             unpostedData = mDatabase.postOfficeModelDao().getUnpostedData();
 
+            Log.d("HomeActivity", "Size of data in postman is : "+unpostedData.size());
             logthat("Size of data in postman is : "+unpostedData.size());
 
             for (PostOffice data : unpostedData){
@@ -129,6 +131,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
     private void handlePatientDataSync(PostOffice data){
 
         logthat("Handling Patient data");
+        Log.d("HomeActivity", "Patient");
 
         //Get the patient that needs to be synced
         final Patient patient = mDatabase.patientModel().getPatientById(data.getPost_id());
@@ -196,6 +199,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     private void handleTbPatientDataSync(PostOffice data){
 
+        Log.d("HomeActivity", "Tb Patient");
         logthat("Handling TB patient data");
 
         final Patient patient = mDatabase.patientModel().getPatientById(data.getPost_id());
@@ -234,6 +238,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     private void handleReferralDataSync(PostOffice data){
 
+        Log.d("HomeActivity", "Referral");
         logthat("Hangling referral data");
 
         final Referral referral = mDatabase.referalModel().getReferalById(data.getPost_id());
@@ -267,6 +272,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     private void handleReferralFeedbackDataSync(PostOffice data){
 
+        Log.d("HomeActivity", "Referral Feedback");
         logthat("Handling referral feedback data");
 
         final Referral referral = mDatabase.referalModel().getReferalById(data.getPost_id());
@@ -297,6 +303,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     private void handleEncounterDataSync(PostOffice data){
 
+        Log.d("HomeActivity", "Encounter");
         logthat("Handling encounter data");
 
         /**

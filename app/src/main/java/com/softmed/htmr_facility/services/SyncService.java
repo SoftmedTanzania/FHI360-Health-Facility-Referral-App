@@ -4,10 +4,13 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.softmed.htmr_facility.base.SyncAdapter;
 
-public class SyncService extends Service{
+public class SyncService extends Service {
+
+    private static final String TAG = "SyncService";
 
     private static SyncAdapter sSyncAdapter = null;
 
@@ -20,6 +23,9 @@ public class SyncService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Log.d(TAG, "onCreate: Launched the SyncService");
+
         /**
          * Create the sync adapter as a singleton
          * Set the sync adapter as syncable

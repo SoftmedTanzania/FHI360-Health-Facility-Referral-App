@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/google_sans_bold"
             android:text="@string/treatment_info"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
@@ -48,7 +48,7 @@
 
                 <fr.ganfra.materialspinner.MaterialSpinner
                     android:id="@+id/spin_matibabu"
-                    android:layout_width="150dp"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:divider="@null"
@@ -63,22 +63,10 @@
                     app_ms:ms_errorColor="@color/red_500"
                     app_ms:ms_floatingLabelColor="@color/white"
                     app_ms:ms_highlightColor="@color/card_grid_text"
-                    app_ms:ms_hint="@string/treatment"
+                    app_ms:ms_hint="@string/treatment_type"
                     app_ms:ms_hintColor="#b3b3b3"
                     app_ms:ms_hintTextSize="14sp"
                     app_ms:ms_multiline="false" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="32dp"
-                    android:layout_toRightOf="@id/spin_matibabu"
-                    android:fontFamily="@font/avenir_light"
-                    android:text="@string/treatment_type"
-                    android:textColor="@color/black"
-                    android:textSize="16dp" />
-
 
             </RelativeLayout>
 

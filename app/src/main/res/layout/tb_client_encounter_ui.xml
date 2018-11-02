@@ -8,17 +8,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="8dp"
-            android:textAllCaps="true"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/google_sans_bold"
             android:text="@string/encounter_details"
+            android:textAllCaps="true"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp" />
 
@@ -41,17 +41,17 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/avenir_light"
+                android:text="@string/previous_encounters"
                 android:textColor="@color/card_title_text"
-                android:textSize="14sp"
-                android:text="@string/previous_encounters"/>
+                android:textSize="14sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:background="@color/card_separator"/>
+                android:layout_marginTop="16dp"
+                android:background="@color/card_separator" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,102 +64,102 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/card_separator"/>
+                    android:background="@color/card_separator" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/avenir_light"
                         android:text="Encounter"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/card_title_text"
-                        android:fontFamily="@font/avenir_light"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/avenir_light"
                         android:text="@string/date_issued"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/card_title_text"
-                        android:fontFamily="@font/avenir_light"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
+                        android:fontFamily="@font/avenir_light"
                         android:text="@string/weight"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/card_title_text"
-                        android:fontFamily="@font/avenir_light"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/avenir_light"
                         android:text="@string/makohozi"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
                         android:textColor="@color/card_title_text"
-                        android:fontFamily="@font/avenir_light"/>
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="8dp"
-                        android:text="@string/finished_last_month_medications_succesfully"
-                        android:textSize="14sp"
+                        android:fontFamily="@font/avenir_light"
                         android:gravity="center"
-                        android:textStyle="bold"
+                        android:text="@string/finished_last_month_medications_succesfully"
                         android:textColor="@color/card_title_text"
-                        android:fontFamily="@font/avenir_light"/>
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                 </RelativeLayout>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/card_separator"/>
+                    android:background="@color/card_separator" />
 
             </LinearLayout>
 
@@ -168,50 +168,52 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:background="@color/card_separator"/>
+                android:background="@color/card_separator" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="100dp"
                 android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp">
+                android:layout_marginRight="32dp"
+                android:minHeight="100dp">
 
                 <android.support.v7.widget.RecyclerView
+                    android:id="@+id/previous_encounters_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    android:id="@+id/previous_encounters_recycler_view"/>
+                    android:scrollbars="none" />
 
                 <TextView
+                    android:id="@+id/empty_previous_encounters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:id="@+id/empty_previous_encounters"
-                    android:textColor="@color/card_light_text"
-                    android:text="@string/no_previous_encounters_recorded"/>
+                    android:text="@string/no_previous_encounters_recorded"
+                    android:textColor="@color/card_light_text" />
 
             </RelativeLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/avenir_light"
-            android:textColor="@color/card_title_text"
-            android:textSize="14sp"
-            android:text="@string/new_encounter"/>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/card_separator_sec">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:id="@+id/new_encounter_title"
+                android:fontFamily="@font/google_sans_bold"
+                android:text="@string/new_encounter"
+                android:textColor="@color/card_title_text"
+                android:textSize="14sp" />
 
             <LinearLayout
+                android:layout_below="@id/new_encounter_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
@@ -237,10 +239,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/separator_four"
+                        android:fontFamily="@font/google_sans_medium"
                         android:text="Encounter"
-                        android:textColor="@color/card_title_text"
+                        android:textColor="@color/card_grid_text"
                         android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold" />
 
                     <TextView
@@ -248,12 +250,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/separator_four"
+                        android:layout_marginLeft="8dp"
                         android:layout_toRightOf="@id/month_title"
-                        android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/google_sans_medium"
                         android:text="1"
-                        android:textColor="@color/card_title_text"
+                        android:textColor="@color/card_grid_tex"
                         android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold" />
 
 
@@ -262,10 +264,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/month_title"
+                        android:fontFamily="@font/google_sans_medium"
                         android:text="12/5/2018"
-                        android:textColor="@color/card_grid_text"
+                        android:textColor="@color/card_grid_tex"
                         android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold" />
 
                     <TextView
@@ -274,10 +276,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/encounter_date"
                         android:layout_marginTop="16dp"
+                        android:fontFamily="@font/google_sans_medium"
                         android:text="Appointment Dated"
                         android:textColor="@color/card_title_text"
                         android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold" />
 
                     <TextView
@@ -285,22 +287,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/appointment_title"
+                        android:fontFamily="@font/google_sans_medium"
                         android:text="10/5/2018"
-                        android:textColor="@color/card_grid_text"
+                        android:textColor="@color/card_grid_tex"
                         android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
                         android:textStyle="bold" />
 
                     <fr.ganfra.materialspinner.MaterialSpinner
-                        android:visibility="gone"
                         android:id="@+id/spin_encounter_month"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_below="@id/month_title"
-                        android:layout_marginTop="16dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
                         android:divider="@null"
                         android:textSize="12sp"
+                        android:visibility="gone"
                         app_ms:ms_alignLabels="false"
                         app_ms:ms_alwaysShowFloatingLabel="true"
                         app_ms:ms_arrowColor="@color/black"
@@ -318,7 +320,6 @@
                         app_ms:ms_multiline="false" />
 
                     <fr.ganfra.materialspinner.MaterialSpinner
-                        android:visibility="gone"
                         android:id="@+id/spin_appointments"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
@@ -328,6 +329,7 @@
                         android:layout_marginTop="16dp"
                         android:divider="@null"
                         android:textSize="12sp"
+                        android:visibility="gone"
                         app_ms:ms_alignLabels="false"
                         app_ms:ms_alwaysShowFloatingLabel="true"
                         app_ms:ms_arrowColor="@color/black"
@@ -375,7 +377,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/separator_two"
                         android:layout_marginLeft="8dp"
-                        android:fontFamily="@font/roboto_bold"
+                        android:fontFamily="@font/google_sans_bold"
                         android:text="@string/weight"
                         android:textColor="@color/card_grid_text"
                         android:textSize="16dp" />
@@ -389,12 +391,12 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/border_one"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/google_sans_medium"
                         android:gravity="center"
                         android:hint="@string/weight"
                         android:inputType="numberDecimal"
                         android:padding="8dp"
-                        android:textColor="@color/card_grid_text"
+                        android:textColor="@color/card_grid_tex"
                         android:textColorHint="@color/card_grid_tex"
                         android:textSize="16sp" />
 
@@ -429,7 +431,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/separator_one"
-                        android:fontFamily="@font/roboto_bold"
+                        android:fontFamily="@font/google_sans_bold"
                         android:text="@string/makohozi"
                         android:textColor="@color/card_grid_text"
                         android:textSize="16dp" />
@@ -489,7 +491,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/separator_three"
                         android:layout_marginLeft="8dp"
-                        android:fontFamily="@font/roboto_bold"
+                        android:fontFamily="@font/google_sans_bold"
+                        android:gravity="right"
                         android:text="@string/finished_last_month_medications_succesfully"
                         android:textColor="@color/card_grid_text"
                         android:textSize="14sp" />
@@ -513,8 +516,7 @@
 
             </LinearLayout>
 
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

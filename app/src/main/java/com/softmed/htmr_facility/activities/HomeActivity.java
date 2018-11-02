@@ -241,24 +241,29 @@ public class HomeActivity extends BaseActivity {
         manualSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Manual Sync the data in postman
 
-                /**
-                 * Calling manual sync implementations
-                 */
-                //new SyncPostOfficeData().execute();
+                new AsyncTask<Void, Void, Void>(){
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        Log.d(TAG, "onClick: Manual syncing");
+                        //new SyncPostOfficeData().execute();
 
-                // Pass the settings flags by inserting them in a bundle
-                Bundle settingsBundle = new Bundle();
-                settingsBundle.putBoolean(
-                        ContentResolver.SYNC_EXTRAS_MANUAL, true);
-                settingsBundle.putBoolean(
-                        ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                /*
-                 * Request the sync for the default account, authority, and
-                 * manual sync settings
-                 */
-                ContentResolver.requestSync(mAccount, AUTHORITY, settingsBundle);
+                        // Pass the settings flags by inserting them in a bundle
+                        Bundle settingsBundle = new Bundle();
+                        settingsBundle.putBoolean(
+                                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                        settingsBundle.putBoolean(
+                                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+                        /*
+                         * Request the sync for the default account, authority, and
+                         * manual sync settings
+                         */
+                        Log.d(TAG, "doInBackground: Just before calling request sync");
+                        ContentResolver.requestSync(mAccount, AUTHORITY, Bundle.EMPTY);
+                        Log.d(TAG, "doInBackground: Right after calling request sync");
+                        return null;
+                    }
+                }.execute();
             }
         });
 
@@ -768,6 +773,9 @@ public class HomeActivity extends BaseActivity {
      * @return created account
      */
     public static Account CreateSyncAccount(Context context){
+
+        boolean isNewAccount = false;
+
         //Create the account type and default account
         Account newAccount = new Account(ACCOUNT, ACCOUNT_TYPE);
 
@@ -785,6 +793,17 @@ public class HomeActivity extends BaseActivity {
              *          context.setIsSyncable(account, AUTHORITY, 1) here
              */
             Log.d("", "Account has been created successfully");
+
+            // Inform the system that this account supports sync
+            ContentResolver.setIsSyncable(newAccount, AUTHORITY, 1);
+            // Inform the system that this account is eligible for auto sync when the network is up
+            ContentResolver.setSyncAutomatically(newAccount, AUTHORITY, true);
+            // Recommend a schedule for automatic synchronization. The system may modify this based
+            // on other scheduled syncs and network utilization.
+            ContentResolver.addPeriodicSync(
+                    newAccount, AUTHORITY, new Bundle(),(60*2));
+
+            isNewAccount = true;
 
         }else {
             /**

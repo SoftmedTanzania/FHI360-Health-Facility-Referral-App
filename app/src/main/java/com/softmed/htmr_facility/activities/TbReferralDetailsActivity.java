@@ -346,8 +346,8 @@ public class TbReferralDetailsActivity extends BaseActivity {
             saveButton.setVisibility(View.VISIBLE);
             if (tbStatus.isChecked()){
                 Intent intent = new Intent(TbReferralDetailsActivity.this, TbClientDetailsActivity.class);
-                intent.putExtra("patient", currentPatient);
-                intent.putExtra("isPatientNew", true);
+                intent.putExtra(TbClientDetailsActivity.CURRENT_PATIENT, currentPatient);
+                intent.putExtra(TbClientDetailsActivity.ORIGIN_STATUS, TbClientDetailsActivity.FROM_REFERRALS);
                 startActivity(intent);
             }else {
                 finish();

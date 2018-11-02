@@ -77,8 +77,8 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
             public void onClick(View view) {
                 //UpdatePatientInformation and save data
                 Intent intent = new Intent(context, TbClientDetailsActivity.class);
-                intent.putExtra("patient", holder.patient);
-                intent.putExtra("isPatientNew", false);
+                intent.putExtra(TbClientDetailsActivity.CURRENT_PATIENT, holder.patient);
+                intent.putExtra(TbClientDetailsActivity.ORIGIN_STATUS , TbClientDetailsActivity.FROM_CLIENTS);
                 context.startActivity(intent);
             }
         });

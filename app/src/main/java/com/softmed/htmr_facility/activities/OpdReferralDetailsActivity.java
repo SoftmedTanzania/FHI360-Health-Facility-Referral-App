@@ -95,8 +95,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 otherClinicalInformationValue.setText(currentReferral.getOtherClinicalInformation() == null ? "N/A" : currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "N/A" : currentReferral.getReferralReason());
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "N/A" : currentReferral.getVillageLeader());
-                Date referralDt = new Date(currentReferral.getReferralDate());
-                referralDate.setText(simpleDateFormat.format(referralDt));
+                referralDate.setText(simpleDateFormat.format(currentReferral.getReferralDate()));
 
                 new OpdReferralDetailsActivity.patientDetailsTask(baseDatabase, currentReferral.getPatient_id(), currentReferral.getServiceId()).execute();
 
