@@ -47,10 +47,10 @@
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
                             android:id="@+id/tb_referal_list_text"
-                            android:fontFamily="@font/roboto_regular"
+                            android:fontFamily="@font/google_sans_bold"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:textColor="@color/black"
+                            android:textColor="@color/card_title_text"
                             android:layout_centerVertical="true"
                             android:text="@string/referrals_list"/>
 
@@ -59,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:fontFamily="@font/roboto_regular"
+                            android:fontFamily="@font/google_sans_regular"
                             android:id="@+id/tb_referal_count_text"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
@@ -145,10 +145,10 @@
                             android:textSize="14sp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:fontFamily="@font/roboto_regular"
+                            android:fontFamily="@font/google_sans_bold"
                             android:id="@+id/tb_refered_clients_text"
                             android:layout_toRightOf="@id/tb_refered_clients_icon"
-                            android:textColor="@color/black"
+                            android:textColor="@color/card_title_text"
                             android:layout_centerVertical="true"
                             android:text="@string/referrals_issued"/>
 
@@ -156,7 +156,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:fontFamily="@font/roboto_regular"
+                            android:fontFamily="@font/google_sans_regular"
                             android:id="@+id/tb_referal_feedback_count"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
@@ -205,10 +205,10 @@
                         android:textSize="14sp"
                         android:layout_toRightOf="@id/tb_refer_new_client"
                         android:layout_marginLeft="16dp"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/google_sans_bold"
                         android:layout_marginRight="16dp"
                         android:id="@+id/tb_new_referals_text"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:layout_centerVertical="true"
                         android:text="@string/tb_clients_list"/>
 

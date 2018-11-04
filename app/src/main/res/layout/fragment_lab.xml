@@ -42,17 +42,17 @@
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
                         android:id="@+id/referal_list_text"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/google_sans_bold"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/referrals_list"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/google_sans_regular"
                         android:id="@+id/lab_referal_count_text"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
@@ -102,15 +102,15 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:id="@+id/refered_clients_text"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textColor="@color/black"
+                        android:fontFamily="@font/google_sans_bold"
+                        android:textColor="@color/card_title_text"
                         android:text="@string/tested_patients"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/google_sans_regular"
                         android:id="@+id/lab_tested_clients_count_text"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
