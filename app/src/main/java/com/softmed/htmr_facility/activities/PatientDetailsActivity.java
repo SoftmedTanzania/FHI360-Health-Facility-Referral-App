@@ -1,12 +1,14 @@
 package com.softmed.htmr_facility.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.irozon.alertview.AlertView;
 import com.irozon.alertview.objects.AlertAction;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.dom.objects.Client;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 
@@ -30,10 +33,11 @@ import java.util.UUID;
  * On Project HFReferralApp
  */
 
-public class PatientDetailsActivity extends BaseActivity {
+public class PatientDetailsActivity extends BaseActivity implements View.OnClickListener {
 
     private Button cancelButton, referButton;
     private TextView clientNames, clientAge, clientGender, clientVEO, clientWard, clientVillage, clientMapCue, careTakerName, careTakerPhone, careTakerRelationship, clientPhone;
+    private ImageView editUserButton;
     private int service;
     private Patient currentPatient;
 
@@ -76,34 +80,56 @@ public class PatientDetailsActivity extends BaseActivity {
 
         }
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+    }
 
-        referButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context context = PatientDetailsActivity.this;
-                AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+
+    @Override
+    public void onClick(View view) {
+        Context context = PatientDetailsActivity.this;
+        switch (view.getId()){
+            case R.id.edit_user:
+                AlertView alert = new AlertView("Edit Current User Informations", "Are you sure you want to edit this user's details?", AlertStyle.DIALOG);
                 alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
                     // Action 1 callback
                 }));
                 alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
                     // Action 2 callback
-                    callReferralFragmentDialogue(currentPatient);
+                    editUserDetails(currentPatient);
                 }));
                 alert.show(PatientDetailsActivity.this);
-            }
-        });
+                break;
 
+            case R.id.cancel_button:
+                finish();
+                break;
+
+            case R.id.referal_button:
+                AlertView referralAllert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+                referralAllert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
+                    // Action 1 callback
+                }));
+                referralAllert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
+                    // Action 2 callback
+                    callReferralFragmentDialogue(currentPatient);
+                }));
+                referralAllert.show(PatientDetailsActivity.this);
+                break;
+        }
+    }
+
+
+    private void editUserDetails(Patient patient){
+        Intent intent = new Intent(this, ClientRegisterActivity.class);
+        intent.putExtra(ClientRegisterActivity.ORIGIN, ClientRegisterActivity.SOURCE_UPDATE);
+        intent.putExtra(ClientRegisterActivity.CURRENT_PATIENT, patient);
+        startActivity(intent);
     }
 
     private void setupviews(){
         cancelButton =  findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(this);
         referButton =  findViewById(R.id.referal_button);
+        referButton.setOnClickListener(this);
 
         clientAge =  findViewById(R.id.client_age_value);
         clientNames =  findViewById(R.id.client_name);
@@ -115,6 +141,9 @@ public class PatientDetailsActivity extends BaseActivity {
         careTakerName =  findViewById(R.id.care_taker_name);
         careTakerPhone =  findViewById(R.id.care_taker_phone);
         careTakerRelationship =  findViewById(R.id.care_taker_relationship);
+
+        editUserButton = findViewById(R.id.edit_user);
+        editUserButton.setOnClickListener(this);
 
     }
 

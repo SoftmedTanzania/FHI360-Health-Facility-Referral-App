@@ -41,8 +41,8 @@ public interface TbEncounterModelDao {
     @Insert(onConflict = REPLACE)
     void addEncounter(TbEncounters tbEncounters);
 
-    @Query("select * from TbEncounters where encounterNumber = :encounterNumber and tbPatientID =:healthFacilityPatientId")
-    List<TbEncounters> getMonthEncounter(int encounterNumber, long healthFacilityPatientId);
+    @Query("select * from TbEncounters where encounterNumber = :encounterNumber and tbPatientID =:tbPatientId")
+    List<TbEncounters> getMonthEncounter(int encounterNumber, long tbPatientId);
 
     @Update
     void updatePreviousMonthMedicationStatus(TbEncounters tbEncounters);

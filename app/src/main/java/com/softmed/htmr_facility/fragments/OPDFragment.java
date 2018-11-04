@@ -66,6 +66,7 @@ public class OPDFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(OPDFragment.this.getActivity(), ClientRegisterActivity.class);
                 intent.putExtra("isTbClient", false);
+                intent.putExtra(ClientRegisterActivity.ORIGIN, ClientRegisterActivity.SOURCE_CREATE);
                 startActivity(intent);
             }
         });

@@ -63,6 +63,9 @@ public class Endpoints {
         @POST("save-patients")
         Call<Patient> postPatient(@Header("From") String serviceProviderUUID , @Body RequestBody p);
 
+        @POST("update-patients")
+        Call<Patient> updatePatient(@Header("From") String serviceProviderUUID , @Body RequestBody p);
+
         @POST("save-tb-patient")
         Call<Void> postTbPatient(@Header("From") String serviceProviderUUID, @Body RequestBody tp);
 

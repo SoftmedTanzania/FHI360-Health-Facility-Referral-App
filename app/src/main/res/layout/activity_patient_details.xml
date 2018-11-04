@@ -60,12 +60,22 @@
                                         android:id="@+id/heading"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="32dp"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_alignStart="@+id/client_name"
                                         android:layout_marginTop="16dp"
-                                        android:fontFamily="@font/roboto_bold"
+                                        android:fontFamily="@font/google_sans_bold"
                                         android:text="@string/client_inforamtion"
-                                        android:textColor="@color/black"
+                                        android:textColor="@color/card_title_text"
                                         android:textSize="42sp" />
+
+                                    <ImageView
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:id="@+id/edit_user"
+                                        android:layout_centerVertical="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_marginRight="32dp"
+                                        android:src="@mipmap/ic_edit"/>
 
                                     <View
                                         android:id="@+id/strip_one"

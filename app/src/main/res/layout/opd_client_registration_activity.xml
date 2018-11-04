@@ -85,65 +85,32 @@
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="100dp"
                                     android:background="@color/card_separator_third">
 
                                     <TextView
-                                        android:id="@+id/client_name"
+                                        android:id="@+id/title"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="32dp"
                                         android:layout_marginTop="16dp"
-                                        android:fontFamily="@font/avenir_light"
+                                        android:fontFamily="@font/google_sans_bold"
                                         android:text="@string/new_client_registration_form"
-                                        android:textColor="@color/black"
-                                        android:textSize="42sp" />
-
-                                    <TextView
-                                        android:id="@+id/cbhs_number_title"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@id/client_name"
-                                        android:layout_marginLeft="32dp"
-                                        android:layout_marginTop="16dp"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:text="CBHS #"
                                         android:textColor="@color/card_title_text"
-                                        android:textSize="14sp"
-                                        android:visibility="invisible" />
-
-                                    <TextView
-                                        android:id="@+id/cbhs_number_value"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@id/client_name"
-                                        android:layout_marginLeft="16dp"
-                                        android:layout_marginTop="16dp"
-                                        android:layout_toRightOf="@+id/cbhs_number_title"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:text="0001/0001/000001"
-                                        android:textColor="@color/card_title_text"
-                                        android:textSize="14sp"
-                                        android:visibility="invisible" />
+                                        android:textSize="34sp" />
 
                                 </RelativeLayout>
 
-                                <RelativeLayout
+                                <TextView
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="32dp"
-                                    android:background="@color/card_separator_third">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/roboto_bold"
-                                        android:text="@string/initial_information"
-                                        android:textColor="@color/card_grid_text" />
-
-
-                                </RelativeLayout>
+                                    android:layout_height="50dp"
+                                    android:fontFamily="@font/google_sans_bold"
+                                    android:text="@string/initial_information"
+                                    android:textColor="@color/card_grid_text"
+                                    android:paddingLeft="32dp"
+                                    android:gravity="center_vertical"
+                                    android:background="@color/card_separator_third"/>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -168,7 +135,7 @@
                                             android:layout_marginLeft="4dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_weight="1"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/first_name"
                                             android:imeOptions="actionNext"
                                             android:inputType="textCapWords"
@@ -188,7 +155,7 @@
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_weight="1"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/middle_name"
                                             android:imeOptions="actionNext"
                                             android:inputType="textCapWords"
@@ -210,7 +177,7 @@
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="4dp"
                                             android:layout_weight="1"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/surname"
                                             android:imeOptions="actionDone"
                                             android:inputType="textCapWords"
@@ -240,7 +207,7 @@
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="4dp"
                                             android:layout_weight="1"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/ctc_number"
                                             android:inputType="numberDecimal"
                                             android:textColor="@color/card_title_text"
@@ -258,7 +225,7 @@
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_weight="1"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="CBHS"
                                             android:inputType="numberDecimal"
                                             android:textColor="@color/card_title_text"
@@ -280,7 +247,7 @@
                                             android:layout_marginRight="4dp"
                                             android:layout_weight="1"
                                             android:drawableRight="@mipmap/ic_phone"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/phone_number"
                                             android:inputType="phone"
                                             android:digits="0123456789+"
@@ -336,42 +303,45 @@
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="4dp"
                                             android:layout_weight="1"
+                                            android:drawablePadding="16dp"
                                             android:drawableRight="@mipmap/ic_date"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:gravity="center_vertical"
                                             android:hint="@string/date_of_birth"
-                                            android:paddingLeft="8dp"
-                                            android:textColor="@color/card_separator"
+                                            android:paddingLeft="16dp"
+                                            android:textColor="@color/card_grid_text"
                                             android:textColorHint="@color/card_grid_tex"
-                                            android:textSize="14sp" />
+                                            android:textSize="16sp" />
 
                                         <RelativeLayout
                                             android:id="@+id/pregnant_wrap"
                                             android:layout_width="0dp"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="bottom"
+                                            android:gravity="center"
                                             android:layout_marginLeft="8dp"
                                             android:layout_weight="1">
 
                                             <TextView
-                                                android:id="@+id/blood_cough_title"
+                                                android:id="@+id/pregnancy_title"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:layout_marginLeft="8dp"
+                                                android:layout_marginLeft="16dp"
                                                 android:enabled="false"
-                                                android:fontFamily="@font/roboto_bold"
+                                                android:layout_alignParentLeft="true"
+                                                android:fontFamily="@font/google_sans_regular"
                                                 android:text="@string/pregnant"
-                                                android:textColor="@color/card_separator"
-                                                android:textSize="14sp" />
+                                                android:textColor="@color/card_grid_text"
+                                                android:textSize="16sp" />
 
                                             <CheckBox
                                                 android:id="@+id/is_pregnant"
-                                                android:layout_width="35dp"
-                                                android:layout_height="35dp"
-                                                android:layout_alignParentRight="true"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginRight="16dp"
+                                                android:layout_width="40dp"
+                                                android:layout_height="40dp"
+                                                android:layout_alignParentEnd="true"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_marginEnd="27dp"
                                                 android:background="@drawable/checkbox"
                                                 android:checked="false" />
 
@@ -385,7 +355,7 @@
                                             android:layout_marginLeft="4dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_weight="1"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/weight"
                                             android:inputType="numberDecimal"
                                             android:textColor="@color/card_title_text"
@@ -427,7 +397,7 @@
                                             android:id="@+id/msaidizi_title"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_condensed"
+                                            android:fontFamily="@font/google_sans_bold"
                                             android:text="@string/supporter_information"
                                             android:textColor="@color/card_title_text"
                                             android:textSize="14sp" />
@@ -440,7 +410,7 @@
                                             android:layout_marginLeft="4dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_marginTop="8dp"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/supporters_name"
                                             android:inputType="textCapWords"
                                             android:textColor="@color/card_title_text"
@@ -466,7 +436,7 @@
                                                 android:layout_marginLeft="4dp"
                                                 android:layout_marginRight="8dp"
                                                 android:layout_weight="1"
-                                                android:fontFamily="@font/roboto_bold"
+                                                android:fontFamily="@font/google_sans_regular"
                                                 android:hint="@string/phone_number"
                                                 android:inputType="phone"
                                                 android:textColor="@color/card_title_text"
@@ -484,7 +454,7 @@
                                                 android:layout_marginLeft="4dp"
                                                 android:layout_marginRight="8dp"
                                                 android:layout_weight="1"
-                                                android:fontFamily="@font/roboto_bold"
+                                                android:fontFamily="@font/google_sans_regular"
                                                 android:hint="@string/relationship"
                                                 android:inputType="textCapWords"
                                                 android:textColor="@color/card_title_text"
@@ -519,7 +489,7 @@
                                             android:id="@+id/other_details_title"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_condensed"
+                                            android:fontFamily="@font/google_sans_bold"
                                             android:text="@string/other_details"
                                             android:textColor="@color/card_title_text"
                                             android:textSize="14sp" />
@@ -540,7 +510,7 @@
                                                 android:layout_marginLeft="4dp"
                                                 android:layout_marginRight="8dp"
                                                 android:layout_weight="1"
-                                                android:fontFamily="@font/roboto_bold"
+                                                android:fontFamily="@font/google_sans_regular"
                                                 android:hint="@string/ward"
                                                 android:textColor="@color/card_title_text"
                                                 android:textColorHint="@color/card_separator"
@@ -558,7 +528,7 @@
                                                 android:layout_marginLeft="4dp"
                                                 android:layout_marginRight="8dp"
                                                 android:layout_weight="1"
-                                                android:fontFamily="@font/roboto_bold"
+                                                android:fontFamily="@font/google_sans_regular"
                                                 android:hint="@string/village"
                                                 android:textColor="@color/card_title_text"
                                                 android:textColorHint="@color/card_separator"
@@ -577,7 +547,7 @@
                                             android:layout_below="@id/location_wrap"
                                             android:layout_marginLeft="4dp"
                                             android:layout_marginTop="8dp"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/where_they_stay"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
@@ -595,7 +565,7 @@
                                             android:layout_marginLeft="4dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_marginTop="8dp"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/veo"
                                             android:inputType="textCapWords"
                                             android:textColor="@color/card_title_text"

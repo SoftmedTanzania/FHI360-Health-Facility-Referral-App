@@ -33,7 +33,7 @@ public class PatientsListViewModel extends AndroidViewModel{
         tbPatientsOnly = appDatabase.patientModel().getTbPatients(true);
         hivPatientsOnly = appDatabase.patientModel().getHivClients(true);
 
-        tbPatients = appDatabase.tbPatientModelDao().getAllTbPatients();
+        tbPatients = appDatabase.tbPatientModelDao().getAllTbPatientsOnTreatment();
 
     }
 

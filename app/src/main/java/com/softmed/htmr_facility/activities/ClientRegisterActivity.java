@@ -1,6 +1,7 @@
 package com.softmed.htmr_facility.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
+import com.google.gson.Gson;
 import com.rey.material.widget.EditText;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.api.Endpoints;
@@ -56,6 +58,8 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 public class ClientRegisterActivity extends BaseActivity {
 
     private final String TAG = "ClientRegisterActivity";
+    public static final String ORIGIN = "origin";
+    public static final String CURRENT_PATIENT = "current_patient";
 
     private Toolbar toolbar;
     private MaterialSpinner genderSpinner;
@@ -75,7 +79,12 @@ public class ClientRegisterActivity extends BaseActivity {
     private Calendar dobCalendar;
     private int phoneNumberCounter =  0;
 
+    public static final int SOURCE_UPDATE = 1;
+    public static final int SOURCE_CREATE = 0;
+    private int activityAction;
+
     private Endpoints.PatientServices patientServices;
+    private Patient currentPatient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,13 +92,31 @@ public class ClientRegisterActivity extends BaseActivity {
         setContentView(R.layout.opd_client_registration_activity);
         setupview();
 
-        if (getIntent().getExtras() != null){
-            isTbClient = getIntent().getBooleanExtra("isTbClient", false);
-        }
+        //Initialization of Data
+        dobCalendar = Calendar.getInstance();
 
         if (toolbar!=null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (getIntent().getExtras() != null){
+            isTbClient = getIntent().getBooleanExtra("isTbClient", false);
+            activityAction = getIntent().getIntExtra(ORIGIN, SOURCE_CREATE);
+            currentPatient = (Patient) getIntent().getSerializableExtra(CURRENT_PATIENT);
+        }
+
+        if (activityAction == SOURCE_UPDATE){
+            saveButtonText.setText(getResources().getString(R.string.btn_update));
+            //Display user details and allow editing
+            if (currentPatient != null){
+                //Patient Exist display patient informations
+                displayPatientDetails(currentPatient);
+            }else {
+                //..Error Patient Object null
+            }
+        }else if (activityAction == SOURCE_CREATE){
+            saveButtonText.setText(getResources().getString(R.string.btn_save));
         }
 
         dialog = new ProgressDialog(ClientRegisterActivity.this, 0);
@@ -147,7 +174,6 @@ public class ClientRegisterActivity extends BaseActivity {
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
                         dateOfBirth.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
-                        dobCalendar = Calendar.getInstance();
                         dobCalendar.set(year, monthOfYear, dayOfMonth);
                         dob = dobCalendar.getTime();
                     }
@@ -177,15 +203,29 @@ public class ClientRegisterActivity extends BaseActivity {
             public void onClick(View view) {
                 saveButtonText.setVisibility(View.GONE);
                 circularProgressView.setVisibility(View.VISIBLE);
-                if (getInputs()){
-                    saveData();
-                }else {
-                    saveButtonText.setVisibility(View.VISIBLE);
-                    circularProgressView.setVisibility(View.GONE);
-                    Toast.makeText(ClientRegisterActivity.this,
-                            "Weka taarifa zote kabla ya kuhifadhi taarifa",
-                            Toast.LENGTH_LONG).show();
+
+                if (activityAction == SOURCE_CREATE){
+                    if (getInputs()){
+                        saveData();
+                    }else {
+                        saveButtonText.setVisibility(View.VISIBLE);
+                        circularProgressView.setVisibility(View.GONE);
+                        Toast.makeText(ClientRegisterActivity.this,
+                                "Weka taarifa zote kabla ya kuhifadhi taarifa",
+                                Toast.LENGTH_LONG).show();
+                    }
+                }else if (activityAction == SOURCE_UPDATE){
+                    if (getInputs()){
+                        updateData(currentPatient);
+                    }else {
+                        saveButtonText.setVisibility(View.VISIBLE);
+                        circularProgressView.setVisibility(View.GONE);
+                        Toast.makeText(ClientRegisterActivity.this,
+                                "Weka taarifa zote kabla ya kuhifadhi taarifa",
+                                Toast.LENGTH_LONG).show();
+                    }
                 }
+
             }
         });
 
@@ -196,6 +236,34 @@ public class ClientRegisterActivity extends BaseActivity {
             }
         });
 
+
+    }
+
+    private void displayPatientDetails(Patient patient){
+
+        firstName.setText(patient.getPatientFirstName());
+        middleName.setText(patient.getPatientMiddleName());
+        surname.setText(patient.getPatientSurname());
+        phone.setText(patient.getPhone_number());
+        ward.setText(patient.getWard());
+        village.setText(patient.getVillage());
+        hamlet.setText(patient.getHamlet());
+        careTakerName.setText(patient.getCareTakerName());
+        careTakerPhone.setText(patient.getCareTakerPhoneNumber());
+        careTakerRelationship.setText(patient.getCareTakerRelationship());
+        chbsNumber.setText(patient.getCbhs());
+        ctcNumber.setText(patient.getCtcNumber());
+
+        dobCalendar.setTimeInMillis(patient.getDateOfBirth());
+        dateOfBirth.setText(simpleDateFormat.format(dobCalendar.getTime()));
+
+        Log.d(TAG, "displayPatientDetails: Patient Gender -> "+patient.getGender());
+
+        if (patient.getGender().equals(MALE)){
+            genderSpinner.setSelection(1);
+        }else if (patient.getGender().equals(FEMALE)){
+            genderSpinner.setSelection(2);
+        }
 
     }
 
@@ -276,6 +344,27 @@ public class ClientRegisterActivity extends BaseActivity {
 
     }
 
+    private void updateData(Patient patient){
+
+        patient.setGender(strGender);
+        patient.setHamlet(strHamlet);
+        patient.setVillage(strVillage);
+        patient.setWard(strWard);
+        patient.setPhone_number(strPhone);
+        patient.setPatientFirstName(strFname);
+        patient.setPatientMiddleName(strMname);
+        patient.setPatientSurname(strSurname);
+        patient.setDateOfBirth(dobCalendar.getTimeInMillis());
+        patient.setCareTakerName(strCareTakerName);
+        patient.setCareTakerPhoneNumber(strCareTakerPhone);
+        patient.setCareTakerRelationship(strCareTakerRelationship);
+        patient.setCbhs(strCbhsNumber);
+        patient.setCtcNumber(strCTCNumber);
+
+        updatePatientEndpointCall(patient);
+
+    }
+
     private void setupview(){
 
         circularProgressView =  findViewById(R.id.progress_view);
@@ -324,7 +413,6 @@ public class ClientRegisterActivity extends BaseActivity {
                 //Store Received Patient Information, TbPatient as well as PatientAppointments
                 if (response.body() != null){
                     Patient patient = (Patient) response.body();
-                    Log.d(TAG, patient.getPatientFirstName());
                     new AsyncTask<Patient, Void, Void>(){
                         Patient p;
                         @Override
@@ -358,6 +446,60 @@ public class ClientRegisterActivity extends BaseActivity {
                 //If saving patient to server has failed store patient to postman and proceed
                 savePatientToPostOffice _savePatientToPostOffice = new savePatientToPostOffice(baseDatabase);
                 _savePatientToPostOffice.execute(_patient);
+            }
+        });
+
+    }
+
+    private void updatePatientEndpointCall(Patient patient){
+        /*
+        Call Server to update current patient details
+        If no internet store data locally and add details to post office
+         */
+        Call<Patient> updatePatient = patientServices.updatePatient(session.getServiceProviderUUID(), getPatientRequestBody(patient, session.getKeyHfid()));
+        updatePatient.enqueue(new Callback<Patient>() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call<Patient> call, Response<Patient> response) {
+                if (response != null){
+                    if (response.body() != null){
+
+                        Patient updatedPatient = response.body();
+
+                        Log.d(TAG, "onResponse: "+new Gson().toJson(updatedPatient));
+
+                        new AsyncTask<Void, Void, Void>(){
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                baseDatabase.patientModel().updatePatient(updatedPatient);
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+                                patientSummary(updatedPatient);
+                            }
+                        }.execute();
+
+                    }else {
+                        //Send to postoffice
+
+                        Log.d(TAG, "onResponse: Failed, body Null");
+
+                        savePatientToPostOffice savePatientToPostOffice = new savePatientToPostOffice(baseDatabase);
+                        savePatientToPostOffice.execute(patient);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Patient> call, Throwable t) {
+
+                Log.d(TAG, "onFailure: Message : "+t.getMessage());
+
+                savePatientToPostOffice savePatientToPostOffice = new savePatientToPostOffice(baseDatabase);
+                savePatientToPostOffice.execute(patient);
             }
         });
 

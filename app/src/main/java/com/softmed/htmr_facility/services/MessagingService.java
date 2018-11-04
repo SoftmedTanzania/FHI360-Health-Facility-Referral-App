@@ -118,6 +118,12 @@ public class MessagingService extends FirebaseMessagingService {
                 referral = gson.fromJson(referralDTOS.toString(), Referral.class);
                 database.referalModel().addReferal(referral);
                 Log.d("handleNotification", "added Referral Feedback");
+            }else if (type.equals("PatientUpdate")){
+                //Received a patient updated data
+                triggerNotification("Patient Data Updated");
+                JSONObject patientDTOS = new JSONObject(json.toString());
+                patient = gson.fromJson(patientDTOS.toString(), Patient.class);
+                database.patientModel().addPatient(patient);
             }
 
         }catch (Exception e){

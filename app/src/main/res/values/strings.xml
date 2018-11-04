@@ -37,6 +37,7 @@
     <string name="btn_forward_referral">Forward Referral</string>
     <string name="btn_save">Save</string>
     <string name="btn_send">Send</string>
+    <string name="btn_update">Update</string>
     <string name="client_last_name">Last Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="click_to_sync_entries">Click to sync Entries</string>

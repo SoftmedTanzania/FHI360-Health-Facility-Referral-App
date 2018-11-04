@@ -209,7 +209,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         });
 
-        final String[] matokeo = {MATOKEO_AMEPONA, MATOKEO_AMEMALIZA_TIBA, MATOKEO_AMEFARIKI, MATOKEO_AMETOROKA, MATOKEO_AMEHAMA, MATOKEO_HAKUPONA};
+        final String[] matokeo = {MATOKEO_AMEPONA, MATOKEO_AMEMALIZA_TIBA, MATOKEO_AMEFARIKI, MATOKEO_AMEHAMA, MATOKEO_HAKUPONA};
         ArrayAdapter<String> matokepSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, matokeo);
         matokepSpinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         matokeoSpinner.setAdapter(matokepSpinnerAdapter);
@@ -345,16 +345,41 @@ public class TbClientDetailsActivity extends BaseActivity {
                         //Update appointment corresponding to this encounter
                         updateAppointment(currentPatientEncounter);
 
-                        if (currentPatientEncounter.getEncounterNumber() > 6){
+                        if (finishedTreatmentToggle.isChecked()){
                             //Save Treatment Results;
                             activityCanExit = false;
                             if (saveResults()){
-                                Log.d("Billions", "Saving tb patient for outcome");
-                                new SaveTbPatientTask(baseDatabase).execute(currentTbPatient);
+                                activityCanExit = true;
+                                new AsyncTask<Void, Void, Void>(){
+                                    @Override
+                                    protected Void doInBackground(Void... voids) {
+                                        currentPatient.setCurrentOnTbTreatment(false);
+
+                                        baseDatabase.patientModel().updatePatient(currentPatient);
+
+                                        PostOffice postOffice = new PostOffice();
+                                        postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+                                        postOffice.setPost_id(currentPatient.getPatientId());
+                                        postOffice.setPost_data_type(POST_DATA_TYPE_PATIENT);
+
+                                        baseDatabase.postOfficeModelDao().addPostEntry(postOffice);
+
+                                        return null;
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Void aVoid) {
+                                        super.onPostExecute(aVoid);
+
+                                        new SaveTbPatientTask(baseDatabase).execute(currentTbPatient);
+
+                                    }
+                                }.execute();
                             }
                         }else {
                             activityCanExit = true;
                         }
+
                         new SaveEncounters(baseDatabase).execute(currentPatientEncounter);
                     }
                 }
@@ -380,16 +405,41 @@ public class TbClientDetailsActivity extends BaseActivity {
                 }));
                 alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
 
-                    //1: End the current Tb Patient's treatment
-//                  currentTbPatient.setStatus(2);
+                    /*
+                    TREATMENT STATUS
+                    1 -> On going treatment
+                    0 -> Cancelled treatment
+                     */
+                    currentTbPatient.setTreatmentStatus(0);
 
-                    //2: Restart this activity to create a new Tb Client
-                    Intent intent = new Intent(TbClientDetailsActivity.this, TbClientDetailsActivity.class);
-                    intent.putExtra(ORIGIN_STATUS, RESTARTING_TREATMENT);
-                    intent.putExtra(CURRENT_PATIENT, currentPatient);
-                    startActivity(intent);
-                    TbClientDetailsActivity.this.finish();
+                    new AsyncTask<Void, Void, Void>(){
+                        @Override
+                        protected Void doInBackground(Void... voids) {
 
+                            baseDatabase.tbPatientModelDao().updateTbPatient(currentTbPatient);
+
+                            PostOffice postOffice = new PostOffice();
+                            postOffice.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
+                            postOffice.setPost_id(String.valueOf(currentTbPatient.getTbPatientId()));
+                            postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+                            //Storing data to post office ready to be saved to the server
+                            baseDatabase.postOfficeModelDao().addPostEntry(postOffice);
+
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            //2: Restart this activity to create a new Tb Client
+                            Intent intent = new Intent(TbClientDetailsActivity.this, TbClientDetailsActivity.class);
+                            intent.putExtra(ORIGIN_STATUS, RESTARTING_TREATMENT);
+                            intent.putExtra(CURRENT_PATIENT, currentPatient);
+                            startActivity(intent);
+                            TbClientDetailsActivity.this.finish();
+                        }
+                    }.execute();
 
                 }));
                 alert.show(TbClientDetailsActivity.this);
@@ -652,7 +702,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             monthlyWeight = monthlyPatientWeightEt.getText().toString();
         }
 
-        tbEncounter.setTbPatientID(currentTbPatient.getHealthFacilityPatientId()); //TODO:Revisit | Needs to get encounter based on TbPatientId which is assigned on the server
+        tbEncounter.setTbPatientID(currentTbPatient.getTbPatientId());
         tbEncounter.setEncounterNumber(encounterNumber);
 
         int encounterYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -688,7 +738,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         Calendar calendar = Calendar.getInstance();
         long today = calendar.getTimeInMillis();
 
-        tbEncounter.setId(currentPatient.getPatientId()+"_"+encounterNumber);
+        tbEncounter.setId(currentTbPatient.getTbPatientId()+"_"+encounterNumber);
         currentPatientEncounter = tbEncounter;
         return true;
     }
@@ -726,6 +776,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
         currentTbPatient.setOutcome(resultsStr);
         currentTbPatient.setOutcomeDate(outcomeDate);
+        currentTbPatient.setTreatmentStatus(2);
         currentTbPatient.setOutcomeDetails(outcomeDetailsStr);
 
         return true;
@@ -864,7 +915,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
 
             //Check if the encounterNumber is greater than 6 then start showing the medications results view
-            if (encounterNumber > 7){
+            if (encounterNumber >= 6){
                 finishedTreatmentToggle.setVisibility(View.VISIBLE);
                 finishedTreatmentTitle.setVisibility(View.VISIBLE);
             }else {
@@ -918,7 +969,7 @@ public class TbClientDetailsActivity extends BaseActivity {
         @Override
         protected TbPatient doInBackground(String... strings) {
 
-            TbPatient patient = database.tbPatientModelDao().getTbPatientById(strings[0]);
+            TbPatient patient = database.tbPatientModelDao().getTbPatientCurrentOnTreatment(strings[0]);
             currentTbPatient = patient;
 
             return patient;
@@ -930,7 +981,7 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             if (tbPatient != null){
 
-                new GetPreviousEncounters().execute(tbPatient.getHealthFacilityPatientId()); //TODO:Revisit
+                new GetPreviousEncounters().execute(tbPatient.getTbPatientId());
 
 
                 int testType = tbPatient.getTestType();
@@ -1065,7 +1116,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             mEncMonth = currentEncounter.getEncounterNumber();
             boolean previousMonthStatus = currentEncounter.isHasFinishedPreviousMonthMedication(); //Previous month status entered this month
 
-            List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousEncounter, currentTbPatient.getHealthFacilityPatientId());
+            List<TbEncounters> encounters1 = database.tbEncounterModelDao().getMonthEncounter(previousEncounter, currentTbPatient.getTbPatientId());
 
             if (encounters1.size() > 0){
                 encounters1.get(0).setMedicationStatus(previousMonthStatus);
@@ -1194,6 +1245,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             tbPatient.setTbPatientId(new Random().nextLong());
             tbPatient.setHealthFacilityPatientId(Long.parseLong(patient.getPatientId()));
             tbPatient.setTempID(UUID.randomUUID()+"");
+            tbPatient.setTreatmentStatus(1);
             database.tbPatientModelDao().addPatient(tbPatient);
             currentTbPatient = tbPatient;
 

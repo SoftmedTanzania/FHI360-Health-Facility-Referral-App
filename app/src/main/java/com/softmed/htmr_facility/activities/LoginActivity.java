@@ -538,12 +538,12 @@ public class LoginActivity extends BaseActivity {
                 TbPatient tbPatient = _responce.getTbPatient();
                 Log.d("msosi", "Inserting tb patient : "+tbPatient.getHealthFacilityPatientId());
                 Log.d("msosi", "Sputum Weight : "+tbPatient.getMakohozi());
+                tbPatient.setTreatmentStatus(1); //TODO Remove
                 baseDatabase.tbPatientModelDao().addPatient(tbPatient);
 
 
                 List<TbEncounters> listOfEncounters = _responce.getTbEncounters();
                 for (TbEncounters encounter : listOfEncounters){
-                    //TODO: Add TB Encounters
                     baseDatabase.tbEncounterModelDao().addEncounter(encounter);
                 }
 

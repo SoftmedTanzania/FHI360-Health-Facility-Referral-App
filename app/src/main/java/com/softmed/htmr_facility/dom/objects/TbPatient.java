@@ -84,6 +84,14 @@ public class TbPatient implements Serializable{
     @SerializedName("isPregnant")
     private boolean isPregnant;
 
+    /***
+     *  1 -> Ongoing
+     *  0 -> Cancelled
+     *  3 -> Finished?
+     */
+    @SerializedName("treatmentStatus")
+    private int treatmentStatus;
+
     public String getTempID() {
         return tempID;
     }
@@ -228,4 +236,11 @@ public class TbPatient implements Serializable{
         isPregnant = pregnant;
     }
 
+    public int getTreatmentStatus() {
+        return treatmentStatus;
+    }
+
+    public void setTreatmentStatus(int treatmentStatus) {
+        this.treatmentStatus = treatmentStatus;
+    }
 }
