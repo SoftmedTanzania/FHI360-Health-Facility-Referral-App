@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
-import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.responces.EncounterResponse;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
@@ -16,7 +16,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -71,6 +70,9 @@ public class Endpoints {
 
         @POST("save-tb-encounters")
         Call<EncounterResponse> postEncounter(@Header("From") String serviceProviderUUID, @Body RequestBody e);
+
+        @POST("save-first-appointment")
+        Call<PatientAppointment> saveFirstAppointment(@Body RequestBody a);
 
     }
 

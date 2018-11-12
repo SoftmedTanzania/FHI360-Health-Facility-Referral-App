@@ -70,12 +70,11 @@ public class LoginActivity extends BaseActivity {
 
     private EditText usernameEt;
     private EditText passwordEt;
-    private Button loginButton;
-    private TextView loginMessages;
+    private TextView loginMessages, loginText;
     private ProgressView loginProgress;
     private ImageView loginBgImage, background;
     private ImageView tanzaniaLogo, usaidLogo, fhiLogo, deloitteLogo;
-    private RelativeLayout credentialCard;
+    private RelativeLayout credentialCard, loginButton;
     private MaterialSpinner languageSpinner;
 
     private String usernameValue, passwordValue;
@@ -289,7 +288,7 @@ public class LoginActivity extends BaseActivity {
             }.execute();
 
         }else{
-            loginButton.setText(getResources().getString(R.string.loading_data));
+            loginText.setText(getResources().getString(R.string.loading_data));
             loginMessages.setVisibility(View.VISIBLE);
             loginMessages.setText(getResources().getString(R.string.loging_in));
 
@@ -365,7 +364,7 @@ public class LoginActivity extends BaseActivity {
                         loginMessages.setText(getResources().getString(R.string.error_logging_in));
                         loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
                         loginProgress.setVisibility(View.GONE);
-                        loginButton.setText(getResources().getString(R.string.login));
+                        loginText.setText(getResources().getString(R.string.login));
                     }
                 }
 
@@ -698,30 +697,32 @@ public class LoginActivity extends BaseActivity {
 
     private void setupview(){
 
-        languageSpinner = (MaterialSpinner) findViewById(R.id.spin_language);
+        loginText = findViewById(R.id.login_text);
 
-        credentialCard = (RelativeLayout) findViewById(R.id.credential_card);
+        languageSpinner =  findViewById(R.id.spin_language);
+
+        credentialCard =  findViewById(R.id.credential_card);
         credentialCard.setBackground(new LargeDiagonalCutPathDrawable(50));
 
-        tanzaniaLogo = (ImageView) findViewById(R.id.tanzania_logo);
+        tanzaniaLogo =  findViewById(R.id.tanzania_logo);
 
-        usaidLogo = (ImageView) findViewById(R.id.usaid_logo);
-        fhiLogo = (ImageView) findViewById(R.id.fhi_logo);
-        deloitteLogo = (ImageView) findViewById(R.id.deloitte_logo);
+        usaidLogo =  findViewById(R.id.usaid_logo);
+        fhiLogo =  findViewById(R.id.fhi_logo);
+        deloitteLogo =  findViewById(R.id.deloitte_logo);
 
-        background = (ImageView) findViewById(R.id.background);
+        background =  findViewById(R.id.background);
         Glide.with(this).load(R.drawable.bg2).into(background);
 
-        loginMessages = (TextView) findViewById(R.id.login_messages);
+        loginMessages =  findViewById(R.id.login_messages);
         loginMessages.setVisibility(View.GONE);
 
-        loginProgress = (ProgressView) findViewById(R.id.login_progress);
+        loginProgress =  findViewById(R.id.login_progress);
         loginProgress.setVisibility(View.GONE);
 
-        loginButton = (Button) findViewById(R.id.login_button);
+        loginButton = findViewById(R.id.login_button);
 
-        usernameEt = (EditText) findViewById(R.id.user_username_et);
-        passwordEt = (EditText) findViewById(R.id.password_et);
+        usernameEt =  findViewById(R.id.user_username_et);
+        passwordEt =  findViewById(R.id.password_et);
     }
 
     private boolean isNetworkAvailable() {

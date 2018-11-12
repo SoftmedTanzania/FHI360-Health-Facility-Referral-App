@@ -110,6 +110,13 @@
 
         <!-- ###################################################################################     Services-->
 
+        <service android:name=".services.DataSyncJob"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
         <service
             android:name="com.softmed.htmr_facility.services.FirebaseInstanseIdService">
             <intent-filter>

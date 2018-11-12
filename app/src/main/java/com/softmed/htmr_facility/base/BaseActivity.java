@@ -41,6 +41,8 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private static final String TAG = "BaseActivity";
+
     public static Typeface  Avenir_Light;
 
     public static final String LOCALE_KEY = "localekey";
@@ -121,6 +123,19 @@ public class BaseActivity extends AppCompatActivity {
 
     public static String getLocaleString(){
         return localeString;
+    }
+
+    public static RequestBody getObjectRequestBody(Object object){
+        RequestBody body;
+        String datastream = "";
+
+        datastream = new Gson().toJson(object);
+
+        Log.d(TAG, "getObjectRequestBody: Request Body is : "+datastream);
+
+        body = RequestBody.create(MediaType.parse("application/json"), datastream);
+
+        return body;
     }
 
     public static RequestBody getReferralFeedbackRequestBody(Referral referral, UserData userData){
@@ -304,7 +319,8 @@ public class BaseActivity extends AppCompatActivity {
         JSONObject object   = new JSONObject();
 
         try {
-            object.put("patientId", patient.getPatientId());
+            object.put("tbPatientId", tbPatient.getTbPatientId());
+            object.put("healthFacilityPatientId", patient.getPatientId());
             object.put("firstName", patient.getPatientFirstName());
             object.put("middleName", patient.getPatientMiddleName());
             object.put("phoneNumber", patient.getPhone_number());
@@ -317,7 +333,6 @@ public class BaseActivity extends AppCompatActivity {
             object.put("hivStatus", patient.isHivStatus());
             object.put("isPRegnant", false);
             object.put("dateOfDeath", patient.getDateOfDeath());
-            object.put("healthFacilityPatientId", 0);
             object.put("patientType", tbPatient.getPatientType());
             object.put("transferType", tbPatient.getTransferType());
             object.put("referralType", tbPatient.getReferralType());

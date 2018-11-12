@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.rey.material.widget.EditText;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.api.Endpoints;
+import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -38,6 +39,7 @@ import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import fr.ganfra.materialspinner.MaterialSpinner;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +48,7 @@ import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.FEMALE;
 import static com.softmed.htmr_facility.utils.constants.MALE;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_APPOINTMENTS;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 
 /**
@@ -428,6 +431,7 @@ public class ClientRegisterActivity extends BaseActivity {
                         @Override
                         protected void onPostExecute(Void aVoid) {
                             super.onPostExecute(aVoid);
+                            saveFirstAppointment(p);
                             patientSummary(p);
                         }
                     }.execute(patient);
@@ -465,6 +469,7 @@ public class ClientRegisterActivity extends BaseActivity {
                     if (response.body() != null){
 
                         Patient updatedPatient = response.body();
+                        updatedPatient.setPatientId(patient.getPatientId());
 
                         Log.d(TAG, "onResponse: "+new Gson().toJson(updatedPatient));
 
@@ -505,6 +510,75 @@ public class ClientRegisterActivity extends BaseActivity {
 
     }
 
+
+    private void saveFirstAppointment(Patient patient){
+
+        RequestBody requestBody = BaseActivity.getObjectRequestBody(getPatientAppointment(patient));
+
+        Call<PatientAppointment> saveFirstAppointment = patientServices.saveFirstAppointment(requestBody);
+
+        saveFirstAppointment.enqueue(new Callback<PatientAppointment>() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call<PatientAppointment> call, Response<PatientAppointment> response) {
+                if (response != null){
+                    if (response.body() != null){
+                        Log.d(TAG, "onResponse: Saved first appointment is  : "+new Gson().toJson(response.body()));
+                        PatientAppointment patientAppointment = response.body();
+
+                        new AsyncTask<Void, Void, Void>(){
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                baseDatabase.appointmentModelDao().addAppointment(patientAppointment);
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+                            }
+                        }.execute();
+
+                    }else {
+                        Log.d(TAG, "onResponse: body is null");
+                    }
+                }else {
+                    Log.d(TAG, "onResponse: Response is null");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PatientAppointment> call, Throwable t) {
+                Log.d(TAG, "onFailure: "+t.getMessage());
+            }
+        });
+
+
+    }
+
+    private PatientAppointment getPatientAppointment(Patient patient){
+
+        PatientAppointment appointment = new PatientAppointment();
+
+        long range = 1234567L;
+        Random r = new Random();
+        long number = (long)(r.nextDouble()*range);
+
+        appointment.setPatientID(patient.getPatientId());
+        appointment.setAppointmentDate(Calendar.getInstance().getTimeInMillis());
+        appointment.setAppointmentID(number);
+        appointment.setAppointmentType(2);
+        appointment.setCancelled(false);
+        appointment.set_cancelled(false);
+        appointment.setStatus(0);
+        appointment.setEncounterNumber(1);
+        appointment.setAppointmentEncounterMonth("");
+
+        Log.d(TAG, "getPatientAppointment: Created appointment is "+new Gson().toJson(appointment));
+
+        return appointment;
+    }
+
     /**
      * This will call the patient details summary screen after the user have been saved successfully
      * @param patient
@@ -536,11 +610,20 @@ public class ClientRegisterActivity extends BaseActivity {
 
             p = args[0];
 
+            //Saving the patient data
             PostOffice po = new PostOffice();
             po.setPost_id(p.getPatientId());
             po.setPost_data_type(POST_DATA_TYPE_PATIENT);
             po.setSyncStatus(ENTRY_NOT_SYNCED);
             database.postOfficeModelDao().addPostEntry(po);
+
+            //Saving the first appointment
+            PatientAppointment appointment = getPatientAppointment(p);
+            PostOffice appointmentPostData = new PostOffice();
+            appointmentPostData.setPost_id(String.valueOf(appointment.getAppointmentID()));
+            appointmentPostData.setPost_data_type(POST_DATA_TYPE_APPOINTMENTS);
+            appointmentPostData.setSyncStatus(ENTRY_NOT_SYNCED);
+            database.postOfficeModelDao().addPostEntry(appointmentPostData);
 
             return null;
         }

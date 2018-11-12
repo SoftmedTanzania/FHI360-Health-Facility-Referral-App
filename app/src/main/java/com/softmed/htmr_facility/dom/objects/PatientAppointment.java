@@ -34,6 +34,10 @@ public class PatientAppointment implements Serializable{
     @TypeConverters(DateConverter.class)
     private long appointmentDate;
 
+    /**
+     * CTC Appointments = 1
+     * TB Appointments = 2
+     */
     @SerializedName("appointmentType")
     private int appointmentType;
 
@@ -41,11 +45,9 @@ public class PatientAppointment implements Serializable{
     private boolean cancelled;
 
     /**
-     *
      *  Status Values
      *  0 - Pending
      *  1  - Attended
-     *
      */
     @SerializedName("status")
     private int status;

@@ -32,6 +32,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -57,6 +63,7 @@ import com.softmed.htmr_facility.fragments.HivFragment;
 import com.softmed.htmr_facility.fragments.LabFragment;
 import com.softmed.htmr_facility.fragments.OPDFragment;
 import com.softmed.htmr_facility.fragments.TbFragment;
+import com.softmed.htmr_facility.services.DataSyncJob;
 import com.softmed.htmr_facility.utils.AlarmReceiver;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
@@ -142,12 +149,15 @@ public class HomeActivity extends BaseActivity {
 
     private RequestManager mRequestManager;
 
+
     Boolean hivTbAdded = false;
     Boolean tbTabAdded = false;
     Boolean opdTabAdded = false;
     Boolean labTabAdded = false;
 
     List<String> indexes = new ArrayList<>();
+
+    private FirebaseJobDispatcher dispatcher;
 
     @SuppressLint("StaticFieldLeak")
     @Override
@@ -156,21 +166,12 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         setupviews();
 
-        //initialize the database
-        database = AppDatabase.getDatabase(this);
+        //Initialization of variables
+        houseInit();
 
-        //Glide context request manager
-        mRequestManager= Glide.with(this);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null){
             setSupportActionBar(toolbar);
         }
-
-        //Create Dummy account
-        mAccount = CreateSyncAccount(this);
-
-        mResolver = getContentResolver();
 
         /*
          * Turning on periodic syncing for the sync adapter
@@ -210,12 +211,10 @@ public class HomeActivity extends BaseActivity {
         }
 
         //initialize viewpager
-        viewPager = (NonSwipeableViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         viewPager.setOffscreenPageLimit(4);
 
         //initialize tablayout
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -224,19 +223,9 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-        //Initialize patient api call services
-        patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
-                session.getUserName(),
-                session.getUserPass(),
-                session.getKeyHfid());
-
-        //Initialize referral api call services
-        referalService = ServiceGenerator.createService(Endpoints.ReferalService.class,
-                session.getUserName(),
-                session.getUserPass(),
-                session.getKeyHfid());
-
         checkPostOfficeData();
+
+        scheduleBackgroundJob();
 
         manualSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,22 +235,33 @@ public class HomeActivity extends BaseActivity {
                     @Override
                     protected Void doInBackground(Void... voids) {
                         Log.d(TAG, "onClick: Manual syncing");
+
                         //new SyncPostOfficeData().execute();
 
                         // Pass the settings flags by inserting them in a bundle
-                        Bundle settingsBundle = new Bundle();
+                        /*Bundle settingsBundle = new Bundle();
                         settingsBundle.putBoolean(
                                 ContentResolver.SYNC_EXTRAS_MANUAL, true);
                         settingsBundle.putBoolean(
                                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                        /*
-                         * Request the sync for the default account, authority, and
-                         * manual sync settings
-                         */
-                        Log.d(TAG, "doInBackground: Just before calling request sync");
                         ContentResolver.requestSync(mAccount, AUTHORITY, Bundle.EMPTY);
-                        Log.d(TAG, "doInBackground: Right after calling request sync");
+                        */
+
+                        //Syncing data using firebase's job Dispatcher
+                        Job myJob = dispatcher.newJobBuilder()
+                                .setService(DataSyncJob.class) // the JobService that will be called
+                                .setTag("10002")        // uniquely identifies the job
+                                .setRecurring(true)
+                                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                                .setTrigger(Trigger.executionWindow(0, 0)) //60 seconds changed to 0 seconds to dispatch the job instantly
+                                .setReplaceCurrent(false)
+                                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                                .build();
+
+                        dispatcher.mustSchedule(myJob);
+
                         return null;
+
                     }
                 }.execute();
             }
@@ -309,6 +309,232 @@ public class HomeActivity extends BaseActivity {
          */
         //scheduleAlarm();
 
+    }
+
+
+    private void houseInit(){
+
+        //initialize the database
+        database = AppDatabase.getDatabase(this);
+
+        //Glide context request manager
+        mRequestManager= Glide.with(this);
+
+        //Create Dummy account
+        mAccount = CreateSyncAccount(this);
+
+        //.. Initialize ContentResolver for SyncAdapter
+        mResolver = getContentResolver();
+
+        //Initializing Firebase Job Dispatcher
+        dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+
+        //Initialize patient api call services
+        patientServices = ServiceGenerator.createService(Endpoints.PatientServices.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
+
+        //Initialize referral api call services
+        referalService = ServiceGenerator.createService(Endpoints.ReferalService.class,
+                session.getUserName(),
+                session.getUserPass(),
+                session.getKeyHfid());
+
+    }
+
+    private void setupviews(){
+
+        currentFacilityName = findViewById(R.id.current_facility_name);
+
+        syncProgressBar =  findViewById(R.id.manual_sync_loader);
+        syncProgressBar.setVisibility(View.INVISIBLE);
+
+        manualSync =  findViewById(R.id.manual_sync);
+
+        toolbarTitle =  findViewById(R.id.toolbar_user_name);
+        unsynced =  findViewById(R.id.unsynced);
+
+        toolbar =  findViewById(R.id.toolbar);
+
+        viewPager =  findViewById(R.id.viewpager);
+
+        tabLayout =  findViewById(R.id.tabs);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.logout){
+            session.logoutUser();
+            finish();
+        }
+
+        if (id == R.id.reports){
+            startActivity(new Intent(this, ReportsActivity.class));
+        }
+
+        if (id == R.id.sync_data){
+            //Sync data from PostOffice
+        }
+
+        if (id == R.id.reminder){
+            //Open Reminder Activity
+            startActivity(new Intent(this, AppointmentActivity.class));
+        }
+
+        return true;
+    }
+
+    //This is a comment
+
+    public void setupTabIcons() {
+
+        for (int i=0; i<indexes.size(); i++){
+            if (indexes.get(i).equals("hiv")){
+                View ctcTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView ctcTabTitle = ctcTabView.findViewById(R.id.title_text);
+                ImageView ctcIcon    = ctcTabView.findViewById(R.id.icon);
+                if (!HomeActivity.this.isFinishing())
+                    Glide.with(this).load(R.mipmap.ic_hiv).into(ctcIcon);
+                ctcTabTitle.setText(getResources().getString(R.string.fragment_hiv));
+                tabLayout.getTabAt(i).setCustomView(ctcTabView);
+            }else if (indexes.get(i).equals("opd")){
+                View opdTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView opdTabTitle = opdTabView.findViewById(R.id.title_text);
+                opdTabTitle.setText(getResources().getString(R.string.fragment_opd));
+                ImageView opdIcon    = opdTabView.findViewById(R.id.icon);
+                opdIcon.setColorFilter(this.getResources().getColor(R.color.white));
+                if (!HomeActivity.this.isFinishing()){
+                    Glide.with(this).load(R.mipmap.ic_face).into(opdIcon);
+                }
+                tabLayout.getTabAt(i).setCustomView(opdTabView);
+            }else if (indexes.get(i).equals("tb")){
+                View tbTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView tbTabTitle = tbTabView.findViewById(R.id.title_text);
+                tbTabTitle.setText(getResources().getString(R.string.fragment_tb));
+                ImageView tbIcon    = tbTabView.findViewById(R.id.icon);
+                if (!HomeActivity.this.isFinishing())
+                    Glide.with(this).load(R.mipmap.ic_tb).into(tbIcon);
+                tabLayout.getTabAt(i).setCustomView(tbTabView);
+            }else if (indexes.get(i).equals("lab")){
+                View labTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+                TextView labTitle = labTabView.findViewById(R.id.title_text);
+                labTitle.setText(getResources().getString(R.string.fragment_lab));
+                ImageView labIcon    = labTabView.findViewById(R.id.icon);
+                labIcon.setColorFilter(this.getResources().getColor(R.color.white));
+                if (!HomeActivity.this.isFinishing())
+                    Glide.with(this).load(R.mipmap.ic_lab).into(labIcon);
+                tabLayout.getTabAt(i).setCustomView(labTabView);
+            }
+        }
+
+    }
+
+    public void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        int tabIndex = 0;
+
+        List<String> userRoles = BaseActivity.getUserRoles();
+        for (String role : userRoles){
+            if (role.equals(USER_ROLE_ADMIN)){
+
+                if (!opdTabAdded){
+                    adapter.addFragment(new OPDFragment(), "opd");
+                    opdTabAdded = true;
+                    indexes.add("opd");
+                }
+
+                if (!hivTbAdded){
+                    adapter.addFragment(new HivFragment(), "hiv");
+                    hivTbAdded = true;
+                    indexes.add("hiv");
+                }
+
+                if (!tbTabAdded){
+                    adapter.addFragment(new TbFragment(), "tb");
+                    tbTabAdded = true;
+                    indexes.add("tb");
+                }
+
+                if (!labTabAdded){
+                    adapter.addFragment(new LabFragment(), "lab");
+                    labTabAdded = true;
+                    indexes.add("lab");
+                }
+
+            }else if (role.equals(USER_ROLE_CTC) && !hivTbAdded){
+                adapter.addFragment(new HivFragment(), "hiv");
+                hivTbAdded = true;
+                indexes.add("hiv");
+            }else if (role.equals(USER_ROLE_OPD) && !opdTabAdded){
+                adapter.addFragment(new OPDFragment(), "opd");
+                opdTabAdded = true;
+                indexes.add("opd");
+            }else if (role.equals(USER_ROLE_TB_CLINIC) && !tbTabAdded){
+                adapter.addFragment(new TbFragment(), "tb");
+                tbTabAdded = true;
+                indexes.add("tb");
+            }else if (role.equals(USER_ROLE_LAB) && !labTabAdded){
+                adapter.addFragment(new LabFragment(), "lab");
+                labTabAdded = true;
+                indexes.add("lab");
+            }
+        }
+
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+//            return mFragmentTitleList.get(position);
+            return null;
+        }
+    }
+
+    private void scheduleBackgroundJob(){
+        Job myJob = dispatcher.newJobBuilder()
+                .setService(DataSyncJob.class) // the JobService that will be called
+                .setTag("10002")        // uniquely identifies the job
+                .setRecurring(true)
+                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                .setTrigger(Trigger.executionWindow(0, 10)) //60 seconds changed to 10 seconds for development purposes
+                .setReplaceCurrent(false)
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                .build();
+
+        dispatcher.mustSchedule(myJob);
     }
 
     private void checkPostOfficeData(){
@@ -576,195 +802,6 @@ public class HomeActivity extends BaseActivity {
             }
 
         }
-    }
-
-    private void setupviews(){
-
-        currentFacilityName = findViewById(R.id.current_facility_name);
-
-        syncProgressBar = (CircularProgressView) findViewById(R.id.manual_sync_loader);
-        syncProgressBar.setVisibility(View.INVISIBLE);
-
-        manualSync = (ImageView) findViewById(R.id.manual_sync);
-
-        toolbarTitle = (TextView) findViewById(R.id.toolbar_user_name);
-        unsynced = (TextView) findViewById(R.id.unsynced);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.logout){
-            session.logoutUser();
-            finish();
-        }
-
-        if (id == R.id.reports){
-            startActivity(new Intent(this, ReportsActivity.class));
-        }
-
-        if (id == R.id.sync_data){
-            //Sync data from PostOffice
-        }
-
-        if (id == R.id.reminder){
-            //Open Reminder Activity
-            startActivity(new Intent(this, AppointmentActivity.class));
-        }
-
-        return true;
-    }
-
-    //This is a comment
-
-    public void setupTabIcons() {
-
-        for (int i=0; i<indexes.size(); i++){
-            if (indexes.get(i).equals("hiv")){
-                View ctcTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-                TextView ctcTabTitle = ctcTabView.findViewById(R.id.title_text);
-                ImageView ctcIcon    = ctcTabView.findViewById(R.id.icon);
-                if (!HomeActivity.this.isFinishing())
-                    Glide.with(this).load(R.mipmap.ic_hiv).into(ctcIcon);
-                ctcTabTitle.setText(getResources().getString(R.string.fragment_hiv));
-                tabLayout.getTabAt(i).setCustomView(ctcTabView);
-            }else if (indexes.get(i).equals("opd")){
-                View opdTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-                TextView opdTabTitle = opdTabView.findViewById(R.id.title_text);
-                opdTabTitle.setText(getResources().getString(R.string.fragment_opd));
-                ImageView opdIcon    = opdTabView.findViewById(R.id.icon);
-                opdIcon.setColorFilter(this.getResources().getColor(R.color.white));
-                if (!HomeActivity.this.isFinishing()){
-                    Glide.with(this).load(R.mipmap.ic_face).into(opdIcon);
-                }
-                tabLayout.getTabAt(i).setCustomView(opdTabView);
-            }else if (indexes.get(i).equals("tb")){
-                View tbTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-                TextView tbTabTitle = tbTabView.findViewById(R.id.title_text);
-                tbTabTitle.setText(getResources().getString(R.string.fragment_tb));
-                ImageView tbIcon    = tbTabView.findViewById(R.id.icon);
-                if (!HomeActivity.this.isFinishing())
-                    Glide.with(this).load(R.mipmap.ic_tb).into(tbIcon);
-                tabLayout.getTabAt(i).setCustomView(tbTabView);
-            }else if (indexes.get(i).equals("lab")){
-                View labTabView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-                TextView labTitle = labTabView.findViewById(R.id.title_text);
-                labTitle.setText(getResources().getString(R.string.fragment_lab));
-                ImageView labIcon    = labTabView.findViewById(R.id.icon);
-                labIcon.setColorFilter(this.getResources().getColor(R.color.white));
-                if (!HomeActivity.this.isFinishing())
-                    Glide.with(this).load(R.mipmap.ic_lab).into(labIcon);
-                tabLayout.getTabAt(i).setCustomView(labTabView);
-            }
-        }
-
-    }
-
-    public void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        int tabIndex = 0;
-
-        List<String> userRoles = BaseActivity.getUserRoles();
-        for (String role : userRoles){
-            if (role.equals(USER_ROLE_ADMIN)){
-
-                if (!opdTabAdded){
-                    adapter.addFragment(new OPDFragment(), "opd");
-                    opdTabAdded = true;
-                    indexes.add("opd");
-                }
-
-                if (!hivTbAdded){
-                    adapter.addFragment(new HivFragment(), "hiv");
-                    hivTbAdded = true;
-                    indexes.add("hiv");
-                }
-
-                if (!tbTabAdded){
-                    adapter.addFragment(new TbFragment(), "tb");
-                    tbTabAdded = true;
-                    indexes.add("tb");
-                }
-
-                if (!labTabAdded){
-                    adapter.addFragment(new LabFragment(), "lab");
-                    labTabAdded = true;
-                    indexes.add("lab");
-                }
-
-            }else if (role.equals(USER_ROLE_CTC) && !hivTbAdded){
-                adapter.addFragment(new HivFragment(), "hiv");
-                hivTbAdded = true;
-                indexes.add("hiv");
-            }else if (role.equals(USER_ROLE_OPD) && !opdTabAdded){
-                adapter.addFragment(new OPDFragment(), "opd");
-                opdTabAdded = true;
-                indexes.add("opd");
-            }else if (role.equals(USER_ROLE_TB_CLINIC) && !tbTabAdded){
-                adapter.addFragment(new TbFragment(), "tb");
-                tbTabAdded = true;
-                indexes.add("tb");
-            }else if (role.equals(USER_ROLE_LAB) && !labTabAdded){
-                adapter.addFragment(new LabFragment(), "lab");
-                labTabAdded = true;
-                indexes.add("lab");
-            }
-        }
-
-        viewPager.setAdapter(adapter);
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-//            return mFragmentTitleList.get(position);
-            return null;
-        }
-    }
-
-    public void scheduleAlarm() {
-        // Construct an intent that will execute the AlarmReceiver
-        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        // Create a PendingIntent to be triggered when the alarm goes off
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, AlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Setup periodic alarm every every half hour from this point onwards
-        long firstMillis = System.currentTimeMillis(); // alarm is set right away
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        // First parameter is the type: ELAPSED_REALTIME, ELAPSED_REALTIME_WAKEUP, RTC_WAKEUP
-        // Interval can be INTERVAL_FIFTEEN_MINUTES, INTERVAL_HALF_HOUR, INTERVAL_HOUR, INTERVAL_DAY
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis,
-                INTERVAL_FIFTEEN_MINUTES, pIntent);
     }
 
     /**

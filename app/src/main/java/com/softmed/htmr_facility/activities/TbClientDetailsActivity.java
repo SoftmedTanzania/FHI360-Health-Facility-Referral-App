@@ -214,7 +214,6 @@ public class TbClientDetailsActivity extends BaseActivity {
         matokepSpinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         matokeoSpinner.setAdapter(matokepSpinnerAdapter);
 
-
         //START HERE ..::.. This will not be needed (Manual encounter selector implementation)
         final String[] encounterMonths = {"1", "2", "3", "4", "5", "6", "7", "8"};
         ArrayAdapter<String> encounterMonthSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, encounterMonths);
@@ -728,11 +727,17 @@ public class TbClientDetailsActivity extends BaseActivity {
         //Check if the selected encounter appointment is not null
         //The @selectedEncounterAppointment value is set when getting the @currentTbPatient object
         if(selectedEncounterAppointment != null){
+
+            Log.d(TAG, "saveEncounters: Selected Encounter has value");
+
             //Set the appointment ID of the encounter based on the selected appointment
             tbEncounter.setAppointmentId(selectedEncounterAppointment.getAppointmentID());
             //Scheduled date is the date of the appointment and medication date is the date of the visit to the clinic
             tbEncounter.setScheduledDate(selectedEncounterAppointment.getAppointmentDate());
+        }else {
+            Log.d(TAG, "saveEncounters: Selected encounter nulll");
         }
+
         tbEncounter.setMedicationDate(Calendar.getInstance().getTimeInMillis());
 
         Calendar calendar = Calendar.getInstance();
@@ -1250,7 +1255,7 @@ public class TbClientDetailsActivity extends BaseActivity {
             currentTbPatient = tbPatient;
 
             PostOffice tbPatientPost = new PostOffice();
-            tbPatientPost.setPost_id(patient.getPatientId());
+            tbPatientPost.setPost_id(String.valueOf(tbPatient.getTbPatientId()));
             tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
             tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
             database.postOfficeModelDao().addPostEntry(tbPatientPost);

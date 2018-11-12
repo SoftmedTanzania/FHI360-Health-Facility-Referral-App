@@ -136,7 +136,7 @@
             android:text="trcmis"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:fontFamily="@font/roboto_bold"/>
+            android:fontFamily="@font/google_sans_bold"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
             android:layout_toRightOf="@id/login_screen_logo"
             android:textSize="24sp"
             android:textColor="@color/white"
-            android:fontFamily="@font/roboto_light"
+            android:fontFamily="@font/google_sans_regular"
             android:text="Facility Referral"/>
 
         <TextView
@@ -159,7 +159,7 @@
             android:layout_toRightOf="@id/login_screen_logo"
             android:textSize="24sp"
             android:textColor="@color/white"
-            android:fontFamily="@font/roboto_light"
+            android:fontFamily="@font/google_sans_regular"
             android:text="Application"/>
 
         <TextView
@@ -201,10 +201,10 @@
                 android:textSize="16sp"
                 android:layout_marginTop="4dp"
                 android:layout_below="@id/lock_ico"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/google_sans_bold"
                 android:text="@string/login"
                 android:id="@+id/login_title"
-                android:textColor="@color/black"/>
+                android:textColor="@color/card_title_text"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -212,7 +212,7 @@
                 android:textSize="14sp"
                 android:layout_marginTop="4dp"
                 android:layout_below="@id/login_title"
-                android:fontFamily="@font/roboto_regular"
+                android:fontFamily="@font/google_sans_medium"
                 android:text="@string/enter_username_and_password"
                 android:id="@+id/login_msg"
                 android:textColor="@color/card_grid_text"/>
@@ -239,7 +239,7 @@
                         android:textColor="@color/card_title_text"
                         android:textColorHint="@color/card_grid_tex"
                         android:textSize="24sp"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/google_sans_regular"
                         app:et_inputId="@+id/username"
                         app:et_dividerHeight="1dp"
                         app:et_supportTextSize="20sp"
@@ -258,7 +258,7 @@
                         android:textColorHint="@color/card_grid_tex"
                         android:textSize="24sp"
                         android:inputType="textPassword"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/google_sans_regular"
                         android:layout_gravity="center_vertical"
                         app:et_inputId="@+id/password"
                         app:et_dividerHeight="1dp"
@@ -284,19 +284,27 @@
 
                 </LinearLayout>
 
-                <Button
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginBottom="20px"
-                    android:text="@string/login"
-                    android:textAllCaps="false"
+                    android:layout_marginBottom="20dp"
                     android:id="@+id/login_button"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/roboto_bold"
-                    android:background="@color/card_title_text"/>
+                    android:background="@drawable/g_border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login"
+                        android:id="@+id/login_text"
+                        android:textAllCaps="false"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/google_sans_medium"/>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
