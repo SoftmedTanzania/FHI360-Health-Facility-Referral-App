@@ -26,6 +26,9 @@ public interface TbEncounterModelDao {
     @Query("select * from TbEncounters where tbPatientID = :tbPatientId")
     List<TbEncounters> getEncounterByPatientID(Long tbPatientId);
 
+    @Query("select * from TbEncounters where tbPatientID = :tbPatientId")
+    LiveData<List<TbEncounters>> getEncountersByPatientID(Long tbPatientId);
+
     @Query("select * from TbEncounters where id = :ID")
     List<TbEncounters> getEncounterById(String ID);
 

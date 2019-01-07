@@ -6,6 +6,9 @@
         will be found with TB they will then be registered with their own CBHS number (New registration occurs here)</string>
     <string name="home">Home</string>
 
+    <string name="current_dose">Current</string>
+    <string name="previous_dose">Previous</string>
+
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
 
@@ -17,7 +20,7 @@
 
     <string name="text_search_field">Name or CTC#</string>
 
-    <string name="client_name">Client Name</string>
+    <string name="client_name">Client Names</string>
     <string name="btn_search">Search</string>
     <string name="appointment_date">Appointment Date</string>
     <string name="appointment_status">Appointment Status</string>

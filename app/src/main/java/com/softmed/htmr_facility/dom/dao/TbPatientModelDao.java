@@ -29,8 +29,14 @@ public interface TbPatientModelDao  {
     @Query("select * from TbPatient where treatmentStatus = 1")
     LiveData<List<TbPatient>> getAllTbPatientsOnTreatment();
 
+    @Query("select * from TbPatient where healthFacilityPatientId = :healthFacilityId ")
+    LiveData<List<TbPatient>> getTbPatientIdsByHealthFacilityId(String healthFacilityId);
+
     @Query("select * from TbPatient where healthFacilityPatientId = :id")
     TbPatient getTbPatientById(String id);
+
+    @Query("select * from TbPatient where healthFacilityPatientId = :id and treatmentStatus = 1")
+    TbPatient getCurrentTbPatientByPatientId(String id);
 
     @Query("select * from TbPatient where healthFacilityPatientId = :id and treatmentStatus = 1")
     TbPatient getTbPatientCurrentOnTreatment(String id);

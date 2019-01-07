@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.softmed.htmr_facility.R;
@@ -18,6 +20,7 @@ import com.softmed.htmr_facility.activities.NewReferalsActivity;
 import com.softmed.htmr_facility.activities.PatientDetailsActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
+import com.softmed.htmr_facility.utils.PatientsDiffCallback;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 
@@ -91,8 +94,10 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
             PatientsListAdapter.ListViewItemViewHolder holder = (PatientsListAdapter.ListViewItemViewHolder) viewHolder;
 
             holder.clientCTCNumber.setText("N/A");
-            holder.clientFirstName.setText(patient.getPatientFirstName() == null ? "n/a" : patient.getPatientFirstName());
-            holder.clientLastName.setText(patient.getPatientSurname() == null ? "n/a" : patient.getPatientSurname());
+
+            String firstName = patient.getPatientFirstName() == null ? "n/a" : patient.getPatientFirstName();
+            String lastName = patient.getPatientSurname() == null ? "n/a" : patient.getPatientSurname();
+            holder.clientNames.setText(firstName+" "+lastName);
             holder.clientVillage.setText(patient.getVillage() == null ? "n/a" : patient.getVillage());
             holder.clientPhoneNumber.setText(patient.getPhone_number() == null ? "n/a" : patient.getPhone_number());
 
@@ -126,18 +131,17 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientFirstName, clientLastName, clientCTCNumber, clientVillage, clientPhoneNumber;
+        TextView clientNames, clientCTCNumber, clientVillage, clientPhoneNumber;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
             super(itemView);
             this.viewItem   = itemView;
 
-            clientFirstName = (TextView) itemView.findViewById(R.id.client_f_name);
-            clientLastName = (TextView) itemView.findViewById(R.id.client_l_name);
-            clientCTCNumber = (TextView) itemView.findViewById(R.id.client_ctc_number);
-            clientVillage = (TextView) itemView.findViewById(R.id.client_village);
-            clientPhoneNumber = (TextView) itemView.findViewById(R.id.client_phone_number);
+            clientNames =  itemView.findViewById(R.id.client_names);
+            clientCTCNumber =  itemView.findViewById(R.id.client_ctc_number);
+            clientVillage =  itemView.findViewById(R.id.client_village);
+            clientPhoneNumber =  itemView.findViewById(R.id.client_phone_number);
 
         }
 
@@ -152,12 +156,25 @@ public class PatientsListAdapter extends RecyclerView.Adapter <RecyclerView.View
             super(itemView);
             this.viewItem   = itemView;
 
-            clientVillage = (TextView) itemView.findViewById(R.id.client_village);
-            clientPhoneNumber = (TextView) itemView.findViewById(R.id.client_phone_number);
-            clientCtcNumber = (TextView) itemView.findViewById(R.id.client_ctc_number);
-            clientWard = (TextView) itemView.findViewById(R.id.client_ward);
+            clientVillage =  itemView.findViewById(R.id.client_village);
+            clientPhoneNumber =  itemView.findViewById(R.id.client_phone_number);
+            clientCtcNumber =  itemView.findViewById(R.id.client_ctc_number);
+            clientWard =  itemView.findViewById(R.id.client_ward);
 
         }
+
+    }
+
+    public void setPatient (List<Patient> newList ){
+
+        PatientsDiffCallback patientsDiffCallback = new PatientsDiffCallback(this.items, newList);
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(patientsDiffCallback);
+
+        this.items = Collections.emptyList();
+        this.items = newList;
+
+        diffResult.dispatchUpdatesTo(this);
 
     }
 

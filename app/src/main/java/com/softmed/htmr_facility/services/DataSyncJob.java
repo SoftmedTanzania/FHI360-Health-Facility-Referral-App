@@ -228,7 +228,7 @@ public class DataSyncJob extends JobService {
                                 if (oldPatientAppointments != null){
                                     for (PatientAppointment appointment : oldPatientAppointments){
                                         appointment.setPatientID(rPatient.getPatientId());
-                                        mDatabase.appointmentModelDao().addAppointment(appointment);
+                                        mDatabase.appointmentModelDao().updateAppointment(appointment);
                                     }
                                 }
 

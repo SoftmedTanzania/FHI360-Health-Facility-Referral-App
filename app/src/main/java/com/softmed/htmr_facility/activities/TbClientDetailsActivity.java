@@ -2,11 +2,14 @@ package com.softmed.htmr_facility.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,11 +24,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,18 +52,22 @@ import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
+import com.softmed.htmr_facility.utils.EncountersDiffCallback;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import fr.ganfra.materialspinner.MaterialSpinner;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEFARIKI;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEHAMA;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEMALIZA_TIBA;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEPONA;
-import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMETOROKA;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_HAKUPONA;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_APPOINTMENTS;
@@ -65,9 +75,7 @@ import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
-import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED_VAL;
-import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING;
 import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING_VAL;
 import static com.softmed.htmr_facility.utils.constants.TB_1_PLUS;
 import static com.softmed.htmr_facility.utils.constants.TB_2_PLUS;
@@ -113,7 +121,9 @@ public class TbClientDetailsActivity extends BaseActivity {
     CheckBox medicationStatusCheckbox, finishedTreatmentToggle;
     ToggleSwitch testTypeToggle;
     View encounterUI, testUI, treatmentUI, resultsUI, demographicUI, clickBlocker;
-    RecyclerView previousEncounters;
+    RecyclerView previousEncountersRecycler;
+    TableLayout previousEncoutnersTitleTable;
+    TableRow previousEncountersTitleTableRow;
 
     Patient currentPatient;
     TbPatient currentTbPatient;
@@ -174,7 +184,6 @@ public class TbClientDetailsActivity extends BaseActivity {
                             displayPatientInformation(_patient);
                         }
                     }.execute(currentReferral.getPatient_id());
-
                     break;
                 case 2:
                     //From Tb Clients List
@@ -446,6 +455,8 @@ public class TbClientDetailsActivity extends BaseActivity {
             }
         });
 
+
+
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -505,6 +516,9 @@ public class TbClientDetailsActivity extends BaseActivity {
      * Sets up the activity by initializing all the view elements associated with this activity
      */
     void setupviews(){
+
+        previousEncoutnersTitleTable = findViewById(R.id.previous_encounters_title_table);
+        previousEncountersTitleTableRow = findViewById(R.id.previous_encounters_title_table_row);
 
         currentEncounterNumber = findViewById(R.id.encounter_number);
         encounterDate = findViewById(R.id.encounter_date);
@@ -571,9 +585,9 @@ public class TbClientDetailsActivity extends BaseActivity {
         medicationStatusCheckbox = findViewById(R.id.medication_status);
         finishedTreatmentToggle = findViewById(R.id.finished_treatment_toggle);
 
-        previousEncounters =  findViewById(R.id.previous_encounters_recycler_view);
-        previousEncounters.setLayoutManager(new LinearLayoutManager(this));
-        previousEncounters.hasFixedSize();
+        previousEncountersRecycler =  findViewById(R.id.previous_encounters_recycler_view);
+        previousEncountersRecycler.setLayoutManager(new LinearLayoutManager(this));
+        previousEncountersRecycler.hasFixedSize();
     }
 
     /**
@@ -868,95 +882,190 @@ public class TbClientDetailsActivity extends BaseActivity {
 
     }
 
-    //START..::..Background Activities
+    /**
+     * This method receives the instances of TbPatient of the current healthFacilityPatient and retreaves all the
+     * encounter records present in the database for this particulat patient
+     *
+     * @param tbPatients
+     */
+    void getEncounterRecords(List<TbPatient> tbPatients){
 
-    class GetPreviousEncounters extends AsyncTask<Long, Void, List<TbEncounters>>{
+        List<Dose> doseList = new ArrayList<>();
+        PreviousEncountersRecyclerAdapter adapter = new PreviousEncountersRecyclerAdapter(TbClientDetailsActivity.this);
+        previousEncountersRecycler.setAdapter(adapter);
 
-        int currentEncounterNum = 0;
+        /**
+         * An Observable to retreave the encounter information from the background thread
+         */
+        Observable<Dose> observable = Observable.create(emitter -> {
+            try {
+                for (TbPatient patient : tbPatients){
 
-        @Override
-        protected List<TbEncounters> doInBackground(Long... ids) {
-            List<TbEncounters> previousEncounters = new ArrayList<>();
-            List<PatientAppointment> appointments = new ArrayList<>();
-            Long tbPatientID = ids[0];
+                    List<TbEncounters> encounters = baseDatabase.tbEncounterModelDao().getEncounterByPatientID(patient.getTbPatientId());
+                    Dose dose = new Dose();
+                    int encounterNumber = 1;
 
-            //Calling list of previously administered encounters
-            previousEncounters = baseDatabase.tbEncounterModelDao().getEncounterByPatientID(tbPatientID);
+                    Log.d("human", "Dose, encounter size : "+encounters.size());
 
-            for (TbEncounters encounter : previousEncounters){
-                if (encounter.getEncounterNumber() > currentEncounterNum){
-                    currentEncounterNum = encounter.getEncounterNumber();
+                    if (patient.getTreatmentStatus() == 1){
+                        //This is the current ongoing treatment
+                        dose.setCurrentDose(true);
+
+                        if (encounters.size() > 0){
+                            for (TbEncounters encounter : encounters){
+                                if (encounter.getEncounterNumber() > encounterNumber){
+                                    encounterNumber = encounter.getEncounterNumber();
+                                }
+                            }
+
+                            //There are existing encounters, get the latest and increment by one to get the new encounter
+                            encounterNumber+=1;
+
+                        }else {
+
+                        }
+
+                        List<PatientAppointment> appointments = baseDatabase.appointmentModelDao().getAppointmentByEncounterNumberAndPatientID(encounterNumber, currentPatient.getPatientId());
+                        if (appointments.size() > 0){
+                            dose.setAppointment(appointments.get(0));
+                        }
+
+                    }
+                    dose.setTbPatient(patient);
+                    dose.setEncounters(encounters);
+                    dose.setCurrentEncounterNumber(encounterNumber);
+
+                    doseList.add(dose);
+                    emitter.onNext(dose);
                 }
+                emitter.onComplete();
+            }catch (Exception e){
+                emitter.onError(e);
+            }
+        });
+
+        observable = observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+
+        /**
+         * An observer to observe on the information as they are being emmited by the observable
+         */
+        io.reactivex.Observer<Dose> observer = new io.reactivex.Observer<Dose>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
             }
 
-            //Get the appointment associated with the current encounter number
-            appointments = baseDatabase.appointmentModelDao().getAppointmentByEncounterNumberAndPatientID(currentEncounterNum, currentPatient.getPatientId());
+            @Override
+            public void onNext(Dose dose) {
+                List<TbEncounters> tbEncounters = dose.encounters;
 
-            if (appointments.size() > 0){
-                selectedEncounterAppointment = appointments.get(0);
-            }
+                Log.d("human", "Observed encounters size "+tbEncounters.size());
 
-            currentEncounterNum++;
+                View columnView = LayoutInflater.from(TbClientDetailsActivity.this).inflate(R.layout.previous_encounters_title_view, previousEncountersTitleTableRow, false);
+                previousEncountersTitleTableRow.addView(columnView);
 
-            return previousEncounters;
-        }
+                TextView title = columnView.findViewById(R.id.title);
 
-        @Override
-        protected void onPostExecute(List<TbEncounters> tbEncounters) {
-            super.onPostExecute(tbEncounters);
-            //Display encounters in recycler view
-            Log.d("PreviousEncounters", tbEncounters.size()+"");
+                //Check to see if the encounter is the current encounter
+                if (dose.isCurrentDose()){
 
-            encounterNumber = currentEncounterNum;
+                    selectedEncounterAppointment = dose.getAppointment();
+                    encounterNumber = dose.getCurrentEncounterNumber();
+                    int effectiveEncounterNumber = encounterNumber;
+                    PatientAppointment effectiveSelectedAppointment = selectedEncounterAppointment;
 
-            //Check if this is the 1st or 3rd visit and test type is 1 only then display the sputum for afb input elements
-            if (currentTbPatient.getTestType() == 1){
-                if (encounterNumber == 1 || encounterNumber == 3 || encounterNumber == 6){
-                    if (encounterNumber == 1)
-                        finishedPreviousMonthLayout.setVisibility(View.INVISIBLE);
+                    title.setText(getResources().getString(R.string.current_dose));
+                    columnView.setBackground(getResources().getDrawable(R.drawable.border_fill_button));
+
+                    //set the value of current encounter that the user is issuing
+                    currentEncounterNumber.setText(encounterNumber+"");
+
+                    //Set the encounter date of issue to today's date
+                    encounterDate.setText(BaseActivity.simpleDateFormat.format(new Date()));
+
+                    //Check if this is the 1st or 3rd visit and test type is 1 only then display the sputum for afb input elements
+                    if (currentTbPatient.getTestType() == 1){
+                        if (effectiveEncounterNumber == 1 || effectiveEncounterNumber == 3 || effectiveEncounterNumber == 6){
+                            if (effectiveEncounterNumber == 1)
+                                finishedPreviousMonthLayout.setVisibility(View.INVISIBLE);
+                        }else {
+                            makohoziEncounterWrap.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    //Check if the encounterNumber is greater than 6 then start showing the medications results view
+                    if (effectiveEncounterNumber >= 6){
+                        finishedTreatmentToggle.setVisibility(View.VISIBLE);
+                        finishedTreatmentTitle.setVisibility(View.VISIBLE);
+                    }else {
+                        finishedTreatmentToggle.setVisibility(View.GONE);
+                        finishedTreatmentTitle.setVisibility(View.GONE);
+                    }
+
+                    //Set the date of the appointment associated with this encounter
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(effectiveSelectedAppointment == null ? calendar.getTimeInMillis() : effectiveSelectedAppointment.getAppointmentDate());
+                    encounterAppointmentDate.setText(BaseActivity.simpleDateFormat.format(calendar.getTime()));
+
+                    if (tbEncounters.size() > 0){
+                        emptyPreviousMonthEncounter.setVisibility(View.GONE);
+                        previousEncountersRecycler.setVisibility(View.VISIBLE);
+                        adapter.updateData(tbEncounters);
+                    }else {
+                        previousEncountersRecycler.setVisibility(View.GONE);
+                        emptyPreviousMonthEncounter.setVisibility(View.VISIBLE);
+                    }
+
                 }else {
-                    makohoziEncounterWrap.setVisibility(View.INVISIBLE);
+                    title.setText(getResources().getString(R.string.previous_dose));
                 }
+
+                columnView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        columnView.setBackground(getResources().getDrawable(R.drawable.border_fill_button));
+
+
+                        if (tbEncounters.size() > 0){
+                            emptyPreviousMonthEncounter.setVisibility(View.GONE);
+                            previousEncountersRecycler.setVisibility(View.VISIBLE);
+                            adapter.updateData(tbEncounters);
+                        }else {
+                            previousEncountersRecycler.setVisibility(View.GONE);
+                            emptyPreviousMonthEncounter.setVisibility(View.VISIBLE);
+                        }
+
+                        for (int j = 0; j< doseList.size(); j++){
+                            if (doseList.get(j) != dose){
+                                previousEncountersTitleTableRow.getChildAt(j).setBackground(getResources().getDrawable(R.drawable.border_outline));
+                            }
+                        }
+                    }
+                });
+
             }
 
-            //Check if the encounterNumber is greater than 6 then start showing the medications results view
-            if (encounterNumber >= 6){
-                finishedTreatmentToggle.setVisibility(View.VISIBLE);
-                finishedTreatmentTitle.setVisibility(View.VISIBLE);
-            }else {
-                finishedTreatmentToggle.setVisibility(View.GONE);
-                finishedTreatmentTitle.setVisibility(View.GONE);
+            @Override
+            public void onError(Throwable e) {
+
             }
 
-            //Set the current encounter number so the user knows which encounter the patient came to be addressed
-            currentEncounterNumber.setText(encounterNumber+"");
+            @Override
+            public void onComplete() {
 
-            //Set the encounter date to today's date
-            encounterDate.setText(BaseActivity.simpleDateFormat.format(new Date()));
-
-            //Set the date of the appointment associated with this encounter
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(selectedEncounterAppointment == null ? calendar.getTimeInMillis() : selectedEncounterAppointment.getAppointmentDate());
-            encounterAppointmentDate.setText(BaseActivity.simpleDateFormat.format(calendar.getTime()));
-
-            //Display the list of previously recorded encounters
-
-            if (tbEncounters.size() > 0){
-
-                Log.d("TbClientDetailsActivity", "Size of previous encounters "+tbEncounters.size()+"");
-
-                emptyPreviousMonthEncounter.setVisibility(View.GONE);
-                previousEncounters.setVisibility(View.VISIBLE);
-
-                PreviousEncountersRecyclerAdapter adapter = new PreviousEncountersRecyclerAdapter(TbClientDetailsActivity.this, tbEncounters);
-                previousEncounters.setAdapter(adapter);
-
-            }else {
-                previousEncounters.setVisibility(View.GONE);
-                emptyPreviousMonthEncounter.setVisibility(View.VISIBLE);
             }
-        }
+        };
+
+        //Creating the subscription
+        observable.subscribe(observer);
+
     }
+
+
+    //START..::..Background Activities
 
     class GetTbPatientByPatientID extends AsyncTask<String, Void, TbPatient>{
 
@@ -986,7 +1095,14 @@ public class TbClientDetailsActivity extends BaseActivity {
 
             if (tbPatient != null){
 
-                new GetPreviousEncounters().execute(tbPatient.getTbPatientId());
+                LiveData<List<TbPatient>> tbPatients = baseDatabase.tbPatientModelDao().getTbPatientIdsByHealthFacilityId(currentPatient.getPatientId());
+                tbPatients.observe(TbClientDetailsActivity.this, new Observer<List<TbPatient>>() {
+                    @Override
+                    public void onChanged(@Nullable List<TbPatient> tbPatients) {
+                        getEncounterRecords(tbPatients);
+                        //new GetPreviousEncounters(tbPatients).execute();
+                    }
+                });
 
 
                 int testType = tbPatient.getTestType();
@@ -1321,14 +1437,13 @@ public class TbClientDetailsActivity extends BaseActivity {
     //START..::..Inline Classes
     class PreviousEncountersRecyclerAdapter extends RecyclerView.Adapter<PreviousEncountersRecyclerAdapter.ViewHolder> {
 
-        private List<TbEncounters> mData;
+        private List<TbEncounters> mData = Collections.emptyList();
         private LayoutInflater mInflater;
         //private ItemClickListener mClickListener;
 
         // data is passed into the constructor
-        PreviousEncountersRecyclerAdapter(Context context, List<TbEncounters> data) {
+        PreviousEncountersRecyclerAdapter(Context context) {
             this.mInflater = LayoutInflater.from(context);
-            this.mData = data;
         }
 
         // inflates the row layout from xml when needed
@@ -1392,21 +1507,73 @@ public class TbClientDetailsActivity extends BaseActivity {
             return mData.get(id);
         }
 
-        // allows clicks events to be caught
-        /*
-        void setClickListener(ItemClickListener itemClickListener) {
-            this.mClickListener = itemClickListener;
-        }
-
-        // parent activity will implement this method to respond to click events
-        public interface ItemClickListener {
-            void onItemClick(View view, int position);
-        }*/
-
         private void updateData(List<TbEncounters> updatedData){
+
+            EncountersDiffCallback encountersDiffCallback = new EncountersDiffCallback(this.mData, updatedData);
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(encountersDiffCallback);
+
+            this.mData = Collections.emptyList();
             this.mData = updatedData;
+
+            result.dispatchUpdatesTo(this);
         }
 
     }
+
+    class Dose {
+
+        private boolean isCurrentDose = false;
+
+        private TbPatient tbPatient;
+
+        private int currentEncounterNumber = 0;
+
+        private PatientAppointment appointment;
+
+        private List<TbEncounters> encounters;
+
+        public Dose(){}
+
+        public TbPatient getTbPatient() {
+            return tbPatient;
+        }
+
+        public void setTbPatient(TbPatient tbPatient) {
+            this.tbPatient = tbPatient;
+        }
+
+        public List<TbEncounters> getEncounters() {
+            return encounters;
+        }
+
+        public void setEncounters(List<TbEncounters> encounters) {
+            this.encounters = encounters;
+        }
+
+        public boolean isCurrentDose() {
+            return isCurrentDose;
+        }
+
+        public void setCurrentDose(boolean currentDose) {
+            isCurrentDose = currentDose;
+        }
+
+        public int getCurrentEncounterNumber() {
+            return currentEncounterNumber;
+        }
+
+        public void setCurrentEncounterNumber(int currentEncounterNumber) {
+            this.currentEncounterNumber = currentEncounterNumber;
+        }
+
+        public PatientAppointment getAppointment() {
+            return appointment;
+        }
+
+        public void setAppointment(PatientAppointment appointment) {
+            this.appointment = appointment;
+        }
+    }
+
     //END..::..Inline Classes
 }

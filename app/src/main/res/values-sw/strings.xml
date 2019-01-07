@@ -7,6 +7,9 @@
         will be found with TB they will then be registered with their own CBHS number (New registration occurs here)</string>
     <string name="home">Mwanzo</string>
 
+    <string name="current_dose">Sasa</string>
+    <string name="previous_dose">Iliyopita</string>
+
     <string name="from_date">Kutoka Tarehe</string>
     <string name="to_date">Mpaka Tarehe</string>
 
@@ -18,7 +21,7 @@
 
     <string name="text_search_field">Jina au CTC#</string>
 
-    <string name="client_name">Jina la Mteja</string>
+    <string name="client_name">Majina ya Mteja</string>
     <string name="btn_search">Tafuta</string>
     <string name="appointment_date">Tarehe ya Kuja</string>
     <string name="appointment_status">Mahudhurio</string>

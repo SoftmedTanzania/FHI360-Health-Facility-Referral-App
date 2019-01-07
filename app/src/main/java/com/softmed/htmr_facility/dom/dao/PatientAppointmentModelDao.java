@@ -11,6 +11,8 @@ import java.util.List;
 
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 /**
  * Created by issy on 1/2/18.
  *
@@ -57,7 +59,7 @@ public interface PatientAppointmentModelDao {
             "and appointmentDate between :from and :to")
     int getTotalAppointmentsByAppointmentDateStatusAndGender(long from, long to, int status, String gender);
 
-    @Insert
+    @Insert (onConflict = REPLACE)
     void addAppointment(PatientAppointment appointment);
 
     @Update
