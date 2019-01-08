@@ -61,7 +61,7 @@ public class ReferralListActivity extends BaseActivity {
             serviceID = getIntent().getExtras().getInt("service");
         }
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         if (toolbar != null){
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

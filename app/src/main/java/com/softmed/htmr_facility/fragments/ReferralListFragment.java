@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.rey.material.widget.ProgressView;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.utils.ReferralsSearchFilterUtil;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
@@ -64,8 +67,6 @@ public class ReferralListFragment extends Fragment {
     private MaterialSpinner statusSpinner;
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
     private TextView ctcNumberOrServiceNameTitle, referralReasonTitle, emptyEmergencyReferrals, otherReferralsTitle, emergencyReferralsTitle;
-    private ProgressView progressView;
-    private Button filterButton;
     private RelativeLayout emergencyReferralsContainer;
 
     private ReferalListRecyclerAdapter adapter, emergencyAdapter;
@@ -85,6 +86,9 @@ public class ReferralListFragment extends Fragment {
     private DatePickerDialog toDatePicker = new DatePickerDialog();
     private DatePickerDialog fromDatePicker = new DatePickerDialog();
 
+    private ReferralsSearchFilterUtil referralsSearchFilterUtilEmergency;
+    private ReferralsSearchFilterUtil referralsSearchFilterUtil;
+
     private AppDatabase database;
 
     public static ReferralListFragment newInstance(int source, int service) {
@@ -103,6 +107,10 @@ public class ReferralListFragment extends Fragment {
         database = AppDatabase.getDatabase(ReferralListFragment.this.getActivity());
         fromDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
         toDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
+
+        referralsSearchFilterUtil = new ReferralsSearchFilterUtil(new ArrayList<>(), this.getContext());
+        referralsSearchFilterUtilEmergency = new ReferralsSearchFilterUtil(new ArrayList<>(), this.getContext());
+
     }
 
     @Nullable
@@ -182,21 +190,8 @@ public class ReferralListFragment extends Fragment {
             }
         });
 
-        filterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getInputs()){
-                    filterButton.setVisibility(View.INVISIBLE);
-                    progressView.setVisibility(View.VISIBLE);
-
-                    ReferralListFragment.QueryReferals queryReferals = new ReferralListFragment.QueryReferals(clientName, lastName, clientCtcNumber, filterFromDate, filterToDate, selectedStatus, database);
-                    queryReferals.execute();
-
-                }else {
-                    Toast.makeText(ReferralListFragment.this.getActivity(),"Please Fill in any field ", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        fromDateText.setFocusableInTouchMode(false);
+        toDateText.setFocusableInTouchMode(false);
 
         fromDateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,6 +208,10 @@ public class ReferralListFragment extends Fragment {
                         fromDate = fromCalendar.getTime();
                         filterFromDate = fromCalendar.getTimeInMillis();
                         notSelectedFromDate = false;
+
+                        adapter.setReferrals(referralsSearchFilterUtil.searchbyFromDate(filterFromDate));
+                        emergencyAdapter.setReferrals(referralsSearchFilterUtilEmergency.searchbyFromDate(filterFromDate));
+
                     }
 
                 });
@@ -234,16 +233,39 @@ public class ReferralListFragment extends Fragment {
                         toDate = toCalendar.getTime();
                         filterToDate = toCalendar.getTimeInMillis();
                         notSelectedTodate = false;
+
+                        adapter.setReferrals(referralsSearchFilterUtil.searchbyToDate(filterFromDate));
+                        emergencyAdapter.setReferrals(referralsSearchFilterUtilEmergency.searchbyToDate(filterFromDate));
                     }
 
                 });
             }
         });
 
+        clientNameText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                adapter.setReferrals(referralsSearchFilterUtil.searchByPatientNames(charSequence.toString()));
+                emergencyAdapter.setReferrals(referralsSearchFilterUtilEmergency.searchByPatientNames(charSequence.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
         adapter = new ReferalListRecyclerAdapter(new ArrayList<>(), ReferralListFragment.this.getActivity(), service);
         emergencyAdapter = new ReferalListRecyclerAdapter(new ArrayList<>(), ReferralListFragment.this.getActivity(), service);
-        listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
 
+        clientRecyclerView.setAdapter(adapter);
+        emergencyClientsRecyclerView.setAdapter(emergencyAdapter);
+
+        listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
         if (service == OPD_SERVICE_ID){
             if (source == CHW_TO_FACILITY){
                 listViewModel.getAllReferralListFromChw().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
@@ -260,6 +282,12 @@ public class ReferralListFragment extends Fragment {
                                 otherReferrals.add(r);
                         }
 
+                        referralsSearchFilterUtil.setReferrals(otherReferrals);
+                        referralsSearchFilterUtil.getEquivalentPatients();
+
+                        referralsSearchFilterUtilEmergency.setReferrals(emergencyReferrals);
+                        referralsSearchFilterUtilEmergency.getEquivalentPatients();
+
                         if (emergencyReferrals.size() > 0){
                             emptyEmergencyReferrals.setVisibility(View.GONE);
                             emergencyClientsRecyclerView.setVisibility(View.VISIBLE);
@@ -268,8 +296,8 @@ public class ReferralListFragment extends Fragment {
                             emergencyClientsRecyclerView.setVisibility(View.GONE);
                         }
 
-                        adapter.addItems(otherReferrals);
-                        emergencyAdapter.addItems(emergencyReferrals);
+                        adapter.setReferrals(otherReferrals);
+                        emergencyAdapter.setReferrals(emergencyReferrals);
                     }
                 });
             }else{
@@ -282,6 +310,8 @@ public class ReferralListFragment extends Fragment {
                 listViewModel.getAllReferralListFromHealthFacilities().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
+                        referralsSearchFilterUtil.setReferrals(referrals);
+                        referralsSearchFilterUtil.getEquivalentPatients();
                         adapter.addItems(referrals);
                     }
                 });
@@ -292,6 +322,8 @@ public class ReferralListFragment extends Fragment {
             listViewModel.getlabReferalListHfSource().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {
+                    referralsSearchFilterUtil.setReferrals(referrals);
+                    referralsSearchFilterUtil.getEquivalentPatients();
                     adapter.addItems(referrals);
                 }
             });
@@ -300,6 +332,8 @@ public class ReferralListFragment extends Fragment {
                 listViewModel.getReferalListChwSource().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
+                        referralsSearchFilterUtil.setReferrals(referrals);
+                        referralsSearchFilterUtil.getEquivalentPatients();
                         adapter.addItems(referrals);
                     }
                 });
@@ -307,14 +341,13 @@ public class ReferralListFragment extends Fragment {
                 listViewModel.getReferalListHfSource().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
+                        referralsSearchFilterUtil.setReferrals(referrals);
+                        referralsSearchFilterUtil.getEquivalentPatients();
                         adapter.addItems(referrals);
                     }
                 });
             }
         }
-
-        clientRecyclerView.setAdapter(adapter);
-        emergencyClientsRecyclerView.setAdapter(emergencyAdapter);
 
     }
 
@@ -350,8 +383,6 @@ public class ReferralListFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             adapter.addItems(fReferrals);
-            filterButton.setVisibility(View.VISIBLE);
-            progressView.setVisibility(View.GONE);
         }
 
         @Override
@@ -382,9 +413,6 @@ public class ReferralListFragment extends Fragment {
         otherReferralsTitle = v.findViewById(R.id.other_referrals_title);
         referralReasonTitle = v.findViewById(R.id.referral_reasons);
         ctcNumberOrServiceNameTitle =  v.findViewById(R.id.ctc_number);
-        filterButton =  v.findViewById(R.id.filter_button);
-        progressView =  v.findViewById(R.id.progress_bar);
-        progressView.setVisibility(View.INVISIBLE);
         emptyEmergencyReferrals = v.findViewById(R.id.empty_emergency_referrals);
         fromDateText =  v.findViewById(R.id.from_date);
         toDateText =  v.findViewById(R.id.to_date);

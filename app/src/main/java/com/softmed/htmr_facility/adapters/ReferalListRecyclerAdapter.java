@@ -3,6 +3,7 @@ package com.softmed.htmr_facility.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.softmed.htmr_facility.R;
@@ -20,6 +22,7 @@ import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
+import com.softmed.htmr_facility.utils.ReferralsDiffCallback;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
@@ -81,10 +84,10 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
             if (referral.getReferralStatus() == 0){
                 holder.attendedFlag.setText(context.getResources().getString(R.string.new_ref));
-                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_400));
             }else {
                 holder.attendedFlag.setText(context.getResources().getString(R.string.attended_ref));
-                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_400));
             }
 
             holder.ctcNumber.setText(referral.getCtcNumber());
@@ -138,10 +141,10 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
             if (referral.getReferralStatus() == 0){
                 holder.attendedFlag.setText(context.getResources().getString(R.string.new_ref));
-                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_400));
             }else {
                 holder.attendedFlag.setText(context.getResources().getString(R.string.attended_ref));
-                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
+                holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_400));
             }
 
             holder.referralReasons.setText(referral.getReferralReason());
@@ -189,11 +192,11 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             super(itemView);
             this.viewItem   = itemView;
 
-            clientsNames = (TextView) itemView.findViewById(R.id.client_name);
-            attendedFlag = (TextView) itemView.findViewById(R.id.attended_flag);
-            ctcNumber = (TextView) itemView.findViewById(R.id.ctc_number);
-            referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
-            referralDate = (TextView) itemView.findViewById(R.id.ref_date);
+            clientsNames =  itemView.findViewById(R.id.client_name);
+            attendedFlag =  itemView.findViewById(R.id.attended_flag);
+            ctcNumber =  itemView.findViewById(R.id.ctc_number);
+            referralReasons =  itemView.findViewById(R.id.referral_reasons);
+            referralDate =  itemView.findViewById(R.id.ref_date);
 
         }
 
@@ -268,5 +271,12 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     }
 
+    public void setReferrals(List<Referral> referralsNewList){
+        ReferralsDiffCallback referralsDiffCallback = new ReferralsDiffCallback(this.items, referralsNewList);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(referralsDiffCallback);
+        this.items = Collections.emptyList();
+        this.items = referralsNewList;
+        result.dispatchUpdatesTo(this);
+    }
 
 }
