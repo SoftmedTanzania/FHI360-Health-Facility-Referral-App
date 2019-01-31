@@ -193,7 +193,7 @@
                 android:id="@+id/ref_date"
                 android:layout_centerInParent="true"
                 android:textColor="@color/card_title_text"
-                android:text="@string/referral_date"/>
+                android:text="@string/appointment_date"/>
 
         </RelativeLayout>
 

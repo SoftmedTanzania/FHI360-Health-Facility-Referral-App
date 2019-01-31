@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.fragments;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,8 @@ import android.widget.Toast;
 import com.rey.material.widget.ProgressView;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.ReferralWithNames;
 import com.softmed.htmr_facility.utils.ReferralsSearchFilterUtil;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -38,7 +42,14 @@ import com.softmed.htmr_facility.adapters.ReferalListRecyclerAdapter;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.viewmodels.ReferalListViewModel;
+
+import org.jetbrains.annotations.NotNull;
+
 import fr.ganfra.materialspinner.MaterialSpinner;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.ENGLISH_LOCALE;
@@ -89,6 +100,9 @@ public class ReferralListFragment extends Fragment {
     private ReferralsSearchFilterUtil referralsSearchFilterUtilEmergency;
     private ReferralsSearchFilterUtil referralsSearchFilterUtil;
 
+    private List<ReferralWithNames> referralWithNames = new ArrayList<>();
+    private List<ReferralWithNames> emergencyReferralsWithNames = new ArrayList<>();
+
     private AppDatabase database;
 
     public static ReferralListFragment newInstance(int source, int service) {
@@ -104,12 +118,13 @@ public class ReferralListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         database = AppDatabase.getDatabase(ReferralListFragment.this.getActivity());
         fromDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
         toDatePicker.setAccentColor(getResources().getColor(R.color.colorPrimary));
 
-        referralsSearchFilterUtil = new ReferralsSearchFilterUtil(new ArrayList<>(), this.getContext());
-        referralsSearchFilterUtilEmergency = new ReferralsSearchFilterUtil(new ArrayList<>(), this.getContext());
+        referralsSearchFilterUtil = new ReferralsSearchFilterUtil(new ArrayList<>(), new ArrayList<>(), this.getContext());
+        referralsSearchFilterUtilEmergency = new ReferralsSearchFilterUtil(new ArrayList<>(), new ArrayList<>(), this.getContext());
 
     }
 
@@ -209,8 +224,22 @@ public class ReferralListFragment extends Fragment {
                         filterFromDate = fromCalendar.getTimeInMillis();
                         notSelectedFromDate = false;
 
-                        adapter.setReferrals(referralsSearchFilterUtil.searchbyFromDate(filterFromDate));
-                        emergencyAdapter.setReferrals(referralsSearchFilterUtilEmergency.searchbyFromDate(filterFromDate));
+                        List<Referral> referrals = new ArrayList<>();
+                        List<Referral> emergencyReferrals = new ArrayList<>();
+
+                        List<ReferralWithNames> referralsWithNames = referralsSearchFilterUtil.searchbyFromDate(filterFromDate);
+                        List<ReferralWithNames> emergencyReferralsWithNames = referralsSearchFilterUtilEmergency.searchbyFromDate(filterFromDate);
+
+                        for (ReferralWithNames rwn : referralsWithNames){
+                            referrals.add(rwn.getReferral());
+                        }
+
+                        for (ReferralWithNames erwn : emergencyReferralsWithNames){
+                            emergencyReferrals.add(erwn.getReferral());
+                        }
+
+                        adapter.setReferrals(referrals);
+                        emergencyAdapter.setReferrals(emergencyReferrals);
 
                     }
 
@@ -234,13 +263,30 @@ public class ReferralListFragment extends Fragment {
                         filterToDate = toCalendar.getTimeInMillis();
                         notSelectedTodate = false;
 
-                        adapter.setReferrals(referralsSearchFilterUtil.searchbyToDate(filterFromDate));
-                        emergencyAdapter.setReferrals(referralsSearchFilterUtilEmergency.searchbyToDate(filterFromDate));
+                        List<Referral> referrals = new ArrayList<>();
+                        List<Referral> emergencyReferrals = new ArrayList<>();
+
+                        List<ReferralWithNames> referralsWithNames = referralsSearchFilterUtil.searchbyToDate(filterFromDate);
+                        List<ReferralWithNames> emergencyReferralsWithNames = referralsSearchFilterUtilEmergency.searchbyToDate(filterFromDate);
+
+                        for (ReferralWithNames rwn : referralsWithNames){
+                            referrals.add(rwn.getReferral());
+                        }
+
+                        for (ReferralWithNames erwn : emergencyReferralsWithNames){
+                            emergencyReferrals.add(erwn.getReferral());
+                        }
+
+                        adapter.setReferrals(referrals);
+                        emergencyAdapter.setReferrals(emergencyReferrals);
                     }
 
                 });
             }
         });
+
+        //Set focusable for the edit text false until the data to be searched is ready
+        clientNameText.setFocusableInTouchMode(false);
 
         clientNameText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -250,8 +296,24 @@ public class ReferralListFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                adapter.setReferrals(referralsSearchFilterUtil.searchByPatientNames(charSequence.toString()));
-                emergencyAdapter.setReferrals(referralsSearchFilterUtilEmergency.searchByPatientNames(charSequence.toString()));
+
+                List<Referral> referrals = new ArrayList<>();
+                List<Referral> emergencyReferrals = new ArrayList<>();
+
+                List<ReferralWithNames> referralsWithNames = referralsSearchFilterUtil.searchByPatientNames(charSequence.toString());
+                List<ReferralWithNames> emergencyReferralsWithNames = referralsSearchFilterUtilEmergency.searchByPatientNames(charSequence.toString());
+
+                for (ReferralWithNames rwn : referralsWithNames){
+                    referrals.add(rwn.getReferral());
+                }
+
+                for (ReferralWithNames erwn : emergencyReferralsWithNames){
+                    emergencyReferrals.add(erwn.getReferral());
+                }
+
+                adapter.setReferrals(referrals);
+                emergencyAdapter.setReferrals(emergencyReferrals);
+
             }
 
             @Override
@@ -282,11 +344,10 @@ public class ReferralListFragment extends Fragment {
                                 otherReferrals.add(r);
                         }
 
-                        referralsSearchFilterUtil.setReferrals(otherReferrals);
-                        referralsSearchFilterUtil.getEquivalentPatients();
+                        Log.d("bass", "Emergency : "+emergencyReferrals.size()+"\nOthers : "+otherReferrals.size());
 
-                        referralsSearchFilterUtilEmergency.setReferrals(emergencyReferrals);
-                        referralsSearchFilterUtilEmergency.getEquivalentPatients();
+                        setSearchFilterVariables(otherReferrals, false);
+                        setSearchFilterVariables(emergencyReferrals, true);
 
                         if (emergencyReferrals.size() > 0){
                             emptyEmergencyReferrals.setVisibility(View.GONE);
@@ -310,8 +371,7 @@ public class ReferralListFragment extends Fragment {
                 listViewModel.getAllReferralListFromHealthFacilities().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
-                        referralsSearchFilterUtil.setReferrals(referrals);
-                        referralsSearchFilterUtil.getEquivalentPatients();
+                        setSearchFilterVariables(referrals, false);
                         adapter.addItems(referrals);
                     }
                 });
@@ -322,8 +382,7 @@ public class ReferralListFragment extends Fragment {
             listViewModel.getlabReferalListHfSource().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {
-                    referralsSearchFilterUtil.setReferrals(referrals);
-                    referralsSearchFilterUtil.getEquivalentPatients();
+                    setSearchFilterVariables(referrals, false);
                     adapter.addItems(referrals);
                 }
             });
@@ -332,8 +391,7 @@ public class ReferralListFragment extends Fragment {
                 listViewModel.getReferalListChwSource().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
-                        referralsSearchFilterUtil.setReferrals(referrals);
-                        referralsSearchFilterUtil.getEquivalentPatients();
+                        setSearchFilterVariables(referrals, false);
                         adapter.addItems(referrals);
                     }
                 });
@@ -341,13 +399,54 @@ public class ReferralListFragment extends Fragment {
                 listViewModel.getReferalListHfSource().observe(ReferralListFragment.this, new Observer<List<Referral>>() {
                     @Override
                     public void onChanged(@Nullable List<Referral> referrals) {
-                        referralsSearchFilterUtil.setReferrals(referrals);
-                        referralsSearchFilterUtil.getEquivalentPatients();
+                        setSearchFilterVariables(referrals, false);
                         adapter.addItems(referrals);
                     }
                 });
             }
         }
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void setSearchFilterVariables(List<Referral> mRef, Boolean isEmergency){
+
+        new AsyncTask<Void, Void, Void>(){
+
+            List<Referral> effectiveReferralList = new ArrayList<>();
+            List<ReferralWithNames> referralWithNames = new ArrayList<>();
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                effectiveReferralList = mRef;
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                for (Referral r : effectiveReferralList){
+                    Patient p = database.patientModel().getPatientById(r.getPatient_id());
+                    if (p!=null){
+                        ReferralWithNames rwn = new ReferralWithNames(p.getPatientFirstName(), p.getPatientMiddleName(), p.getPatientSurname(), r);
+                        referralWithNames.add(rwn);
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if (referralWithNames.size() > 0){
+                    clientNameText.setFocusableInTouchMode(true);
+                    if (isEmergency){
+                        referralsSearchFilterUtilEmergency.setReferrals(referralWithNames);
+                    }else {
+                        referralsSearchFilterUtil.setReferrals(referralWithNames);
+                    }
+                }
+            }
+        }.execute();
 
     }
 
