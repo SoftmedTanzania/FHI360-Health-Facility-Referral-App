@@ -73,10 +73,6 @@
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name="com.softmed.htmr_facility.activities.MissedAppointmentActivity"
-            android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
-            android:windowSoftInputMode="stateHidden"/>
-
         <activity android:name="com.softmed.htmr_facility.activities.ClientRegisterActivity"
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>

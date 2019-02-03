@@ -1,24 +1,22 @@
-package com.softmed.htmr_facility.activities;
+package com.softmed.htmr_facility.adapters;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.softmed.htmr_facility.R;
-import com.softmed.htmr_facility.adapters.AppointmentRecyclerAdapter;
-import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.viewmodels.PatientsAppointmentsListViewModel;
 
@@ -31,42 +29,37 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 import static android.view.View.GONE;
 
 /**
- * Created by coze on 02/01/19.
+ * Created by cozej4 on 02/02/17.
  *
- * @issyzac ilakozejumanne@gmail.com
+ * @cozej4 ilakozejumanne@gmail.com
  * On Project HFReferralApp
  */
 
-public class MissedAppointmentActivity extends BaseActivity {
-
-    private Toolbar toolbar;
+public class UpcomingAppointmentFragment extends Fragment {
     private RecyclerView appointmentRecycler;
     private EditText patientName, fromDate, toDate;
-    private MaterialSpinner statusSpinner, appointmentType;
+    private MaterialSpinner statusSpinner;
     private AppointmentRecyclerAdapter adapter;
-    private mAdapter appointmentTypeAdapter;
     private List<PatientAppointment> ctcAppointmentsList = new ArrayList<>();
-    private List<String> appointmentTypeList = new ArrayList<>();
+    private List<PatientAppointment> tbAppointmentsList = new ArrayList<>();
+    private AppDatabase database;
 
     private PatientsAppointmentsListViewModel listViewModel;
+    public View rootView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_appointment);
-        setupviews();
 
-        if (toolbar!=null){
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getResources().getString(R.string.client_appointment));
-        }
+        database = AppDatabase.getDatabase(getActivity());
+    }
 
-        appointmentTypeList.add(getResources().getString(R.string.ctc));
-        appointmentTypeList.add(getResources().getString(R.string.tb));
-        appointmentTypeAdapter = new mAdapter(this, R.layout.subscription_plan_items_drop_down, appointmentTypeList);
-        appointmentType.setAdapter(appointmentTypeAdapter);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
+        rootView = inflater.inflate(R.layout.fragment_upcoming_appointment, container, false);
+        setupviews(rootView);
 
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -74,42 +67,52 @@ public class MissedAppointmentActivity extends BaseActivity {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         Long todaysDate = cal.getTime().getTime();
-        Long tommorowsDate = cal.getTime().getTime()+48*60*60*1000;
+        Long tommorowsDate = cal.getTime().getTime() + 48 * 60 * 60 * 1000;
 
         listViewModel = ViewModelProviders.of(this).get(PatientsAppointmentsListViewModel.class);
-        listViewModel.getMissedCTCAppointments().observe(MissedAppointmentActivity.this, new Observer<List<PatientAppointment>>() {
+        listViewModel.getCTCAppointments(todaysDate, tommorowsDate).observe(UpcomingAppointmentFragment.this, new Observer<List<PatientAppointment>>() {
             @Override
             public void onChanged(@Nullable List<PatientAppointment> ctcAppList) {
                 ctcAppointmentsList = ctcAppList;
+                updateListType(0);
+            }
+        });
+
+        listViewModel.getTBAppointments(todaysDate, tommorowsDate).observe(UpcomingAppointmentFragment.this, new Observer<List<PatientAppointment>>() {
+            @Override
+            public void onChanged(@Nullable List<PatientAppointment> tbAppList) {
+                tbAppointmentsList = tbAppList;
             }
         });
 
 
-        findViewById(R.id.tb_appointments_header).setVisibility(GONE);
-        findViewById(R.id.ctc_header).setVisibility(View.VISIBLE);
-        adapter.addItems(ctcAppointmentsList,0);
-
-        adapter = new AppointmentRecyclerAdapter(ctcAppointmentsList,this,baseDatabase);
+        adapter = new AppointmentRecyclerAdapter(ctcAppointmentsList, getActivity(), database);
         appointmentRecycler.setAdapter(adapter);
-
-        appointmentType.setSelection(1);
-
-
+        return rootView;
     }
 
-    private void setupviews(){
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        appointmentRecycler = (RecyclerView) findViewById(R.id.appointment_recycler);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+    private void setupviews(View v) {
+        appointmentRecycler = (RecyclerView) v.findViewById(R.id.appointment_recycler);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         appointmentRecycler.setLayoutManager(layoutManager);
         appointmentRecycler.setHasFixedSize(true);
+        statusSpinner = (MaterialSpinner) v.findViewById(R.id.spin_status);
+        patientName = (EditText) v.findViewById(R.id.client_name_et);
+        fromDate = (EditText) v.findViewById(R.id.from_date_et);
+        toDate = (EditText) v.findViewById(R.id.to_date_et);
+    }
 
-        appointmentType = (MaterialSpinner) findViewById(R.id.spin_appointment_type);
-        statusSpinner = (MaterialSpinner) findViewById(R.id.spin_status);
-        patientName = (EditText) findViewById(R.id.client_name_et);
-        fromDate = (EditText) findViewById(R.id.from_date_et);
-        toDate = (EditText) findViewById(R.id.to_date_et);
+    public void updateListType(int i) {
+        if (i == 0) {
+            rootView.findViewById(R.id.tb_appointments_header).setVisibility(GONE);
+            rootView.findViewById(R.id.ctc_header).setVisibility(View.VISIBLE);
+            adapter.addItems(ctcAppointmentsList, 0);
+        } else if (i==1) {
+            rootView.findViewById(R.id.ctc_header).setVisibility(GONE);
+            rootView.findViewById(R.id.tb_appointments_header).setVisibility(View.VISIBLE);
+            adapter.addItems(tbAppointmentsList, 1);
+        }
 
     }
 
@@ -131,19 +134,19 @@ public class MissedAppointmentActivity extends BaseActivity {
             LayoutInflater vi = (LayoutInflater) act.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = vi.inflate(R.layout.subscription_plan_items_drop_down, null);
 
-            TextView tvTitle =(TextView)rowView.findViewById(R.id.rowtext);
+            TextView tvTitle = (TextView) rowView.findViewById(R.id.rowtext);
             tvTitle.setText(items.get(position));
 
             return rowView;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent){
+        public View getView(int position, View convertView, ViewGroup parent) {
             View rowView = convertView;
             LayoutInflater vi = (LayoutInflater) act.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             rowView = vi.inflate(R.layout.single_text_spinner_view_item, null);
 
-            TextView tvTitle = (TextView)rowView.findViewById(R.id.rowtext);
+            TextView tvTitle = (TextView) rowView.findViewById(R.id.rowtext);
             tvTitle.setText(items.get(position));
 
             return rowView;
@@ -154,7 +157,7 @@ public class MissedAppointmentActivity extends BaseActivity {
             return items.size();
         }
 
-        public void updateItems(List<String> newItems){
+        public void updateItems(List<String> newItems) {
             this.items = null;
             this.items = newItems;
             this.notifyDataSetChanged();

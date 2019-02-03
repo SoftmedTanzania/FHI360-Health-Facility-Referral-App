@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:app_ms="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,379 +9,91 @@
     android:fitsSystemWindows="true"
     tools:context="com.softmed.htmr_facility.activities.AppointmentActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/upcoming_appointments"
-                    android:textColor="@color/white"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="4dp"
-                    android:textSize="14sp"
-                    android:id="@+id/app_name"/>
-
-                <fr.ganfra.materialspinner.MaterialSpinner
-                    android:id="@+id/spin_appointment_type"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:divider="@null"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app_ms:ms_hintTextSize="14sp"
-                    app_ms:ms_multiline="false"
-                    app_ms:ms_hint="Appointment Type"
-                    app_ms:ms_enableFloatingLabel="true"
-                    app_ms:ms_enableErrorLabel="false"
-                    app_ms:ms_floatingLabelText="Appointment Type"
-                    app_ms:ms_baseColor="@color/white"
-                    app_ms:ms_highlightColor="@color/white"
-                    app_ms:ms_errorColor="@color/red_500"
-                    app_ms:ms_hintColor="#b3b3b3"
-                    app_ms:ms_arrowColor="@color/white"
-                    app_ms:ms_arrowSize="12dp"
-                    app_ms:ms_floatingLabelColor="@color/white"/>
-
-
-            </RelativeLayout>
-
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:scrollbars="none"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/app_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="4dp"
+                        android:text="@string/upcoming_appointments"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_appointment_type"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:divider="@null"
+                        app_ms:ms_arrowColor="@color/white"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_baseColor="@color/white"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_floatingLabelColor="@color/white"
+                        app_ms:ms_floatingLabelText="Appointment Type"
+                        app_ms:ms_highlightColor="@color/white"
+                        app_ms:ms_hint="Appointment Type"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_multiline="false" />
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/cyan_200"
+                app:tabIndicatorHeight="2dp"
+                app:tabMaxWidth="0dp"
+                app:tabMode="fixed" />
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:paddingTop="8dp">
 
-            <LinearLayout
-                android:visibility="gone"
+            <com.softmed.htmr_facility.customviews.NonSwipeableViewPager
+                android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@color/card_separator"
-                android:gravity="bottom"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_weight="0.8"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:id="@+id/client_name_et"
-                    android:textColor="@color/card_title_text"
-                    android:drawableRight="@mipmap/ic_portrait"
-                    android:layout_marginLeft="16dp"
-                    android:textColorHint="@color/card_grid_tex"
-                    android:hint="@string/client_name"
-                    android:fontFamily="@font/avenir_light"
-                    android:textSize="14sp"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_weight="0.8"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:id="@+id/from_date_et"
-                    android:textColor="@color/card_title_text"
-                    android:drawableRight="@mipmap/ic_date"
-                    android:layout_marginLeft="16dp"
-                    android:textColorHint="@color/card_grid_tex"
-                    android:hint="@string/from_date"
-                    android:fontFamily="@font/avenir_light"
-                    android:textSize="14sp"/>
-
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/to_date_et"
-                    android:textColor="@color/card_title_text"
-                    android:drawableRight="@mipmap/ic_date"
-                    android:layout_marginLeft="16dp"
-                    android:hint="@string/to_date"
-                    android:fontFamily="@font/avenir_light"
-                    android:textColorHint="@color/card_grid_tex"
-                    android:textSize="14sp"/>
-
-                <fr.ganfra.materialspinner.MaterialSpinner
-                    android:id="@+id/spin_status"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.6"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:divider="@null"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app_ms:ms_hintTextSize="14sp"
-                    app_ms:ms_multiline="false"
-                    app_ms:ms_hint="Status"
-                    app_ms:ms_enableFloatingLabel="true"
-                    app_ms:ms_enableErrorLabel="false"
-                    app_ms:ms_floatingLabelText="Status"
-                    app_ms:ms_baseColor="@color/colorAccent"
-                    app_ms:ms_highlightColor="@color/colorPrimary"
-                    app_ms:ms_errorColor="@color/red_500"
-                    app_ms:ms_hintColor="#b3b3b3"
-                    app_ms:ms_arrowColor="@color/colorAccent"
-                    app_ms:ms_arrowSize="12dp"
-                    app_ms:ms_floatingLabelColor="@color/colorAccent"
-                    />
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="4dp">
-
-                    <Button
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="16dp"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="@string/btn_search"
-                        android:textColor="@color/card_grid_text"
-                        android:fontFamily="@font/roboto_bold"
-                        android:background="@drawable/border_filter_button"
-                        android:id="@+id/filter_button"/>
-
-                    <com.rey.material.widget.ProgressView
-                        android:visibility="gone"
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
-                        android:paddingLeft="35dp"
-                        android:paddingRight="35dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
-                        android:id="@+id/progress_bar"
-                        app:pv_autostart="true"
-                        app:pv_circular="true"
-                        app:pv_progressStyle="@style/Material.Drawable.CircularProgress"
-                        app:pv_progressMode="indeterminate"/>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ctc_header"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="S/N"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/client_f_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="@string/ctc_number"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/client_l_name"
-                        android:textColor="@color/black"
-                        android:text="@string/appointment_date"/>
-
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="8dp"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:textColor="@color/black"
-                        android:text="@string/phone_number"/>
-                </RelativeLayout>
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/tb_appointments_header"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="S/N"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:layout_marginLeft="16dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/client_f_name"
-                        android:textColor="@color/black"
-                        android:text="@string/client_name"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/client_l_name"
-                        android:textColor="@color/black"
-                        android:text="@string/appointment_date"/>
-
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="8dp"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:textColor="@color/black"
-                        android:text="@string/phone_number"/>
-                </RelativeLayout>
-
-            </LinearLayout>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:id="@+id/appointment_recycler"
-                android:background="@color/card_separator_third"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+        </FrameLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
