@@ -57,8 +57,7 @@ public class ServiceGenerator {
 
             if (!httpClient.interceptors().contains(interceptor)) {
                 httpClient.addInterceptor(interceptor);
-
-//                builder.client(httpClient.build());
+                builder.client(httpClient.build());
                 retrofit = builder.build();
             }
         }

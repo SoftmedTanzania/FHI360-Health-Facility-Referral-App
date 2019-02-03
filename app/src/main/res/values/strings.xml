@@ -222,6 +222,8 @@
     <string name="emergencies">Emergency Referrals</string>
 
     <string name="finished_treatments">Finished Treatment</string>
+    <string name="username_required"> Please fill the username</string>
+    <string name="password_required"> Please fill the password</string>
 
     <!--TB toast messages-->
 

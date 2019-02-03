@@ -32,6 +32,10 @@ public class PatientsAppointmentsListViewModel extends AndroidViewModel{
         return appDatabase.appointmentModelDao().getAllCTCAppointments(todaysDate,tommorrowsDate);
     }
 
+    public LiveData<List<PatientAppointment>> getMissedCTCAppointments() {
+        return appDatabase.appointmentModelDao().getMissedCTCAppointments();
+    }
+
     public LiveData<List<PatientAppointment>> getTBAppointments(long todaysDate, long tommorrowsDate) {
         return appDatabase.appointmentModelDao().getAllTbAppointments(todaysDate,tommorrowsDate);
     }

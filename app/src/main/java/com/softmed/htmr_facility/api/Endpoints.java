@@ -28,8 +28,7 @@ public class Endpoints {
     private String HFUUID = "";
 
     public interface LoginService {
-
-        @POST("security/authenticate/")
+        @GET("security/authenticate")
         Call<LoginResponse> basicLogin();
 
     }

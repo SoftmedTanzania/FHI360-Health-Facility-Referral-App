@@ -32,8 +32,11 @@ public interface PatientAppointmentModelDao {
     @Query("select * from PatientAppointment where appointmentType = 2 and appointmentDate<:tommorrowsDate AND appointmentDate>:todaysDate order by appointmentDate asc")
     LiveData<List<PatientAppointment>> getAllTbAppointments(long todaysDate, long tommorrowsDate);
 
-    @Query("select * from PatientAppointment where appointmentType = 1 and appointmentDate<:tommorrowsDate AND appointmentDate>:todaysDate order by appointmentDate asc")
+    @Query("select * from PatientAppointment where appointmentType = 1 and status=0 and appointmentDate<=:tommorrowsDate AND appointmentDate>=:todaysDate order by appointmentDate asc")
     LiveData<List<PatientAppointment>> getAllCTCAppointments(long todaysDate, long tommorrowsDate);
+
+    @Query("select * from PatientAppointment where appointmentType = 1 and status = -1  order by appointmentDate asc")
+    LiveData<List<PatientAppointment>> getMissedCTCAppointments();
 
     @Query("select * from PatientAppointment where patientID = :patientId")
     List<PatientAppointment> getThisPatientAppointments(String patientId);

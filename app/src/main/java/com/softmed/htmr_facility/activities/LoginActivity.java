@@ -292,6 +292,9 @@ public class LoginActivity extends BaseActivity {
             loginMessages.setVisibility(View.VISIBLE);
             loginMessages.setText(getResources().getString(R.string.loging_in));
 
+
+            Log.d("coze username = ",usernameValue);
+            Log.d("coze password = ",passwordValue);
             //Use Retrofit to make http request calls
             Endpoints.LoginService loginService =
                     ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue, null);
@@ -301,6 +304,7 @@ public class LoginActivity extends BaseActivity {
                 @SuppressLint("StaticFieldLeak")
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    Log.d("coze response = ",new Gson().toJson(response));
 
                     if (response.isSuccessful()) {
                         // user object available
