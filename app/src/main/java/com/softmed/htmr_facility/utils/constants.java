@@ -9,6 +9,9 @@ public class constants {
     public static String BASE_URL = "http://45.56.90.103:8080/opensrp/";
     //public static String BASE_URL = "http://192.168.43.251:8080/opensrp/";
 
+    public static final String INITIAL_SYNC_PREFERENCES = "initial_sync_preferences";
+    public static final String INITIAL_SYNC_DONE = "initial_sync_done";
+
     public static final String USER_ROLE_ADMIN = "htmr-admin";
     public static final String USER_ROLE_CTC = "htmr-ctc";
     public static final String USER_ROLE_OPD = "htmr-opd";

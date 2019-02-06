@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,7 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.rey.material.widget.ProgressView;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
@@ -32,6 +31,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import com.rey.material.widget.ProgressView;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
@@ -61,6 +61,11 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.softmed.htmr_facility.utils.constants.INITIAL_SYNC_DONE;
+import static com.softmed.htmr_facility.utils.constants.INITIAL_SYNC_PREFERENCES;
 
 /**
  * Created by issy on 11/23/17.
@@ -81,6 +86,7 @@ public class LoginActivity extends BaseActivity {
     private String deviceRegistrationId = "";
     private Endpoints.ReferalService referalService;
     private Endpoints.PatientServices patientService;
+    private Endpoints.LoginService loginService;
 
     // Session Manager Class
     private SessionManager session;
@@ -88,15 +94,26 @@ public class LoginActivity extends BaseActivity {
     int flag = 0;
     boolean justInitializing = false;
 
+    Retrofit retrofit;
+    String authToken = "";
+
+    private Context context;
+    private SharedPreferences initialSyncPreferences;
+    private SharedPreferences.Editor initialSyncPreferenceEditor;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //<> SETUP STARTS
         String localeString = localeSp.getString(LOCALE_KEY, SWAHILI_LOCALE);
-        Log.d("language", "From SP : "+localeString);
         Configuration config = getBaseContext().getResources().getConfiguration();
-        if (localeString.equals(ENGLISH_LOCALE)){
 
+        Gson gson = new GsonBuilder()
+                .setLenient() //Without this it returns an error from the server that it requires to set lenient in order to read the json
+                .create();
+
+        if (localeString.equals(ENGLISH_LOCALE)){
             String language = ENGLISH_LOCALE;
             String country = "US";
             Locale locale = new Locale(language , country);
@@ -115,6 +132,17 @@ public class LoginActivity extends BaseActivity {
 
         setContentView(R.layout.activity_login);
         setupview();
+        //</> UI SETUP ENDS
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://45.56.90.103:8080/opensrp/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        context = this.getBaseContext();
+
+        initialSyncPreferences = context.getSharedPreferences(
+                INITIAL_SYNC_PREFERENCES, Context.MODE_PRIVATE);
 
         // Session Manager
         session = new SessionManager(getApplicationContext());
@@ -225,10 +253,12 @@ public class LoginActivity extends BaseActivity {
     @SuppressLint("StaticFieldLeak")
     private void loginUser(){
 
+        Log.d("userLogin", "Loging in...");
+
         if (!isNetworkAvailable()){
             //login locally
 
-            Log.d("LoginActivity", "Inside no network");
+            Log.d("userLogin", "Inside no network");
 
             new AsyncTask<Void, Void, Void>(){
 
@@ -292,15 +322,26 @@ public class LoginActivity extends BaseActivity {
             loginMessages.setVisibility(View.VISIBLE);
             loginMessages.setText(getResources().getString(R.string.loging_in));
 
+            Log.d("userLogin", "Calling login");
+
             //Use Retrofit to make http request calls
+
             Endpoints.LoginService loginService =
                     ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue, null);
-            Call<LoginResponse> call = loginService.basicLogin();
+            Call<LoginResponse> call = loginService.login();
+
+            /*authToken = Credentials.basic(usernameValue, passwordValue);
+
+            Endpoints.LoginService loginServ = retrofit.create(Endpoints.LoginService.class);
+            Call<LoginResponse> loginCall = loginServ.basicUserLogin(authToken); */
+
             call.enqueue(new Callback<LoginResponse >() {
 
                 @SuppressLint("StaticFieldLeak")
                 @Override
                 public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+
+                    Log.d("userLogin", "Response is : "+response.message());
 
                     if (response.isSuccessful()) {
                         // user object available
@@ -385,10 +426,6 @@ public class LoginActivity extends BaseActivity {
 
     private void sendRegistrationToServer(String token, String userUiid, String hfid){
 
-        Log.d("CHECK_FACILITY_ID", "Registering Device to server");
-
-        SessionManager sess = new SessionManager(getApplicationContext());
-
         String datastream = "";
         JSONObject object   = new JSONObject();
         RequestBody body;
@@ -413,19 +450,28 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new retrofit2.Callback() {
             @Override
             public void onResponse(retrofit2.Call call, Response response) {
-                Log.d("DeviceID", "Response from server : "+new Gson().toJson(response.body()));
-                new AddUserData(baseDatabase).execute(userData);
+                checkIfSyncDone();
             }
 
             @Override
             public void onFailure(retrofit2.Call call, Throwable t) {
-
-                new AddUserData(baseDatabase).execute(userData);
                 loginMessages.setText(getResources().getString(R.string.device_registration_warning));
                 loginMessages.setTextColor(getResources().getColor(R.color.red_600));
+                checkIfSyncDone();
             }
         });
 
+    }
+
+    private void checkIfSyncDone(){
+        int syncDone = initialSyncPreferences.getInt(INITIAL_SYNC_DONE, 0);
+        if (syncDone == 1){
+            //Initial Sync has already been done
+            userLoggedIn();
+        }else {
+            //Initial Sync has not been done
+            new AddUserData(baseDatabase).execute(userData);
+        }
     }
 
     private void callReferralList(){
@@ -554,12 +600,13 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            loginMessages.setText("");
-            loginProgress.setVisibility(View.GONE);
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-            LoginActivity.this.finish();
+
+            //Update shared preference that initial sync has been done
+            initialSyncPreferenceEditor = initialSyncPreferences.edit();
+            initialSyncPreferenceEditor.putInt(INITIAL_SYNC_DONE, 1);
+            initialSyncPreferenceEditor.apply();
+
+            userLoggedIn();
         }
 
     }
@@ -723,6 +770,15 @@ public class LoginActivity extends BaseActivity {
 
         usernameEt =  findViewById(R.id.user_username_et);
         passwordEt =  findViewById(R.id.password_et);
+    }
+
+    private void userLoggedIn(){
+        loginMessages.setText("");
+        loginProgress.setVisibility(View.GONE);
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        LoginActivity.this.finish();
     }
 
     private boolean isNetworkAvailable() {

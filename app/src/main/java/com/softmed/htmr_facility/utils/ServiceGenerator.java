@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-    public static final String API_BASE_URL = "http://45.56.90.103:8080/opensrp/"; // Development
+    private static final String API_BASE_URL = "http://45.56.90.103:8080/opensrp/"; // Development
     //public static final String API_BASE_URL = "http://139.162.151.34:8080/opensrp/"; // Online
 //    public static final String API_BASE_URL = "http://192.`168.2.8:8080/opensrp/"; //Local
 
@@ -52,18 +52,32 @@ public class ServiceGenerator {
             Class<S> serviceClass, final String authToken, String hfuuid) {
         if (!TextUtils.isEmpty(authToken)) {
 
-            AuthenticationInterceptor interceptor =
-                    new AuthenticationInterceptor(authToken, hfuuid);
+            if (!TextUtils.isEmpty(hfuuid)){
+                AuthenticationInterceptor interceptor =
+                        new AuthenticationInterceptor(authToken, hfuuid);
 
-            if (!httpClient.interceptors().contains(interceptor)) {
-                httpClient.addInterceptor(interceptor);
+                if (!httpClient.interceptors().contains(interceptor)) {
+                    httpClient.addInterceptor(interceptor);
 
-//                builder.client(httpClient.build());
-                retrofit = builder.build();
+                    builder.client(httpClient.build());
+                    //retrofit = builder.build();
+                }
+            }else {
+                LoginInterceptor loginInterceptor =
+                        new LoginInterceptor(authToken);
+
+                if (!httpClient.interceptors().contains(loginInterceptor)) {
+                    httpClient.addInterceptor(loginInterceptor);
+
+                    builder.client(httpClient.build());
+                    //retrofit = builder.build();
+                }
             }
+
         }
 
-        return retrofit.create(serviceClass);
+        //return retrofit.create(serviceClass);
+        return builder.build().create(serviceClass);
     }
 
 }

@@ -12,7 +12,7 @@ import com.softmed.htmr_facility.dom.objects.User;
  * Created by issy on 11/23/17.
  */
 
-public class LoginResponse implements Serializable{
+public class LoginResponse implements Serializable {
 
     @SerializedName("locations")
     private Locations locations;

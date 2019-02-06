@@ -30,7 +30,10 @@ public class Endpoints {
     public interface LoginService {
 
         @POST("security/authenticate/")
-        Call<LoginResponse> basicLogin();
+        Call<LoginResponse> login();
+
+        @POST("security/authenticate/")
+        Call<LoginResponse> basicUserLogin(@Header("Authorization") String authToken);
 
     }
 
