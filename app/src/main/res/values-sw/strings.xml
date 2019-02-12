@@ -153,6 +153,8 @@
     <string name="male">Wanaume</string>
     <string name="female">Wanawake</string>
 
+    <string name="total_received_referrals">Rufaa Zote Zilizopokelewa</string>
+
     <string name="patient_referral_notification">Umepokea Rufaa Mpya</string>
     <string name="new_client_notification">Umepokea Mteja Mpya</string>
     <string name="referral_feedback_notification">Umepokea Mrejesho wa Rufaa</string>

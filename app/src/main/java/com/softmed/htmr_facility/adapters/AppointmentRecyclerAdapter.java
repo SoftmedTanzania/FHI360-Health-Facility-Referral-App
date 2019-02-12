@@ -1,6 +1,8 @@
 package com.softmed.htmr_facility.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,12 +13,16 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.ClientRegisterActivity;
+import com.softmed.htmr_facility.activities.PatientDetailsActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED_VAL;
 import static com.softmed.htmr_facility.utils.constants.STATUS_PENDING;
@@ -76,6 +82,28 @@ public class AppointmentRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             }
 
             holder.appointmentStatus.setText(patientAppointment.getStatus() == STATUS_PENDING_VAL ? "Pending" : "Attended");
+
+            holder.viewItem.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("StaticFieldLeak")
+                @Override
+                public void onClick(View v) {
+                    new AsyncTask<Void,Void,Patient>(){
+                        @Override
+                        protected void onPostExecute(Patient patient) {
+                            super.onPostExecute(patient);
+                            Intent intent = new Intent(context, PatientDetailsActivity.class);
+                            intent.putExtra("service", OPD_SERVICE_ID);
+                            intent.putExtra("patient", patient);
+                            context.startActivity(intent);
+                        }
+
+                        @Override
+                        protected Patient doInBackground(Void... voids) {
+                            return database.patientModel().getPatientById(patientAppointment.getPatientID());
+                        }
+                    }.execute();
+                }
+            });
         }
 
     }
