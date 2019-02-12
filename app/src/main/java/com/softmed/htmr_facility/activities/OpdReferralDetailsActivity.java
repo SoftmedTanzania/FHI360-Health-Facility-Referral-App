@@ -40,6 +40,12 @@ import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 import com.softmed.htmr_facility.utils.ListStringConverter;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
+import static com.softmed.htmr_facility.utils.constants.FEMALE;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_SW;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_VALUE;
+import static com.softmed.htmr_facility.utils.constants.MALE;
+import static com.softmed.htmr_facility.utils.constants.MALE_SW;
+import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 
@@ -106,8 +112,13 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mReferralFeedbackOptions.add("Received and Attended");
-        mReferralFeedbackOptions.add("Received and Referred");
+        if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+            mReferralFeedbackOptions.add("Received and Attended");
+            mReferralFeedbackOptions.add("Received and Referred");
+        }else {
+            mReferralFeedbackOptions.add("Amepokelewa na kuhudumiwa");
+            mReferralFeedbackOptions.add("Amepokelewa na kupewa Rufaa");
+        }
 
         referralFeedbackMaterialSpinner.setItems(mReferralFeedbackOptions);
         referralFeedbackMaterialSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
@@ -330,7 +341,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     class patientDetailsTask extends AsyncTask<Void, Void, Void> {
 
-        String patientNames, patientId, serviceName;
+        String patientNames, patientId, serviceName, serviceNameSw;
         long mServiceId;
         Patient patient;
         AppDatabase db;
@@ -347,6 +358,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
             serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId+""));
+            serviceNameSw = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId+""));
             currentPatient = patient;
 
             List<Long> ids = currentReferral.getServiceIndicatorIds();
@@ -384,7 +396,13 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 String villageTitle = getResources().getString(R.string.village);
                 String mapCueTitle = getResources().getString(R.string.map_cue);
 
-                //Set referral Service name
+                //Set referral Service name CHECK LOCALE
+                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+                    referralServiceName.setText(serviceName);
+                }else {
+                    referralServiceName.setText(serviceNameSw);
+                }
+
                 referralServiceName.setText(serviceName);
 
                 //display clients Phone Number
@@ -393,7 +411,20 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 wardText.setText(patient.getWard() == null ? "N/A " : patient.getWard());
                 villageText.setText(patient.getVillage() == null ? "N/A " : patient.getVillage());
                 hamletText.setText(patient.getHamlet() == null ? "N/A " : patient.getHamlet());
-                patientGender.setText(patient.getGender());
+
+                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                        patientGender.setText(MALE);
+                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                        patientGender.setText(FEMALE);
+                    }
+                }else {
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                        patientGender.setText(MALE_SW);
+                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                        patientGender.setText(FEMALE_SW);
+                    }
+                }
             }
 
             OpdReferralDetailsActivity.IndicatorsRecyclerAdapter adapter = new OpdReferralDetailsActivity.IndicatorsRecyclerAdapter(OpdReferralDetailsActivity.this, indicators);

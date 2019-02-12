@@ -64,6 +64,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
+import static com.softmed.htmr_facility.utils.constants.FEMALE;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_SW;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_VALUE;
+import static com.softmed.htmr_facility.utils.constants.MALE;
+import static com.softmed.htmr_facility.utils.constants.MALE_SW;
+import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEFARIKI;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEHAMA;
 import static com.softmed.htmr_facility.utils.constants.MATOKEO_AMEMALIZA_TIBA;
@@ -494,7 +500,20 @@ public class TbClientDetailsActivity extends BaseActivity {
                 " "+ _patient.getPatientSurname();
 
         patientNames.setText(names);
-        patientGender.setText(_patient.getGender());
+
+        if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+            if (_patient.getGender().equals(MALE) || _patient.getGender().equals(MALE_VALUE)){
+                patientGender.setText(MALE);
+            }else if (_patient.getGender().equals(FEMALE) || _patient.getGender().equals(FEMALE_VALUE)){
+                patientGender.setText(FEMALE);
+            }
+        }else {
+            if (_patient.getGender().equals(MALE) || _patient.getGender().equals(MALE_VALUE)){
+                patientGender.setText(MALE_SW);
+            }else if (_patient.getGender().equals(FEMALE) || _patient.getGender().equals(FEMALE_VALUE)){
+                patientGender.setText(FEMALE_SW);
+            }
+        }
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(_patient.getDateOfBirth());

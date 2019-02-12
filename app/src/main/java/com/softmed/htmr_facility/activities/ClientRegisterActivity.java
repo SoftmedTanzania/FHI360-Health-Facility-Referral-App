@@ -46,7 +46,9 @@ import retrofit2.Response;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.FEMALE;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_VALUE;
 import static com.softmed.htmr_facility.utils.constants.MALE;
+import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
 import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_APPOINTMENTS;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
@@ -134,7 +136,14 @@ public class ClientRegisterActivity extends BaseActivity {
         //dialog = ProgressDialog.show(TbRegisterActivity.this, "Saving",
         //        "Loading. Please wait...", true);
 
-        final String[] genders = {MALE, FEMALE};
+        String genders[] = new String[2];
+        if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+            genders[0] = "Male";
+            genders[1] = "Female";
+        }else {
+            genders[0] = "Kiume";
+            genders[1] = "Kike";
+        }
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, R.layout.simple_spinner_item_black, genders);
         spinAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_black);
         genderSpinner.setAdapter(spinAdapter);
@@ -262,9 +271,9 @@ public class ClientRegisterActivity extends BaseActivity {
 
         Log.d(TAG, "displayPatientDetails: Patient Gender -> "+patient.getGender());
 
-        if (patient.getGender().equals(MALE)){
+        if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
             genderSpinner.setSelection(1);
-        }else if (patient.getGender().equals(FEMALE)){
+        }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
             genderSpinner.setSelection(2);
         }
 
@@ -282,10 +291,15 @@ public class ClientRegisterActivity extends BaseActivity {
 
         strSurname = surname.getText().toString().isEmpty() ? "" : surname.getText().toString();
 
-        if (genderSpinner.getSelectedItemPosition() == -1){
-            return false;
-        }else {
-            strGender = (String) genderSpinner.getSelectedItem();
+        switch (genderSpinner.getSelectedItemPosition()){
+            case -1:
+                return false;
+            case 0:
+                strGender = MALE_VALUE;
+                break;
+            case 1:
+                strGender = FEMALE_VALUE;
+                break;
         }
 
         strPhone = phone.getText().toString().isEmpty() ? "" : phone.getText().toString();

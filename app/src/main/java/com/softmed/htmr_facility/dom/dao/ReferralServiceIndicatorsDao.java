@@ -34,6 +34,9 @@ public interface ReferralServiceIndicatorsDao {
     @Query("select serviceName || ' ' from ReferralServiceIndicators where serviceId = :serviceID")
     String getServiceNameById(int serviceID);
 
+    @Query("select serviceNameSw || ' ' from ReferralServiceIndicators where serviceId = :serviceID")
+    String getServiceNameByIdSW(int serviceID);
+
     @Insert(onConflict = REPLACE)
     void addService(ReferralServiceIndicators referralServiceIndicator);
 

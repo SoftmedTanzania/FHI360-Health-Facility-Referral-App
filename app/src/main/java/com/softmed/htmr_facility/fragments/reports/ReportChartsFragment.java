@@ -290,8 +290,8 @@ public class ReportChartsFragment extends Fragment {
                     }
                 }
 
-                BarDataSet set1 = new BarDataSet(entries, "Services");
-                BarDataSet set2 = new BarDataSet(interfacilityEntries, "Services");
+                BarDataSet set1 = new BarDataSet(entries, getString(R.string.services));
+                BarDataSet set2 = new BarDataSet(interfacilityEntries, getString(R.string.services));
                 //BarDataSet set3 = new BarDataSet(intrafacilityEntries, "Services");
 
                 PieDataSet pieDataSet = new PieDataSet(yEntrys, getResources().getString(R.string.service));

@@ -9,6 +9,11 @@ public class constants {
     public static String BASE_URL = "http://45.56.90.103:8080/opensrp/";
     //public static String BASE_URL = "http://192.168.43.251:8080/opensrp/";
 
+    //APP DATA NAMES
+    public static final String SYNC_STATUS = "sync_status";
+    public static final String SYNC_STATUS_ON = "on";
+    public static final String SYNC_STATUS_OFF = "off";
+
     public static final String INITIAL_SYNC_PREFERENCES = "initial_sync_preferences";
     public static final String INITIAL_SYNC_DONE = "initial_sync_done";
 
@@ -31,6 +36,11 @@ public class constants {
 
     public static final String MALE = "Male";
     public static final String FEMALE = "Female";
+    public static final String MALE_SW = "Mwanaume";
+    public static final String FEMALE_SW = "Mwanamke";
+
+    public static final String MALE_VALUE = "1";
+    public static final String FEMALE_VALUE = "0";
 
     public static final String TEST_RESULT_POSITIVE = "Positive";
     public static final String TEST_RESULT_NEGATIVE = "Negative";

@@ -105,7 +105,7 @@
     <string name="referrals_issued_ctc">Rufaa Zilizotolewa (CTC)</string>
     <string name="register_client">Sajili Mteja</string>
     <string name="referrals_issued">Rufaa Zilizotolewa</string>
-    <string name="status">Status</string>
+    <string name="status">Hali</string>
     <string name="new_client_registration_form">Fomu ya Usajili na Rufaa kwa Mteja Mpya</string>
     <string name="initial_information">Taarifa za Awali</string>
     <string name="first_name">Jina la Kwanza</string>
@@ -211,7 +211,7 @@
     <string name="lab_referrals">Rufaa za Maabara</string>
     <string name="other_referrals">Rufaa zinginezo</string>
 
-    <string name="emergencies"> Rudaa za Dharura </string>
+    <string name="emergencies"> Rufaa za Dharura </string>
 
     <string name="finished_treatments">Amemaliza Matibabu</string>
 
@@ -223,5 +223,23 @@
     <string name="fill_client_weight">Tafadhali jaza uzito wa mteja</string>
     <string name="fill_sputum_status">Tafadhali jaza hali ya makohozi ya mgonjwa</string>
     <string name="fill_treatment_type">Tafadhali Jaza Aina ya matibabu</string>
+    <string name="user">Mtumiaji ::</string>
+    <string name="others_referrals">Rufaa Zingine</string>
+    <string name="charts">Chati</string>
+    <string name="chw_report">Ripoti ya Rufaa za Wahudumu wa Afya</string>
+    <string name="interfacility_reports">Ripoti za Rufaa Nje ya Kituo</string>
+    <string name="intrafacility_report">Ripoti za Rufaa Ndani ya Kituo</string>
+    <string name="tb_appointment_report">Riporti za Miadi ya Kifua Kikuu</string>
+    <string name="tb_reports">Ripoti za Kifua Kikuu</string>
+    <string name="from">Kuanzia</string>
+    <string name="to">Mpaka</string>
+    <string name="chw_referrals_summary">Ufupisho wa taarifa za rufaa za wahudumu wa afya ngazi ya jamiii</string>
+    <string name="intra_facility_referrals_summary">Ufupisho wa taarifa za rufaa kutoka ndani ya kituo cha afya</string>
+    <string name="inter_facility_referrals_summary">Ufupisho wa taarifa za rufaa kutoka nje ya kituo</string>
+    <string name="services">Huduma</string>
+    <string name="apply">Tafuta</string>
+    <string name="under_medication_report">Ripoti ya matibabu ya mgonjwa</string>
+    <string name="appointment_type">Aina ya Miadi</string>
+    <string name="emergency_empty_state">Hakuna Rufaa za Dharura</string>
 
 </resources>

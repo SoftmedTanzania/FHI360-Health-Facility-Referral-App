@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="From"
+                    android:text="@string/from"
                     android:id="@+id/date_range_from"
                     android:textStyle="bold"
                     android:layout_marginLeft="8dp"
@@ -61,7 +61,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="to"
+            android:text="@string/to"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="To"
+                    android:text="@string/to"
                     android:id="@+id/date_range_to"
                     android:textStyle="bold"
                     android:layout_marginLeft="8dp"
@@ -147,7 +147,7 @@
                     android:id="@+id/title"
                     android:layout_marginLeft="16dp"
                     android:textColor="@color/card_title_text"
-                    android:text="CHW Referrals Summary"/>
+                    android:text="@string/chw_referrals_summary"/>
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                     android:id="@+id/interfacility_chart_title"
                     android:layout_marginLeft="16dp"
                     android:textColor="@color/card_title_text"
-                    android:text="Inter-facility Referrals Summary"/>
+                    android:text="@string/inter_facility_referrals_summary"/>
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -234,7 +234,7 @@
                     android:id="@+id/intrafacility_title"
                     android:layout_marginLeft="16dp"
                     android:textColor="@color/card_title_text"
-                    android:text="Intra-facility Referrals Summary"/>
+                    android:text="@string/intra_facility_referrals_summary"/>
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"

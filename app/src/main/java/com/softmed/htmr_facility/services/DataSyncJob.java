@@ -86,7 +86,6 @@ public class DataSyncJob extends JobService {
         return true;
     }
 
-
     private void syncDataInPostOffice(){
 
         //Check if data is available in the PostOffice

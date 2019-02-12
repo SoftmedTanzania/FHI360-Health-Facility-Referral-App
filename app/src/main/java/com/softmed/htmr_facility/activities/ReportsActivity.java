@@ -69,42 +69,42 @@ public class ReportsActivity extends BaseActivity {
 
         View reportChartsTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView chartsTitle = (TextView) reportChartsTab.findViewById(R.id.title_text);
-        chartsTitle.setText("Charts"); //TODO language
+        chartsTitle.setText(R.string.charts);
         tabLayout.getTabAt(0).setCustomView(reportChartsTab);
         ImageView iv    = (ImageView) reportChartsTab.findViewById(R.id.icon);
         iv.setVisibility(View.GONE);
 
         View chwReferralsReportTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView chwReportTitle = (TextView) chwReferralsReportTab.findViewById(R.id.title_text);
-        chwReportTitle.setText("CHW Referrals Report"); //TODO language
+        chwReportTitle.setText(R.string.chw_report);
         tabLayout.getTabAt(1).setCustomView(chwReferralsReportTab);
         ImageView iv1    = (ImageView) chwReferralsReportTab.findViewById(R.id.icon);
         iv1.setVisibility(View.GONE);
 
         View interFacilityReferralsReportTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView interFacilityReferralsReportTitle = (TextView) interFacilityReferralsReportTab.findViewById(R.id.title_text);
-        interFacilityReferralsReportTitle.setText("Inter Facility Referrals Report"); //TODO language
+        interFacilityReferralsReportTitle.setText(R.string.interfacility_reports);
         tabLayout.getTabAt(2).setCustomView(interFacilityReferralsReportTab);
         ImageView iv2    = (ImageView) interFacilityReferralsReportTab.findViewById(R.id.icon);
         iv2.setVisibility(View.GONE);
 
         View intraFacilityReferralsReportTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView intraFacilityReferralsReportTitle = (TextView) intraFacilityReferralsReportTab.findViewById(R.id.title_text);
-        intraFacilityReferralsReportTitle.setText("Intra Facility Referrals Report"); //TODO language
+        intraFacilityReferralsReportTitle.setText(R.string.intrafacility_report);
         tabLayout.getTabAt(3).setCustomView(intraFacilityReferralsReportTab);
         ImageView iv3 = (ImageView) intraFacilityReferralsReportTab.findViewById(R.id.icon);
         iv3.setVisibility(View.GONE);
 
         View tbAppointmentsReportsTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView reportTitle = (TextView) tbAppointmentsReportsTab.findViewById(R.id.title_text);
-        reportTitle.setText("Tb Appointments Report"); //TODO language
+        reportTitle.setText(R.string.tb_appointment_report);
         tabLayout.getTabAt(4).setCustomView(tbAppointmentsReportsTab);
         ImageView iv0    = (ImageView) tbAppointmentsReportsTab.findViewById(R.id.icon);
         iv0.setVisibility(View.GONE);
 
         View tbReportsTab = getLayoutInflater().inflate(R.layout.custom_tabs, null);
         TextView tbReportsTitle = (TextView) tbReportsTab.findViewById(R.id.title_text);
-        tbReportsTitle.setText("Tb Reports"); //TODO language
+        tbReportsTitle.setText(R.string.tb_reports);
         tabLayout.getTabAt(5).setCustomView(tbReportsTab);
         ImageView iv5    = (ImageView) tbReportsTab.findViewById(R.id.icon);
         iv5.setVisibility(View.GONE);

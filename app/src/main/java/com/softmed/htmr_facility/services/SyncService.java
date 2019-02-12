@@ -32,8 +32,9 @@ public class SyncService extends Service {
          * Disallow parallel syncs
          */
         synchronized (sSyncAdapterLock){
-            if (sSyncAdapter == null)
-                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+            if (sSyncAdapter == null){
+                //sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+            }
         }
     }
 
@@ -44,6 +45,7 @@ public class SyncService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return sSyncAdapter.getSyncAdapterBinder();
+        //return sSyncAdapter.getSyncAdapterBinder();
+        return null;
     }
 }

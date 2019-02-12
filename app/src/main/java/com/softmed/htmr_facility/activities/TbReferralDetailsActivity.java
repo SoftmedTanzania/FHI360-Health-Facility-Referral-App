@@ -46,6 +46,12 @@ import com.softmed.htmr_facility.utils.ListStringConverter;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
+import static com.softmed.htmr_facility.utils.constants.FEMALE;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_SW;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_VALUE;
+import static com.softmed.htmr_facility.utils.constants.MALE;
+import static com.softmed.htmr_facility.utils.constants.MALE_SW;
+import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
@@ -407,10 +413,23 @@ public class TbReferralDetailsActivity extends BaseActivity {
                     e.printStackTrace();
                 }
 
+                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                        patientGender.setText(MALE);
+                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                        patientGender.setText(FEMALE);
+                    }
+                }else {
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                        patientGender.setText(MALE_SW);
+                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                        patientGender.setText(FEMALE_SW);
+                    }
+                }
+
                 wardText.setText(patient.getWard() == null ? "" : patient.getWard());
                 villageText.setText(patient.getVillage() == null ? "" : patient.getVillage());
                 hamletText.setText(patient.getHamlet() == null ? "" : patient.getHamlet());
-                patientGender.setText(patient.getGender());
                 clientCtcNumber.setText(patient.getCtcNumber());
             }
 

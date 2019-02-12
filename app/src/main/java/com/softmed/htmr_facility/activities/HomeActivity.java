@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +50,7 @@ import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.customviews.NonSwipeableViewPager;
+import com.softmed.htmr_facility.dom.objects.AppData;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
@@ -58,30 +60,30 @@ import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.EncounterResponse;
-import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.fragments.HivFragment;
 import com.softmed.htmr_facility.fragments.LabFragment;
 import com.softmed.htmr_facility.fragments.OPDFragment;
 import com.softmed.htmr_facility.fragments.TbFragment;
 import com.softmed.htmr_facility.services.DataSyncJob;
-import com.softmed.htmr_facility.utils.AlarmReceiver;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
 import com.softmed.htmr_facility.utils.SessionManager;
 import com.softmed.htmr_facility.viewmodels.PostOfficeListViewModel;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-import static com.softmed.htmr_facility.utils.constants.DATA_CONFLICT;
-import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_APPOINTMENTS;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_ENCOUNTER;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_REFERRAL;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.RESPONCE_SUCCESS;
+import static com.softmed.htmr_facility.utils.constants.SYNC_STATUS;
+import static com.softmed.htmr_facility.utils.constants.SYNC_STATUS_OFF;
+import static com.softmed.htmr_facility.utils.constants.SYNC_STATUS_ON;
 import static com.softmed.htmr_facility.utils.constants.USER_ROLE_ADMIN;
 import static com.softmed.htmr_facility.utils.constants.USER_ROLE_CTC;
 import static com.softmed.htmr_facility.utils.constants.USER_ROLE_LAB;
@@ -159,6 +161,8 @@ public class HomeActivity extends BaseActivity {
 
     private FirebaseJobDispatcher dispatcher;
 
+    private int foundSyncItems = 0;
+
     @SuppressLint("StaticFieldLeak")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -225,40 +229,67 @@ public class HomeActivity extends BaseActivity {
 
         checkPostOfficeData();
 
-        scheduleBackgroundJob();
+        //scheduleBackgroundJob();
+
+        LiveData<AppData> syncDataObserver = database.appDataModelDao().observeAppDataByName(SYNC_STATUS);
+        syncDataObserver.observe(this, new Observer<AppData>() {
+            @Override
+            public void onChanged(@Nullable AppData appData) {
+                if (appData!=null){
+                    if (appData.getName().equals(SYNC_STATUS)){
+                        if (appData.getValue().equals(SYNC_STATUS_ON)){
+                            //Syncing
+                            manualSync.setVisibility(View.INVISIBLE);
+                            syncProgressBar.setVisibility(View.VISIBLE);
+                        }else if (appData.getValue().equals(SYNC_STATUS_OFF)){
+                            //Stopped Syncing
+                            manualSync.setVisibility(View.VISIBLE);
+                            syncProgressBar.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+            }
+        });
 
         manualSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 new AsyncTask<Void, Void, Void>(){
+
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+                    }
+
                     @Override
                     protected Void doInBackground(Void... voids) {
                         Log.d(TAG, "onClick: Manual syncing");
 
-                        //new SyncPostOfficeData().execute();
+                        AppData appData = new AppData();
+                        appData.setName(SYNC_STATUS);
+                        appData.setValue(SYNC_STATUS_ON);
 
-                        // Pass the settings flags by inserting them in a bundle
-                        /*Bundle settingsBundle = new Bundle();
-                        settingsBundle.putBoolean(
-                                ContentResolver.SYNC_EXTRAS_MANUAL, true);
-                        settingsBundle.putBoolean(
-                                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-                        ContentResolver.requestSync(mAccount, AUTHORITY, Bundle.EMPTY);
-                        */
+                        int postOfficeCount = database.postOfficeModelDao().getUnpostedDataCount();
 
-                        //Syncing data using firebase's job Dispatcher
-                        Job myJob = dispatcher.newJobBuilder()
-                                .setService(DataSyncJob.class) // the JobService that will be called
-                                .setTag("10002")        // uniquely identifies the job
-                                .setRecurring(true)
-                                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
-                                .setTrigger(Trigger.executionWindow(0, 0)) //60 seconds changed to 0 seconds to dispatch the job instantly
-                                .setReplaceCurrent(false)
-                                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
-                                .build();
+                        if (postOfficeCount > 0){
+                            database.appDataModelDao().insertAppData(appData);
+                            syncDataInPostOffice();
+                        }
 
-                        dispatcher.mustSchedule(myJob);
+//                        //Syncing data using firebase's job Dispatcher
+//                        Job myJob = dispatcher.newJobBuilder()
+//                                .setService(DataSyncJob.class) // the JobService that will be called
+//                                .setTag("10002")       // uniquely identifies the job
+//                                .setRecurring(false)
+//                                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+//                                //.setTrigger(Trigger.NOW)
+//                                .setTrigger(Trigger.executionWindow(0, 0)) //60 seconds changed to 0 seconds to dispatch the job instantly
+//                                .setReplaceCurrent(false)
+//                                //.setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+//                                .build();
+//
+//                        dispatcher.mustSchedule(myJob);
 
                         return null;
 
@@ -525,11 +556,11 @@ public class HomeActivity extends BaseActivity {
 
     private void scheduleBackgroundJob(){
         Job myJob = dispatcher.newJobBuilder()
-                .setService(DataSyncJob.class) // the JobService that will be called
-                .setTag("10002")        // uniquely identifies the job
+                .setService(DataSyncJob.class)
+                .setTag("10002")
                 .setRecurring(true)
                 .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
-                .setTrigger(Trigger.executionWindow(0, 10)) //60 seconds changed to 10 seconds for development purposes
+                .setTrigger(Trigger.executionWindow(0, 0))
                 .setReplaceCurrent(false)
                 .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
                 .build();
@@ -554,254 +585,6 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
-    }
-
-    private void syncDataInPostOffice(){
-        //Check if data is available in the PostOffice
-        if (database.postOfficeModelDao().getUnpostedDataCount() > 0){
-            List<PostOffice> unpostedData = database.postOfficeModelDao().getUnpostedData();
-            for (int i=0; i<unpostedData.size(); i++){
-
-                final PostOffice data = unpostedData.get(i);
-                Log.d("PostOfficeService", "Post Office Data Type "+data.getPost_data_type());
-
-                if (data.getPost_data_type().equals(POST_DATA_TYPE_PATIENT)){
-
-                    final Patient patient = database.patientModel().getPatientById(data.getPost_id());
-                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
-
-                    Call call = patientServices.postPatient(session.getServiceProviderUUID(), getPatientRequestBody(patient, userData.getUserFacilityId()));
-                    call.enqueue(new Callback() {
-                        @SuppressLint("StaticFieldLeak")
-                        @Override
-                        public void onResponse(Call call, Response response) {
-                            //Store Received Patient Information, TbPatient as well as PatientAppointments
-                            if (response.body()!=null){
-
-                                Patient receivedPatient = (Patient) response.body();
-                                Log.d("POST_DATA_TYPE_PATIENT", receivedPatient.getPatientFirstName());
-
-                                new ReplacePatientObject().execute(patient, receivedPatient);
-
-                                new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
-
-                            }else {
-                                Log.d("POST_DATA_TYPE_PATIENT","Patient Responce is null "+response.body());
-
-                                new AsyncTask<PostOffice, Void, Void>(){
-
-                                    @Override
-                                    protected Void doInBackground(PostOffice... args) {
-                                        //Increase the failed sync count
-                                        PostOffice data = args[0];
-                                        if (data.getFailedSyncCount() > 3){
-                                            data.setSyncStatus(DATA_CONFLICT);
-                                        }else {
-                                            data.setFailedSyncCount(data.getFailedSyncCount()+1);
-                                        }
-
-                                        database.postOfficeModelDao().updatePostData(data);
-
-                                        return null;
-                                    }
-                                }.execute(data);
-
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            Log.d("patient_response", t.getMessage());
-                        }
-                    });
-
-                }else if (data.getPost_data_type().equals(POST_DATA_TYPE_TB_PATIENT)){
-
-                    final Patient patient = database.patientModel().getPatientById(data.getPost_id());
-                    final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientById(patient.getPatientId());
-                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
-
-                    Call call = patientServices.postTbPatient(session.getServiceProviderUUID(), getTbPatientRequestBody(patient, tbPatient, userData));
-                    call.enqueue(new Callback() {
-                        @Override
-                        public void onResponse(Call call, Response response) {
-                            //PatientResponce patientResponce = (PatientResponce) response.body();
-                            //Store Received Patient Information, TbPatient as well as PatientAppointments
-                            Log.d("POST_DATA_TYPE_TP","Responce Code : "+response.code());
-                            if (response.code() == RESPONCE_SUCCESS){
-                                //Tb Patient have been saved
-
-                                //new ReplaceTbPatientAndAppointments(database, patient, tbPatient).execute(patientResponce);
-                                new DeletePOstData(database).execute(data); //Remove PostOffice Entry, set synced SYNCED may also be used to flag data as already synced
-
-                            }else {
-                                try{
-                                    Log.d("POST_DATA_TYPE_TP","Patient Responce is null "+response.body());
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            Log.d("patient_response", "Error : "+t.getStackTrace());
-                        }
-                    });
-
-                } else if (data.getPost_data_type().equals(POST_DATA_TYPE_REFERRAL)){
-
-                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
-                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
-
-                    Call call = referalService.postReferral(session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral));
-                    call.enqueue(new Callback() {
-                        @SuppressLint("StaticFieldLeak")
-                        @Override
-                        public void onResponse(Call call, Response response) {
-                            Referral receivedReferral = (Referral) response.body();
-                            if (response.body() != null) {
-
-                                Log.d("PostReferral", response.body().toString());
-                                new ReplaceReferralObject().execute(referral, receivedReferral);
-
-                                new DeletePOstData(database).execute(data); //This can be removed and data may be set synced status to SYNCED
-
-                            } else {
-                                Log.d("PostReferral", "Responce is Null : " + response.body());
-                                /**
-                                 * If response is Null ->
-                                 *      Count to see how many times response returns null, if its 3 times flag the postOffice data as conflict
-                                 */
-                                new AsyncTask<PostOffice, Void, Void>(){
-
-                                    @Override
-                                    protected Void doInBackground(PostOffice... args) {
-                                        //Increase the failed sync count
-                                        PostOffice data = args[0];
-                                        if (data.getFailedSyncCount() > 3){
-                                            data.setSyncStatus(DATA_CONFLICT);
-                                        }else {
-                                            data.setFailedSyncCount(data.getFailedSyncCount()+1);
-                                        }
-
-                                        database.postOfficeModelDao().updatePostData(data);
-
-                                        return null;
-                                    }
-                                }.execute(data);
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            Log.d("PostReferral", "Failed "+t.getMessage());
-                        }
-                    });
-
-                }else if (data.getPost_data_type().equals(POST_DATA_REFERRAL_FEEDBACK)){
-
-                    Log.d("POST_DATA_REFERRAL_FB", data.getPost_data_type());
-
-                    final Referral referral = database.referalModel().getReferalById(data.getPost_id());
-                    final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
-
-                    Call call = referalService.sendReferralFeedback(session.getServiceProviderUUID(), BaseActivity.getReferralFeedbackRequestBody(referral, userData));
-                    call.enqueue(new Callback() {
-                        @Override
-                        public void onResponse(Call call, Response response) {
-                            Log.d("POST_DATA_REFERRAL_FB", "Outside 200 : "+response.body());
-                            //database.postOfficeModelDao().deletePostData(data);
-                            if (response.code() == 200){
-                                Log.d("POST_DATA_REFERRAL_FB", "Saved to seerver : "+response.body());
-                                new DeletePOstData(database).execute(data);
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call call, Throwable t) {
-                            Log.d("POST_RESPOMCES", "Failed with message : " + t.getMessage());
-                        }
-                    });
-
-                }else if(data.getPost_data_type().equals(POST_DATA_TYPE_ENCOUNTER)){
-
-                    Log.d("POST_DATA_REFERRAL_FB", data.getPost_data_type());
-
-                    //List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByPatientID(data.getPost_id());
-
-                    List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByLocalId(data.getPost_id());
-
-                    for (TbEncounters e : encounter){
-
-                        Call call = patientServices.postEncounter(session.getServiceProviderUUID(), BaseActivity.getTbEncounterRequestBody(e));
-                        call.enqueue(new Callback() {
-                            @SuppressLint("StaticFieldLeak")
-                            @Override
-                            public void onResponse(Call call, Response response) {
-                                /*
-                                Receive an Encounter object as a response
-                                Replace the local encounter with the response encounter
-                                TODO: Update appointments also
-                                */
-                                if (response.body() != null) {
-
-                                    Log.d("POST_DATA_TE", "Response Received : "+response.body());
-                                    EncounterResponse encounterResponse = (EncounterResponse) response.body();
-                                    List<PatientAppointment> listOfAppointments = encounterResponse.getPatientAppointments();
-
-                                    TbEncounters receivedEncounter =  encounterResponse.getEncounter();
-                                    new AsyncTask<TbEncounters, Void, Void>(){
-                                        @Override
-                                        protected Void doInBackground(TbEncounters... tbEncounters) {
-                                            database.tbEncounterModelDao().deleteAnEncounter(tbEncounters[0]);
-                                            database.tbEncounterModelDao().addEncounter(tbEncounters[1]);
-                                            return null;
-                                        }
-
-                                        @Override
-                                        protected void onPostExecute(Void aVoid) {
-                                            super.onPostExecute(aVoid);
-                                            Log.d("POST_DATA_TE", "Encounter Replaced");
-                                            new DeletePOstData(database).execute(data);
-                                        }
-                                    }.execute(e, receivedEncounter);
-
-                                    TbPatient tbPatient = baseDatabase.tbPatientModelDao().getTbPatientByTbPatientId(receivedEncounter.getTbPatientID()+"");
-
-                                    List<PatientAppointment> appointments = baseDatabase.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, tbPatient.getHealthFacilityPatientId()+"");
-                                    for (PatientAppointment a : appointments){
-                                        baseDatabase.appointmentModelDao().deleteAppointment(a);
-                                    }
-
-                                    for (PatientAppointment appointment : listOfAppointments){
-                                        baseDatabase.appointmentModelDao().addAppointment(appointment);
-                                    }
-
-                                }else {
-                                    Log.d("HomeActivity", "Responce is null");
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call call, Throwable t) {
-                                t.printStackTrace();
-
-                            }
-                        });
-
-                    }
-
-                }
-            }
-
-        }
     }
 
     /**
@@ -853,160 +636,467 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    class ReplacePatientObject extends AsyncTask<Patient, Void, Void>{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+    private void syncDataInPostOffice(){
+
+        //Check if data is available in the PostOffice
+        if (database.postOfficeModelDao().getUnpostedDataCount() > 0){
+
+            /**
+             * Get the list of all unposted data that exist at postOffice
+             */
+            List<PostOffice> unpostedData = new ArrayList<>();
+            unpostedData = database.postOfficeModelDao().getUnpostedData();
+
+            /**
+             * Sort the unposted data and start syncing to maintain data integrity
+             */
+            List<PostOffice> patientsData = new ArrayList<>();
+            List<PostOffice> tbPatientData = new ArrayList<>();
+            List<PostOffice> referralData = new ArrayList<>();
+            List<PostOffice> referralFeedbackData = new ArrayList<>();
+            List<PostOffice> encounterData = new ArrayList<>();
+            List<PostOffice> appointmentData = new ArrayList<>();
+
+            Log.d("HomeActivity", "Size of data in postman is : "+unpostedData.size());
+            logthat("Size of data in postman is : "+unpostedData.size());
+
+            for (PostOffice data : unpostedData){
+                switch (data.getPost_data_type()){
+                    case POST_DATA_TYPE_PATIENT:
+                        foundSyncItems++;
+                        patientsData.add(data);
+                        //handlePatientDataSync(data);
+                        break;
+                    case POST_DATA_TYPE_TB_PATIENT:
+                        foundSyncItems++;
+                        tbPatientData.add(data);
+                        //handleTbPatientDataSync(data);
+                        break;
+                    case POST_DATA_TYPE_REFERRAL:
+                        foundSyncItems++;
+                        referralData.add(data);
+                        //handleReferralDataSync(data);
+                        break;
+                    case POST_DATA_REFERRAL_FEEDBACK:
+                        foundSyncItems++;
+                        referralFeedbackData.add(data);
+                        //handleReferralFeedbackDataSync(data);
+                        break;
+                    case POST_DATA_TYPE_ENCOUNTER:
+                        foundSyncItems = foundSyncItems+1;
+                        Log.d("track_count", "Added : "+foundSyncItems);
+                        encounterData.add(data);
+                        //handleEncounterDataSync(data);
+                        break;
+                    case POST_DATA_TYPE_APPOINTMENTS:
+                        foundSyncItems++;
+                        appointmentData.add(data);
+                        break;
+                }
+            }
+
+            //Saving patient data
+            for (PostOffice data : patientsData){
+                handlePatientDataSync(data);
+            }
+
+            //Saving TbPatientData
+            for (PostOffice data : tbPatientData){
+                handleTbPatientDataSync(data);
+            }
+
+            //Saving referral data
+            for (PostOffice data : referralData){
+                handleReferralDataSync(data);
+            }
+
+            //Saving referral feefback data
+            for (PostOffice data : referralFeedbackData){
+                handleReferralFeedbackDataSync(data);
+            }
+
+            //Saving encounter data
+            for (PostOffice data : encounterData){
+                handleEncounterDataSync(data);
+            }
+
+            //Saving appointment data
+            for (PostOffice data : appointmentData){
+                handleAppointmentDataSync(data);
+            }
+
         }
+    }
 
-        @Override
-        protected Void doInBackground(Patient... patients) {
+    private void handlePatientDataSync(PostOffice data){
+
+        logthat("Handling Patient data");
+        Log.d("HomeActivity", "Patient");
+
+        //Get the patient that needs to be synced
+        final Patient patient = database.patientModel().getPatientById(data.getPost_id());
+
+        //Get UserData for the currently logged in user
+        final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
+
+        //Make a server call to send the current patient to the server
+        Call call = patientServices.postPatient(session.getServiceProviderUUID(), getPatientRequestBody(patient, userData.getUserFacilityId()));
+        call.enqueue(new Callback() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call call, Response response) {
+                foundSyncItems--;
+                isSyncFinished();
+                /**
+                 * Check to see if response is not null and the server has returned something
+                 */
+                if (response != null){
+                    if (response.body() != null){
+                        //Get the patient object from the response
+                        Patient rPatient = (Patient) response.body();
+
+                        new AsyncTask<Patient, Void, Void>(){
+                            @Override
+                            protected Void doInBackground(Patient... patients) {
+                                Patient oldPatient = patients[0];
+                                Patient receivedPatient = patients[1];
+
+                                // :1: Change referrals patientIds
+
+                                //Get all the referrals associated with the previously locally stored patient
+                                List<Referral> oldPatientReferrals = new ArrayList<>();
+                                oldPatientReferrals = database.referalModel().getReferalsByPatientId(oldPatient.getPatientId()).getValue();
+
+                                //Loop through all the referrals and change the patient ID
+                                if (oldPatientReferrals != null){
+                                    for (int i=0; i<oldPatientReferrals.size(); i++){
+                                        Referral ref = oldPatientReferrals.get(i);
+                                        if (ref.getPatient_id() != rPatient.getPatientId()){
+                                            ref.setPatient_id(rPatient.getPatientId());
+                                            database.referalModel().addReferal(ref);
+                                        }
+                                    }
+
+                                }
+
+                                // :2: Changing all appointments associated with the old patient to the new patient
+
+                                List<PatientAppointment> oldPatientAppointments = database.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, oldPatient.getPatientId());
+                                if (oldPatientAppointments != null){
+                                    for (PatientAppointment appointment : oldPatientAppointments){
+                                        appointment.setPatientID(rPatient.getPatientId());
+                                        database.appointmentModelDao().updateAppointment(appointment);
+                                    }
+                                }
+
+                                //Delete the old object
+                                database.patientModel().deleteAPatient(oldPatient);
+
+                                //Insert server's patient reference
+                                database.patientModel().addPatient(receivedPatient);
+
+                                /**
+                                 * Delete the postOffice data from the database after it has been successfully posted to the server
+                                 */
+                                database.postOfficeModelDao().deletePostData(data);
 
 
-            //RE
-            List<Referral> oldPatientReferrals = new ArrayList<>();
-            oldPatientReferrals = database.referalModel().getReferalsByPatientId(patients[0].getPatientId()).getValue();
+                                // :3: Change TbPatient HealthFacilityClientIds
 
-            if (oldPatientReferrals != null){
-                for (int i=0; i<oldPatientReferrals.size(); i++){
-                    Referral ref = oldPatientReferrals.get(i);
-                    if (ref.getPatient_id() != patients[1].getPatientId()){
-                        ref.setPatient_id(patients[1].getPatientId());
+                                TbPatient tbPatient = database.tbPatientModelDao().getTbPatientCurrentOnTreatment(oldPatient.getPatientId());
+                                if (tbPatient != null){
+                                    tbPatient.setHealthFacilityPatientId(Long.valueOf(receivedPatient.getPatientId()));
+                                    database.tbPatientModelDao().updateTbPatient(tbPatient);
+                                }
+
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+
+                            }
+                        }.execute(patient, rPatient);
+
+                    }else {
+                        logthat("The body of the response from server is null : Code = "+response.code());
+                    }
+                }else{
+                    //Server returned null
+                    logthat("Server has returned Null");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                foundSyncItems--;
+                Log.d("patient_response", t.getMessage());
+            }
+        });
+    }
+
+    private void handleTbPatientDataSync(PostOffice data){
+
+        Log.d("HomeActivity", "Tb Patient");
+        logthat("Handling TB patient data");
+
+        final TbPatient tbPatient = database.tbPatientModelDao().getTbPatientByTbPatientId(data.getPost_id());
+        final Patient patient = database.patientModel().getPatientById(String.valueOf(tbPatient.getHealthFacilityPatientId()));
+        final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
+
+        Call call = patientServices.postTbPatient(session.getServiceProviderUUID(), getTbPatientRequestBody(patient, tbPatient, userData));
+        call.enqueue(new Callback() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call call, Response response) {
+                foundSyncItems--;
+                isSyncFinished();
+                //Store Received Patient Information, TbPatient as well as PatientAppointments
+                if (response != null){
+                    if (response.code() == RESPONCE_SUCCESS){
+
+                        new AsyncTask<Void, Void, Void>(){
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+                                database.postOfficeModelDao().deletePostData(data);
+                                return null;
+                            }
+                        }.execute();
+
+                        //If response is success then the tpPatient has been saved successfully
+
+                            /*
+                            TbPatient receivedPatient = new TbPatient(); //Change this to received patient from the server
+                            List<TbEncounters> encounters = baseDatabase.tbEncounterModelDao().getEncounterByPatientID(tbPatient.getTbPatientId());
+                            for (TbEncounters encounter : encounters){
+                                encounter.setTbPatientID(receivedPatient.getTbPatientId());
+                                baseDatabase.tbEncounterModelDao().addEncounter(encounter);
+                            }
+                             */
+
+                    }else {
+                        logthat("Error updating data CODE : "+response.code());
+                    }
+                }else {
+                    logthat("Server returned Null");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                foundSyncItems--;
+                isSyncFinished();
+                Log.d("patient_response", "Error : "+t.getStackTrace());
+            }
+        });
+    }
+
+    private void handleReferralDataSync(PostOffice data){
+
+        Log.d("HomeActivity", "Referral");
+        logthat("Hangling referral data");
+
+        final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+
+        Call call = referalService.postReferral(session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral));
+        call.enqueue(new Callback() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call call, Response response) {
+                foundSyncItems--;
+                isSyncFinished();
+                if (response != null){
+                    if (response.body() != null) {
+                        Referral rReferral = (Referral) response.body();
+                        new AsyncTask<Referral, Void, Void>(){
+                            @Override
+                            protected Void doInBackground(Referral... referrals) {
+
+                                Referral oldReferral = referrals[0];
+                                Referral receivedReferral = referrals[1];
+
+                                database.referalModel().deleteReferal(oldReferral); //Delete local referral reference
+                                database.referalModel().addReferal(receivedReferral); //Store the server's referral reference
+                                database.postOfficeModelDao().deletePostData(data);
+                                return null;
+                            }
+                        }.execute(referral, rReferral);
+
+
+                    } else {
+                        logthat("Server returned an error "+response.code());
                     }
                 }
 
             }
 
-            //Delete the old object
-            database.patientModel().deleteAPatient(patients[0]);
-
-            //Insert server's patient reference
-            database.patientModel().addPatient(patients[1]);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-    }
-
-    class SyncPostOfficeData extends AsyncTask<Void,Void, Void>{
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            manualSync.setVisibility(View.INVISIBLE);
-            syncProgressBar.setVisibility(View.VISIBLE);
-            unsynced.setText(getResources().getString(R.string.data_syncing));
-            unsynced.setTextColor(getResources().getColor(R.color.white));
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-
-            try {
-                Thread.sleep(2000, 0);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                foundSyncItems--;
+                isSyncFinished();
+                logthat("Sync Failed : "+t.getMessage());
             }
-            syncDataInPostOffice();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            manualSync.setVisibility(View.VISIBLE);
-            syncProgressBar.setVisibility(View.INVISIBLE);
-            unsynced.setText(getResources().getString(R.string.data_synced));
-            unsynced.setTextColor(getResources().getColor(R.color.white));
-            checkPostOfficeData();
-            super.onPostExecute(aVoid);
-        }
+        });
     }
 
-    class DeletePOstData extends AsyncTask<PostOffice, Void, Void>{
+    private void handleReferralFeedbackDataSync(PostOffice data){
 
-        AppDatabase database;
+        Log.d("HomeActivity", "Referral Feedback");
+        logthat("Handling referral feedback data");
 
-        DeletePOstData(AppDatabase db){
-            this.database = db;
-        }
+        final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+        final UserData userData = database.userDataModelDao().getUserDataByUserUIID(session.getUserDetails().get("uuid"));
 
-        @Override
-        protected Void doInBackground(PostOffice... postOffices) {
-            database.postOfficeModelDao().deletePostData(postOffices[0]);
-            return null;
-        }
+        Call call = referalService.sendReferralFeedback(session.getServiceProviderUUID(), BaseActivity.getReferralFeedbackRequestBody(referral, userData));
+        call.enqueue(new Callback() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onResponse(Call call, Response response) {
+                foundSyncItems--;
+                isSyncFinished();
+                if (response != null){
+                    if (response.body() != null){
+                        if (response.code() == 200){
+                            new AsyncTask<Void, Void, Void>(){
+                                @Override
+                                protected Void doInBackground(Void... voids) {
+                                    database.postOfficeModelDao().deletePostData(data);
+                                    return null;
+                                }
+                            }.execute();
+                        }else {
+                            logthat("Referral feedback");
+                        }
+                    }
+                }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-        }
-    }
-
-    class ReplaceReferralObject extends AsyncTask<Referral, Void, Void>{
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Referral... referrals) {
-
-            database.referalModel().deleteReferal(referrals[0]); //Delete local referral reference
-            database.referalModel().addReferal(referrals[1]); //Store the server's referral reference
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-    }
-
-    class ReplaceTbPatientAndAppointments extends AsyncTask<PatientResponce, Void, Void>{
-
-        Patient patient;
-        TbPatient tbPatient;
-        PatientAppointment patientAppointment;
-        AppDatabase database;
-
-        ReplaceTbPatientAndAppointments(AppDatabase db, Patient pt, TbPatient tp){
-            this. database = db;
-            this.patient = pt;
-            this.tbPatient = tp;
-        }
-
-        @Override
-        protected Void doInBackground(PatientResponce... patientResponces) {
-
-            database.tbPatientModelDao().deleteAPatient(tbPatient);
-
-            TbPatient tbPatient1 = patientResponces[0].getTbPatient();
-            List<PatientAppointment> appointments = patientResponces[0].getPatientAppointments();
-
-//            List<PatientAppointment> oldAppointments = database.appointmentModelDao().getThisPatientAppointments(patient.getPatientId());
-//            for (int i=0; i<oldAppointments.size(); i++){
-//                database.appointmentModelDao().deleteAppointment(oldAppointments.get(i));
-//            }
-
-            //Insert server's patient reference
-            database.tbPatientModelDao().addPatient(tbPatient1);
-            for (int j=0; j<appointments.size(); j++){
-                database.appointmentModelDao().addAppointment(appointments.get(j));
             }
 
-            return null;
-        }
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                foundSyncItems--;
+                isSyncFinished();
+                logthat("Syncing data failed with message : "+t.getMessage());
+            }
+        });
+    }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+    private void handleEncounterDataSync(PostOffice data){
+
+        Log.d("track_count", "Called encounters");
+        foundSyncItems = foundSyncItems-1;
+
+        /**
+         * Get the list of all Encounters with the Id stored on postOffice
+         */
+        List<TbEncounters> encounter = database.tbEncounterModelDao().getEncounterByLocalId(data.getPost_id());
+
+        /**
+         * Loop through all of them to send to server
+         */
+        for (TbEncounters e : encounter){
+
+            logthat("handleEncounterDataSync: Service Provider UUID : "+session.getServiceProviderUUID());
+
+            Call call = patientServices.postEncounter(session.getServiceProviderUUID(), BaseActivity.getTbEncounterRequestBody(e));
+            Log.d("track_count", "Substracting Encounter : "+foundSyncItems);
+
+            call.enqueue(new Callback() {
+                @SuppressLint("StaticFieldLeak")
+                @Override
+                public void onResponse(Call call, Response response) {
+
+                    Log.d("track_count", "This is response at count : "+foundSyncItems);
+
+                    isSyncFinished();
+                    /*
+                    Receive an Encounter object as a response
+                    Replace the local encounter with the response encounter
+                    */
+                    if (response != null){
+                        if (response.body() != null) {
+
+                            logthat("Posting encounter response : "+response.body());
+                            EncounterResponse encResponse = (EncounterResponse) response.body();
+
+                            new AsyncTask<EncounterResponse, Void, Void>(){
+                                @Override
+                                protected Void doInBackground(EncounterResponse... encounterResponses) {
+                                    EncounterResponse encounterResponse = encounterResponses[0];
+
+                                    TbEncounters receivedEncounter =  encounterResponse.getEncounter();
+                                    database.tbEncounterModelDao().deleteAnEncounter(e);
+                                    database.tbEncounterModelDao().addEncounter(receivedEncounter);
+                                    database.postOfficeModelDao().deletePostData(data);
+
+                                    TbPatient tbPatient = database.tbPatientModelDao().getTbPatientByTbPatientId(receivedEncounter.getTbPatientID()+"");
+                                    //Delete all appointments associated with the locally stored patient
+                                    List<PatientAppointment> appointments = database.appointmentModelDao().getAppointmentsByTypeAndPatientID(2, tbPatient.getHealthFacilityPatientId()+"");
+                                    for (PatientAppointment a : appointments){
+                                        database.appointmentModelDao().deleteAppointment(a);
+                                    }
+
+                                    //Insert the new appointment of patient received from the server
+                                    List<PatientAppointment> listOfAppointments = encounterResponse.getPatientAppointments();
+                                    for (PatientAppointment appointment : listOfAppointments){
+                                        database.appointmentModelDao().addAppointment(appointment);
+                                    }
+
+                                    return null;
+                                }
+                            }.execute(encResponse);
+
+                        }else {
+                            logthat("Server returned response null : "+response.code());
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Log.d("track_count", "This is encounter failure"+foundSyncItems);
+                    isSyncFinished();
+                    t.printStackTrace();
+                }
+            });
+
         }
+    }
+
+    private void handleAppointmentDataSync(PostOffice data){
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void isSyncFinished(){
+
+        logthat("Checked now : "+foundSyncItems);
+        Log.d("track_count", "Tracking Found "+foundSyncItems);
+
+        if (foundSyncItems == 0){
+            new AsyncTask<Void, Void, Void>(){
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Log.d("track_count", "Updating the database to set sync off");
+                    AppData appData = new AppData();
+                    appData.setName(SYNC_STATUS);
+                    appData.setValue(SYNC_STATUS_OFF);
+
+                    database.appDataModelDao().insertAppData(appData);
+
+                    return null;
+                }
+            }.execute();
+
+        }
+    }
+
+    private void logthat(String message){
+        Log.d("HomeActivity", message);
     }
 
 }

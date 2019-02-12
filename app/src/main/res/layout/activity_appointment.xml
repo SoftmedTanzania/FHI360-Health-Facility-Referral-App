@@ -47,7 +47,7 @@
                     android:layout_marginRight="16dp"
                     app_ms:ms_hintTextSize="14sp"
                     app_ms:ms_multiline="false"
-                    app_ms:ms_hint="Appointment Type"
+                    app_ms:ms_hint="@string/appointment_type"
                     app_ms:ms_enableFloatingLabel="true"
                     app_ms:ms_enableErrorLabel="false"
                     app_ms:ms_floatingLabelText="Appointment Type"
@@ -285,93 +285,6 @@
                 </RelativeLayout>
 
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/tb_appointments_header"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="S/N"
-                        android:gravity="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:layout_marginLeft="16dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/client_f_name"
-                        android:textColor="@color/black"
-                        android:text="@string/client_name"/>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:id="@+id/client_l_name"
-                        android:textColor="@color/black"
-                        android:text="@string/appointment_date"/>
-
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="8dp"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:layout_centerVertical="true"
-                        android:layout_marginTop="16dp"
-                        android:textColor="@color/black"
-                        android:text="@string/phone_number"/>
-                </RelativeLayout>
-
-            </LinearLayout>
-
 
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"

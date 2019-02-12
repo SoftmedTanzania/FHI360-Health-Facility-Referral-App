@@ -26,6 +26,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import static com.softmed.htmr_facility.utils.constants.FEMALE;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_SW;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_VALUE;
+import static com.softmed.htmr_facility.utils.constants.MALE;
+import static com.softmed.htmr_facility.utils.constants.MALE_SW;
+import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
+
 /**
  * Created by issy on 06/02/2018.
  *
@@ -68,7 +75,21 @@ public class PatientDetailsActivity extends BaseActivity implements View.OnClick
             }
 
             clientNames.setText(currentPatient.getPatientFirstName()+" "+currentPatient.getPatientSurname());
-            clientGender.setText(currentPatient.getGender() == null? "n/a" : currentPatient.getGender());
+
+            if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+                if (currentPatient.getGender().equals(MALE) || currentPatient.getGender().equals(MALE_VALUE)){
+                    clientGender.setText(MALE);
+                }else if (currentPatient.getGender().equals(FEMALE) || currentPatient.getGender().equals(FEMALE_VALUE)){
+                    clientGender.setText(FEMALE);
+                }
+            }else {
+                if (currentPatient.getGender().equals(MALE) || currentPatient.getGender().equals(MALE_VALUE)){
+                    clientGender.setText(MALE_SW);
+                }else if (currentPatient.getGender().equals(FEMALE) || currentPatient.getGender().equals(FEMALE_VALUE)){
+                    clientGender.setText(FEMALE_SW);
+                }
+            }
+
             clientVillage.setText(currentPatient.getVillage() == null?"n/a":currentPatient.getVillage());
             clientWard.setText(currentPatient.getWard() == null ? "n/a" : currentPatient.getWard());
             clientPhone.setText(currentPatient.getPhone_number() == null ? "n/a" : currentPatient.getPhone_number());

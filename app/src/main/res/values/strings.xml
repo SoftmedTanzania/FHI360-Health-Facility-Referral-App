@@ -231,5 +231,23 @@
     <string name="fill_client_weight">Please fill client\'s weight</string>
     <string name="fill_sputum_status">Please fill client sputum weight</string>
     <string name="fill_treatment_type">Please fill treatment type</string>
+    <string name="user">User ::</string>
+    <string name="others_referrals">Others Referrals</string>
+    <string name="charts">Charts</string>
+    <string name="chw_report">CHW Referrals Report</string>
+    <string name="interfacility_reports">Inter Facility Referrals Report</string>
+    <string name="intrafacility_report">Intra Facility Referrals Report</string>
+    <string name="tb_appointment_report">Tb Appointments Report</string>
+    <string name="tb_reports">Tb Reports</string>
+    <string name="from">From</string>
+    <string name="to">to</string>
+    <string name="chw_referrals_summary">CHW Referrals Summary</string>
+    <string name="intra_facility_referrals_summary">Intra-facility Referrals Summary</string>
+    <string name="inter_facility_referrals_summary">Inter-facility Referrals Summary</string>
+    <string name="services">Services</string>
+    <string name="apply">Apply</string>
+    <string name="under_medication_report">Patients Under Medication Report</string>
+    <string name="appointment_type">Appointment Type</string>
+    <string name="emergency_empty_state">No emergency Referrals</string>
 
 </resources>

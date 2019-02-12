@@ -20,6 +20,7 @@ public class AppData implements Serializable{
     @PrimaryKey(autoGenerate = false)
     private String name;
 
+    @NonNull
     private String value;
 
     @NonNull
@@ -31,6 +32,7 @@ public class AppData implements Serializable{
         this.name = name;
     }
 
+    @NonNull
     public String getValue() {
         return value;
     }
