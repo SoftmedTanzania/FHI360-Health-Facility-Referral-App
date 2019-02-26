@@ -32,6 +32,7 @@ import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
+import com.softmed.htmr_facility.dom.objects.FacilityChws;
 import com.softmed.htmr_facility.dom.objects.UserData;
 
 /**
@@ -53,9 +54,10 @@ import com.softmed.htmr_facility.dom.objects.UserData;
                 UserData.class,
                 ReferralIndicator.class,
                 ReferralServiceIndicators.class,
-                LoggedInSessions.class
+                LoggedInSessions.class,
+                FacilityChws.class
         },
-        version = 1)
+        version = 2)
 
 public abstract class AppDatabase extends RoomDatabase{
 

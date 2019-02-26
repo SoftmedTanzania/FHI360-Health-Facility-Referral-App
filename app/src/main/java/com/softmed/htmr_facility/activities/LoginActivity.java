@@ -31,12 +31,14 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import com.google.gson.JsonArray;
 import com.rey.material.widget.ProgressView;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.customviews.LargeDiagonalCutPathDrawable;
+import com.softmed.htmr_facility.dom.objects.FacilityChws;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.LoggedInSessions;
 import com.softmed.htmr_facility.dom.objects.Patient;
@@ -48,6 +50,7 @@ import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
+import com.softmed.htmr_facility.dom.responces.FacilityChwsResponce;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
@@ -72,7 +75,7 @@ import static com.softmed.htmr_facility.utils.constants.INITIAL_SYNC_PREFERENCES
  */
 
 public class LoginActivity extends BaseActivity {
-
+    private static final String TAG = LoginActivity.class.getSimpleName();
     private EditText usernameEt;
     private EditText passwordEt;
     private TextView loginMessages, loginText;
@@ -506,6 +509,39 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    public void callObtainChws(){
+
+        Log.d("CHECK_FACILITY_ID", "Calling chws");
+
+        Endpoints.LoginService loginService =
+                ServiceGenerator.createService(Endpoints.LoginService.class, usernameValue, passwordValue, null);
+
+        RequestBody body;
+
+        JsonArray object   = new JsonArray();
+        object.add(session.getKeyHfid());
+        body = RequestBody.create(MediaType.parse("application/json"), object.toString());
+
+        Log.d(TAG,"chw request body = "+new Gson().toJson(object.toString()));
+
+        Call<List<FacilityChwsResponce>> call = loginService.getFacilityChws(body);
+
+        call.enqueue(new Callback<List<FacilityChwsResponce>>() {
+            @Override
+            public void onResponse(Call<List<FacilityChwsResponce>> call, Response<List<FacilityChwsResponce>> response) {
+
+                Log.d(TAG,"chw object = "+new Gson().toJson(response.body()));
+                List<FacilityChwsResponce> facilityChws = response.body();
+                new AddChws().execute(facilityChws);
+            }
+
+            @Override
+            public void onFailure(Call<List<FacilityChwsResponce>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public void callServices(){
 
         Log.d("CHECK_FACILITY_ID", "Calling services");
@@ -670,12 +706,47 @@ public class LoginActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.d("CHECK_FACILITY_ID", "Saved user data after registering to server");
-            callServices();
+            callObtainChws();
         }
 
         @Override
         protected Void doInBackground(UserData... userData) {
             database.userDataModelDao().addUserData(userData[0]);
+            return null;
+        }
+    }
+
+    class AddChws extends AsyncTask<List<FacilityChwsResponce>, Void, Void>{
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d("CHECK_FACILITY_ID", "Saved chw uses after registering to server");
+            callServices();
+        }
+
+        @Override
+        protected Void doInBackground(List<FacilityChwsResponce>... userData) {
+
+            for(FacilityChwsResponce chw:userData[0]) {
+                Log.d(TAG,"Obtained team members = "+chw.getDisplay());
+                if(chw.getTeamRole()!=null){
+                    if(chw.getTeamRole().getIdentifier().toLowerCase().equals("chw")){
+                        FacilityChws chws = new FacilityChws();
+                        chws.setDisplay(chw.getDisplay());
+                        chws.setUuid(chw.getUuid());
+
+                        try {
+                            baseDatabase.userDataModelDao().addChw(chws);
+                            Log.d(TAG,"Saved chw = "+chw.getDisplay());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+
+            }
             return null;
         }
     }

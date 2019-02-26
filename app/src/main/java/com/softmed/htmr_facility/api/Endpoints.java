@@ -7,7 +7,9 @@ import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
+import com.softmed.htmr_facility.dom.objects.FacilityChws;
 import com.softmed.htmr_facility.dom.responces.EncounterResponse;
+import com.softmed.htmr_facility.dom.responces.FacilityChwsResponce;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
@@ -35,6 +37,8 @@ public class Endpoints {
         @POST("security/authenticate/")
         Call<LoginResponse> basicUserLogin(@Header("Authorization") String authToken);
 
+        @POST("get-team-members-by-facility-uuid")
+        Call<List<FacilityChwsResponce>> getFacilityChws(@Body RequestBody a);
     }
 
     public interface ReferalService {
