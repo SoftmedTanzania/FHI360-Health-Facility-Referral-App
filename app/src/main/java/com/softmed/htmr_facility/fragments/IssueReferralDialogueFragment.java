@@ -29,11 +29,13 @@ import java.util.Random;
 
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.adapters.ChwsListAdapter;
 import com.softmed.htmr_facility.adapters.HealthFacilitiesAdapter;
 import com.softmed.htmr_facility.adapters.ServicesAdapter;
 import com.softmed.htmr_facility.api.Endpoints;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.dom.objects.FacilityChws;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
@@ -70,13 +72,13 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 public class IssueReferralDialogueFragment extends DialogFragment{
 
     private TextView patientNames, takeHivTest, takeMalariaTest, takeTBTest, saveButtonText;
-    private MaterialSpinner spinnerService, spinnerToHealthFacility;
+    private MaterialSpinner spinnerService, spinnerToHealthFacility,spinnerChws;
     private EditText referralReasons, otherClinicalInformation;
     private Button cancelButton;
     private RelativeLayout issueButton;
     private RecyclerView indicatorsRecycler;
     private ToggleSwitch referralToToggle;
-    private LinearLayout serviceAndFacilityWrap, indicatorsWrap, labTestsWrap;
+    private LinearLayout serviceAndFacilityWrap,chw_wrap, indicatorsWrap, labTestsWrap;
     private View indicatorSeparator;
     private CircularProgressView circularProgressView;
 
@@ -85,11 +87,15 @@ public class IssueReferralDialogueFragment extends DialogFragment{
     private int serviceID;
     private static final String TAG = "IssueReferralDialogueFragment";
     private List<ReferralIndicator> selectedIndicators = new ArrayList<>();
+    private String chwUuid = "";
 
     private AppDatabase database;
 
     private HealthFacilitiesAdapter healthFacilitiesAdapter;
     List<HealthFacilities> healthFacilities = new ArrayList<>();
+
+    private ChwsListAdapter chwsListAdapter;
+    List<FacilityChws> facilityChws = new ArrayList<>();
 
     private mAdapter madapter;
     List<String> destinations = new ArrayList<>();
@@ -211,6 +217,26 @@ public class IssueReferralDialogueFragment extends DialogFragment{
             }
         });
 
+
+        new getChws(getActivity()).execute();
+
+        spinnerChws.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                try {
+                    chwUuid = facilityChws.get(i).getUuid();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         spinnerService.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -274,12 +300,14 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                     case 0:
                         //Inter-facility|intra-facility Referral
                         serviceAndFacilityWrap.setVisibility(View.VISIBLE);
+                        chw_wrap.setVisibility(View.GONE);
                         indicatorSeparator.setVisibility(View.VISIBLE);
                         referralType = INTERFACILITY;
                         break;
                     case 1:
                         //Facility to CHW referrals
                         serviceAndFacilityWrap.setVisibility(View.GONE);
+                        chw_wrap.setVisibility(View.VISIBLE);
                         indicatorSeparator.setVisibility(View.GONE);
                         referralType = FACILITY_TO_CHW;
                         break;
@@ -316,12 +344,19 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referral.setServiceProviderUIID(session.getUserDetails().get(KEY_UUID));
         referral.setServiceProviderGroup("");
         referral.setVillageLeader("");
-
         referral.setReferralSource(sourceService);
         referral.setReferralType(referralType);
-
         referral.setReferralDate(today);
-        referral.setFacilityId(toHealthFacilityID);
+
+
+        //TODO rename the field FacilityId to reflect ChwUUID incase the referral type is FACILITY_TO_CHW
+        if (referralType == FACILITY_TO_CHW) {
+            referral.setFacilityId(chwUuid);
+        }else{
+            referral.setFacilityId(toHealthFacilityID);
+        }
+
+
         referral.setFromFacilityId(BaseActivity.getThisFacilityId());
         referral.setReferralStatus(REFERRAL_STATUS_NEW);
         referral.setOtherClinicalInformation(otherClinicalInformationValue);
@@ -425,7 +460,12 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
     private boolean getCurrentInputs(){
         if (referralType == FACILITY_TO_CHW){
+            if(chwUuid.equals("")){
+                toastThis("Chagua chw wa kumtumia rufaa hii");
+                return false;
+            }
             serviceID = -1;
+
         }else {
             if (spinnerService.getSelectedItemPosition() == 0){
                 toastThis("Chagua huduma ya kutoa rufaa");
@@ -463,6 +503,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
         spinnerService =  v.findViewById(R.id.spin_service);
         spinnerToHealthFacility =  v.findViewById(R.id.spin_to_facility);
+        spinnerChws =  v.findViewById(R.id.spin_to_chw);
 
         referralReasons =  v.findViewById(R.id.referal_reasons_text);
         otherClinicalInformation =  v.findViewById(R.id.other_clinical_information_text);
@@ -478,6 +519,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
         referralToToggle = (ToggleSwitch) v.findViewById(R.id.referral_to_toggle);
 
         serviceAndFacilityWrap = (LinearLayout) v.findViewById(R.id.service_and_facility_wrap);
+        chw_wrap = (LinearLayout) v.findViewById(R.id.chw_wrap);
         indicatorsWrap = (LinearLayout) v.findViewById(R.id.indicators_wrapper);
         indicatorsWrap.setVisibility(View.GONE);
 
@@ -627,6 +669,32 @@ public class IssueReferralDialogueFragment extends DialogFragment{
 
             hfs = database.healthFacilitiesModelDao().getAllHealthFacilities();
             serviceIndicators = database.referralServiceIndicatorsDao().getAllServices();
+
+            return null;
+        }
+    }
+
+    class getChws extends AsyncTask<Void, Void, Void>{
+        Context context;
+
+        getChws(Context ctx){
+            this.context = ctx;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            chwsListAdapter = new ChwsListAdapter(context,R.layout.subscription_plan_items_drop_down, facilityChws);
+
+            spinnerChws.setAdapter(chwsListAdapter);
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            facilityChws = database.userDataModelDao().getFacilityChws();
 
             return null;
         }

@@ -26,7 +26,7 @@ public interface UserDataModelDao {
     LiveData<List<UserData>> getUserData();
 
     @Query("select * from FacilityChws")
-    LiveData<List<FacilityChws>> getFacilityChws();
+   List<FacilityChws> getFacilityChws();
 
     @Query("select * from UserData where UserUIID = :useruiid")
     UserData getUserDataByUserUIID(String useruiid);

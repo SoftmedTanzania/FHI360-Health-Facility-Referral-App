@@ -243,5 +243,6 @@
     <string name="under_medication_report">Ripoti ya matibabu ya mgonjwa</string>
     <string name="appointment_type">Aina ya Miadi</string>
     <string name="emergency_empty_state">Hakuna Rufaa za Dharura</string>
+    <string name="facility_chws_label">Mtoa huduma wa Afya wa Jamii</string>
 
 </resources>

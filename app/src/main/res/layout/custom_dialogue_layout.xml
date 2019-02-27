@@ -83,6 +83,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:visibility="visible"
                 android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -153,6 +154,53 @@
                         app_ms:ms_floatingLabelColor="@color/white"/>
 
                 </RelativeLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:id="@+id/chw_wrap"
+                android:layout_height="70dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="16dp"
+                    android:layout_height="match_parent">
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_to_chw"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:divider="@null"
+                        android:layout_marginLeft="16dp"
+                        android:textSize="14sp"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_multiline="false"
+                        app_ms:ms_hint="@string/facility_chws_label"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_floatingLabelText="@string/facility_chws_label"
+                        app_ms:ms_baseColor="@color/white"
+                        app_ms:ms_highlightColor="@color/colorPrimary"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_arrowColor="@color/white"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_floatingLabelColor="@color/white"/>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
 
             </LinearLayout>
 

@@ -251,5 +251,6 @@
     <string name="under_medication_report">Patients Under Medication Report</string>
     <string name="appointment_type">Appointment Type</string>
     <string name="emergency_empty_state">No emergency Referrals</string>
+    <string name="facility_chws_label">Facility CHWs</string>
 
 </resources>
