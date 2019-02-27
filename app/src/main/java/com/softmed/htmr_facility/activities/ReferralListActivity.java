@@ -132,13 +132,13 @@ public class ReferralListActivity extends BaseActivity {
             homeTitle.setText(getResources().getString(R.string.chw_referrals));
             tabLayout.getTabAt(0).setCustomView(homeView);
 
-            View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
-            TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
-            newsTitle.setText(getResources().getString(R.string.health_facility_referrals));
-            ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
-            iv2.setColorFilter(getResources().getColor(R.color.white));
-            Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);
-            tabLayout.getTabAt(1).setCustomView(newsView);
+//            View newsView = getLayoutInflater().inflate(R.layout.custom_tabs, null);
+//            TextView newsTitle = (TextView) newsView.findViewById(R.id.title_text);
+//            newsTitle.setText(getResources().getString(R.string.health_facility_referrals));
+//            ImageView iv2    = (ImageView) newsView.findViewById(R.id.icon);
+//            iv2.setColorFilter(getResources().getColor(R.color.white));
+//            Glide.with(this).load(R.mipmap.ic_referals_list).into(iv2);
+//            tabLayout.getTabAt(1).setCustomView(newsView);
 
         }
 
@@ -154,7 +154,7 @@ public class ReferralListActivity extends BaseActivity {
             tabLayout.setVisibility(View.GONE);
         }else {
             adapter.addFragment(ReferralListFragment.newInstance(CHW_TO_FACILITY, serviceID), "chw");
-            adapter.addFragment(ReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
+//            adapter.addFragment(ReferralListFragment.newInstance(INTERFACILITY, serviceID), "hf");
         }
 
         viewPager.setAdapter(adapter);

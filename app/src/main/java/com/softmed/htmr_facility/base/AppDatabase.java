@@ -57,7 +57,7 @@ import com.softmed.htmr_facility.dom.objects.UserData;
                 LoggedInSessions.class,
                 FacilityChws.class
         },
-        version = 2)
+        version = 1)
 
 public abstract class AppDatabase extends RoomDatabase{
 

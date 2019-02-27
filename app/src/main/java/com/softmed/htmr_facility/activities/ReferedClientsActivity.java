@@ -87,7 +87,11 @@ public class ReferedClientsActivity extends BaseActivity {
 
             switch (serviceID){
                 case OPD_SERVICE_ID:
-                    title = getResources().getString(R.string.referrals_issued)+" OPD";
+                    if(serviceCategory==-1){
+                        title = getResources().getString(R.string.community_referrals_label);
+                    }else if(serviceCategory==HIV_SERVICE_ID){
+                        title = getResources().getString(R.string.ctc_referrals);
+                    }
                     break;
                 case HIV_SERVICE_ID:
                     title = getResources().getString(R.string.referrals_issued)+" | "+getResources().getString(R.string.hiv);

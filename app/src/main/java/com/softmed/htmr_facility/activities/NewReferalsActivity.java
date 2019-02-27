@@ -145,7 +145,7 @@ public class NewReferalsActivity extends BaseActivity {
                 title = getResources().getString(R.string.clients_list)+" | "+getResources().getString(R.string.hiv);
                 break;
             case OPD_SERVICE_ID:
-                title = getResources().getString(R.string.clients_list)+" | OPD";
+                title = getResources().getString(R.string.clients_list);
                 break;
             default:
                 break;

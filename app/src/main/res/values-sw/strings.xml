@@ -133,7 +133,7 @@
     <string name="settings">Mpangilio</string>
     <string name="logout">Ondoka</string>
 
-    <string name="fragment_opd">OPD</string>
+    <string name="fragment_opd">Rufaa za Watoa Huduma wa Jamii</string>
     <string name="fragment_hiv">VVU/Ukimwi</string> <!--Huduma za  -->
     <string name="fragment_tb">Kifua Kikuu</string>
     <string name="fragment_lab">MAABARA</string>
@@ -212,6 +212,7 @@
     <string name="tb_referrals">Rufaa za Kifua Kikuu</string>
     <string name="lab_referrals">Rufaa za Maabara</string>
     <string name="other_referrals">Rufaa zinginezo</string>
+    <string name="community_referrals_label">Rufaa kwa Watoa Huduma wa Jamii</string>
 
     <string name="emergencies"> Rufaa za Dharura </string>
 

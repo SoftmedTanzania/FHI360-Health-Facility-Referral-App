@@ -247,7 +247,7 @@
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/google_sans_bold"
                     android:id="@+id/client_ctc_number"
-                    android:text="@string/issue_referral"
+                    android:text="@string/ctc_number"
                     android:textColor="@color/card_title_text"/>
 
             </RelativeLayout>
