@@ -253,5 +253,6 @@
     <string name="appointment_type">Appointment Type</string>
     <string name="emergency_empty_state">No emergency Referrals</string>
     <string name="facility_chws_label">Facility CHWs</string>
+    <string name="followup_service_name">Followup</string>
 
 </resources>

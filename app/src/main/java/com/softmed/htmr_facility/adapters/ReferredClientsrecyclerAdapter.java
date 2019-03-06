@@ -71,7 +71,7 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
             ReferredClientsrecyclerAdapter.ListViewItemViewHolder holder = (ReferredClientsrecyclerAdapter.ListViewItemViewHolder) viewHolder;
             mViewHolder = holder;
 
-            new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute();
+            new ReferredClientsrecyclerAdapter.patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName,context).execute();
 
             holder.referralReasons.setText(referral.getReferralReason());
             holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
@@ -155,19 +155,25 @@ public class ReferredClientsrecyclerAdapter extends RecyclerView.Adapter <Recycl
         AppDatabase db;
         TextView mText, sname;
         Referral ref;
+        Context context;
 
-        patientDetailsTask(AppDatabase database, Referral referral, TextView namesInstance, TextView serviceName){
+        patientDetailsTask(AppDatabase database, Referral referral, TextView namesInstance, TextView serviceName,Context context){
             this.db = database;
             this.ref = referral;
             mText = namesInstance;
             sname = serviceName;
+            this.context=context;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             Log.d("reckless", "doing name search backgroundically!");
             patientNames = db.patientModel().getPatientName(ref.getPatient_id());
-            serviceNameString = db.referralServiceIndicatorsDao().getServiceNameById(ref.getServiceId());
+            if(ref.getServiceId()==-1){
+                serviceNameString = context.getResources().getString(R.string.followup_service_name);
+            }else {
+                serviceNameString = db.referralServiceIndicatorsDao().getServiceNameById(ref.getServiceId());
+            }
             return null;
         }
 

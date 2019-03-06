@@ -26,7 +26,7 @@
     <string name="appointment_date">Tarehe ya Kuja</string>
     <string name="appointment_status">Mahudhurio</string>
     <string name="age">Umri</string>
-    <string name="sex">Jinsia</string>
+    <string name="sex">Jinsi</string>
     <string name="veo">VEO</string>
     <string name="heading_referral_info">Taarifa za Rufaa</string>
     <string name="referral_reasib">Sababu za Rufaa</string>
@@ -245,5 +245,7 @@
     <string name="appointment_type">Aina ya Miadi</string>
     <string name="emergency_empty_state">Hakuna Rufaa za Dharura</string>
     <string name="facility_chws_label">Mtoa huduma wa Afya wa Jamii</string>
+
+    <string name="followup_service_name">Kufwatiliwa</string>
 
 </resources>

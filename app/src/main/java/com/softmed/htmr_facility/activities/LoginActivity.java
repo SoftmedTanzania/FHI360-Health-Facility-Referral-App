@@ -537,7 +537,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<List<FacilityChwsResponce>> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
@@ -734,7 +734,7 @@ public class LoginActivity extends BaseActivity {
                     if(chw.getTeamRole().getIdentifier().toLowerCase().equals("chw")){
                         FacilityChws chws = new FacilityChws();
                         chws.setDisplay(chw.getDisplay());
-                        chws.setUuid(chw.getUuid());
+                        chws.setUuid(chw.getPerson().getUuid());
 
                         try {
                             baseDatabase.userDataModelDao().addChw(chws);

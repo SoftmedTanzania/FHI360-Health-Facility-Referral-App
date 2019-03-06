@@ -21,9 +21,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.irozon.alertview.AlertActionStyle;
 import com.irozon.alertview.AlertStyle;
 import com.irozon.alertview.AlertView;
@@ -37,7 +37,6 @@ import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
-import com.softmed.htmr_facility.utils.ListStringConverter;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.FEMALE;
@@ -59,7 +58,7 @@ import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETE
 public class OpdReferralDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
-    private Button cancelButton, referButton;
+    private Button saveButton, referButton;
     private TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, referralServiceName, clientPhoneNumberValue, referralDate;
     private EditText servicesOfferedEt, otherInformationEt;
     private RecyclerView indicatorsRecyclerView;
@@ -82,6 +81,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null){
             currentReferral = (Referral) getIntent().getSerializableExtra("referal");
+            Log.d("coze","current referral = "+new Gson().toJson(currentReferral));
             service = getIntent().getIntExtra("service", 0);
 
             if (currentReferral != null){
@@ -131,11 +131,12 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         referalDialogue = new Dialog(this);
         referalDialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Finish Activity
                 finish();
+                saveReferalInformation(true);
             }
         });
 
@@ -175,7 +176,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
 
         //Show progress bar
-        cancelButton.setVisibility(View.INVISIBLE);
+        saveButton.setVisibility(View.INVISIBLE);
 
         //Do not allow further forward of this referral at this point
         referButton.setVisibility(View.GONE);
@@ -222,7 +223,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         villageText = (TextView) findViewById(R.id.client_kijiji_value);
         hamletText = (TextView) findViewById(R.id.client_kitongoji_value);
 
-        cancelButton = (Button) findViewById(R.id.cancel);
+        saveButton = (Button) findViewById(R.id.save);
         referButton = (Button) findViewById(R.id.referal_button);
 
     }
@@ -297,6 +298,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         UpdateReferralTask(Referral ref, AppDatabase db){
             this.referal = ref;
             this.database = db;
+            Log.d("Coze","Saved referral = "+new Gson().toJson(referal));
         }
 
         @Override
@@ -324,12 +326,12 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            cancelButton.setVisibility(View.VISIBLE);
+            saveButton.setVisibility(View.VISIBLE);
 
             if (isForwardingThisReferral){
                 servicesOfferedEt.setEnabled(false);
                 otherInformationEt.setEnabled(false);
-                cancelButton.setText(getResources().getString(R.string.done));
+                saveButton.setText(getResources().getString(R.string.done));
                 callReferralFragmentDialogue(currentPatient);
             }else {
                 finish();

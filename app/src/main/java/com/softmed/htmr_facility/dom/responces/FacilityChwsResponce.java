@@ -22,6 +22,9 @@ public class FacilityChwsResponce implements Serializable {
     @SerializedName("teamRole")
     private TeamRole  teamRole;
 
+    @SerializedName("person")
+    private Person  person;
+
 
     public class TeamRole implements Serializable{
 
@@ -34,6 +37,19 @@ public class FacilityChwsResponce implements Serializable {
 
         public void setIdentifier(String identifier) {
             this.identifier = identifier;
+        }
+    }
+    public class Person implements Serializable{
+
+        @SerializedName("uuid")
+        private String uuid;
+
+        public String getUuid() {
+            return uuid;
+        }
+
+        public void setUuid(String uuid) {
+            this.uuid = uuid;
         }
     }
 
@@ -59,5 +75,13 @@ public class FacilityChwsResponce implements Serializable {
 
     public void setTeamRole(TeamRole teamRole) {
         this.teamRole = teamRole;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

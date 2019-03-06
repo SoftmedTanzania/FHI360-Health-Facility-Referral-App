@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -59,7 +61,12 @@ public class ServiceGenerator {
                 if (!httpClient.interceptors().contains(interceptor)) {
                     httpClient.addInterceptor(interceptor);
 
-                    builder.client(httpClient.build());
+
+
+                    builder.client(httpClient
+                            .readTimeout(120, TimeUnit.SECONDS)
+                            .connectTimeout(120, TimeUnit.SECONDS)
+                            .build());
                     //retrofit = builder.build();
                 }
             }else {
@@ -69,7 +76,10 @@ public class ServiceGenerator {
                 if (!httpClient.interceptors().contains(loginInterceptor)) {
                     httpClient.addInterceptor(loginInterceptor);
 
-                    builder.client(httpClient.build());
+                    builder.client(httpClient
+                            .readTimeout(120, TimeUnit.SECONDS)
+                            .connectTimeout(120, TimeUnit.SECONDS)
+                            .build());
                     //retrofit = builder.build();
                 }
             }

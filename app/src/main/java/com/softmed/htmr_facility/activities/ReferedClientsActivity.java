@@ -214,13 +214,7 @@ public class ReferedClientsActivity extends BaseActivity {
                 public void onChanged(@Nullable List<Integer> integers) {
                     int size = integers == null ? 0:integers.size();
                     int[] categoryIds = new int[size];
-                    for (int i = 0; i<size; i++){
-                        int currentID = integers.get(i);
-                        if (currentID != OPD_SERVICE_ID && currentID != HIV_SERVICE_ID
-                                && currentID != TB_SERVICE_ID && currentID != LAB_SERVICE_ID){
-                            categoryIds[i] = integers.get(i);
-                        }
-                    }
+                    categoryIds[0]=-1;
 
                     //Get referred clients from a particular service to a specific service
                     LiveData<List<Referral>> referredClients = baseDatabase.referalModel().getReferredClients(serviceID, session.getKeyHfid(), categoryIds);

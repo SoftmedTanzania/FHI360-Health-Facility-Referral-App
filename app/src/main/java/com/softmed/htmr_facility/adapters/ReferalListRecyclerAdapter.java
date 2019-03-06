@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gson.Gson;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.activities.ClientsDetailsActivity;
 import com.softmed.htmr_facility.activities.OpdReferralDetailsActivity;
@@ -44,6 +45,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     public ReferalListRecyclerAdapter(List<Referral> mItems, Context context, int service){
         this.items = mItems;
+        Log.d("Coze","referral list = "+new Gson().toJson(mItems));
         this.database = AppDatabase.getDatabase(context);
         this.serviceID = service;
     }
@@ -75,13 +77,13 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int itemPosition){
 
+
         final Referral referral = getItem(itemPosition);
 
         if (viewHolder instanceof ReferalListRecyclerAdapter.ListViewItemViewHolder){
             ReferalListRecyclerAdapter.ListViewItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewItemViewHolder) viewHolder;
-
+            holder.sn.setText(itemPosition);
             new patientDetailsTask(database, referral, holder.clientsNames, holder.ctcNumber).execute(serviceID);
-
             if (referral.getReferralStatus() == 0){
                 holder.attendedFlag.setText(context.getResources().getString(R.string.new_ref));
                 holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_400));
@@ -130,6 +132,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
         }else if (viewHolder instanceof ReferalListRecyclerAdapter.ListViewOPDItemViewHolder){
             ReferalListRecyclerAdapter.ListViewOPDItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewOPDItemViewHolder) viewHolder;
+
 
             new patientDetailsTask(database, referral, holder.clientsNames, holder.serviceName).execute(serviceID);
 
@@ -185,7 +188,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientsNames, attendedFlag, ctcNumber, referralReasons, referralDate;
+        TextView clientsNames, attendedFlag, ctcNumber, referralReasons, referralDate,sn;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
@@ -197,6 +200,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             ctcNumber =  itemView.findViewById(R.id.ctc_number);
             referralReasons =  itemView.findViewById(R.id.referral_reasons);
             referralDate =  itemView.findViewById(R.id.ref_date);
+            sn =  itemView.findViewById(R.id.sn);
 
         }
 
@@ -204,7 +208,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     private class ListViewOPDItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientsNames, attendedFlag, serviceName, referralReasons, referralDate;
+        TextView clientsNames, attendedFlag, serviceName, referralReasons, referralDate,sn;
         View viewItem;
         LinearLayout container;
 
@@ -218,6 +222,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             referralReasons =  itemView.findViewById(R.id.referral_reasons);
             referralDate =  itemView.findViewById(R.id.ref_date);
             container = itemView.findViewById(R.id.referral_item_container);
+            sn = itemView.findViewById(R.id.sn);
 
         }
 
@@ -272,6 +277,8 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
     }
 
     public void setReferrals(List<Referral> referralsNewList){
+
+        Log.d("Coze","referral list = "+new Gson().toJson(referralsNewList));
         ReferralsDiffCallback referralsDiffCallback = new ReferralsDiffCallback(this.items, referralsNewList);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(referralsDiffCallback);
         this.items = Collections.emptyList();

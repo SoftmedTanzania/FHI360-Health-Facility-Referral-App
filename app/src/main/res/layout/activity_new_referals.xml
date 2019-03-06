@@ -170,7 +170,7 @@
                     android:layout_marginTop="16dp"
                     android:id="@+id/client_gender"
                     android:textColor="@color/card_title_text"
-                    android:text="Jinsia"/>
+                    android:text="@string/sex"/>
 
             </RelativeLayout>
 

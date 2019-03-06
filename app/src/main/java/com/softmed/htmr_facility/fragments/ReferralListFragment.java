@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.rey.material.widget.ProgressView;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.BaseActivity;
@@ -345,6 +346,7 @@ public class ReferralListFragment extends Fragment {
                         }
 
                         Log.d("bass", "Emergency : "+emergencyReferrals.size()+"\nOthers : "+otherReferrals.size());
+                        Log.d("Coze","client list = "+new Gson().toJson(referrals));
 
                         setSearchFilterVariables(otherReferrals, false);
                         setSearchFilterVariables(emergencyReferrals, true);
