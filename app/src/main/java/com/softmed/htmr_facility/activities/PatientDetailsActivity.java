@@ -83,10 +83,14 @@ public class PatientDetailsActivity extends BaseActivity implements View.OnClick
                     clientGender.setText(FEMALE);
                 }
             }else {
-                if (currentPatient.getGender().equals(MALE) || currentPatient.getGender().equals(MALE_VALUE)){
-                    clientGender.setText(MALE_SW);
-                }else if (currentPatient.getGender().equals(FEMALE) || currentPatient.getGender().equals(FEMALE_VALUE)){
-                    clientGender.setText(FEMALE_SW);
+                try {
+                    if (currentPatient.getGender().equals(MALE) || currentPatient.getGender().equals(MALE_VALUE)) {
+                        clientGender.setText(MALE_SW);
+                    } else if (currentPatient.getGender().equals(FEMALE) || currentPatient.getGender().equals(FEMALE_VALUE)) {
+                        clientGender.setText(FEMALE_SW);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
 

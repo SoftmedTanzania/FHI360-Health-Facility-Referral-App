@@ -82,7 +82,6 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
         if (viewHolder instanceof ReferalListRecyclerAdapter.ListViewItemViewHolder){
             ReferalListRecyclerAdapter.ListViewItemViewHolder holder = (ReferalListRecyclerAdapter.ListViewItemViewHolder) viewHolder;
-            holder.sn.setText(itemPosition);
             new patientDetailsTask(database, referral, holder.clientsNames, holder.ctcNumber).execute(serviceID);
             if (referral.getReferralStatus() == 0){
                 holder.attendedFlag.setText(context.getResources().getString(R.string.new_ref));
@@ -188,7 +187,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientsNames, attendedFlag, ctcNumber, referralReasons, referralDate,sn;
+        TextView clientsNames, attendedFlag, ctcNumber, referralReasons, referralDate;
         View viewItem;
 
         public ListViewItemViewHolder(View itemView){
@@ -200,7 +199,6 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
             ctcNumber =  itemView.findViewById(R.id.ctc_number);
             referralReasons =  itemView.findViewById(R.id.referral_reasons);
             referralDate =  itemView.findViewById(R.id.ref_date);
-            sn =  itemView.findViewById(R.id.sn);
 
         }
 
@@ -248,12 +246,15 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
         protected Void doInBackground(Integer... integers) {
             Log.d("reckless", "doing name search backgroundically!");
             serviceId = integers[0];
+            try {
+                ReferralServiceIndicators indicator = db.referralServiceIndicatorsDao().getServiceById(ref.getServiceId());
+                serviceNameStringSw = indicator.getServiceNameSw();
+                serviceNameString = indicator.getServiceName();
 
-            ReferralServiceIndicators indicator = db.referralServiceIndicatorsDao().getServiceById(ref.getServiceId());
-            serviceNameStringSw = indicator.getServiceNameSw();
-            serviceNameString = indicator.getServiceName();
-
-            patientNames = db.patientModel().getPatientName(patientId);
+                patientNames = db.patientModel().getPatientName(patientId);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             return null;
         }

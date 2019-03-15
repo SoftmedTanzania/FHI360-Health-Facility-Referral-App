@@ -727,25 +727,28 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(List<FacilityChwsResponce>... userData) {
+            try {
+                for (FacilityChwsResponce chw : userData[0]) {
+                    Log.d(TAG, "Obtained team members = " + chw.getDisplay());
+                    if (chw.getTeamRole() != null) {
+                        if (chw.getTeamRole().getIdentifier().toLowerCase().equals("chw")) {
+                            FacilityChws chws = new FacilityChws();
+                            chws.setDisplay(chw.getDisplay());
+                            chws.setUuid(chw.getPerson().getUuid());
 
-            for(FacilityChwsResponce chw:userData[0]) {
-                Log.d(TAG,"Obtained team members = "+chw.getDisplay());
-                if(chw.getTeamRole()!=null){
-                    if(chw.getTeamRole().getIdentifier().toLowerCase().equals("chw")){
-                        FacilityChws chws = new FacilityChws();
-                        chws.setDisplay(chw.getDisplay());
-                        chws.setUuid(chw.getPerson().getUuid());
+                            try {
+                                baseDatabase.userDataModelDao().addChw(chws);
+                                Log.d(TAG, "Saved chw = " + chw.getDisplay());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
-                        try {
-                            baseDatabase.userDataModelDao().addChw(chws);
-                            Log.d(TAG,"Saved chw = "+chw.getDisplay());
-                        }catch (Exception e){
-                            e.printStackTrace();
                         }
-
                     }
-                }
 
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
             return null;
         }
