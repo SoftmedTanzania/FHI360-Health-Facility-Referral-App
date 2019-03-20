@@ -44,6 +44,7 @@ import com.softmed.htmr_facility.dom.objects.LoggedInSessions;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.ReferralFeedback;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
@@ -53,6 +54,7 @@ import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.FacilityChwsResponce;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
+import com.softmed.htmr_facility.dom.responces.ReferalFeedbackResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
@@ -223,7 +225,7 @@ public class LoginActivity extends BaseActivity {
     private boolean getAuthenticationCredentials(){
 
         if (!isDeviceRegistered()){
-            loginMessages.setText("Device is Not Registered for Notifications, please Register");
+            loginMessages.append("\n"+"Device is Not Registered for Notifications, please Register");
             return false;
         }
         else if (usernameEt.getText().length() <= 0){
@@ -323,7 +325,8 @@ public class LoginActivity extends BaseActivity {
         }else{
             loginText.setText(getResources().getString(R.string.loading_data));
             loginMessages.setVisibility(View.VISIBLE);
-            loginMessages.setText(getResources().getString(R.string.loging_in));
+            loginMessages.append("\n"+getResources().getString(R.string.loging_in));
+            loginMessages.setTextColor(getResources().getColor(R.color.white));
 
             Log.d("userLogin", "Calling login");
 
@@ -350,7 +353,7 @@ public class LoginActivity extends BaseActivity {
                         // user object available
 
                         loginMessages.setTextColor(getResources().getColor(R.color.green_a700));
-                        loginMessages.setText(getResources().getString(R.string.success));
+                        loginMessages.append("\n"+getResources().getString(R.string.success));
 
                         LoginResponse loginResponse = response.body();
 
@@ -405,7 +408,7 @@ public class LoginActivity extends BaseActivity {
                         }.execute();
 
                     } else {
-                        loginMessages.setText(getResources().getString(R.string.error_logging_in));
+                        loginMessages.append("\n"+getResources().getString(R.string.error_logging_in));
                         loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
                         loginProgress.setVisibility(View.GONE);
                         loginText.setText(getResources().getString(R.string.login));
@@ -416,7 +419,10 @@ public class LoginActivity extends BaseActivity {
                 public void onFailure(Call<LoginResponse> call, Throwable t) {
                     // something went completely south (like no internet connection)
                     try {
+                        loginText.setText(getResources().getString(R.string.login));
                         Log.d("Error", t.getMessage());
+                        loginMessages.append("\n"+getResources().getString(R.string.error_logging_in));
+                        loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
                     }catch (NullPointerException e){
                         e.printStackTrace();
                     }
@@ -458,7 +464,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(retrofit2.Call call, Throwable t) {
-                loginMessages.setText(getResources().getString(R.string.device_registration_warning));
+                loginMessages.append("\n"+getResources().getString(R.string.device_registration_warning));
                 loginMessages.setTextColor(getResources().getColor(R.color.red_600));
                 checkIfSyncDone();
             }
@@ -481,7 +487,7 @@ public class LoginActivity extends BaseActivity {
 
         Log.d("CHECK_FACILITY_ID", "Calling referrals");
 
-        loginMessages.setText(getResources().getString(R.string.initializing_data));
+        loginMessages.append("\n"+getResources().getString(R.string.initializing_data));
         loginMessages.setTextColor(getResources().getColor(R.color.amber_a700));
 
         if (session.isLoggedIn()){
@@ -532,11 +538,54 @@ public class LoginActivity extends BaseActivity {
 
                 Log.d(TAG,"chw object = "+new Gson().toJson(response.body()));
                 List<FacilityChwsResponce> facilityChws = response.body();
+
+                if(facilityChws!=null)
                 new AddChws().execute(facilityChws);
+                else{
+                    loginMessages.append("\n"+getResources().getString(R.string.error_logging_in));
+                    loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
+                    loginProgress.setVisibility(View.GONE);
+                    loginText.setText(getResources().getString(R.string.login));
+                }
             }
 
             @Override
             public void onFailure(Call<List<FacilityChwsResponce>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void callObtainReferralFeedback(){
+
+        Log.d("CHECK_FACILITY_ID", "Calling referral feedback");
+
+        Endpoints.ReferralFeedbackServices referralFeedbackServices =
+                ServiceGenerator.createService(Endpoints.ReferralFeedbackServices.class, usernameValue, passwordValue, null);
+
+        Call<List<ReferalFeedbackResponce>> call = referralFeedbackServices.getReferralFeedback();
+
+        Log.d("CHECK_FACILITY_ID", "Generated ReferralFeedback service");
+
+        call.enqueue(new Callback<List<ReferalFeedbackResponce>>() {
+            @Override
+            public void onResponse(Call<List<ReferalFeedbackResponce>> call, Response<List<ReferalFeedbackResponce>> response) {
+                Log.d(TAG,"referral feedback = "+new Gson().toJson(response));
+
+                List<ReferalFeedbackResponce> referralFeedbackResponce = response.body();
+
+                if(referralFeedbackResponce!=null)
+                    new AddReferralFeedback().execute(referralFeedbackResponce);
+                else{
+                    loginMessages.append("\n"+getResources().getString(R.string.error_logging_in));
+                    loginMessages.setTextColor(getResources().getColor(R.color.red_a700));
+                    loginProgress.setVisibility(View.GONE);
+                    loginText.setText(getResources().getString(R.string.login));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ReferalFeedbackResponce>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -550,10 +599,15 @@ public class LoginActivity extends BaseActivity {
         call.enqueue(new Callback<List<ReferralServiceIndicatorsResponse>>() {
             @Override
             public void onResponse(Call<List<ReferralServiceIndicatorsResponse>> call, Response<List<ReferralServiceIndicatorsResponse>> response) {
-                Log.d("SAMPLE", response.body().toString());
-                List<ReferralServiceIndicatorsResponse> receivedServices = response.body();
+                try {
+                    Log.d("SAMPLE", response.body().toString());
+                    List<ReferralServiceIndicatorsResponse> receivedServices = response.body();
 
-                new AddServices().execute(receivedServices);
+                    new AddServices().execute(receivedServices);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    loginMessages.append(getResources().getString(R.string.error_logging_in));
+                }
 
             }
 
@@ -658,7 +712,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loginMessages.setText("Finalizing..");
+            loginMessages.append("\n"+"Finalizing..");
         }
 
         @Override
@@ -722,7 +776,7 @@ public class LoginActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             Log.d("CHECK_FACILITY_ID", "Saved chw uses after registering to server");
-            callServices();
+            callObtainReferralFeedback();
         }
 
         @Override
@@ -746,6 +800,36 @@ public class LoginActivity extends BaseActivity {
                         }
                     }
 
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    class AddReferralFeedback extends AsyncTask<List<ReferalFeedbackResponce>, Void, Void>{
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Log.d("CHECK_FACILITY_ID", "Saved AddReferralFeedback obtained from server");
+            callServices();
+        }
+
+        @Override
+        protected Void doInBackground(List<ReferalFeedbackResponce>... lists) {
+            try {
+                for (ReferalFeedbackResponce  referalFeedbackResponce : lists[0]) {
+                    Log.d(TAG, "Obtained referral feedback = " + new Gson().toJson(referalFeedbackResponce));
+                    ReferralFeedback feedback = new ReferralFeedback();
+
+                    feedback.setId(referalFeedbackResponce.getId());
+                    feedback.setDesc(referalFeedbackResponce.getDesc());
+                    feedback.setDescSw(referalFeedbackResponce.getDescSw());
+                    feedback.setReferralTypeId(referalFeedbackResponce.getReferalTypeResponce().getReferralTypeId());
+
+                    baseDatabase.referralFeedbackModelDao().addReferralFeedback(feedback);
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -847,7 +931,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void userLoggedIn(){
-        loginMessages.setText("");
+        loginMessages.append("\n"+"");
         loginProgress.setVisibility(View.GONE);
         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);

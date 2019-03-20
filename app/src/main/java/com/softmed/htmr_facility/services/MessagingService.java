@@ -103,6 +103,7 @@ public class MessagingService extends FirebaseMessagingService {
                     referral = gson.fromJson(referralsDTOS.getJSONObject(i).toString(), Referral.class);
                     database.referalModel().addReferal(referral);
                     Log.d("handleNotification", "added Patient's Referral");
+                    Log.d("Added Referral ", new Gson().toJson(referral));
                 }
             }else if (type.equals("PatientRegistration")){
                 triggerNotification(getResources().getString(R.string.new_client_notification));
@@ -131,12 +132,6 @@ public class MessagingService extends FirebaseMessagingService {
         }
 
         Log.e(TAG, "push json: " + json.toString());
-
-        try {
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
         String msg = "Umepokea Data";
 

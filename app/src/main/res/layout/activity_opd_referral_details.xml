@@ -156,6 +156,7 @@
                                     android:orientation="horizontal">
 
                                     <RelativeLayout
+                                        android:layout_marginRight="16dp"
                                         android:layout_width="0dp"
                                         android:layout_weight="1"
                                         android:layout_height="wrap_content"
@@ -232,6 +233,14 @@
                                             android:text="Mwenelukanzima Mpechu"/>
 
                                     </RelativeLayout>
+
+                                    <View
+                                        android:layout_width="1dp"
+                                        android:layout_height="match_parent"
+                                        android:background="@color/card_separator"
+                                        android:layout_marginTop="16dp"
+                                        android:layout_marginBottom="16dp"
+                                        android:layout_marginRight="16dp"/>
 
                                     <RelativeLayout
                                         android:layout_width="0dp"
@@ -586,6 +595,66 @@
                                     android:layout_marginTop="8dp"
                                     android:background="@color/card_separator"/>
 
+                                <RelativeLayout
+                                    android:id="@+id/tb_feedback"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="16dp"
+                                    android:visibility="gone"
+                                    android:paddingLeft="16dp"
+                                    android:paddingTop="4dp"
+                                    android:paddingBottom="4dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/tb_status_title"
+                                        android:layout_marginTop="16dp"
+                                        android:text="@string/tb_status"
+                                        android:layout_centerVertical="true"
+                                        android:textSize="14sp"
+                                        android:fontFamily="@font/avenir_light"
+                                        android:textColor="@color/card_title_text"/>
+
+                                    <CheckBox
+                                        android:id="@+id/tb_status"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="32dp"
+                                        android:layout_toRightOf="@+id/tb_status_title"
+                                        android:checked="false" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toRightOf="@id/tb_status"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_centerVertical="true"
+                                        android:textSize="12sp"
+                                        android:textColor="@color/card_grid_text"
+                                        android:text="@string/check_if_positive"
+                                        android:fontFamily="@font/roboto_condensed_italic"/>
+
+
+                                    <EditText
+                                        android:visibility="gone"
+                                        android:layout_width="150dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginRight="16dp"
+                                        android:id="@+id/ctc_number_et"
+                                        android:hint="@string/ctc_number"
+                                        android:textColorHint="@color/card_light_text"
+                                        android:gravity="start"
+                                        android:padding="8dp"
+                                        android:textSize="14sp"
+                                        android:layout_alignParentRight="true"
+                                        android:textColor="@color/card_grid_text"
+                                        android:background="@drawable/border_one" />
+
+                                </RelativeLayout>
+
 
                                 <RelativeLayout
                                     android:visibility="gone"
@@ -674,7 +743,7 @@
 
                                         <RelativeLayout
                                             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
+                                            android:layout_height="84dp"
                                             android:padding="8dp"
                                             android:layout_marginTop="8dp"
                                             android:background="@drawable/border_one">
@@ -682,6 +751,7 @@
                                             <com.jaredrummler.materialspinner.MaterialSpinner
                                                 android:id="@+id/referral_feedback_spinner"
                                                 android:layout_width="match_parent"
+                                                android:layout_centerVertical="true"
                                                 app:ms_arrow_tint="@color/card_grid_tex"
                                                 app:ms_text_color="@color/card_grid_text"
                                                 android:layout_height="wrap_content"/>
@@ -749,7 +819,7 @@
                                         android:background="@drawable/border_two"
                                         android:layout_alignParentRight="true"
                                         android:fontFamily="@font/roboto_regular"
-                                        android:layout_marginRight="16dp"
+                                        android:layout_marginRight="32dp"
                                         android:textColor="@color/card_grid_text"
                                         android:text="@string/btn_save"/>
 

@@ -15,7 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +39,7 @@ import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.ReferralFeedback;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 
@@ -47,6 +52,7 @@ import static com.softmed.htmr_facility.utils.constants.MALE_SW;
 import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
+import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
 
 /**
  * Created by issy on 05/02/2018.
@@ -62,16 +68,19 @@ public class OpdReferralDetailsActivity extends BaseActivity {
     private TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, referralServiceName, clientPhoneNumberValue, referralDate;
     private EditText servicesOfferedEt, otherInformationEt;
     private RecyclerView indicatorsRecyclerView;
-    private TextView clientNames, wardText,clientAge, villageText, hamletText, patientGender, otherClinicalInformationValue;
+    private TextView clientNames, wardText, clientAge, villageText, hamletText, patientGender, otherClinicalInformationValue;
     private Dialog referalDialogue;
     private MaterialSpinner referralFeedbackMaterialSpinner;
-
+    private List<ReferralFeedback> referralFeedbacks = new ArrayList<>();
     private int service;
     private Referral currentReferral;
     private Patient currentPatient;
     private boolean isNewCase = false;
     private String referralFeedbackValue;
     private ArrayList<String> mReferralFeedbackOptions = new ArrayList<>();
+    private RelativeLayout tbFeedback;
+    private CheckBox tbStatusCheckbox;
+    private boolean tbStatus=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,13 +88,13 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_opd_referral_details);
         setupviews();
 
-        if (getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
             currentReferral = (Referral) getIntent().getSerializableExtra("referal");
-            Log.d("coze","current referral = "+new Gson().toJson(currentReferral));
+            Log.d("coze", "current referral = " + new Gson().toJson(currentReferral));
             service = getIntent().getIntExtra("service", 0);
 
-            if (currentReferral != null){
-                if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
+            if (currentReferral != null) {
+                if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED) {
 
                     servicesOfferedEt.setEnabled(false);
                     servicesOfferedEt.setText(currentReferral.getServiceGivenToPatient());
@@ -105,6 +114,11 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
                 new OpdReferralDetailsActivity.patientDetailsTask(baseDatabase, currentReferral.getPatient_id(), currentReferral.getServiceId()).execute();
 
+                if(currentReferral.getServiceId()==TB_SERVICE_ID){
+                    tbFeedback.setVisibility(View.VISIBLE);
+                }
+
+
             }
         }
 
@@ -112,19 +126,36 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
-            mReferralFeedbackOptions.add("Received and Attended");
-            mReferralFeedbackOptions.add("Received and Referred");
-        }else {
-            mReferralFeedbackOptions.add("Amepokelewa na kuhudumiwa");
-            mReferralFeedbackOptions.add("Amepokelewa na kupewa Rufaa");
-        }
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
 
-        referralFeedbackMaterialSpinner.setItems(mReferralFeedbackOptions);
+                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)) {
+                    for (ReferralFeedback referralFeedback : referralFeedbacks)
+                        mReferralFeedbackOptions.add(referralFeedback.getDesc());
+                } else {
+                    for (ReferralFeedback referralFeedback : referralFeedbacks)
+                        mReferralFeedbackOptions.add(referralFeedback.getDescSw());
+                }
+
+                referralFeedbackMaterialSpinner.setItems(mReferralFeedbackOptions);
+                referralFeedbackValue = referralFeedbacks.get(0).getId().toString();
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                referralFeedbacks = baseDatabase.referralFeedbackModelDao().getReferralFeedback(2);
+                return null;
+            }
+        }.execute();
+
+
+
         referralFeedbackMaterialSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
             public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-                referralFeedbackValue = mReferralFeedbackOptions.get(position);
+                referralFeedbackValue = referralFeedbacks.get(position).getId().toString();
             }
         });
 
@@ -151,10 +182,10 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 }));
                 alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
                     // Action 2 callback
-                    if (currentPatient != null){
+                    if (currentPatient != null) {
                         //Needs to save current referral feedback before issuing another referral
                         saveReferalInformation(true);
-                    }else {
+                    } else {
                         Toast.makeText(OpdReferralDetailsActivity.this, getResources().getString(R.string.feedback_required), Toast.LENGTH_LONG).show();
                     }
                 }));
@@ -165,7 +196,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     }
 
-    private void saveReferalInformation(boolean isForwardingReferral){
+    private void saveReferalInformation(boolean isForwardingReferral) {
 
         String serviceOferedString = referralFeedbackValue;
         String otherInformation = otherInformationEt.getText().toString();
@@ -174,6 +205,10 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         currentReferral.setServiceGivenToPatient(serviceOferedString);
         currentReferral.setOtherNotesAndAdvices(otherInformation);
         currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+
+        if(currentReferral.getServiceId()==TB_SERVICE_ID){
+            currentReferral.setTestResults(tbStatus?1:0);
+        }
 
         //Show progress bar
         saveButton.setVisibility(View.INVISIBLE);
@@ -186,7 +221,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     }
 
-    private void callReferralFragmentDialogue(Patient patient){
+    private void callReferralFragmentDialogue(Patient patient) {
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -195,7 +230,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     }
 
-    private void setupviews(){
+    private void setupviews() {
 
         indicatorsRecyclerView = (RecyclerView) findViewById(R.id.indicators_linear_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -223,12 +258,22 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         villageText = (TextView) findViewById(R.id.client_kijiji_value);
         hamletText = (TextView) findViewById(R.id.client_kitongoji_value);
 
+        tbFeedback =  findViewById(R.id.tb_feedback);
+        tbStatusCheckbox =  findViewById(R.id.tb_status);
+
+        tbStatusCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                tbStatus = b;
+            }
+        });
+
         saveButton = (Button) findViewById(R.id.save);
         referButton = (Button) findViewById(R.id.referal_button);
 
     }
 
-    class IndicatorsRecyclerAdapter  extends RecyclerView.Adapter<OpdReferralDetailsActivity.IndicatorsViewHolder> {
+    class IndicatorsRecyclerAdapter extends RecyclerView.Adapter<OpdReferralDetailsActivity.IndicatorsViewHolder> {
 
         private List<ReferralIndicator> indicators = new ArrayList<>();
         private LayoutInflater mInflater;
@@ -277,12 +322,12 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             indicatorName = (TextView) itemView.findViewById(R.id.indicator_name);
         }
 
-        private void bindIndicator(ReferralIndicator indicator){
+        private void bindIndicator(ReferralIndicator indicator) {
             this.referralIndicator = indicator;
-            if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
-                indicatorName.setText(referralIndicator==null?"":referralIndicator.getIndicatorName());
-            }else {
-                indicatorName.setText(referralIndicator==null?"":referralIndicator.getIndicatorNameSw());
+            if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)) {
+                indicatorName.setText(referralIndicator == null ? "" : referralIndicator.getIndicatorName());
+            } else {
+                indicatorName.setText(referralIndicator == null ? "" : referralIndicator.getIndicatorNameSw());
             }
         }
 
@@ -295,10 +340,10 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         Boolean isForwardingThisReferral = false;
         Boolean isNewCase;
 
-        UpdateReferralTask(Referral ref, AppDatabase db){
+        UpdateReferralTask(Referral ref, AppDatabase db) {
             this.referal = ref;
             this.database = db;
-            Log.d("Coze","Saved referral = "+new Gson().toJson(referal));
+            Log.d("Coze", "Saved referral = " + new Gson().toJson(referal));
         }
 
         @Override
@@ -328,12 +373,12 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             super.onPostExecute(aVoid);
             saveButton.setVisibility(View.VISIBLE);
 
-            if (isForwardingThisReferral){
+            if (isForwardingThisReferral) {
                 servicesOfferedEt.setEnabled(false);
                 otherInformationEt.setEnabled(false);
                 saveButton.setText(getResources().getString(R.string.done));
                 callReferralFragmentDialogue(currentPatient);
-            }else {
+            } else {
                 finish();
             }
 
@@ -347,9 +392,9 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         long mServiceId;
         Patient patient;
         AppDatabase db;
-        List<ReferralIndicator> indicators =  new ArrayList<>();
+        List<ReferralIndicator> indicators = new ArrayList<>();
 
-        patientDetailsTask(AppDatabase database, String patientID, long serviceId){
+        patientDetailsTask(AppDatabase database, String patientID, long serviceId) {
             this.db = database;
             this.patientId = patientID;
             this.mServiceId = serviceId;
@@ -359,15 +404,15 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
-            serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId+""));
-            serviceNameSw = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId+""));
+            serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId + ""));
+            serviceNameSw = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId + ""));
             currentPatient = patient;
 
             List<Long> ids = currentReferral.getServiceIndicatorIds();
 
             //Call Patient Referral Indicators
-            for (int i=0; i<ids.size(); i++){
-                long id = Long.parseLong(ids.get(i)+"");
+            for (int i = 0; i < ids.size(); i++) {
+                long id = Long.parseLong(ids.get(i) + "");
                 ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
                 indicators.add(referralIndicator);
             }
@@ -379,7 +424,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             clientNames.setText(patientNames);
-            if (patient != null){
+            if (patient != null) {
 
                 try {
                     Calendar cal = Calendar.getInstance();
@@ -399,9 +444,9 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 String mapCueTitle = getResources().getString(R.string.map_cue);
 
                 //Set referral Service name CHECK LOCALE
-                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)) {
                     referralServiceName.setText(serviceName);
-                }else {
+                } else {
                     referralServiceName.setText(serviceNameSw);
                 }
 
@@ -414,16 +459,16 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 villageText.setText(patient.getVillage() == null ? "N/A " : patient.getVillage());
                 hamletText.setText(patient.getHamlet() == null ? "N/A " : patient.getHamlet());
 
-                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
-                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)) {
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)) {
                         patientGender.setText(MALE);
-                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                    } else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)) {
                         patientGender.setText(FEMALE);
                     }
-                }else {
-                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                } else {
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)) {
                         patientGender.setText(MALE_SW);
-                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                    } else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)) {
                         patientGender.setText(FEMALE_SW);
                     }
                 }

@@ -12,6 +12,7 @@ import com.softmed.htmr_facility.dom.responces.EncounterResponse;
 import com.softmed.htmr_facility.dom.responces.FacilityChwsResponce;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
 import com.softmed.htmr_facility.dom.responces.PatientResponce;
+import com.softmed.htmr_facility.dom.responces.ReferalFeedbackResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -81,6 +82,11 @@ public class Endpoints {
         @POST("save-first-appointment")
         Call<PatientAppointment> saveFirstAppointment(@Body RequestBody a);
 
+    }
+
+    public interface ReferralFeedbackServices{
+        @GET("referral-feedback")
+        Call<List<ReferalFeedbackResponce>> getReferralFeedback();
     }
 
     public interface NotificationServices{

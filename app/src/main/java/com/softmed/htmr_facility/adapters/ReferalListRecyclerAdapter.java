@@ -116,8 +116,6 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
                 holder.referralReasons.setText(referral.getReferralReason());
             }
 
-            holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getAppointmentDate()));
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -151,7 +149,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
 
             holder.referralReasons.setText(referral.getReferralReason());
 
-            holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getReferralDate()));
+            holder.referralDate.setText(BaseActivity.simpleDateFormat.format(referral.getAppointmentDate()));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
