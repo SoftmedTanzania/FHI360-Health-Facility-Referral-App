@@ -255,4 +255,7 @@
     <string name="facility_chws_label">Facility CHWs</string>
     <string name="followup_service_name">Followup</string>
 
+    <string name="suceessful_label">Successful</string>
+    <string name="unsuccessful_label">Unsuccessful</string>
+    <string name="pending_label">Pending</string>
 </resources>

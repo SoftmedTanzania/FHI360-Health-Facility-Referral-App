@@ -54,12 +54,13 @@ public class MessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
+            Log.d(TAG, "Data Payload: " + remoteMessage.getData().toString());
 
             try {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
                 handleDataMessage(json);
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(TAG, "Exception: " + e.getMessage());
             }
         }

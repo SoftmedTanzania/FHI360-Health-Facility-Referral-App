@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.irozon.alertview.AlertActionStyle;
 import com.irozon.alertview.AlertStyle;
@@ -29,9 +28,9 @@ import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.ReferralFeedback;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
-import com.softmed.htmr_facility.utils.ListStringConverter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -80,7 +79,30 @@ public class FeedbackDetailsActivity extends BaseActivity {
                 if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
 
                     servicesOfferedEt.setEnabled(false);
-                    servicesOfferedEt.setText(currentReferral.getServiceGivenToPatient());
+
+                    new AsyncTask<Void,ReferralFeedback,ReferralFeedback>(){
+
+                        @Override
+                        protected ReferralFeedback doInBackground(Void... voids) {
+                            try {
+                                Log.d("coze","feedback_id = "+currentReferral.getServiceGivenToPatient());
+                                return baseDatabase.referralFeedbackModelDao().getReferralFeedbackById(Integer.parseInt(currentReferral.getServiceGivenToPatient())).get(0);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(ReferralFeedback referralFeedback) {
+                            super.onPostExecute(referralFeedback);
+                            if(referralFeedback!=null){
+                                servicesOfferedEt.setText(referralFeedback.getDescSw());
+                            }
+                        }
+                    }.execute();
+
+
 
                     otherInformationEt.setText(currentReferral.getOtherNotesAndAdvices());
                     otherInformationEt.setEnabled(false);

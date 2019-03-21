@@ -62,13 +62,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/card_grid_text"
+                android:layout_centerVertical="true"
                 android:id="@+id/referral_reasons"
                 android:fontFamily="@font/google_sans_regular"
                 android:text="@string/dummy_text"
                 android:lines="2"
                 android:elegantTextHeight="true"
                 android:lineSpacingExtra="2dp"
-                android:layout_centerVertical="true"
                 android:ellipsize="end"/>
 
 

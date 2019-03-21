@@ -248,4 +248,8 @@
 
     <string name="followup_service_name">Kufwatiliwa</string>
 
+    <string name="suceessful_label">Imefanikiwa</string>
+    <string name="unsuccessful_label">Haijafanikiwa</string>
+    <string name="pending_label">Inasubiri</string>
+
 </resources>

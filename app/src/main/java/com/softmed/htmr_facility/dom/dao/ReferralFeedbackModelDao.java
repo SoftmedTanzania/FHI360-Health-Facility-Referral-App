@@ -24,7 +24,10 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface ReferralFeedbackModelDao {
 
     @Query("select * from ReferralFeedback WHERE referralTypeId=:referralTypeId")
-    List<ReferralFeedback> getReferralFeedback(int referralTypeId);
+    List<ReferralFeedback> getReferralFeedbackByRefeerralType(int referralTypeId);
+
+    @Query("select * from ReferralFeedback WHERE id=:id")
+    List<ReferralFeedback> getReferralFeedbackById(int id);
 
     @Insert(onConflict = REPLACE)
     void addReferralFeedback(ReferralFeedback feedback);

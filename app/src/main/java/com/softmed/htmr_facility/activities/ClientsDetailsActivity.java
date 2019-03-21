@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TimeUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,35 +28,27 @@ import com.irozon.alertview.AlertStyle;
 import com.irozon.alertview.AlertView;
 import com.irozon.alertview.objects.AlertAction;
 import com.rey.material.widget.ProgressView;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
-
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
-import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
-import com.softmed.htmr_facility.utils.ListStringConverter;
 
-import belka.us.androidtoggleswitch.widgets.BaseToggleSwitch;
-import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.MALARIA_SERVICE_ID;
-import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
@@ -77,24 +66,23 @@ import static com.softmed.htmr_facility.utils.constants.TEST_RESULT_POSITIVE_SW;
 
 public class ClientsDetailsActivity extends BaseActivity {
 
-    private Toolbar toolbar;
     public Button saveButton, referButton;
     public TextView ctcNumber, referalReasons, villageLeaderValue, referrerName, testResultsHint, labTestType, referralService, referralDate;
-    private EditText servicesOfferedEt, otherInformationEt, ctcNumberEt;
     public ProgressView saveProgress;
-    private RecyclerView indicatorsRecyclerView;
-    public TextView clientNames,clientAgeValue, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
+    public TextView clientNames, clientAgeValue, wardText, villageText, hamletText, patientGender, otherClinicalInformationValue;
     public Dialog referalDialogue;
     MaterialSpinner testResultsSpinner;
     RelativeLayout resultsInputContainer, indicatorsContainer;
     LinearLayout servicesGivenContainer;
-
     int service;
     Referral currentReferral;
     Patient currentPatient;
     boolean isNewCase = false;
     boolean isCTCNumberEmpty = false;
     boolean updatePatientObject = false;
+    private Toolbar toolbar;
+    private EditText servicesOfferedEt, otherInformationEt, ctcNumberEt;
+    private RecyclerView indicatorsRecyclerView;
     private String clientCTCNumber;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
 
@@ -107,11 +95,11 @@ public class ClientsDetailsActivity extends BaseActivity {
         service = getIntent().getIntExtra("service", 0);
         calibrateUI(service);
 
-        if (getIntent().getExtras() != null){
+        if (getIntent().getExtras() != null) {
             currentReferral = (Referral) getIntent().getSerializableExtra("referal");
 
-            if (currentReferral != null){
-                if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED){
+            if (currentReferral != null) {
+                if (currentReferral.getReferralStatus() == REFERRAL_STATUS_COMPLETED) {
 
                     servicesOfferedEt.setEnabled(false);
                     servicesOfferedEt.setText(currentReferral.getServiceGivenToPatient());
@@ -125,8 +113,8 @@ public class ClientsDetailsActivity extends BaseActivity {
 
                 }
 
-                if (service == LAB_SERVICE_ID){
-                    switch (currentReferral.getLabTest()){
+                if (service == LAB_SERVICE_ID) {
+                    switch (currentReferral.getLabTest()) {
                         case MALARIA_SERVICE_ID:
                             labTestType.setText("Malaria");
                             break;
@@ -165,11 +153,11 @@ public class ClientsDetailsActivity extends BaseActivity {
 
         List<String> results = new ArrayList<>();
 
-        if (getLocaleString().equals(SWAHILI_LOCALE)){
+        if (getLocaleString().equals(SWAHILI_LOCALE)) {
             results.add(TEST_RESULT_POSITIVE_SW);
             results.add(TEST_RESULT_NEGATIVE_SW);
             results.add(TEST_RESULT_INDETERMINATE_SW);
-        }else if (getLocaleString().equals(ENGLISH_LOCALE)){
+        } else if (getLocaleString().equals(ENGLISH_LOCALE)) {
             results.add(TEST_RESULT_POSITIVE);
             results.add(TEST_RESULT_NEGATIVE);
             results.add(TEST_RESULT_INDETERMINATE);
@@ -180,16 +168,16 @@ public class ClientsDetailsActivity extends BaseActivity {
         testResultsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i == 0){
-                    if (isCTCNumberEmpty){
+                if (i == 0) {
+                    if (isCTCNumberEmpty) {
                         isNewCase = true;
-                    }else {
+                    } else {
                         isNewCase = false;
                     }
-                    Log.d("result_selected", "selected results : "+adapterView.getSelectedItem());
-                }else if (i == 1){
+                    Log.d("result_selected", "selected results : " + adapterView.getSelectedItem());
+                } else if (i == 1) {
                     isNewCase = false;
-                    Log.d("result_selected", "selected results : "+adapterView.getSelectedItem());
+                    Log.d("result_selected", "selected results : " + adapterView.getSelectedItem());
                 }
             }
 
@@ -217,7 +205,7 @@ public class ClientsDetailsActivity extends BaseActivity {
                 }));
                 alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
                     // Action 2 callback
-                    if (currentPatient != null){
+                    if (currentPatient != null) {
                         saveReferalInformation(true);
                     }
                 }));
@@ -227,13 +215,13 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     }
 
-    private void setupviews(){
+    private void setupviews() {
 
         labTestType = findViewById(R.id.lab_test_type);
         testResultsSpinner = findViewById(R.id.spin_test_results);
 
         resultsInputContainer = findViewById(R.id.results_input_wrap);
-        servicesGivenContainer =  findViewById(R.id.service_given_container);
+        servicesGivenContainer = findViewById(R.id.service_given_container);
         indicatorsContainer = findViewById(R.id.indicators_container);
 
         indicatorsRecyclerView = findViewById(R.id.indicators_linear_recycler);
@@ -247,7 +235,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         otherInformationEt = findViewById(R.id.other_information_et);
         ctcNumberEt = findViewById(R.id.ctc_number_et);
 
-        referralDate  = findViewById(R.id.referral_date);
+        referralDate = findViewById(R.id.referral_date);
         referralService = findViewById(R.id.referral_service);
         referrerName = findViewById(R.id.referer_name_value);
         villageLeaderValue = findViewById(R.id.mwenyekiti_name_value);
@@ -264,8 +252,8 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     }
 
-    private void calibrateUI(int serviceID){
-        switch (serviceID){
+    private void calibrateUI(int serviceID) {
+        switch (serviceID) {
             case HIV_SERVICE_ID:
                 //Do all CTC Calibrations
                 testResultsSpinner.setVisibility(View.GONE);
@@ -286,11 +274,11 @@ public class ClientsDetailsActivity extends BaseActivity {
                 break;
             case LAB_SERVICE_ID:
                 /*
-                * Calibrations
-                * Test Type = VISIBLE
-                * Cannot issue referral from lab : Issue Referral = INVISIBLE
-                * Lab does not have services given and advices
-                * */
+                 * Calibrations
+                 * Test Type = VISIBLE
+                 * Cannot issue referral from lab : Issue Referral = INVISIBLE
+                 * Lab does not have services given and advices
+                 * */
                 referButton.setVisibility(View.GONE);
                 labTestType.setVisibility(View.VISIBLE);
                 testResultsSpinner.setVisibility(View.VISIBLE);
@@ -304,10 +292,10 @@ public class ClientsDetailsActivity extends BaseActivity {
 
 
     //TODO => This method needs code restructuring
-    private void saveReferalInformation(boolean isForwardingReferral){
-        if (service == LAB_SERVICE_ID){
+    private void saveReferalInformation(boolean isForwardingReferral) {
+        if (service == LAB_SERVICE_ID) {
 
-            if (testResultsSpinner.getSelectedItemPosition() == 0){
+            if (testResultsSpinner.getSelectedItemPosition() == 0) {
                 testResultsSpinner.setEnableErrorLabel(true);
                 testResultsSpinner.setError(getResources().getString(R.string.input_required));
                 testResultsSpinner.setErrorColor(getResources().getColor(R.color.red_500));
@@ -315,11 +303,11 @@ public class ClientsDetailsActivity extends BaseActivity {
             } else {
                 int result = 0;
 
-                if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE_SW)){
+                if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_POSITIVE_SW)) {
                     result = 1;
-                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE_SW)){
+                } else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_NEGATIVE_SW)) {
                     result = 0;
-                }else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_INDETERMINATE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_INDETERMINATE_SW)){
+                } else if (testResultsSpinner.getSelectedItem().equals(TEST_RESULT_INDETERMINATE) || testResultsSpinner.getSelectedItem().equals(TEST_RESULT_INDETERMINATE_SW)) {
                     result = 2;
                 }
 
@@ -328,8 +316,8 @@ public class ClientsDetailsActivity extends BaseActivity {
 
         }
 
-        if (service == HIV_SERVICE_ID){
-            if (!ctcNumberEt.getText().toString().isEmpty()){
+        if (service == HIV_SERVICE_ID) {
+            if (!ctcNumberEt.getText().toString().isEmpty()) {
                 currentPatient.setHivStatus(true);
                 currentPatient.setCtcNumber(ctcNumberEt.getText().toString());
                 currentPatient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
@@ -359,7 +347,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     }
 
-    private void callReferralFragmentDialogue(Patient patient){
+    private void callReferralFragmentDialogue(Patient patient) {
 
         FragmentManager fm = getSupportFragmentManager();
 
@@ -368,7 +356,7 @@ public class ClientsDetailsActivity extends BaseActivity {
 
     }
 
-    class IndicatorsRecyclerAdapter  extends RecyclerView.Adapter<IndicatorsViewHolder> {
+    class IndicatorsRecyclerAdapter extends RecyclerView.Adapter<IndicatorsViewHolder> {
 
         private List<ReferralIndicator> indicators = new ArrayList<>();
         private LayoutInflater mInflater;
@@ -417,25 +405,25 @@ public class ClientsDetailsActivity extends BaseActivity {
             indicatorName = (TextView) itemView.findViewById(R.id.indicator_name);
         }
 
-        private void bindIndicator(ReferralIndicator indicator){
+        private void bindIndicator(ReferralIndicator indicator) {
             this.referralIndicator = indicator;
-            if (BaseActivity.getLocaleString().equals(ENGLISH_LOCALE)){
+            if (BaseActivity.getLocaleString().equals(ENGLISH_LOCALE)) {
                 indicatorName.setText(referralIndicator.getIndicatorName());
-            }else {
+            } else {
 
             }
         }
 
     }
 
-    class UpdateReferralTask extends AsyncTask<Boolean, Void, Void>{
+    class UpdateReferralTask extends AsyncTask<Boolean, Void, Void> {
 
         Referral referal;
         AppDatabase database;
         Boolean isForwardingThisReferral = false;
         Boolean isNewCase;
 
-        UpdateReferralTask(Referral ref, AppDatabase db){
+        UpdateReferralTask(Referral ref, AppDatabase db) {
             this.referal = ref;
             this.database = db;
         }
@@ -448,7 +436,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         @Override
         protected Void doInBackground(Boolean... booleans) {
 
-            if (updatePatientObject){
+            if (updatePatientObject) {
                 database.patientModel().updatePatient(currentPatient);
 
                 PostOffice postOffice = new PostOffice();
@@ -498,14 +486,14 @@ public class ClientsDetailsActivity extends BaseActivity {
             saveProgress.setVisibility(View.GONE);
             saveButton.setVisibility(View.VISIBLE);
 
-            if (isForwardingThisReferral){
+            if (isForwardingThisReferral) {
                 testResultsSpinner.setEnabled(false);
                 servicesOfferedEt.setEnabled(false);
                 otherInformationEt.setEnabled(false);
                 ctcNumberEt.setEnabled(false);
                 saveButton.setText(getResources().getString(R.string.done));
                 callReferralFragmentDialogue(currentPatient);
-            }else {
+            } else {
                 finish();
             }
 
@@ -519,9 +507,9 @@ public class ClientsDetailsActivity extends BaseActivity {
         long referralServiceId;
         Patient patient;
         AppDatabase db;
-        List<ReferralIndicator> indicators =  new ArrayList<>();
+        List<ReferralIndicator> indicators = new ArrayList<>();
 
-        patientDetailsTask(AppDatabase database, String patientID, long mReferralServiceId){
+        patientDetailsTask(AppDatabase database, String patientID, long mReferralServiceId) {
             this.db = database;
             this.patientId = patientID;
             this.referralServiceId = mReferralServiceId;
@@ -531,15 +519,20 @@ public class ClientsDetailsActivity extends BaseActivity {
         protected Void doInBackground(Void... voids) {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
-            serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(referralServiceId+""));
+
+            if (getLocaleString().equals(SWAHILI_LOCALE))
+                serviceName = db.referralServiceIndicatorsDao().getServiceNameByIdSW(Integer.valueOf(referralServiceId + ""));
+            else
+                serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(referralServiceId + ""));
+
             currentPatient = patient;
 
-            if (currentReferral.getServiceIndicatorIds() != null){
+            if (currentReferral.getServiceIndicatorIds() != null) {
                 List<Long> ids = currentReferral.getServiceIndicatorIds();
 
                 //Call Patient Referral Indicators
-                for (int i=0; i<ids.size(); i++){
-                    long id = Long.parseLong(ids.get(i)+"");
+                for (int i = 0; i < ids.size(); i++) {
+                    long id = Long.parseLong(ids.get(i) + "");
                     ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
                     indicators.add(referralIndicator);
                 }
@@ -552,7 +545,7 @@ public class ClientsDetailsActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             clientNames.setText(patientNames);
-            if (patient != null){
+            if (patient != null) {
 
                 String wardTitle = getResources().getString(R.string.ward);
                 String villageTitle = getResources().getString(R.string.village);
@@ -578,15 +571,15 @@ public class ClientsDetailsActivity extends BaseActivity {
                 villageText.setText(patient.getVillage() == null ? "N/A " : patient.getVillage());
                 hamletText.setText(patient.getHamlet() == null ? "N/A " : patient.getHamlet());
                 patientGender.setText(patient.getGender());
-                if (patient.getCtcNumber() != null){
+                if (patient.getCtcNumber() != null) {
                     //testResultsHint.setVisibility(View.VISIBLE);
                     //hivStatus.setVisibility(View.VISIBLE);
                     ctcNumberEt.setVisibility(View.VISIBLE);
 
                     ctcNumberEt.setText(patient.getCtcNumber());
-                    isCTCNumberEmpty =false;
+                    isCTCNumberEmpty = false;
 
-                }else {
+                } else {
 
                     isCTCNumberEmpty = true;
 

@@ -59,6 +59,22 @@
             android:text="TB"
             android:textColor="@color/card_grid_tex"/>
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            android:gravity="center"
+            android:textColor="@color/card_grid_tex"/>
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="8dp"
+            android:id="@+id/status_color"/>
+
     </LinearLayout>
 
     <View

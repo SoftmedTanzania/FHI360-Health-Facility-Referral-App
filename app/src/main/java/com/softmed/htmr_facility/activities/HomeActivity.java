@@ -656,7 +656,6 @@ public class HomeActivity extends BaseActivity {
             List<PostOffice> appointmentData = new ArrayList<>();
 
             Log.d("HomeActivity", "Size of data in postman is : "+unpostedData.size());
-            logthat("Size of data in postman is : "+unpostedData.size());
 
             for (PostOffice data : unpostedData){
                 switch (data.getPost_data_type()){
@@ -898,6 +897,12 @@ public class HomeActivity extends BaseActivity {
         logthat("Hangling referral data");
 
         final Referral referral = database.referalModel().getReferalById(data.getPost_id());
+        try {
+            int patientID = Integer.parseInt(referral.getPatient_id());
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            database.postOfficeModelDao().deletePostData(data);
+        }
 
         Call call = referalService.postReferral(session.getServiceProviderUUID(), BaseActivity.getReferralRequestBody(referral));
         call.enqueue(new Callback() {
@@ -941,7 +946,6 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void handleReferralFeedbackDataSync(PostOffice data){
-
         Log.d("HomeActivity", "Referral Feedback");
         logthat("Handling referral feedback data");
 
@@ -966,15 +970,18 @@ public class HomeActivity extends BaseActivity {
                                 }
                             }.execute();
                         }else {
-                            logthat("Referral feedback");
+                            logthat("Referral feedback response is "+response.code());
                         }
                     }
+                }else{
+                    logthat("Responce received is null, Please try again later");
                 }
 
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
+                t.printStackTrace();
                 foundSyncItems--;
                 isSyncFinished();
                 logthat("Syncing data failed with message : "+t.getMessage());
@@ -1083,9 +1090,7 @@ public class HomeActivity extends BaseActivity {
                     AppData appData = new AppData();
                     appData.setName(SYNC_STATUS);
                     appData.setValue(SYNC_STATUS_OFF);
-
                     database.appDataModelDao().insertAppData(appData);
-
                     return null;
                 }
             }.execute();

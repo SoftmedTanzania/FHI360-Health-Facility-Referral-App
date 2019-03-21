@@ -80,4 +80,27 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.2"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/roboto_condensed"
+            android:layout_marginTop="16dp"
+            android:id="@+id/status"
+            android:text="@string/status"
+            android:textColor="@color/black"/>
+
+    </RelativeLayout>
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:id="@+id/status_color"/>
+
 </LinearLayout>

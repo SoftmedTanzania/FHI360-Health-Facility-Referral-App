@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -145,7 +144,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                referralFeedbacks = baseDatabase.referralFeedbackModelDao().getReferralFeedback(2);
+                referralFeedbacks = baseDatabase.referralFeedbackModelDao().getReferralFeedbackByRefeerralType(2);
                 return null;
             }
         }.execute();
