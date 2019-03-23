@@ -54,10 +54,13 @@ public class MessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Data Payload: " + remoteMessage.getData().toString());
+            Log.d(TAG, "Data Payload: " + remoteMessage.getData());
 
             try {
-                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                Gson gson = new Gson();
+                String jsonString = gson.toJson(remoteMessage.getData());
+
+                JSONObject json = new JSONObject(jsonString);
                 handleDataMessage(json);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -171,6 +174,10 @@ public class MessagingService extends FirebaseMessagingService {
         notificationUtils = new NotificationUtils(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
+    }
+
+    private void parseString(String data){
+        String string = data.replace("=",":\"");
     }
 
 }

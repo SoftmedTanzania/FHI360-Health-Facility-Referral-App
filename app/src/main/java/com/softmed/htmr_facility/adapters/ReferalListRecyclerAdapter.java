@@ -18,7 +18,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.activities.ClientsDetailsActivity;
-import com.softmed.htmr_facility.activities.OpdReferralDetailsActivity;
+import com.softmed.htmr_facility.activities.OpdReceivedReferralDetailsActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
 import com.softmed.htmr_facility.dom.objects.Referral;
@@ -156,7 +156,7 @@ public class ReferalListRecyclerAdapter extends RecyclerView.Adapter <RecyclerVi
                 public void onClick(View view) {
 
                     Log.d("worships", "service is OPD");
-                    Intent intent = new Intent(context, OpdReferralDetailsActivity.class);
+                    Intent intent = new Intent(context, OpdReceivedReferralDetailsActivity.class);
                     intent.putExtra("referal", referral);
                     intent.putExtra("service", serviceID);
                     context.startActivity(intent);

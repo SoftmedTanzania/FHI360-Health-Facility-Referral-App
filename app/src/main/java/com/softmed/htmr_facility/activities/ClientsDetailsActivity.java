@@ -525,6 +525,8 @@ public class ClientsDetailsActivity extends BaseActivity {
             else
                 serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(referralServiceId + ""));
 
+            Log.d("Coze","service name = "+serviceName);
+
             currentPatient = patient;
 
             if (currentReferral.getServiceIndicatorIds() != null) {

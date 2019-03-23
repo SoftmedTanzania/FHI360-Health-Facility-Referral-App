@@ -31,10 +31,6 @@
 
         <activity android:name="com.softmed.htmr_facility.activities.LoaderActivity"/>
 
-        <activity android:name="com.softmed.htmr_facility.activities.ReferalListActivityOld"
-            android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
-            android:windowSoftInputMode="stateHidden"/>
-
         <activity android:name="com.softmed.htmr_facility.activities.ReferedClientsActivity"
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
@@ -43,9 +39,6 @@
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name="com.softmed.htmr_facility.activities.ClientsDetailsActivity"
-            android:parentActivityName="com.softmed.htmr_facility.activities.ReferalListActivityOld"
-            android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name="com.softmed.htmr_facility.activities.LoginActivity"
             android:windowSoftInputMode="stateHidden"
@@ -92,7 +85,7 @@
             android:parentActivityName="com.softmed.htmr_facility.activities.ReferedClientsActivity"
             android:windowSoftInputMode="stateHidden"/>
 
-        <activity android:name="com.softmed.htmr_facility.activities.OpdReferralDetailsActivity"
+        <activity android:name="com.softmed.htmr_facility.activities.OpdReceivedReferralDetailsActivity"
             android:parentActivityName="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden"/>
 

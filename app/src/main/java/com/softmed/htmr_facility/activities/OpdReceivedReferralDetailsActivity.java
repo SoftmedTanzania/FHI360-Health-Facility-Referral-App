@@ -46,6 +46,7 @@ import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
 import static com.softmed.htmr_facility.utils.constants.FEMALE;
 import static com.softmed.htmr_facility.utils.constants.FEMALE_SW;
 import static com.softmed.htmr_facility.utils.constants.FEMALE_VALUE;
+import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.MALE;
 import static com.softmed.htmr_facility.utils.constants.MALE_SW;
 import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
@@ -60,7 +61,7 @@ import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
  * On Project HFReferralApp
  */
 
-public class OpdReferralDetailsActivity extends BaseActivity {
+public class OpdReceivedReferralDetailsActivity extends BaseActivity {
 
     private Toolbar toolbar;
     private Button saveButton, referButton;
@@ -77,14 +78,14 @@ public class OpdReferralDetailsActivity extends BaseActivity {
     private boolean isNewCase = false;
     private String referralFeedbackValue;
     private ArrayList<String> mReferralFeedbackOptions = new ArrayList<>();
-    private RelativeLayout tbFeedback;
+    private RelativeLayout tbHivFeedback;
     private CheckBox tbStatusCheckbox;
     private boolean tbStatus=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opd_referral_details);
+        setContentView(R.layout.activity_opd_received_referral_details);
         setupviews();
 
         if (getIntent().getExtras() != null) {
@@ -111,10 +112,10 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 villageLeaderValue.setText(currentReferral.getVillageLeader() == null ? "N/A" : currentReferral.getVillageLeader());
                 referralDate.setText(simpleDateFormat.format(currentReferral.getReferralDate()));
 
-                new OpdReferralDetailsActivity.patientDetailsTask(baseDatabase, currentReferral.getPatient_id(), currentReferral.getServiceId()).execute();
+                new OpdReceivedReferralDetailsActivity.patientDetailsTask(baseDatabase, currentReferral.getPatient_id(), currentReferral.getServiceId()).execute();
 
-                if(currentReferral.getServiceId()==TB_SERVICE_ID){
-                    tbFeedback.setVisibility(View.VISIBLE);
+                if(currentReferral.getServiceId()==TB_SERVICE_ID || currentReferral.getServiceId()==HIV_SERVICE_ID ){
+                    tbHivFeedback.setVisibility(View.VISIBLE);
                 }
 
 
@@ -174,7 +175,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-                Context context = OpdReferralDetailsActivity.this;
+                Context context = OpdReceivedReferralDetailsActivity.this;
                 AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
                 alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
                     // Action 1 callback
@@ -185,10 +186,10 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                         //Needs to save current referral feedback before issuing another referral
                         saveReferalInformation(true);
                     } else {
-                        Toast.makeText(OpdReferralDetailsActivity.this, getResources().getString(R.string.feedback_required), Toast.LENGTH_LONG).show();
+                        Toast.makeText(OpdReceivedReferralDetailsActivity.this, getResources().getString(R.string.feedback_required), Toast.LENGTH_LONG).show();
                     }
                 }));
-                alert.show(OpdReferralDetailsActivity.this);
+                alert.show(OpdReceivedReferralDetailsActivity.this);
 
             }
         });
@@ -215,7 +216,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         //Do not allow further forward of this referral at this point
         referButton.setVisibility(View.GONE);
 
-        OpdReferralDetailsActivity.UpdateReferralTask updateReferralTask = new OpdReferralDetailsActivity.UpdateReferralTask(currentReferral, baseDatabase);
+        OpdReceivedReferralDetailsActivity.UpdateReferralTask updateReferralTask = new OpdReceivedReferralDetailsActivity.UpdateReferralTask(currentReferral, baseDatabase);
         updateReferralTask.execute(isForwardingReferral, isNewCase);
 
     }
@@ -257,7 +258,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
         villageText = (TextView) findViewById(R.id.client_kijiji_value);
         hamletText = (TextView) findViewById(R.id.client_kitongoji_value);
 
-        tbFeedback =  findViewById(R.id.tb_feedback);
+        tbHivFeedback =  findViewById(R.id.tb_feedback);
         tbStatusCheckbox =  findViewById(R.id.tb_status);
 
         tbStatusCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -272,7 +273,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
     }
 
-    class IndicatorsRecyclerAdapter extends RecyclerView.Adapter<OpdReferralDetailsActivity.IndicatorsViewHolder> {
+    class IndicatorsRecyclerAdapter extends RecyclerView.Adapter<OpdReceivedReferralDetailsActivity.IndicatorsViewHolder> {
 
         private List<ReferralIndicator> indicators = new ArrayList<>();
         private LayoutInflater mInflater;
@@ -285,15 +286,15 @@ public class OpdReferralDetailsActivity extends BaseActivity {
 
         // inflates the cell layout from xml when needed
         @Override
-        public OpdReferralDetailsActivity.IndicatorsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public OpdReceivedReferralDetailsActivity.IndicatorsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = mInflater.inflate(R.layout.referral_details_indicatior_list_item, parent, false);
-            OpdReferralDetailsActivity.IndicatorsViewHolder holder = new OpdReferralDetailsActivity.IndicatorsViewHolder(view);
+            OpdReceivedReferralDetailsActivity.IndicatorsViewHolder holder = new OpdReceivedReferralDetailsActivity.IndicatorsViewHolder(view);
             return holder;
         }
 
         // binds the data to the textview in each cell
         @Override
-        public void onBindViewHolder(OpdReferralDetailsActivity.IndicatorsViewHolder holder, int position) {
+        public void onBindViewHolder(OpdReceivedReferralDetailsActivity.IndicatorsViewHolder holder, int position) {
             ReferralIndicator indicator = indicators.get(position);
             holder.bindIndicator(indicator);
         }
@@ -404,7 +405,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
             patientNames = db.patientModel().getPatientName(patientId);
             patient = db.patientModel().getPatientById(patientId);
             serviceName = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId + ""));
-            serviceNameSw = db.referralServiceIndicatorsDao().getServiceNameById(Integer.valueOf(mServiceId + ""));
+            serviceNameSw = db.referralServiceIndicatorsDao().getServiceNameByIdSW(Integer.valueOf(mServiceId + ""));
             currentPatient = patient;
 
             List<Long> ids = currentReferral.getServiceIndicatorIds();
@@ -449,8 +450,6 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                     referralServiceName.setText(serviceNameSw);
                 }
 
-                referralServiceName.setText(serviceName);
-
                 //display clients Phone Number
                 clientPhoneNumberValue.setText(patient.getPhone_number());
 
@@ -473,7 +472,7 @@ public class OpdReferralDetailsActivity extends BaseActivity {
                 }
             }
 
-            OpdReferralDetailsActivity.IndicatorsRecyclerAdapter adapter = new OpdReferralDetailsActivity.IndicatorsRecyclerAdapter(OpdReferralDetailsActivity.this, indicators);
+            OpdReceivedReferralDetailsActivity.IndicatorsRecyclerAdapter adapter = new OpdReceivedReferralDetailsActivity.IndicatorsRecyclerAdapter(OpdReceivedReferralDetailsActivity.this, indicators);
             indicatorsRecyclerView.setAdapter(adapter);
 
         }
