@@ -97,12 +97,14 @@ public class MessagingService extends FirebaseMessagingService {
             String type = data.getString("type");
             if (type.equals("PatientReferral")){
                 triggerNotification(getResources().getString(R.string.patient_referral_notification));
-                patient = gson.fromJson(data.getJSONObject("patientsDTO").toString(), Patient.class);
+
+                Log.d(TAG,"testing = "+data.getString("patientsDTO"));
+                patient = gson.fromJson(data.getString("patientsDTO"), Patient.class);
                 database.patientModel().addPatient(patient);
                 Log.d("handleNotification", "added a patient");
                 Log.d("handleNotification", "Name : "+patient.getPatientFirstName());
 
-                JSONArray referralsDTOS = data.getJSONArray("patientReferralsList");
+                JSONArray referralsDTOS = new JSONArray(data.getString("patientReferralsList"));
                 for (int i=0; i<referralsDTOS.length(); i++){
                     referral = gson.fromJson(referralsDTOS.getJSONObject(i).toString(), Referral.class);
                     database.referalModel().addReferal(referral);
@@ -176,8 +178,5 @@ public class MessagingService extends FirebaseMessagingService {
         notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
     }
 
-    private void parseString(String data){
-        String string = data.replace("=",":\"");
-    }
 
 }

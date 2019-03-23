@@ -893,6 +893,7 @@ public class LoginActivity extends BaseActivity {
             }
 
             for (HealthFacilities hf : receivedHF){
+                Log.d(TAG,"SAVE openmrsId = "+hf.getOpenMRSUIID());
                 baseDatabase.healthFacilitiesModelDao().addHealthFacility(hf);
             }
 

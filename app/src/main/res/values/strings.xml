@@ -89,7 +89,7 @@
     <string name="results">Results</string>
     <string name="date">Date</string>
     <string name="other_explanation">Other Explanations</string>
-    <string name="tb_status">TB STATUS</string>
+    <string name="tb_status">Test status(Check if positive)</string>
     <string name="referral_to">Referral To</string>
 
     <string name="select_service">Select Service</string>
