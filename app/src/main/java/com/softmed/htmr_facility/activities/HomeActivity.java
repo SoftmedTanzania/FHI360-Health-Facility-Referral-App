@@ -200,6 +200,7 @@ public class HomeActivity extends BaseActivity {
                 @Override
                 protected Void doInBackground(Void... voids) {
                     List<HealthFacilities> hfList = database.healthFacilitiesModelDao().getFacilityByOpenMRSID(session.getKeyHfid());
+                     Log.d(TAG,"facility ID = "+session.getKeyHfid());
                     if (hfList!=null && hfList.size() > 0){
                         hfName = hfList.get(0).getFacilityName();
                     }
