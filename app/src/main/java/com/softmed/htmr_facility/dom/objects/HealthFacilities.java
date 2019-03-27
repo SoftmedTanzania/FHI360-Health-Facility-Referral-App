@@ -23,7 +23,7 @@ public class HealthFacilities implements Serializable {
     @NonNull
     private int ID;
 
-    @SerializedName("openMRSUIID")
+    @SerializedName("openMRSUUID")
     private String openMRSUIID;
 
     @SerializedName("facilityName")
@@ -33,7 +33,7 @@ public class HealthFacilities implements Serializable {
     private String facilityCtcCode;
 
     @SerializedName("parentOpenmrsUIID")
-    private String parentOpenmrsUIID;
+    private String parentOpenMRSUUID;
 
     @SerializedName("parentHFRCode")
     private String parentHFRCode;

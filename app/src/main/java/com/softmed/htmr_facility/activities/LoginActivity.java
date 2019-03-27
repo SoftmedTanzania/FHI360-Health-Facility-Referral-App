@@ -293,6 +293,12 @@ public class LoginActivity extends BaseActivity {
                         String password = loggedInSessions.getUserPassword();
                         String rolesString = loggedInSessions.getRoleString();
 
+                        Log.d(TAG,"userUUID = "+userUUID);
+                        Log.d(TAG,"username = "+userName);
+                        Log.d(TAG,"facility UUID = "+facilityUUID);
+                        Log.d(TAG,"password = "+password);
+                        Log.d(TAG,"rolesString = "+rolesString);
+
                         userData = new UserData();
                         userData.setUserUIID(userUUID);
                         userData.setUserName(userName);
@@ -361,7 +367,6 @@ public class LoginActivity extends BaseActivity {
                         String userUUID = loginResponse.getUser().getAttributes().getPersonUUID();
                         String facilityUUID = loginResponse.getTeam().getTeam().getLocation().getUuid();
 
-                        Log.d("CHECK_FACILITY_ID", facilityUUID);
 
                         userData = new UserData();
                         userData.setUserUIID(userUUID);
@@ -380,6 +385,12 @@ public class LoginActivity extends BaseActivity {
                                 facilityUUID,
                                 rolesString);
 
+                        Log.d(TAG,"userUUID = "+userUUID);
+                        Log.d(TAG,"username = "+userName);
+                        Log.d(TAG,"facility UUID = "+facilityUUID);
+                        Log.d(TAG,"password = "+passwordValue);
+                        Log.d(TAG,"rolesString = "+rolesString);
+
                         referalService = ServiceGenerator.createService(Endpoints.ReferalService.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
                         patientService = ServiceGenerator.createService(Endpoints.PatientServices.class, session.getUserName(), session.getUserPass(), session.getKeyHfid());
 
@@ -387,6 +398,7 @@ public class LoginActivity extends BaseActivity {
                         LoggedInSessions loggedInSessions = new LoggedInSessions();
                         loggedInSessions.setUserId(userUUID);
                         loggedInSessions.setUserName(usernameValue);
+                        loggedInSessions.setFacilityUUID(facilityUUID);
                         loggedInSessions.setLastLoggedIn(Calendar.getInstance().getTimeInMillis());
                         loggedInSessions.setUserPassword(passwordValue);
                         loggedInSessions.setRoleString(rolesString);
@@ -643,6 +655,10 @@ public class LoginActivity extends BaseActivity {
             public void onResponse(Call<List<HealthFacilities>> call, Response<List<HealthFacilities>> response) {
                 Log.d("SAMPLE", "HEALTH FACILITIES : "+response.body().toString());
                 List<HealthFacilities> receivedHF = response.body();
+
+
+                Log.d("COWZE", "received health facilities count : "+receivedHF.size());
+
 
                 new AddHealthFacilities().execute(receivedHF);
 
