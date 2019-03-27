@@ -32,8 +32,8 @@ public class HealthFacilities implements Serializable {
     @SerializedName("facilityCtcCode")
     private String facilityCtcCode;
 
-    @SerializedName("parentOpenmrsUIID")
-    private String parentOpenMRSUUID;
+    @SerializedName("parentOpenmrsUUID")
+    private String parentOpenmrsUIID;
 
     @SerializedName("parentHFRCode")
     private String parentHFRCode;
