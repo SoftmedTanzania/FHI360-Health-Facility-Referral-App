@@ -151,16 +151,12 @@ public class ClientRegisterActivity extends BaseActivity {
         phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (i > 9){
+                if (i > 10){
                     phone.setTextColor(getResources().getColor(R.color.red_400));
                     Toast.makeText(ClientRegisterActivity.this, "Phone Number Size Exceeded!", Toast.LENGTH_SHORT).show();
                 }
 
                 if (i <= 9){
-                    phone.setTextColor(getResources().getColor(R.color.card_title_text));
-                }
-
-                if (i == 8){
                     phone.setTextColor(getResources().getColor(R.color.card_title_text));
                 }
 
@@ -282,6 +278,7 @@ public class ClientRegisterActivity extends BaseActivity {
     private boolean getInputs(){
 
         if (firstName.getText().toString().isEmpty()){
+            firstName.setError(getString(R.string.error_label));
             return false;
         }else {
             strFname = firstName.getText().toString();
@@ -290,19 +287,29 @@ public class ClientRegisterActivity extends BaseActivity {
         strMname = middleName.getText().toString().isEmpty() ? "" : middleName.getText().toString();
 
         strSurname = surname.getText().toString().isEmpty() ? "" : surname.getText().toString();
+        if(surname.getText().toString().equals("")){
+            surname.setError(getString(R.string.error_label));
+            return false;
+        }
 
         switch (genderSpinner.getSelectedItemPosition()){
             case -1:
                 return false;
             case 0:
-                strGender = MALE_VALUE;
-                break;
+                return false;
             case 1:
-                strGender = FEMALE_VALUE;
+                strGender = MALE;
+                break;
+            case 2:
+                strGender = FEMALE;
                 break;
         }
 
         strPhone = phone.getText().toString().isEmpty() ? "" : phone.getText().toString();
+        if(strPhone.length()!=10 && strPhone.length()!=0){
+            phone.setError(getString(R.string.error_label));
+            return false;
+        }
 
         strWard = ward.getText().toString().isEmpty() ? "" : ward.getText().toString();
 
@@ -311,6 +318,8 @@ public class ClientRegisterActivity extends BaseActivity {
         strHamlet = hamlet.getText().toString().isEmpty() ? "" : hamlet.getText().toString();
 
         strDateOfBirth = dateOfBirth.getText().toString();
+        if(strDateOfBirth.equals(""))
+            return false;
 
         isPregnant = pregnant.isChecked();
 
@@ -321,6 +330,12 @@ public class ClientRegisterActivity extends BaseActivity {
         strCareTakerName = careTakerName.getText().toString();
 
         strCareTakerPhone = careTakerPhone.getText().toString();
+
+        if(strCareTakerPhone.length()!=10 && strCareTakerPhone.length()!=0){
+            careTakerPhone.setError(getString(R.string.error_label));
+            return false;
+        }
+
 
         strCareTakerRelationship = careTakerRelationship.getText().toString();
 
@@ -356,6 +371,8 @@ public class ClientRegisterActivity extends BaseActivity {
         patient.setCareTakerRelationship(strCareTakerRelationship);
         patient.setCbhs(strCbhsNumber);
         patient.setCtcNumber(strCTCNumber);
+
+        Log.d(TAG,"saved patient = "+new Gson().toJson(patient));
 
         savePatientEndpointCall(patient);
 
@@ -452,6 +469,7 @@ public class ClientRegisterActivity extends BaseActivity {
 
                 }else {
                     Log.d(TAG,"Patient Responce is null "+response.body());
+                    Log.d(TAG,"Saving Patient to postman "+new Gson().toJson(_patient));
                     savePatientToPostOffice _savePatientToPostOffice = new savePatientToPostOffice(baseDatabase);
                     _savePatientToPostOffice.execute(_patient);
                 }
@@ -461,6 +479,7 @@ public class ClientRegisterActivity extends BaseActivity {
             @Override
             public void onFailure(Call call, Throwable t) {
                 Log.d("patient_response", t.getMessage());
+                Log.d(TAG,"Saving Patient to postman "+new Gson().toJson(_patient));
                 //If saving patient to server has failed store patient to postman and proceed
                 savePatientToPostOffice _savePatientToPostOffice = new savePatientToPostOffice(baseDatabase);
                 _savePatientToPostOffice.execute(_patient);
@@ -624,20 +643,23 @@ public class ClientRegisterActivity extends BaseActivity {
 
             p = args[0];
 
+            database.patientModel().addPatient(p);
+
             //Saving the patient data
             PostOffice po = new PostOffice();
+            Log.d(TAG,"post office data id = "+p.getPatientId());
             po.setPost_id(p.getPatientId());
             po.setPost_data_type(POST_DATA_TYPE_PATIENT);
             po.setSyncStatus(ENTRY_NOT_SYNCED);
             database.postOfficeModelDao().addPostEntry(po);
 
             //Saving the first appointment
-            PatientAppointment appointment = getPatientAppointment(p);
-            PostOffice appointmentPostData = new PostOffice();
-            appointmentPostData.setPost_id(String.valueOf(appointment.getAppointmentID()));
-            appointmentPostData.setPost_data_type(POST_DATA_TYPE_APPOINTMENTS);
-            appointmentPostData.setSyncStatus(ENTRY_NOT_SYNCED);
-            database.postOfficeModelDao().addPostEntry(appointmentPostData);
+//            PatientAppointment appointment = getPatientAppointment(p);
+//            PostOffice appointmentPostData = new PostOffice();
+//            appointmentPostData.setPost_id(String.valueOf(appointment.getAppointmentID()));
+//            appointmentPostData.setPost_data_type(POST_DATA_TYPE_APPOINTMENTS);
+//            appointmentPostData.setSyncStatus(ENTRY_NOT_SYNCED);
+//            database.postOfficeModelDao().addPostEntry(appointmentPostData);
 
             return null;
         }

@@ -139,12 +139,15 @@
                                             android:hint="@string/first_name"
                                             android:imeOptions="actionNext"
                                             android:inputType="textCapWords"
+                                            app:et_supportTextErrorColor="@color/red_400"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
+                                            app:et_supportTextSize="14sp"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
                                         <com.rey.material.widget.EditText
@@ -165,9 +168,10 @@
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
+                                            app:et_supportMode="helper"
                                             app:et_labelTextColor="@color/card_grid_text"
                                             app:et_supportTextColor="@color/black"
-                                            app:et_supportTextSize="20sp" />
+                                            app:et_supportTextSize="14sp" />
 
                                         <com.rey.material.widget.EditText
                                             android:id="@+id/surname_et"
@@ -176,6 +180,7 @@
                                             android:layout_marginBottom="4dp"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="4dp"
+                                            app:et_supportTextErrorColor="@color/red_400"
                                             android:layout_weight="1"
                                             android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/surname"
@@ -184,12 +189,13 @@
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text"
                                             app:et_supportTextColor="@color/black"
-                                            app:et_supportTextSize="20sp" />
+                                            app:et_supportTextSize="14sp" />
 
                                     </LinearLayout>
 
@@ -214,6 +220,7 @@
                                             android:textSize="18sp"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
+                                            app:et_supportMode="helper"
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
@@ -229,6 +236,7 @@
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
@@ -248,7 +256,8 @@
                                             android:fontFamily="@font/google_sans_regular"
                                             android:hint="@string/phone_number"
                                             android:inputType="phone"
-                                            android:digits="0123456789+"
+                                            android:digits="0123456789"
+                                            app:et_supportMode="helper"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
@@ -257,6 +266,7 @@
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
+                                            app:et_supportTextSize="14sp"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
                                     </LinearLayout>
@@ -340,7 +350,6 @@
                                                 android:layout_alignParentEnd="true"
                                                 android:layout_alignParentTop="true"
                                                 android:layout_marginEnd="27dp"
-                                                android:background="@drawable/checkbox"
                                                 android:checked="false" />
 
                                         </RelativeLayout>
@@ -359,6 +368,7 @@
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
@@ -414,6 +424,7 @@
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
@@ -442,7 +453,9 @@
                                                 android:textSize="18sp"
                                                 app:et_dividerColor="@color/card_grid_text"
                                                 app:et_dividerHeight="1dp"
+                                                app:et_supportMode="helper"
                                                 app:et_labelEnable="true"
+                                                app:et_supportTextSize="14sp"
                                                 app:et_labelTextColor="@color/card_grid_text" />
 
                                             <com.rey.material.widget.EditText
@@ -452,6 +465,8 @@
                                                 android:layout_marginLeft="4dp"
                                                 android:layout_marginRight="8dp"
                                                 android:layout_weight="1"
+                                                android:visibility="gone"
+                                                app:et_supportTextSize="14sp"
                                                 android:fontFamily="@font/google_sans_regular"
                                                 android:hint="@string/relationship"
                                                 android:inputType="textCapWords"
@@ -515,6 +530,7 @@
                                                 android:textSize="18sp"
                                                 app:et_dividerColor="@color/card_grid_text"
                                                 app:et_dividerHeight="1dp"
+                                                app:et_supportMode="helper"
                                                 app:et_labelEnable="true"
                                                 app:et_labelTextColor="@color/card_grid_text" />
 
@@ -533,6 +549,7 @@
                                                 android:textSize="18sp"
                                                 app:et_dividerColor="@color/card_grid_text"
                                                 app:et_dividerHeight="1dp"
+                                                app:et_supportMode="helper"
                                                 app:et_labelEnable="true"
                                                 app:et_labelTextColor="@color/card_grid_text" />
 
@@ -553,6 +570,7 @@
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
+                                            app:et_supportMode="helper"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
                                         <com.rey.material.widget.EditText
@@ -571,6 +589,7 @@
                                             android:textSize="18sp"
                                             app:et_dividerColor="@color/card_grid_text"
                                             app:et_dividerHeight="1dp"
+                                            app:et_supportMode="helper"
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text" />
 

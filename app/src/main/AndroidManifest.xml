@@ -45,6 +45,11 @@
             android:configChanges="locale">
         </activity>
 
+        <activity android:name="com.softmed.htmr_facility.activities.ClientsDetailsActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="locale">
+        </activity>
+
         <activity android:name="com.softmed.htmr_facility.activities.HomeActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>

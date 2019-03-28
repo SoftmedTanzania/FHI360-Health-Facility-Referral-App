@@ -39,8 +39,8 @@ public class constants {
     public static final String MALE_SW = "Mwanaume";
     public static final String FEMALE_SW = "Mwanamke";
 
-    public static final String MALE_VALUE = "1";
-    public static final String FEMALE_VALUE = "0";
+    public static final String MALE_VALUE = "0";
+    public static final String FEMALE_VALUE = "1";
 
     public static final String TEST_RESULT_POSITIVE = "Positive";
     public static final String TEST_RESULT_NEGATIVE = "Negative";

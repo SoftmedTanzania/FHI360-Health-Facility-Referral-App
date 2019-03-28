@@ -251,5 +251,6 @@
     <string name="suceessful_label">Imefanikiwa</string>
     <string name="unsuccessful_label">Haijafanikiwa</string>
     <string name="pending_label">Inasubiri</string>
+    <string name="error_label">Angalia taarifa iliyojazwa</string>
 
 </resources>
