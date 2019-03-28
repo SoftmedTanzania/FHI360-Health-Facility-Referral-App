@@ -409,6 +409,7 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                             postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
                             postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
 
+                            database.referalModel().addReferal(args[0]);
                             database.postOfficeModelDao().addPostEntry(postOffice);
 
                             return null;
@@ -438,6 +439,9 @@ public class IssueReferralDialogueFragment extends DialogFragment{
                         postOffice.setPost_id(args[0].getReferral_id());
                         postOffice.setPost_data_type(POST_DATA_TYPE_REFERRAL);
                         postOffice.setSyncStatus(ENTRY_NOT_SYNCED);
+
+
+                        database.referalModel().addReferal(args[0]);
 
                         database.postOfficeModelDao().addPostEntry(postOffice);
 
