@@ -232,25 +232,25 @@ public class HomeActivity extends BaseActivity {
 
         //scheduleBackgroundJob();
 
-        LiveData<AppData> syncDataObserver = database.appDataModelDao().observeAppDataByName(SYNC_STATUS);
-        syncDataObserver.observe(this, new Observer<AppData>() {
-            @Override
-            public void onChanged(@Nullable AppData appData) {
-                if (appData!=null){
-                    if (appData.getName().equals(SYNC_STATUS)){
-                        if (appData.getValue().equals(SYNC_STATUS_ON)){
-                            //Syncing
-                            manualSync.setVisibility(View.INVISIBLE);
-                            syncProgressBar.setVisibility(View.VISIBLE);
-                        }else if (appData.getValue().equals(SYNC_STATUS_OFF)){
-                            //Stopped Syncing
-                            manualSync.setVisibility(View.VISIBLE);
-                            syncProgressBar.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                }
-            }
-        });
+//        LiveData<AppData> syncDataObserver = database.appDataModelDao().observeAppDataByName(SYNC_STATUS);
+//        syncDataObserver.observe(this, new Observer<AppData>() {
+//            @Override
+//            public void onChanged(@Nullable AppData appData) {
+//                if (appData!=null){
+//                    if (appData.getName().equals(SYNC_STATUS)){
+//                        if (appData.getValue().equals(SYNC_STATUS_ON)){
+//                            //Syncing
+//                            manualSync.setVisibility(View.INVISIBLE);
+//                            syncProgressBar.setVisibility(View.VISIBLE);
+//                        }else if (appData.getValue().equals(SYNC_STATUS_OFF)){
+//                            //Stopped Syncing
+//                            manualSync.setVisibility(View.VISIBLE);
+//                            syncProgressBar.setVisibility(View.INVISIBLE);
+//                        }
+//                    }
+//                }
+//            }
+//        });
 
         manualSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,6 +261,9 @@ public class HomeActivity extends BaseActivity {
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
+
+                        manualSync.setVisibility(View.INVISIBLE);
+                        syncProgressBar.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -277,7 +280,6 @@ public class HomeActivity extends BaseActivity {
                             database.appDataModelDao().insertAppData(appData);
                             syncDataInPostOffice();
                         }
-
 //                        //Syncing data using firebase's job Dispatcher
 //                        Job myJob = dispatcher.newJobBuilder()
 //                                .setService(DataSyncJob.class) // the JobService that will be called
@@ -291,9 +293,17 @@ public class HomeActivity extends BaseActivity {
 //                                .build();
 //
 //                        dispatcher.mustSchedule(myJob);
-
                         return null;
 
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        super.onPostExecute(aVoid);
+
+                        //Stopped Syncing
+                        manualSync.setVisibility(View.VISIBLE);
+                        syncProgressBar.setVisibility(View.INVISIBLE);
                     }
                 }.execute();
             }
@@ -731,6 +741,9 @@ public class HomeActivity extends BaseActivity {
         logthat("Handling Patient data");
         Log.d("HomeActivity", "Patient");
 
+
+
+        logthat("Post Data ID = "+data.getPost_id());
         //Get the patient that needs to be synced
         final Patient patient = database.patientModel().getPatientById(data.getPost_id());
 

@@ -656,10 +656,6 @@ public class LoginActivity extends BaseActivity {
                 Log.d("SAMPLE", "HEALTH FACILITIES : "+response.body().toString());
                 List<HealthFacilities> receivedHF = response.body();
 
-
-                Log.d("COWZE", "received health facilities count : "+receivedHF.size());
-
-
                 new AddHealthFacilities().execute(receivedHF);
 
             }

@@ -673,8 +673,7 @@
                                         android:layout_marginTop="8dp"
                                         android:layout_marginLeft="32dp"
                                         android:layout_toRightOf="@+id/hiv_status_title"
-                                        android:checked="false"
-                                        android:background="@drawable/checkbox" />
+                                        android:checked="false" />
 
                                     <TextView
                                         android:visibility="gone"
