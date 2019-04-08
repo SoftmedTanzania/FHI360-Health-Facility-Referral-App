@@ -225,7 +225,7 @@
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
             android:id="@+id/login_screen_logo"
-            android:src="@mipmap/ic_logo_white"/>
+            android:src="@drawable/egpaf"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -234,7 +234,7 @@
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/login_screen_logo"
             android:textSize="32sp"
-            android:text="trcmis"
+            android:text="Comprehensive Community"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:fontFamily="@font/google_sans_bold"/>
@@ -249,7 +249,7 @@
             android:textSize="24sp"
             android:textColor="@color/white"
             android:fontFamily="@font/google_sans_regular"
-            android:text="Facility Referral"/>
+            android:text="Facility"/>
 
         <TextView
             android:layout_width="wrap_content"
