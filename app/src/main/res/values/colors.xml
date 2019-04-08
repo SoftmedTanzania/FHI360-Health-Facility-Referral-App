@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#398fe5</color> <!-- 00acc1  Cyan  -->
-    <color name="colorPrimaryDark">#2d69a5</color> <!-- 00838f -->
+    <color name="colorPrimary">#009688</color> <!-- Teal  -->
+    <color name="colorPrimaryDark">#00796b</color> <!-- Teal -->
     <color name="colorAccent">#00acc1</color>
 
     <array name="progress_colors">
