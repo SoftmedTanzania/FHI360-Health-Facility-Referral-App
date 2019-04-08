@@ -101,18 +101,18 @@ public class HomeActivity extends BaseActivity {
     /**
      * The Authority for the sync adapter's content provider
      */
-    public static final String AUTHORITY = "com.softmed.htmr_facility.provider";
+    public static final String AUTHORITY = "com.softmed.ccm_facility.provider";
 
     /**
      * An account type in the form of a domain
      */
-    public static final String ACCOUNT_TYPE = "htmr_facility.softmed.com";
+    public static final String ACCOUNT_TYPE = "ccm_facility.softmed.com";
 
 
     /**
      * The Account name
      */
-    public static final String ACCOUNT = "trcmis";
+    public static final String ACCOUNT = "Comprehensive Community Facility App";
 
     /**
      * Account Instance field
