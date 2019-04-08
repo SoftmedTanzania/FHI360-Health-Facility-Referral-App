@@ -1,96 +1,56 @@
 {
   "project_info": {
-    "project_number": "327103044117",
-    "firebase_url": "https://hfreferralapp.firebaseio.com",
-    "project_id": "hfreferralapp",
-    "storage_bucket": "hfreferralapp.appspot.com"
+    "project_number": "77481989864",
+    "firebase_url": "https://egpaf-e27fc.firebaseio.com",
+    "project_id": "egpaf-e27fc",
+    "storage_bucket": "egpaf-e27fc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:327103044117:android:130f306bb55ab5d9",
+        "mobilesdk_app_id": "1:77481989864:android:7932684185827338",
         "android_client_info": {
-          "package_name": "apps.softmed.com.hfreferal"
+          "package_name": "com.softmed.ccm_chw"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "327103044117-uj3s8hn8a10franvf04jjdnm8ti2e5h4.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "apps.softmed.com.hfreferal",
-            "certificate_hash": "b9d4379442e06ded52d6f7f4ea6d7f6c37892f6c"
-          }
-        },
-        {
-          "client_id": "327103044117-c05mlckns8bdgc495sp5mivehbp25c28.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBIKltypChde1_p1DGu27TqTKdPV_1T8bQ"
+          "current_key": "AIzaSyBwZL6oPUVxCL3dFWwM4j2KzG2YayPu8lI"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "327103044117-c05mlckns8bdgc495sp5mivehbp25c28.apps.googleusercontent.com",
+              "client_id": "77481989864-rrtq0ho0thc73s1e5qie0nfm8dv9i1jm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:327103044117:android:4127874650e91370",
+        "mobilesdk_app_id": "1:77481989864:android:68f12b0d936cc5fa",
         "android_client_info": {
-          "package_name": "com.softmed.htmr_facility"
+          "package_name": "com.softmed.ccm_facility"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "327103044117-blr0e1h3q81s2nlfqr2lomvsguvfmm71.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.softmed.htmr_facility",
-            "certificate_hash": "b9d4379442e06ded52d6f7f4ea6d7f6c37892f6c"
-          }
-        },
-        {
-          "client_id": "327103044117-c05mlckns8bdgc495sp5mivehbp25c28.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBIKltypChde1_p1DGu27TqTKdPV_1T8bQ"
+          "current_key": "AIzaSyBwZL6oPUVxCL3dFWwM4j2KzG2YayPu8lI"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "327103044117-c05mlckns8bdgc495sp5mivehbp25c28.apps.googleusercontent.com",
+              "client_id": "77481989864-rrtq0ho0thc73s1e5qie0nfm8dv9i1jm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

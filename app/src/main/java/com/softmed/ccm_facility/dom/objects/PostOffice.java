@@ -1,0 +1,66 @@
+package com.softmed.ccm_facility.dom.objects;
+
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
+import java.io.Serializable;
+
+/**
+ * Created by issy on 12/12/17.
+ *
+ * @issyzac issyzac.iz@gmail.com
+ * On Project HFReferralApp
+ */
+
+@Entity
+public class PostOffice implements Serializable{
+
+    @NonNull
+    @PrimaryKey(autoGenerate = false)
+    private String post_id;
+
+    private String post_data_type;
+
+    /**
+     *  0 == NOT_POSTED
+     *  1 == POSTED
+     *  2 == CONFLICT
+     */
+    private int syncStatus;
+
+    private int failedSyncCount = 0;
+
+    @NonNull
+    public String getPost_id() {
+        return post_id;
+    }
+
+    public void setPost_id(@NonNull String post_id) {
+        this.post_id = post_id;
+    }
+
+    public String getPost_data_type() {
+        return post_data_type;
+    }
+
+    public void setPost_data_type(String post_data_type) {
+        this.post_data_type = post_data_type;
+    }
+
+    public int getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(int syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
+    public int getFailedSyncCount() {
+        return failedSyncCount;
+    }
+
+    public void setFailedSyncCount(int failedSyncCount) {
+        this.failedSyncCount = failedSyncCount;
+    }
+}
