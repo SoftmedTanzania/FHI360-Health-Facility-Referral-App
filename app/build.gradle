@@ -8,8 +8,8 @@ android {
         applicationId "com.softmed.htmr_facility"
         minSdkVersion 22
         targetSdkVersion 27
-        versionCode 32
-        versionName "0.2.6"
+        versionCode 35
+        versionName "0.2.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
