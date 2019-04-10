@@ -61,8 +61,6 @@ public class ServiceGenerator {
                 if (!httpClient.interceptors().contains(interceptor)) {
                     httpClient.addInterceptor(interceptor);
 
-
-
                     builder.client(httpClient
                             .readTimeout(600, TimeUnit.SECONDS)
                             .connectTimeout(600, TimeUnit.SECONDS)
