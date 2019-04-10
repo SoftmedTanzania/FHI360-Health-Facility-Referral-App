@@ -8,8 +8,8 @@ android {
         applicationId "com.softmed.ccm_facility"
         minSdkVersion 22
         targetSdkVersion 27
-        versionCode 34
-        versionName "0.2.8"
+        versionCode 35
+        versionName "0.2.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
