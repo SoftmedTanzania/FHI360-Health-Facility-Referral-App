@@ -12,15 +12,13 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.softmed.htmr_facility.utils.constants.BASE_URL;
+
 /**
  * Created by issy on 11/27/17.
  */
 
 public class ServiceGenerator {
-
-    private static final String API_BASE_URL = "http://139.162.184.148:8080/opensrp/"; // Development
-    //public static final String API_BASE_URL = "http://139.162.151.34:8080/opensrp/"; // Online
-//    public static final String API_BASE_URL = "http://192.`168.2.8:8080/opensrp/"; //Local
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
@@ -30,7 +28,7 @@ public class ServiceGenerator {
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
-                    .baseUrl(API_BASE_URL)
+                    .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson));
 
     private static Retrofit retrofit = builder.build();
