@@ -64,8 +64,8 @@ public class ServiceGenerator {
 
 
                     builder.client(httpClient
-                            .readTimeout(120, TimeUnit.SECONDS)
-                            .connectTimeout(120, TimeUnit.SECONDS)
+                            .readTimeout(600, TimeUnit.SECONDS)
+                            .connectTimeout(600, TimeUnit.SECONDS)
                             .build());
                     //retrofit = builder.build();
                 }
