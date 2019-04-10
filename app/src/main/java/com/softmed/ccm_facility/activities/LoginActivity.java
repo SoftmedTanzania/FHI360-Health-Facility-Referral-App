@@ -140,7 +140,7 @@ public class LoginActivity extends BaseActivity {
         //</> UI SETUP ENDS
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://45.56.90.103:8080/opensrp/")
+                .baseUrl("http://139.162.190.192:8080/opensrp/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
