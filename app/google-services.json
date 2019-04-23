@@ -54,7 +54,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:327103044117:android:4127874650e91370",
         "android_client_info": {
-          "package_name": "com.softmed.htmr_facility"
+          "package_name": "com.softmed.htmr_facility_staging"
         }
       },
       "oauth_client": [

@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.softmed.htmr_facility.activities.MainActivity"
+    tools:context="com.softmed.htmr_facility_staging.activities.MainActivity"
     android:background="@color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

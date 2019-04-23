@@ -5,7 +5,7 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:app_ms="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.softmed.htmr_facility.activities.ClientsDetailsActivity"
+    tools:context="com.softmed.htmr_facility_staging.activities.ClientsDetailsActivity"
     android:background="@color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 

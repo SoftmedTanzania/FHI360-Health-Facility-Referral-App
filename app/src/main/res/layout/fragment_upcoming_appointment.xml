@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.softmed.htmr_facility.activities.AppointmentActivity">
+    tools:context="com.softmed.htmr_facility_staging.activities.AppointmentActivity">
 
     <ScrollView
         android:layout_width="match_parent"
