@@ -35,7 +35,7 @@ public interface PatientAppointmentModelDao {
     @Query("select * from PatientAppointment where appointmentType = 1 and status=0 and appointmentDate<=:tommorrowsDate AND appointmentDate>=:todaysDate order by appointmentDate asc")
     LiveData<List<PatientAppointment>> getAllCTCAppointments(long todaysDate, long tommorrowsDate);
 
-    @Query("select * from PatientAppointment where appointmentType = 1 and status = -1  order by appointmentDate asc")
+    @Query("select * from PatientAppointment where appointmentType = 1 and status = -1 and cancelled=0 order by appointmentDate asc")
     LiveData<List<PatientAppointment>> getMissedCTCAppointments();
 
     @Query("select * from PatientAppointment where patientID = :patientId")
@@ -44,7 +44,7 @@ public interface PatientAppointmentModelDao {
     @Query("select * from PatientAppointment where patientID = :patientId and appointmentDate > Date(:today)")
     List<PatientAppointment> getRemainingAppointments(String patientId, String today);
 
-    @Query("select * from PatientAppointment where patientID = :patientID and appointmentType = :type")
+    @Query("select * from PatientAppointment where patientID = :patientID and cancelled=0 and appointmentType = :type")
     List<PatientAppointment> getAppointmentsByTypeAndPatientID(int type, String patientID);
 
     @Query("select * from PatientAppointment where patientID = :patientID and appointmentType = :type and status = :appointmentStatus")
@@ -61,6 +61,10 @@ public interface PatientAppointmentModelDao {
             "and Patient.gender = :gender " +
             "and appointmentDate between :from and :to")
     int getTotalAppointmentsByAppointmentDateStatusAndGender(long from, long to, int status, String gender);
+
+
+    @Query("update PatientAppointment set cancelled=1 ")
+    void resetAppointmentsStatus();
 
     @Insert (onConflict = REPLACE)
     void addAppointment(PatientAppointment appointment);
