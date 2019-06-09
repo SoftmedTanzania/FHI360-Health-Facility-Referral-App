@@ -6,8 +6,8 @@ package com.softmed.htmr_facility.utils;
 
 public class constants {
 
-    public static String BASE_URL = "http://45.56.90.103:8080/opensrp/";
-    //public static String BASE_URL = "http://192.168.43.251:8080/opensrp/";
+//    public static String BASE_URL = "http://45.56.90.103:8080/opensrp/";
+    public static String BASE_URL = "http://139.162.184.148:8080/opensrp/";
 
     //APP DATA NAMES
     public static final String SYNC_STATUS = "sync_status";
