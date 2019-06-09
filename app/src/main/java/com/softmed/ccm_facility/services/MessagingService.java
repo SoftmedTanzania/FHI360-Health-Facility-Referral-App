@@ -19,6 +19,7 @@ import com.softmed.ccm_facility.R;
 import com.softmed.ccm_facility.activities.HomeActivity;
 import com.softmed.ccm_facility.base.AppDatabase;
 import com.softmed.ccm_facility.dom.objects.Patient;
+import com.softmed.ccm_facility.dom.objects.PatientAppointment;
 import com.softmed.ccm_facility.dom.objects.Referral;
 import com.softmed.ccm_facility.utils.Config;
 import com.softmed.ccm_facility.utils.NotificationUtils;
@@ -130,6 +131,41 @@ public class MessagingService extends FirebaseMessagingService {
                 JSONObject patientDTOS = new JSONObject(json.toString());
                 patient = gson.fromJson(patientDTOS.toString(), Patient.class);
                 database.patientModel().addPatient(patient);
+            }else if (type.equals("LTFClient")){
+                triggerNotification(getResources().getString(R.string.patient_referral_notification));
+                try {
+                    patient = gson.fromJson(data.getString("patientsDTO"), Patient.class);
+                    database.patientModel().addPatient(patient);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                JSONArray referralsDTOS = new JSONArray(data.getString("patientReferralsList"));
+                for (int i=0; i<referralsDTOS.length(); i++){
+                    try {
+                        referral = gson.fromJson(referralsDTOS.getJSONObject(i).toString(), Referral.class);
+                        database.referalModel().addReferal(referral);
+                        Log.d(TAG, "added Patient's Referral");
+                        Log.d( TAG, new Gson().toJson(referral));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+                JSONArray patientsAppointmentsDTOS = new JSONArray(data.getString("patientsAppointmentsDTOS"));
+                for (int i=0; i<patientsAppointmentsDTOS.length(); i++){
+                    try {
+                        PatientAppointment patientAppointment = gson.fromJson(patientsAppointmentsDTOS.getJSONObject(i).toString(), PatientAppointment.class);
+                        database.appointmentModelDao().addAppointment(patientAppointment);
+                        Log.d(TAG, "added Patient's Appointment");
+                        Log.d(TAG,"Added Appointment : "+new Gson().toJson(patientAppointment));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }else if (type.equals("updateAppointmentStatus")){
+                Log.d(TAG,"updating appointment status");
+                database.appointmentModelDao().resetAppointmentsStatus();
             }
 
         }catch (Exception e){
