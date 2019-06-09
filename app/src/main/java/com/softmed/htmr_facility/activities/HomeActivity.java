@@ -42,6 +42,7 @@ import com.firebase.jobdispatcher.Trigger;
 import com.github.rahatarmanahmed.cpv.CircularProgressView;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +61,7 @@ import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.EncounterResponse;
+import com.softmed.htmr_facility.dom.responces.ReferalResponce;
 import com.softmed.htmr_facility.fragments.HivFragment;
 import com.softmed.htmr_facility.fragments.LabFragment;
 import com.softmed.htmr_facility.fragments.OPDFragment;
@@ -280,6 +282,7 @@ public class HomeActivity extends BaseActivity {
                             database.appDataModelDao().insertAppData(appData);
                             syncDataInPostOffice();
                         }
+                        refreshAllReferrals();
 //                        //Syncing data using firebase's job Dispatcher
 //                        Job myJob = dispatcher.newJobBuilder()
 //                                .setService(DataSyncJob.class) // the JobService that will be called
@@ -1114,6 +1117,35 @@ public class HomeActivity extends BaseActivity {
 
     private void logthat(String message){
         Log.d("HomeActivity", message);
+    }
+
+    private void refreshAllReferrals(){
+
+        Call<List<ReferalResponce>> call = referalService.getHealthFacilityReferrals(session.getKeyHfid());
+        try {
+            List<ReferalResponce> responces = call.execute().body();
+            for (ReferalResponce mList : responces){
+                database.patientModel().addPatient(mList.getPatient());
+                Log.d("InitialSync", "Patient  : "+mList.getPatient().getPatientFirstName());
+                for (Referral referral : mList.getPatientReferalList()){
+                    Log.d("InitialSync", "Referal  : "+ referral.toString());
+                    database.referalModel().addReferal(referral);
+                }
+
+                //Delete all appointments with these patient's IDs
+                database.appointmentModelDao().deleteAppointmentByPatientID(mList.getPatient().getPatientId());
+
+                List<PatientAppointment> appointments = mList.getPatientAppointments();
+                for (PatientAppointment _appointment : appointments){
+                    Log.d("Appointment", "Inserting appointment on : "+_appointment.getAppointmentDate());
+                    database.appointmentModelDao().addAppointment(_appointment);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }

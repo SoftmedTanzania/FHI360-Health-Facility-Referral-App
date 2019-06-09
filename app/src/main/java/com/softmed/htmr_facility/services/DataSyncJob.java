@@ -17,6 +17,7 @@ import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.dom.objects.UserData;
 import com.softmed.htmr_facility.dom.responces.EncounterResponse;
+import com.softmed.htmr_facility.dom.responces.ReferalResponce;
 import com.softmed.htmr_facility.utils.ServiceGenerator;
 import com.softmed.htmr_facility.utils.SessionManager;
 
