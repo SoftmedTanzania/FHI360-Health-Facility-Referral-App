@@ -39,8 +39,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/tb_refered_clients_icon"
                         android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tb_refered_clients_icon"
                         android:orientation="vertical">
 
                         <TextView
@@ -48,56 +48,59 @@
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
                             android:id="@+id/referal_list_text"
-                            android:fontFamily="@font/roboto_regular"
+                            android:fontFamily="@font/google_sans_bold"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:textColor="@color/black"
-                            android:text="Orodha ya Rufaa"/>
+                            android:textColor="@color/card_title_text"
+                            android:text="@string/referrals_list"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/roboto_regular"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/google_sans_regular"
                             android:id="@+id/referal_count_text"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/card_grid_text"
-                            android:text="15 Referals Unattended"/>
+                            android:text=""/>
+
+                        <View
+                            android:layout_width="150dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/red_200"/>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="4dp">
+                            android:layout_marginRight="4dp"
+                            android:layout_marginTop="4dp"
+                            android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="13sp"
+                                android:textSize="12sp"
                                 android:id="@+id/chw_referal_count_text"
                                 android:layout_marginLeft="16dp"
-                                android:layout_marginRight="16dp"
-                                android:fontFamily="@font/roboto_regular"
-                                android:textColor="@color/card_grid_tex"
-                                android:text=""/>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="13dp"
-                                android:background="@color/red_400"/>
+                                android:layout_marginRight="4dp"
+                                android:fontFamily="@font/google_sans_regular"
+                                android:textColor="@color/card_grid_tex"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="13sp"
+                                android:textSize="12sp"
                                 android:id="@+id/hf_referal_count_text"
                                 android:layout_marginLeft="16dp"
-                                android:fontFamily="@font/roboto_regular"
-                                android:layout_marginRight="16dp"
+                                android:fontFamily="@font/google_sans_regular"
+                                android:layout_marginRight="4dp"
+                                android:layout_marginTop="2dp"
                                 android:textColor="@color/card_grid_tex"
-                                android:text=""/>
+                                android:text="Kituo cha afya : 2"/>
 
                         </LinearLayout>
 
@@ -144,20 +147,20 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:id="@+id/refered_clients_text"
-                            android:fontFamily="@font/roboto_regular"
-                            android:textColor="@color/black"
-                            android:text="Rufaa Zilizotolewa"/>
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/card_title_text"
+                            android:text="@string/referrals_issued"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:fontFamily="@font/roboto_regular"
+                            android:fontFamily="@font/google_sans_regular"
                             android:id="@+id/referal_feedback_count"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:textColor="@color/card_grid_text"
-                            android:text="Pending Feedback : 0"/>
+                            android:text=""/>
 
                     </LinearLayout>
 
@@ -202,11 +205,11 @@
                         android:id="@+id/tb_referal_list_text"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:fontFamily="@font/roboto_bold"
+                        android:fontFamily="@font/google_sans_bold"
                         android:layout_toRightOf="@id/tb_referals_icon"
-                        android:textColor="@color/card_grid_text"
+                        android:textColor="@color/card_title_text"
                         android:layout_centerVertical="true"
-                        android:text="Sajili Mteja"/>
+                        android:text="@string/register_client"/>
 
                 </RelativeLayout>
 
@@ -241,21 +244,17 @@
                         android:id="@+id/client_list_text"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:fontFamily="@font/roboto_bold"
+                        android:fontFamily="@font/google_sans_bold"
                         android:layout_toRightOf="@id/client_list_image"
-                        android:textColor="@color/card_grid_text"
+                        android:textColor="@color/card_title_text"
                         android:layout_centerVertical="true"
-                        android:text="Orodha ya Wateja"/>
-
+                        android:text="@string/clients_list"/>
 
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 
-
-
         </LinearLayout>
-
 
     </LinearLayout>
 

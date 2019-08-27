@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/under_medication_report"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:paddingTop="4dp"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_two_slim"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal"
+                    android:id="@+id/btn_under_medication_from_range">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:id="@+id/date_from_icon_1"
+                        android:src="@mipmap/ic_calendar"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="@string/from"
+                        android:id="@+id/txt_under_medication_from_range"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/avenir_light"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/card_title_text"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/avenir_light"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/border_two_slim"
+                    android:gravity="center_vertical"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal"
+                    android:id="@+id/btn_under_medication_to_range">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/date_to_icon_1"
+                        android:src="@mipmap/ic_calendar"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:text="@string/to"
+                        android:id="@+id/txt_under_medication_to_range"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="16dp"
+                        android:textColor="@color/colorPrimary"
+                        android:fontFamily="@font/avenir_light"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:visibility="gone"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_two_slim"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/apply"
+                    android:textColor="@color/colorPrimary"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/black"
+                    android:text="@string/treatment_type"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="@string/male"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="@string/female"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="@string/total"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="2RHZE/4RH"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_m1"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_f1"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_t1"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="2RHZ/4RH"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/v_um_m2"
+                    android:gravity="center"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_f2"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_t2"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="2SRHZE/1RHZE/5RHE"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/v_um_m3"
+                    android:gravity="center"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/v_um_f3"
+                    android:gravity="center"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/v_um_t3"
+                    android:gravity="center"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="2HRZE/10RH"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_m4"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_f4"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/v_um_t4"
+                    android:gravity="center"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.6"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="@color/card_title_text"
+                    android:text="3RHZE/5RHE"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_m5"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:id="@+id/v_um_f5"
+                    android:gravity="center"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.2"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_light"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:id="@+id/v_um_t5"
+                    android:textColor="@color/card_title_text"
+                    android:text="0"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/card"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/under_medication_pie_chart"
+                android:layout_width="match_parent"
+                android:layout_margin="32dp"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

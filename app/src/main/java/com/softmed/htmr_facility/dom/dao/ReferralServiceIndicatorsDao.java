@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.dom.dao;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -24,11 +25,17 @@ public interface ReferralServiceIndicatorsDao {
     @Query("select * from ReferralServiceIndicators")
     List<ReferralServiceIndicators> getAllServices();
 
+    @Query("select serviceID from ReferralServiceIndicators where serviceId")
+    LiveData<List<Integer>> getAllNonBasicServiceIds();
+
     @Query("select * from ReferralServiceIndicators where serviceId = :serviceID")
     ReferralServiceIndicators getServiceById(long serviceID);
 
     @Query("select serviceName || ' ' from ReferralServiceIndicators where serviceId = :serviceID")
     String getServiceNameById(int serviceID);
+
+    @Query("select serviceNameSw || ' ' from ReferralServiceIndicators where serviceId = :serviceID")
+    String getServiceNameByIdSW(int serviceID);
 
     @Insert(onConflict = REPLACE)
     void addService(ReferralServiceIndicators referralServiceIndicator);

@@ -24,14 +24,14 @@ public class TbPatient implements Serializable{
     /*
     This is the ID of tbPatient table
      */
-    @NonNull
     private String tempID;
 
     @PrimaryKey(autoGenerate = false)
-    private long patientId;
-
     @SerializedName("tbPatientId")
     private long tbPatientId;
+
+    @SerializedName("healthFacilityPatientId")
+    private Long healthFacilityPatientId;
 
     @SerializedName("patient_type")
     private int patientType;
@@ -41,6 +41,17 @@ public class TbPatient implements Serializable{
 
     @SerializedName("referral_type")
     private int referralType;
+
+
+    /*
+    1 = Makohozi
+    2 = X-Ray
+    3 = Other
+    */
+    @SerializedName("testType")
+    private int testType;
+
+    private String otherTestDetails;
 
     @SerializedName("veo")
     private String veo;
@@ -54,7 +65,7 @@ public class TbPatient implements Serializable{
     @SerializedName("makohozi")
     private String makohozi;
 
-    @SerializedName("other_tests")
+    @SerializedName("otherTestsDetails")
     private String otherTests;
 
     @SerializedName("treatment_type")
@@ -63,39 +74,46 @@ public class TbPatient implements Serializable{
     @SerializedName("outcome")
     private String outcome;
 
-    @SerializedName("outcome_date")
+    @SerializedName("outcomeDate")
     @TypeConverters(DateConverter.class)
     private long outcomeDate;
 
-    @SerializedName("outcome_details")
+    @SerializedName("outcomeDetails")
     private String outcomeDetails;
 
     @SerializedName("isPregnant")
     private boolean isPregnant;
 
-    public void setTempID(@NonNull String id) {
-        this.tempID = id;
-    }
+    /***
+     *  1 -> Ongoing
+     *  0 -> Cancelled
+     *  3 -> Finished?
+     */
+    @SerializedName("treatmentStatus")
+    private int treatmentStatus;
 
-    public String getOtherTests() {
-        return otherTests;
-    }
-
-    public void setOtherTests(String otherTests) {
-        this.otherTests = otherTests;
-    }
-
-    @NonNull
     public String getTempID() {
         return tempID;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public void setTempID(String tempID) {
+        this.tempID = tempID;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public long getTbPatientId() {
+        return tbPatientId;
+    }
+
+    public void setTbPatientId(long tbPatientId) {
+        this.tbPatientId = tbPatientId;
+    }
+
+    public Long getHealthFacilityPatientId() {
+        return healthFacilityPatientId;
+    }
+
+    public void setHealthFacilityPatientId(Long healthFacilityPatientId) {
+        this.healthFacilityPatientId = healthFacilityPatientId;
     }
 
     public int getPatientType() {
@@ -120,6 +138,22 @@ public class TbPatient implements Serializable{
 
     public void setReferralType(int referralType) {
         this.referralType = referralType;
+    }
+
+    public int getTestType() {
+        return testType;
+    }
+
+    public void setTestType(int testType) {
+        this.testType = testType;
+    }
+
+    public String getOtherTestDetails() {
+        return otherTestDetails;
+    }
+
+    public void setOtherTestDetails(String otherTestDetails) {
+        this.otherTestDetails = otherTestDetails;
     }
 
     public String getVeo() {
@@ -154,6 +188,14 @@ public class TbPatient implements Serializable{
         this.makohozi = makohozi;
     }
 
+    public String getOtherTests() {
+        return otherTests;
+    }
+
+    public void setOtherTests(String otherTests) {
+        this.otherTests = otherTests;
+    }
+
     public String getTreatment_type() {
         return treatment_type;
     }
@@ -186,19 +228,19 @@ public class TbPatient implements Serializable{
         this.outcomeDetails = outcomeDetails;
     }
 
-    public Long getTbPatientId() {
-        return tbPatientId;
-    }
-
-    public void setTbPatientId(Long tbPatientId) {
-        this.tbPatientId = tbPatientId;
-    }
-
     public boolean isPregnant() {
         return isPregnant;
     }
 
     public void setPregnant(boolean pregnant) {
         isPregnant = pregnant;
+    }
+
+    public int getTreatmentStatus() {
+        return treatmentStatus;
+    }
+
+    public void setTreatmentStatus(int treatmentStatus) {
+        this.treatmentStatus = treatmentStatus;
     }
 }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <View
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/card_grid_tex"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:fontFamily="@font/avenir_light"
+                android:textColor="@color/card_title_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="@string/service"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/card_grid_tex"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/avenir_light"
+                android:textColor="@color/card_title_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="@string/total_received_referrals"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/card_grid_tex"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/avenir_light"
+                android:textColor="@color/card_title_text"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="@string/attended_ref"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/card_grid_tex"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/avenir_light"
+                android:textColor="@color/card_title_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="@string/referrals_unattended"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/card_grid_tex"/>
+
+        <include layout="@layout/single_service_report_item"/>
+
+        <View
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/card_grid_tex"/>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/services_table"/>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <include layout="@layout/reports_toolbar"/>
+
+</LinearLayout>

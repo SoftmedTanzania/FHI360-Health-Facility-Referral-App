@@ -77,6 +77,9 @@ public class Patient implements Serializable{
     @SerializedName("careTakerRelationship")
     private String careTakerRelationship;
 
+    @SerializedName("updatedAt")
+    private long updatedAt;
+
     public Long getId() {
         return id;
     }
@@ -227,5 +230,13 @@ public class Patient implements Serializable{
 
     public void setHivStatus(boolean hivStatus) {
         this.hivStatus = hivStatus;
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

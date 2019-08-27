@@ -37,10 +37,18 @@ public class Referral implements Serializable{
     private String referralReason;
 
     /*
-    Malaria, Tb or Hiv
+    Malaria, Tb , Hiv, Lab
      */
     @SerializedName("serviceId")
     private int serviceId;
+
+    /*
+    Lab Test
+    This field is only used upon issuing lab referrals to keep track
+    of what test user at the lab is suppose to conduct on a client
+     */
+    @SerializedName("labTest")
+    private int labTest;
 
     @SerializedName("referralUUID")
     private String referralUUID;
@@ -72,15 +80,19 @@ public class Referral implements Serializable{
     @SerializedName("serviceIndicatorIds")
     private List<Long> serviceIndicatorIds;
 
-    /**
+    /*
      * This represent the service in which the referral is originated
+     *  Opd
+     *  Malaria
+     *  Lab
+     *  TB, etc..
      */
     @SerializedName("referralSource")
     private int referralSource;
 
 
     /*
-     * chw ->facility = 1
+     * chw -> facility = 1
      * Intra-facility = 2
      * Inter-facility = 3
      * facility - chw = 4
@@ -96,8 +108,22 @@ public class Referral implements Serializable{
     @SerializedName("referralStatus")
     private int referralStatus;
 
+    /**
+     *  0 = Negative Results
+     *  1 = Positive Results
+     *  2 = Unknown Results
+     */
     @SerializedName("testResults")
-    private boolean testResults;
+    private int testResults;
+
+    /**
+     * true If the referral is a state of emergency referral
+     */
+    @SerializedName("isEmergency")
+    private boolean isEmergency;
+
+    @SerializedName("appointmentDate")
+    private long appointmentDate;
 
     /*
     The following two are the feedback portion of a referal
@@ -110,6 +136,9 @@ public class Referral implements Serializable{
 
     @SerializedName("otherClinicalInformation")
     private String otherClinicalInformation;
+
+    @SerializedName("updatedAt")
+    private long updatedAt;
 
     public Long getId() {
         return id;
@@ -255,12 +284,20 @@ public class Referral implements Serializable{
         this.otherClinicalInformation = otherClinicalInformation;
     }
 
-    public boolean isTestResults() {
+    public int getTestResults() {
         return testResults;
     }
 
-    public void setTestResults(boolean testResults) {
+    public void setTestResults(int testResults) {
         this.testResults = testResults;
+    }
+
+    public boolean isEmergency() {
+        return isEmergency;
+    }
+
+    public void setEmergency(boolean emergency) {
+        isEmergency = emergency;
     }
 
     public String getReferralUUID() {
@@ -285,5 +322,29 @@ public class Referral implements Serializable{
 
     public void setReferralType(int referralType) {
         this.referralType = referralType;
+    }
+
+    public int getLabTest() {
+        return labTest;
+    }
+
+    public void setLabTest(int labTest) {
+        this.labTest = labTest;
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public long getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(long appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 }

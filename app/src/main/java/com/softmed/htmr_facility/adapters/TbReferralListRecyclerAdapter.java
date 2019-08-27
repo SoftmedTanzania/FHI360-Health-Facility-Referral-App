@@ -11,12 +11,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.TbClientDetailsActivity;
 import com.softmed.htmr_facility.activities.TbReferralDetailsActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.TbPatient;
+
+import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
+import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
+import static com.softmed.htmr_facility.utils.constants.REFERRAL_STATUS_COMPLETED;
 
 /**
  * Created by issy on 12/14/17.
@@ -63,10 +74,10 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
         new TbReferralListRecyclerAdapter.patientDetailsTask(database, referral.getPatient_id(), holder.clientsNames).execute();
 
         if (referral.getReferralStatus() == 0){
-            holder.attendedFlag.setText("Mpya");
+            holder.attendedFlag.setText(context.getResources().getString(R.string.new_ref));
             holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.red_a700));
         }else {
-            holder.attendedFlag.setText("Tayari");
+            holder.attendedFlag.setText(context.getResources().getString(R.string.attended_ref));
             holder.attendedFlag.setTextColor(context.getResources().getColor(R.color.green_a700));
         }
 
@@ -77,9 +88,17 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, TbReferralDetailsActivity.class);
-                intent.putExtra("referal", referral);
+
+                //Call Tb Clinic activity passing patient and tbpatient
+                Intent intent = new Intent(context, TbClientDetailsActivity.class);
+                intent.putExtra("referral", referral);
+                intent.putExtra(TbClientDetailsActivity.ORIGIN_STATUS, TbClientDetailsActivity.FROM_REFERRALS);
                 context.startActivity(intent);
+
+                /*Intent intent = new Intent(context, TbReferralDetailsActivity.class);
+                intent.putExtra("referal", referral);
+                context.startActivity(intent);*/
+
             }
         });
 
@@ -104,6 +123,7 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
 
         TextView clientsNames, attendedFlag, ctcNumber, referralReasons, referralDate;
         View viewItem;
+        Patient currentPatient;
 
         public ListViewItemViewHolder(View itemView){
             super(itemView);
@@ -114,20 +134,20 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
             referralDate = (TextView) itemView.findViewById(R.id.ref_date);
             ctcNumber = (TextView) itemView.findViewById(R.id.ctc_number);
             referralReasons = (TextView) itemView.findViewById(R.id.referral_reasons);
+        }
 
+        void setCurrentPatient(Patient p){
+            this.currentPatient = p;
         }
 
     }
 
-    private void setNames(String names){
-        mViewHolder.clientsNames.setText(names);
-    }
-
-    private static class patientDetailsTask extends AsyncTask<Void, Void, Void> {
+    static class patientDetailsTask extends AsyncTask<Void, Void, Void> {
 
         String patientNames, patientId;
         AppDatabase db;
         TextView mText;
+        Patient patient;
 
         patientDetailsTask(AppDatabase database, String patientID, TextView namesInstance){
             this.db = database;
@@ -147,6 +167,7 @@ public class TbReferralListRecyclerAdapter extends RecyclerView.Adapter <Recycle
             super.onPostExecute(aVoid);
             Log.d("reckless", "Done background !"+patientNames);
             mText.setText(patientNames);
+
             //adapter.notifyDataSetChanged();
         }
 

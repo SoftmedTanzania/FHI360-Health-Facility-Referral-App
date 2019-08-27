@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.softmed.htmr_facility.activities.MainActivity">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,28 +28,30 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
                         android:layout_centerVertical="true"
-                        android:text="Orodha ya Rufaa"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/roboto_regular"/>
+                        android:layout_marginLeft="4dp"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:id="@+id/activity_title"/>
+
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@color/colorPrimary"
+                        app:tabIndicatorColor="@color/cyan_200"
+                        app:tabIndicatorHeight="2dp"
+                        app:tabMode="fixed"
+                        app:tabMaxWidth="0dp"
+                        app:tabGravity="fill"/>
 
                 </RelativeLayout>
 
             </android.support.v7.widget.Toolbar>
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                app:tabIndicatorColor="@color/cyan_200"
-                app:tabIndicatorHeight="2dp"
-                app:tabMode="fixed"
-                app:tabMaxWidth="0dp"
-                app:tabGravity="fill"/>
 
         </android.support.design.widget.AppBarLayout>
 

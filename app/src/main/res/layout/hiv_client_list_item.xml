@@ -22,12 +22,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:fontFamily="@font/avenir_light"
+                android:textSize="16sp"
+                android:fontFamily="@font/google_sans_regular"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="16dp"
                 android:id="@+id/client_ctc_number"
-                android:textColor="@color/black"
+                android:textColor="@color/card_grid_text"
                 android:text="Namba ya ctc"/>
 
         </RelativeLayout>
@@ -41,17 +41,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:fontFamily="@font/avenir_light"
+                android:textSize="16sp"
+                android:fontFamily="@font/google_sans_regular"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="16dp"
                 android:id="@+id/client_phone_number"
-                android:textColor="@color/black"
+                android:textColor="@color/card_grid_text"
                 android:text="0733110068"/>
 
         </RelativeLayout>
 
-
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="0.2"
@@ -61,19 +60,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:fontFamily="@font/avenir_light"
+                android:textSize="16sp"
+                android:fontFamily="@font/google_sans_regular"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="16dp"
                 android:id="@+id/client_ward"
-                android:textColor="@color/black"
+                android:textColor="@color/card_grid_text"
                 android:text="Kata"/>
 
         </RelativeLayout>
 
-
-
-
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="0.2"
@@ -83,12 +79,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:fontFamily="@font/avenir_light"
+                android:textSize="16sp"
+                android:fontFamily="@font/google_sans_regular"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="16dp"
                 android:id="@+id/client_village"
-                android:textColor="@color/black"
+                android:textColor="@color/card_grid_text"
                 android:text="Kijiji"/>
 
         </RelativeLayout>

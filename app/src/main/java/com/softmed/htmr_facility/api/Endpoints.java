@@ -4,15 +4,21 @@ import java.util.List;
 
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
 import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicatorsResponse;
-import com.softmed.htmr_facility.dom.objects.TbEncounters;
+import com.softmed.htmr_facility.dom.objects.FacilityChws;
+import com.softmed.htmr_facility.dom.responces.EncounterResponse;
+import com.softmed.htmr_facility.dom.responces.FacilityChwsResponce;
 import com.softmed.htmr_facility.dom.responces.LoginResponse;
+import com.softmed.htmr_facility.dom.responces.PatientResponce;
+import com.softmed.htmr_facility.dom.responces.ReferalFeedbackResponce;
 import com.softmed.htmr_facility.dom.responces.ReferalResponce;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -27,12 +33,16 @@ public class Endpoints {
     public interface LoginService {
 
         @POST("security/authenticate/")
-        Call<LoginResponse> basicLogin();
+        Call<LoginResponse> login();
 
+        @POST("security/authenticate/")
+        Call<LoginResponse> basicUserLogin(@Header("Authorization") String authToken);
+
+        @POST("get-team-members-by-facility-uuid")
+        Call<List<FacilityChwsResponce>> getFacilityChws(@Body RequestBody a);
     }
 
     public interface ReferalService {
-
         @GET("all-patients-referrals")
         Call<List<ReferalResponce>> getHfReferrals();
 
@@ -40,34 +50,48 @@ public class Endpoints {
         Call<List<ReferalResponce>> getHealthFacilityReferrals(@Path("facilityUUID") String facilityUUID );
 
         @POST("save-facility-referral")
-        Call<Referral> postReferral(@Body RequestBody r);
+        Call<Referral> postReferral(@Header("From") String serviceProviderUUID, @Body RequestBody r);
 
         @POST("receive-feedback")
-        Call<String> sendReferralFeedback(@Body RequestBody f);
+        Call<String> sendReferralFeedback(@Header("From") String serviceProviderUUID, @Body RequestBody f);
 
         @GET("boresha-afya-services")
         Call<List<ReferralServiceIndicatorsResponse>> getAllServices();
 
         @GET("get-health-facilities")
         Call<List<HealthFacilities>> getHealthFacilities();
-
     }
 
     public interface PatientServices{
 
+        @GET("get-facility-tb-patients/{facilityUUID}")
+        Call<List<PatientResponce>> getTbPatientsList(@Path("facilityUUID") String facilityUUID);
+
         @POST("save-patients")
-        Call<Patient> postPatient(@Body RequestBody p);
+        Call<Patient> postPatient(@Header("From") String serviceProviderUUID , @Body RequestBody p);
+
+        @POST("update-patients")
+        Call<Patient> updatePatient(@Header("From") String serviceProviderUUID , @Body RequestBody p);
+
+        @POST("save-tb-patient")
+        Call<Void> postTbPatient(@Header("From") String serviceProviderUUID, @Body RequestBody tp);
 
         @POST("save-tb-encounters")
-        Call<TbEncounters> postEncounter(@Body RequestBody e);
+        Call<EncounterResponse> postEncounter(@Header("From") String serviceProviderUUID, @Body RequestBody e);
+
+        @POST("save-first-appointment")
+        Call<PatientAppointment> saveFirstAppointment(@Body RequestBody a);
 
     }
 
-    public interface NotificationServices{
+    public interface ReferralFeedbackServices{
+        @GET("referral-feedback")
+        Call<List<ReferalFeedbackResponce>> getReferralFeedback();
+    }
 
+    public interface NotificationServices{
         @POST("save-push-notification-token")
         Call<String> registerDevice(@Body RequestBody u);
-
     }
 
 }

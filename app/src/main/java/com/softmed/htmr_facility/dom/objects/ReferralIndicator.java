@@ -27,6 +27,9 @@ public class ReferralIndicator implements Serializable {
     @SerializedName("indicatorName")
     private String indicatorName;
 
+    @SerializedName("indicatorNameSw")
+    private String indicatorNameSw;
+
     @SerializedName("isActive")
     private boolean isActive;
 
@@ -70,5 +73,13 @@ public class ReferralIndicator implements Serializable {
 
     public void setServiceID(long serviceID) {
         this.serviceID = serviceID;
+    }
+
+    public String getIndicatorNameSw() {
+        return indicatorNameSw;
+    }
+
+    public void setIndicatorNameSw(String indicatorNameSw) {
+        this.indicatorNameSw = indicatorNameSw;
     }
 }

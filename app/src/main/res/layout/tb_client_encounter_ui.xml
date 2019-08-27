@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app_ms="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/google_sans_bold"
+            android:text="@string/encounter_details"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="5dp"
+            android:layout_below="@id/heading"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/card_separator" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/avenir_light"
+                android:text="@string/previous_encounters"
+                android:textColor="@color/card_title_text"
+                android:textSize="14sp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:id="@+id/previous_encounters_title_table"
+                android:layout_marginLeft="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp">
+
+                <TableRow
+                    android:id="@+id/previous_encounters_title_table_row">
+                </TableRow>
+
+            </TableLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/card_separator" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card_separator" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:fontFamily="@font/avenir_light"
+                        android:text="Encounter"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/avenir_light"
+                        android:text="@string/date_issued"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/avenir_light"
+                        android:text="@string/weight"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/avenir_light"
+                        android:text="@string/makohozi"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/avenir_light"
+                        android:gravity="center"
+                        android:text="@string/finished_last_month_medications_succesfully"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/card_separator" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@color/card_separator" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="16dp"
+                android:minHeight="100dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/previous_encounters_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none" />
+
+                <TextView
+                    android:id="@+id/empty_previous_encounters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/no_previous_encounters_recorded"
+                    android:textColor="@color/card_light_text" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/card_separator_sec">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:id="@+id/new_encounter_title"
+                android:fontFamily="@font/google_sans_bold"
+                android:text="@string/new_encounter"
+                android:textColor="@color/card_title_text"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_below="@id/new_encounter_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6">
+
+                    <View
+                        android:id="@+id/separator_four"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
+
+                    <TextView
+                        android:id="@+id/month_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/separator_four"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:text="Encounter"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/encounter_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/separator_four"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@id/month_title"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:text="1"
+                        android:textColor="@color/card_grid_tex"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/encounter_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/month_title"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:text="12/5/2018"
+                        android:textColor="@color/card_grid_tex"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/appointment_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/encounter_date"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:text="Appointment Dated"
+                        android:textColor="@color/card_title_text"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/encounter_appointment_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/appointment_title"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:text="10/5/2018"
+                        android:textColor="@color/card_grid_tex"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_encounter_month"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_below="@id/month_title"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
+                        android:divider="@null"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_arrowColor="@color/black"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_baseColor="@color/card_grid_tex"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_floatingLabelColor="@color/card_title_text"
+                        app_ms:ms_floatingLabelText="Mwezi"
+                        app_ms:ms_highlightColor="@color/card_grid_text"
+                        app_ms:ms_hint="Mwezi"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_multiline="false" />
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_appointments"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_below="@id/spin_encounter_month"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
+                        android:divider="@null"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_arrowColor="@color/black"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_baseColor="@color/card_grid_tex"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_floatingLabelColor="@color/card_title_text"
+                        app_ms:ms_floatingLabelText="Appointment Dated"
+                        app_ms:ms_highlightColor="@color/card_grid_text"
+                        app_ms:ms_hint="Select Appointment for this encounter"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_multiline="false" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/card_separator" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="0.5">
+
+                    <View
+                        android:id="@+id/separator_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
+
+                    <TextView
+                        android:id="@+id/uzito_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/separator_two"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/google_sans_bold"
+                        android:text="@string/weight"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="16dp" />
+
+                    <EditText
+                        android:id="@+id/monthly_uzito_value"
+                        android:layout_width="80dp"
+                        android:layout_height="50dp"
+                        android:layout_below="@id/uzito_title"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/border_one"
+                        android:fontFamily="@font/google_sans_medium"
+                        android:gravity="center"
+                        android:hint="@string/weight"
+                        android:inputType="numberDecimal"
+                        android:padding="8dp"
+                        android:textColor="@color/card_grid_tex"
+                        android:textColorHint="@color/card_grid_tex"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/card_separator" />
+
+                <RelativeLayout
+                    android:id="@+id/makohozi_encounter_wrap"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="0.7">
+
+                    <View
+                        android:id="@+id/separator_one"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
+
+                    <TextView
+                        android:id="@+id/makohozi_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/separator_one"
+                        android:fontFamily="@font/google_sans_bold"
+                        android:text="@string/makohozi"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="16dp" />
+
+                    <fr.ganfra.materialspinner.MaterialSpinner
+                        android:id="@+id/spin_makohozi"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/makohozi_title"
+                        android:layout_marginTop="8dp"
+                        android:divider="@null"
+                        android:textSize="14sp"
+                        app_ms:ms_alignLabels="false"
+                        app_ms:ms_alwaysShowFloatingLabel="true"
+                        app_ms:ms_arrowColor="@color/black"
+                        app_ms:ms_arrowSize="12dp"
+                        app_ms:ms_baseColor="@color/card_grid_tex"
+                        app_ms:ms_enableErrorLabel="false"
+                        app_ms:ms_enableFloatingLabel="true"
+                        app_ms:ms_errorColor="@color/red_500"
+                        app_ms:ms_floatingLabelColor="@color/card_grid_tex"
+                        app_ms:ms_highlightColor="@color/card_grid_text"
+                        app_ms:ms_hint="@string/cough_weight"
+                        app_ms:ms_hintColor="#b3b3b3"
+                        app_ms:ms_hintTextSize="14sp"
+                        app_ms:ms_multiline="false" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/card_separator" />
+
+                <RelativeLayout
+                    android:id="@+id/finished_previous_month_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6">
+
+                    <View
+                        android:id="@+id/separator_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/card_separator_sec" />
+
+
+                    <TextView
+                        android:id="@+id/medication_status_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/separator_three"
+                        android:layout_marginLeft="8dp"
+                        android:fontFamily="@font/google_sans_bold"
+                        android:gravity="right"
+                        android:text="@string/finished_last_month_medications_succesfully"
+                        android:textColor="@color/card_grid_text"
+                        android:textSize="14sp" />
+
+                    <CheckBox
+                        android:id="@+id/medication_status"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/medication_status_title"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:button="@drawable/check_box_selector"
+                        android:buttonTint="@color/card_grid_tex"
+                        android:checked="false"
+                        android:scaleX="1"
+                        android:scaleY="1" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

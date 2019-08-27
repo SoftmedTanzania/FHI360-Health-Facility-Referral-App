@@ -23,10 +23,13 @@ public class PostOffice implements Serializable{
     private String post_data_type;
 
     /**
-     *  1 == POSTED
      *  0 == NOT_POSTED
+     *  1 == POSTED
+     *  2 == CONFLICT
      */
     private int syncStatus;
+
+    private int failedSyncCount = 0;
 
     @NonNull
     public String getPost_id() {
@@ -53,4 +56,11 @@ public class PostOffice implements Serializable{
         this.syncStatus = syncStatus;
     }
 
+    public int getFailedSyncCount() {
+        return failedSyncCount;
+    }
+
+    public void setFailedSyncCount(int failedSyncCount) {
+        this.failedSyncCount = failedSyncCount;
+    }
 }

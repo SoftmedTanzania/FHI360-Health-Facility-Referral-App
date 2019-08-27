@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Htmr Facility</string>
+
+    <string name="dummy_text">If the community health worker surveys and finds a family with a person who has TB they get information of all the other
+        relatives that stay with the patient person and referes them to kituo cha afya with the same CBHS as the TB patient and once any of the members
+        will be found with TB they will then be registered with their own CBHS number (New registration occurs here)</string>
+    <string name="home">Mwanzo</string>
+
+    <string name="current_dose">Sasa</string>
+    <string name="previous_dose">Iliyopita</string>
+
+    <string name="from_date">Kutoka Tarehe</string>
+    <string name="to_date">Mpaka Tarehe</string>
+
+    <string name="village">Kijiji</string>
+    <string name="ward">Kata</string>
+    <string name="map_cue">Map Cue</string>
+    <string name="health_facility">Kituo cha Afya</string>
+    <string name="chw">Mtoa Huduma Wa Jamii</string>
+
+    <string name="text_search_field">Jina au CTC#</string>
+
+    <string name="client_name">Majina ya Mteja</string>
+    <string name="btn_search">Tafuta</string>
+    <string name="appointment_date">Tarehe ya Kuja</string>
+    <string name="appointment_status">Mahudhurio</string>
+    <string name="age">Umri</string>
+    <string name="sex">Jinsi</string>
+    <string name="veo">VEO</string>
+    <string name="heading_referral_info">Taarifa za Rufaa</string>
+    <string name="referral_reasib">Sababu za Rufaa</string>
+    <string name="indicators">Viashiria</string>
+    <string name="other_clinical_information">Taarifa nyingine za Kliniki</string>
+    <string name="heading_referral_feedback">Mrejesho wa Rufaa</string>
+    <string name="test_results">Majibu ya Vipimo</string>
+    <string name="check_if_positive">Weka tiki kama chanya</string>
+    <string name="ctc_number">Namba ya Ctc</string>
+    <string name="heading_service_given">Huduma iliyotolewa</string>
+    <string name="other_infotmation_and_advice">Taarifa nyingine/Ushauri</string>
+    <string name="btn_forward_referral">Tuma Rufaa</string>
+    <string name="btn_save">Hifadhi</string>
+    <string name="btn_send">Tuma</string>
+    <string name="btn_update">Sahihisha</string>
+    <string name="client_last_name">Jina la Ukoo</string>
+    <string name="phone_number">Namba ya Simu</string>
+    <string name="click_to_sync_entries">Bonyeza kuoanisha Taarifa</string>
+    <string name="referral_system">Mfumo wa Rufaa wa Kituo cha Afya</string>
+    <string name="login">Ingia</string>
+    <string name="enter_username_and_password">Ingiza Jina na neno la siri</string>
+    <string name="username">Jina</string>
+    <string name="password">Neno la Siri</string>
+
+    <string name="where_they_stay">Anapokaa</string>
+
+    <string name="new_referrals_unattended">Hazijahudumiwa</string>
+
+    <string name="issue">Rufaa</string>
+    <string name="referral">Rufaa</string>
+    <string name="issue_referral">Tuma Rufaa</string>
+    <string name="issue_referral_prompt">Una uhakika unataka kumrufaa mteja huyu?</string>
+    <string name="answer_no">Hapana</string>
+    <string name="answer_yes">Ndiyo</string>
+
+    <string name="referral_information">Taarifa za Rufaa</string>
+    <string name="btn_cancel">Ondoka</string>
+    <string name="client_inforamtion">Taarifa za Mteja</string>
+    <string name="supporter_information">Taarifa za Msaidizi</string>
+    <string name="supporters_name">Majina ya Msaidizi</string>
+    <string name="names">Majina</string>
+    <string name="relationship">Mahusiano</string>
+    <string name="referral_date">Tarehe ya Rufaa</string>
+    <string name="service">Huduma</string>
+    <string name="referral_feedback_form">Fomu ya Mrejesho wa Rufaa</string>
+    <string name="referral_feedback">Mrejesho wa Rufaa</string>
+    <string name="tb_clinic_form">Fomu ya Kliniki ya TB</string>
+    <string name="weight">Uzito</string>
+    <string name="diagnostic_info">Taarifa za Vipimo</string>
+    <string name="test_conducted">Vipimo vilivyofanyika</string>
+
+    <string name="toggle_makohozi">Makohozi</string>
+    <string name="toggle_xray">X-Ray</string>
+    <string name="toggle_other">Vipimo Vingine</string>
+    <string name="cough_weight">Matokeo</string>
+    <string name="treatment_info">Taarifa za Matibabu</string>
+    <string name="treatment_type">Aina ya Matibabu</string>
+    <string name="treatment">Matibabu</string>
+    <string name="encounter_details">Taarifa za Ufuatiliaji</string>
+    <string name="makohozi">Makohozi</string>
+    <string name="finished_last_month_medications_succesfully">Amemaliza Dawa za Mwezi Uliopita Kikamilifu</string>
+    <string name="treatment_results">Matokeo ya Matibabu</string>
+    <string name="results">Matokeo</string>
+    <string name="date">Tarehe</string>
+    <string name="other_explanation">Maelezo Mengine</string>
+    <string name="tb_status">Majibu ya vipimo (Weka tiki kama chanya)</string>
+    <string name="referral_to">Rufaa Kwenda</string>
+
+    <string name="select_service">Chagua Huduma</string>
+    <string name="select_indicators">Chagua Viashiria</string>
+    <string name="referrals_list">Rufaa zilizopokelewa</string>
+
+    <string name="referrals_unattended">Rufaa Mpya</string>
+    <string name="pending_feedback">Rufaa zinazosubiri Majibu</string>
+    <string name="clients_list">Orodha ya Wateja wa Kituo</string>
+    <string name="referrals_issued_ctc">Rufaa Zilizotolewa (CTC)</string>
+    <string name="register_client">Sajili Mteja</string>
+    <string name="referrals_issued">Rufaa Zilizotolewa</string>
+    <string name="status">Hali</string>
+    <string name="new_client_registration_form">Fomu ya Usajili na Rufaa kwa Mteja Mpya</string>
+    <string name="initial_information">Taarifa za Awali</string>
+    <string name="first_name">Jina la Kwanza</string>
+    <string name="middle_name">Jina la Pili</string>
+    <string name="surname">Ukoo</string>
+    <string name="date_of_birth">Tarehe ya Kuzaliwa</string>
+    <string name="pregnant">Mjamzito</string>
+    <string name="other_details">Taarifa Nyingine</string>
+
+    <string name="language">Lugha</string>
+
+    <string name="health_facility_referrals">Kutoka Kituo cha Afya</string>
+    <string name="chw_referrals">Kutoka CHW</string>
+    <string name="client_appointment">Ahadi za Wateja</string>
+    <string name="all">Zote</string>
+    <string name="ctc">CTC</string>
+    <string name="tb">Kifua Kikuu</string>
+
+    <string name="activity_referral_list">Orodha ya Rufaa</string>
+    <string name="loading_please_wait">Inapakua, Tafadhali Subiri..</string>
+    <string name="saving">Inahifadhi</string>
+    <string name="data_synced">Taarifa Zinaoana</string>
+    <string name="unsynced_data"> Taarifa Zisizooana </string>
+    <string name="sync">Oanisha</string>
+    <string name="settings">Mpangilio</string>
+    <string name="logout">Ondoka</string>
+
+    <string name="fragment_opd">Rufaa za Watoa Huduma wa Jamii</string>
+    <string name="fragment_hiv">VVU/Ukimwi</string> <!--Huduma za  -->
+    <string name="fragment_tb">Kifua Kikuu</string>
+    <string name="fragment_lab">MAABARA</string>
+
+    <string name="data_syncing">Taarifa Zinaoanishwa</string>
+
+    <string name="enroll_tb_clinic">Ingiza : Kliniki ya TB</string>
+
+    <string name="new_ref">Mpya</string>
+    <string name="attended_ref">Tayari</string>
+
+    <string name="reports_activity">Ripoti</string>
+
+    <string name="attended_appointments">Waliofika</string>
+    <string name="missed_appointments">Waliokosa</string>
+    <string name="total">Jumla</string>
+    <string name="male">Wanaume</string>
+    <string name="female">Wanawake</string>
+
+    <string name="total_received_referrals">Rufaa Zote Zilizopokelewa</string>
+
+    <string name="patient_referral_notification">Umepokea Rufaa Mpya</string>
+    <string name="new_client_notification">Umepokea Mteja Mpya</string>
+    <string name="referral_feedback_notification">Umepokea Mrejesho wa Rufaa</string>
+
+    <string name="tb_clients_list">Orodha ya Wateja wa Kifua Kikuu</string>
+    <string name="hiv_client_list">Orodha ya Wateja wa CTC</string>
+
+    <string name="month">Chagua Mwezi</string>
+    <string name="no_previous_encounters_recorded">Hakuna ufuatiliaji uliorekodiwa</string>
+    <string name="previous_encounters">Ufuatiliaji wa miezi iliyopita</string>
+    <string name="new_encounter">Ufuatiliaji Mpya</string>
+
+    <string name="finished">Amemaliza</string>
+    <string name="didnt_finished">Hajamaliza</string>
+    <string name="lab">Maabara</string>
+
+    <string name="referral_list_opd_title">Orodha ya rufaa za Kituo | OPD</string>
+    <string name="referral_list_hiv_title">Orodha ya rufaa  kliniki ya Vvu/Ukimwi</string>
+    <string name="referral_list_tb_title">Orodha ya rufaa kliniki ya Kifua Kikuuu</string>
+    <string name="referral_list_lab_title">Orodha ya rufaa za Maabara</string>
+
+    <string name="positive">Chanya</string>
+    <string name="negative">Hasi</string>
+
+    <string name="hiv">VVU</string>
+
+    <string name="select_lab_test">Chagua kipimo cha kufanyika</string>
+    <string name="select_test_results">Chagua Majibu ya vipimo</string>
+    <string name="please_add_test_results">Tafadhali jaza majibu ya vipimo</string>
+    <string name="input_required">Tafadhali Jaza</string>
+
+    <string name="lab_test_type_title"> Aina ya Kipimo </string>
+    <string name="unspecified_test_type">Hakijatajwa</string>
+    <string name="waiting_for_results">Majibu Bado..</string>
+
+    <string name="received_at_tb_clinic">Tayari amepokelewa katika kliniki ya Kifua Kikuu</string>
+    <string name="tested_patients">Waliopimwa</string>
+
+    <string name="lab_tested_patients">Wateja waliopimwa | MAABARA</string>
+
+    <string name="lab_test_form">Fomu ya kipimo cha maabara</string>
+    <string name="lab_test_feedback">Majibu ya Maabara</string>
+
+    <string name="done">Maliza</string>
+
+    <string name="feedback_required"> Tafadhali jaza huduma iliyotolewa </string>
+
+    <string name="username_required">Jina haliwezi kua wazi</string>
+    <string name="password_required">Neno la siri haliwezi kuwa wazi</string>
+
+    <string name="date_issued"> Imetolewa Tarehe </string>
+    <string name="upcoming_appointments">Mahudhurio Yajayo</string>
+
+    <string name="ctc_referrals">Rufaa za CTC</string>
+    <string name="tb_referrals">Rufaa za Kifua Kikuu</string>
+    <string name="lab_referrals">Rufaa za Maabara</string>
+    <string name="other_referrals">Rufaa zinginezo</string>
+    <string name="community_referrals_label">Rufaa kwa Watoa Huduma wa Jamii</string>
+
+    <string name="emergencies"> Rufaa za Dharura </string>
+
+    <string name="finished_treatments">Amemaliza Matibabu</string>
+
+    <!--TB toast messages-->
+
+    <string name="specify_results">Tafadhali elezea majibu ya matibabu</string>
+    <string name="select_results">Tafadhali chagua matokeo</string>
+    <string name="select_treatment_date">Tafadhali chagua tarehe ya Majibu ya matibabu</string>
+    <string name="fill_client_weight">Tafadhali jaza uzito wa mteja</string>
+    <string name="fill_sputum_status">Tafadhali jaza hali ya makohozi ya mgonjwa</string>
+    <string name="fill_treatment_type">Tafadhali Jaza Aina ya matibabu</string>
+    <string name="user">Mtumiaji ::</string>
+    <string name="others_referrals">Rufaa Zingine</string>
+    <string name="charts">Chati</string>
+    <string name="chw_report">Ripoti ya Rufaa za Wahudumu wa Afya</string>
+    <string name="interfacility_reports">Ripoti za Rufaa Nje ya Kituo</string>
+    <string name="intrafacility_report">Ripoti za Rufaa Ndani ya Kituo</string>
+    <string name="tb_appointment_report">Riporti za Miadi ya Kifua Kikuu</string>
+    <string name="tb_reports">Ripoti za Kifua Kikuu</string>
+    <string name="from">Kuanzia</string>
+    <string name="to">Mpaka</string>
+    <string name="chw_referrals_summary">Ufupisho wa taarifa za rufaa za wahudumu wa afya ngazi ya jamiii</string>
+    <string name="intra_facility_referrals_summary">Ufupisho wa taarifa za rufaa kutoka ndani ya kituo cha afya</string>
+    <string name="inter_facility_referrals_summary">Ufupisho wa taarifa za rufaa kutoka nje ya kituo</string>
+    <string name="services">Huduma</string>
+    <string name="apply">Tafuta</string>
+    <string name="under_medication_report">Ripoti ya matibabu ya mgonjwa</string>
+    <string name="appointment_type">Aina ya Miadi</string>
+    <string name="emergency_empty_state">Hakuna Rufaa za Dharura</string>
+    <string name="facility_chws_label">Mtoa huduma wa Afya wa Jamii</string>
+
+    <string name="followup_service_name">Kufwatiliwa</string>
+
+    <string name="suceessful_label">Imefanikiwa</string>
+    <string name="unsuccessful_label">Haijafanikiwa</string>
+    <string name="pending_label">Inasubiri</string>
+    <string name="error_label">Angalia taarifa iliyojazwa</string>
+
+</resources>

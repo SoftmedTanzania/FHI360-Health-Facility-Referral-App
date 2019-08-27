@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@color/white"
+    android:id="@+id/empty_state_layout">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_empty_reports"
+        android:scaleType="centerCrop"
+        android:id="@+id/empty_report_image"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/empty_report_image"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/card_light_text"
+        android:fontFamily="@font/rosario_regular"
+        android:gravity="center"
+        android:text="Nothing to Report at the moment \n Check back later"/>
+
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.softmed.htmr_facility.dom.objects;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
@@ -26,20 +27,36 @@ public class PatientAppointment implements Serializable{
     @SerializedName("appointment_id")
     private Long appointmentID;
 
+    @SerializedName("healthFacilityPatientId")
     private String patientID;
 
-    @SerializedName("appointment_date")
+    @SerializedName("appointmentDate")
     @TypeConverters(DateConverter.class)
     private long appointmentDate;
 
+    /**
+     * CTC Appointments = 1
+     * TB Appointments = 2
+     */
     @SerializedName("appointmentType")
     private int appointmentType;
 
-    @SerializedName("is_cancelled")
+    @SerializedName("isCancelled")
     private boolean cancelled;
 
+    /**
+     *  Status Values
+     *  0 - Pending
+     *  1  - Attended
+     */
     @SerializedName("status")
-    private String status;
+    private int status;
+
+    private int encounterNumber;
+
+    @Ignore
+    @SerializedName("cancelled")
+    private boolean _cancelled;
 
     private String appointmentEncounterMonth;
 
@@ -76,11 +93,11 @@ public class PatientAppointment implements Serializable{
         this.cancelled = cancelled;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -92,11 +109,27 @@ public class PatientAppointment implements Serializable{
         this.appointmentEncounterMonth = appointmentEncounterMonth;
     }
 
+    public boolean is_cancelled() {
+        return _cancelled;
+    }
+
+    public void set_cancelled(boolean _cancelled) {
+        this._cancelled = _cancelled;
+    }
+
     public int getAppointmentType() {
         return appointmentType;
     }
 
     public void setAppointmentType(int appointmentType) {
         this.appointmentType = appointmentType;
+    }
+
+    public int getEncounterNumber() {
+        return encounterNumber;
+    }
+
+    public void setEncounterNumber(int encounterNumber) {
+        this.encounterNumber = encounterNumber;
     }
 }

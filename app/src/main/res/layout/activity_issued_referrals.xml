@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/app_bar_layout"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:shadowColor="@color/white"
+                        android:id="@+id/activity_title"
+                        android:scrollbarSize="18sp"
+                        android:fontFamily="@font/google_sans_bold"
+                        android:text="@string/referrals_issued"/>
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/card_separator_sec"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:id="@+id/issued_hiv_referrals"
+                    app:cardBackgroundColor="@color/white">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/light_blue_050"
+                            android:alpha="0.5"
+                            android:rotation="-45"
+                            android:textSize="100sp"
+                            android:textStyle="bold"
+                            android:text="CTC"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/google_sans_regular"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_centerInParent="true"
+                            android:text="@string/ctc_referrals"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:text="14"
+                            android:id="@+id/ctc_issued_count"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginRight="16dp"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:visibility="gone"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:id="@+id/issued_tb_referrals"
+                    app:cardBackgroundColor="@color/white">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/light_blue_050"
+                            android:alpha="0.5"
+                            android:rotation="-45"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="100sp"
+                            android:textStyle="bold"
+                            android:text="TB"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/google_sans_regular"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_gravity="center"
+                            android:text="@string/tb_referrals"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:text="14"
+                            android:id="@+id/tb_issued_count"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginRight="16dp"/>
+
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:id="@+id/issued_lab_referrals"
+                    app:cardBackgroundColor="@color/white">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:layout_alignParentRight="true"
+                            android:textColor="@color/light_blue_050"
+                            android:alpha="0.5"
+                            android:rotation="-45"
+                            android:textSize="100sp"
+                            android:textStyle="bold"
+                            android:text="LAB"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/google_sans_regular"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_gravity="center"
+                            android:layout_centerInParent="true"
+                            android:text="@string/lab_referrals"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:text="14"
+                            android:id="@+id/lab_issued_count"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginRight="16dp"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:id="@+id/issued_other_referrals"
+                    app:cardBackgroundColor="@color/white">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/light_blue_050"
+                            android:alpha="0.5"
+                            android:rotation="-45"
+                            android:textSize="100sp"
+                            android:textStyle="bold"
+                            android:text="OTHER"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/google_sans_regular"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_gravity="center"
+                            android:layout_centerInParent="true"
+                            android:text="@string/community_referrals_label"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:text="14"
+                            android:id="@+id/others_issued_count"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginRight="16dp"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:id="@+id/issued_other_referrals"
+                    app:cardBackgroundColor="@color/white">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/light_blue_050"
+                            android:alpha="0.5"
+                            android:rotation="-45"
+                            android:textSize="100sp"
+                            android:textStyle="bold"
+                            android:text="OTHER"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/google_sans_regular"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_gravity="center"
+                            android:layout_centerInParent="true"
+                            android:text="@string/other_referrals"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:text="14"
+                            android:id="@+id/others_issued_count"
+                            android:fontFamily="@font/google_sans_bold"
+                            android:textColor="@color/card_grid_text"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginRight="16dp"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:layout_height="match_parent"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_margin="4dp"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -21,8 +21,11 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface HealthFacilitiesModelDao {
 
-    @Query("select * from HealthFacilities")
+    @Query("select * from HealthFacilities ORDER BY facilityName ASC")
     List<HealthFacilities> getAllHealthFacilities();
+
+    @Query("select * from HealthFacilities where openMRSUIID = :openMRSUUID")
+    List<HealthFacilities> getFacilityByOpenMRSID(String openMRSUUID);
 
     @Insert(onConflict = REPLACE)
     void addHealthFacility(HealthFacilities hf);

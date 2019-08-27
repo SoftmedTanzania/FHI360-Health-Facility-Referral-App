@@ -24,7 +24,16 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface TbEncounterModelDao {
 
     @Query("select * from TbEncounters where tbPatientID = :tbPatientId")
-    List<TbEncounters> getEncounterByPatientID(String tbPatientId);
+    List<TbEncounters> getEncounterByPatientID(Long tbPatientId);
+
+    @Query("select * from TbEncounters where tbPatientID = :tbPatientId")
+    LiveData<List<TbEncounters>> getEncountersByPatientID(Long tbPatientId);
+
+    @Query("select * from TbEncounters where id = :ID")
+    List<TbEncounters> getEncounterById(String ID);
+
+    @Query("select * from TbEncounters where localID = :localID")
+    List<TbEncounters> getEncounterByLocalId(String localID);
 
     @Query("select * from TbEncounters")
     LiveData<List<TbEncounters>> getAllEncounters();
@@ -35,8 +44,8 @@ public interface TbEncounterModelDao {
     @Insert(onConflict = REPLACE)
     void addEncounter(TbEncounters tbEncounters);
 
-    @Query("select * from TbEncounters where encounterMonth = :encounterMonth and tbPatientID =:tbPatientID")
-    List<TbEncounters> getMonthEncounter(String encounterMonth, String tbPatientID);
+    @Query("select * from TbEncounters where encounterNumber = :encounterNumber and tbPatientID =:tbPatientId")
+    List<TbEncounters> getMonthEncounter(int encounterNumber, long tbPatientId);
 
     @Update
     void updatePreviousMonthMedicationStatus(TbEncounters tbEncounters);

@@ -51,11 +51,15 @@ public class SessionManager {
     //Change this
     public static final String USER_PASS = "userPassword";
 
+    public static final String USER_ROLES = "userRoles";
+
+    public static boolean sessionActive = false;
+
 
     /**
      * Create login session
      * */
-    public void createLoginSession(String name, String personUUID, String pass, String health_facility_uuid){
+    public void createLoginSession(String name, String personUUID, String pass, String health_facility_uuid, String roles){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -70,6 +74,9 @@ public class SessionManager {
 
         //Storing health Facility ID
         editor.putString(KEY_HFID, health_facility_uuid);
+
+        //Store user roles
+        editor.putString(USER_ROLES, roles);
 
         // commit changes
         editor.commit();
@@ -90,6 +97,10 @@ public class SessionManager {
         return user;
     }
 
+    public String getServiceProviderUUID(){
+        return pref.getString(KEY_UUID, null);
+    }
+
     public String getKeyHfid(){
         return pref.getString(KEY_HFID, null );
     }
@@ -102,6 +113,10 @@ public class SessionManager {
         return pref.getString(USER_PASS, null);
     }
 
+    public String getUserRoles(){
+        return pref.getString(USER_ROLES, null);
+    }
+
     /**
      * Check login method wil check user login status
      * If false it will redirect user to login page
@@ -112,14 +127,16 @@ public class SessionManager {
         if(!this.isLoggedIn()){
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
+
             // Closing all the Activities
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
             // Add new Flag to start new Activity
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             // Staring Login Activity
             _context.startActivity(i);
+
         }
 
     }
@@ -131,6 +148,7 @@ public class SessionManager {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
+        sessionActive = false;
 
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);

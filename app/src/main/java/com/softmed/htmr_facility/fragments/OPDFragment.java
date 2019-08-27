@@ -1,8 +1,12 @@
 package com.softmed.htmr_facility.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -12,11 +16,16 @@ import android.widget.TextView;
 
 import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.activities.ClientRegisterActivity;
+import com.softmed.htmr_facility.activities.IssuedReferralsActivity;
 import com.softmed.htmr_facility.activities.NewReferalsActivity;
 import com.softmed.htmr_facility.activities.ReferedClientsActivity;
 import com.softmed.htmr_facility.activities.ReferralListActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.base.BaseActivity;
+import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.viewmodels.ReferralCountViewModels;
+
+import java.util.List;
 
 import static com.softmed.htmr_facility.utils.constants.CHW_TO_FACILITY;
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
@@ -37,6 +46,7 @@ public class OPDFragment extends Fragment {
     private TextView referalCountText, referalFeedbackCount, chwReferralCounts, hfReferralCount;
 
     private AppDatabase database;
+    ReferralCountViewModels referralCountViewModels;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,13 +61,12 @@ public class OPDFragment extends Fragment {
         rootView    = inflater.inflate(R.layout.fragment_opd, container, false);
         setUpView(rootView);
 
-        new OPDFragment.ReferalCountsTask().execute();
-
         opdRegistrationCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OPDFragment.this.getActivity(), ClientRegisterActivity.class);
                 intent.putExtra("isTbClient", false);
+                intent.putExtra(ClientRegisterActivity.ORIGIN, ClientRegisterActivity.SOURCE_CREATE);
                 startActivity(intent);
             }
         });
@@ -83,9 +92,35 @@ public class OPDFragment extends Fragment {
         opdReferedClientsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(OPDFragment.this.getActivity(), ReferedClientsActivity.class);
-                intent.putExtra("service_id", OPD_SERVICE_ID);
+                Intent intent = new Intent(OPDFragment.this.getActivity(), IssuedReferralsActivity.class);
+                intent.putExtra(IssuedReferralsActivity.SERVICE_ID, OPD_SERVICE_ID);
                 startActivity(intent);
+            }
+        });
+
+        referralCountViewModels = ViewModelProviders.of(this).get(ReferralCountViewModels.class);
+        referralCountViewModels.getReferralCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                referalCountText.setText(integer+" "+getResources().getString(R.string.new_referrals_unattended));
+            }
+        });
+        referralCountViewModels.getOpdChwReferralsCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                chwReferralCounts.setText(getResources().getString(R.string.chw)+" "+integer);
+            }
+        });
+        referralCountViewModels.getOpdFacilityReferralsCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                hfReferralCount.setText(getResources().getString(R.string.health_facility)+" "+integer);
+            }
+        });
+        referralCountViewModels.getOpdFeedbackReferralsCount().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                referalFeedbackCount.setText(getResources().getString(R.string.pending_feedback)+" "+integer);
             }
         });
 
@@ -103,33 +138,6 @@ public class OPDFragment extends Fragment {
         opdReferralListCard = (CardView) v.findViewById(R.id.opd_referral_list_card);
         opdClientListCard   = (CardView) v.findViewById(R.id.opd_client_list_card);
         opdReferedClientsCard = (CardView) v.findViewById(R.id.refered_clients_card);
-    }
-
-    private class ReferalCountsTask extends AsyncTask<Void, Void, Void> {
-
-        String referralCounts = "";
-        String chwCount = "";
-        String hfCount = "";
-        String feedbackCount = "";
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            referralCounts = database.referalModel().getCountReferralsByService(OPD_SERVICE_ID)+" Rufaa Mpya";
-            chwCount = "CHW : "+database.referalModel().getCountReferralsBySource(new int[] {CHW_TO_FACILITY});
-            hfCount = "Kituo cha Afya : "+database.referalModel().getCountReferralsBySource(new int[] {INTRAFACILITY, INTERFACILITY});
-            feedbackCount = "Zinazosubiri Majibu : "+database.referalModel().geCountPendingReferalFeedback(HIV_SERVICE_ID, BaseActivity.session.getKeyHfid());
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            referalCountText.setText(referralCounts);
-            chwReferralCounts.setText(chwCount);
-            hfReferralCount.setText(hfCount);
-            referalFeedbackCount.setText(feedbackCount);
-            super.onPostExecute(aVoid);
-        }
-
     }
 
 }

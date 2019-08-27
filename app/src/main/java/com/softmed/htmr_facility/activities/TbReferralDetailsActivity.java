@@ -22,9 +22,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.irozon.alertview.AlertActionStyle;
+import com.irozon.alertview.AlertStyle;
+import com.irozon.alertview.AlertView;
+import com.irozon.alertview.objects.AlertAction;
 import com.rey.material.widget.ProgressView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +46,12 @@ import com.softmed.htmr_facility.utils.ListStringConverter;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.ENTRY_NOT_SYNCED;
+import static com.softmed.htmr_facility.utils.constants.FEMALE;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_SW;
+import static com.softmed.htmr_facility.utils.constants.FEMALE_VALUE;
+import static com.softmed.htmr_facility.utils.constants.MALE;
+import static com.softmed.htmr_facility.utils.constants.MALE_SW;
+import static com.softmed.htmr_facility.utils.constants.MALE_VALUE;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_REFERRAL_FEEDBACK;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_PATIENT;
 import static com.softmed.htmr_facility.utils.constants.POST_DATA_TYPE_TB_PATIENT;
@@ -64,7 +75,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
     public ProgressView saveProgress;
     private CheckBox tbStatus;
     private RecyclerView indicatorsRecyclerView;
-    public TextView clientNames, wardText, villageText, hamletText, patientGender, otherClunucalInformationValue;
+    public TextView clientNames, clientAge,wardText, villageText, hamletText, patientGender, otherClunucalInformationValue;
 
     public Dialog referalDialogue;
 
@@ -95,7 +106,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
                 }
 
-                tbStatus.setChecked(currentReferral.isTestResults());
+                tbStatus.setChecked(currentReferral.getTestResults() == 1);
 
                 otherClunucalInformationValue.setText(currentReferral.getOtherClinicalInformation());
                 referalReasons.setText(currentReferral.getReferralReason() == null ? "" : currentReferral.getReferralReason());
@@ -116,9 +127,9 @@ public class TbReferralDetailsActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
-                    saveButton.setText("Ingiza : Kliniki ya TB");
+                    saveButton.setText(getResources().getString(R.string.enroll_tb_clinic));
                 }else {
-                    saveButton.setText("Hifadhi");
+                    saveButton.setText(getResources().getString(R.string.btn_save));
                 }
             }
         });
@@ -133,10 +144,19 @@ public class TbReferralDetailsActivity extends BaseActivity {
         referButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentPatient!=null){
-                    callReferralFragmentDialogue(currentPatient);
-                }
 
+                Context context = TbReferralDetailsActivity.this;
+                AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
+                    // Action 1 callback
+                }));
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
+                    // Action 2 callback
+                    if (currentPatient!=null){
+                        callReferralFragmentDialogue(currentPatient);
+                    }
+                }));
+                alert.show(TbReferralDetailsActivity.this);
             }
         });
 
@@ -149,12 +169,17 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
             String serviceOferedString = servicesOfferedEt.getText().toString();
             String otherInformation = otherInformationEt.getText().toString();
-            boolean results = tbStatus.isChecked();
+            int results;
+            if (tbStatus.isChecked())
+                results = 1;
+            else
+                results = 0;
 
             currentReferral.setTestResults(results);
             currentReferral.setReferralStatus(REFERRAL_STATUS_COMPLETED);
             currentReferral.setServiceGivenToPatient(serviceOferedString);
             currentReferral.setOtherNotesAndAdvices(otherInformation);
+            currentReferral.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
 
             //Show progress bar
             saveProgress.setVisibility(View.VISIBLE);
@@ -171,7 +196,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
 
         FragmentManager fm = getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, TB_SERVICE_ID);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, TB_SERVICE_ID, currentReferral.getReferralUUID());
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
@@ -200,6 +225,7 @@ public class TbReferralDetailsActivity extends BaseActivity {
         referButton = (Button) findViewById(R.id.referal_button);
 
         clientNames = (TextView) findViewById(R.id.client_name);
+        clientAge = (TextView) findViewById(R.id.client_age_value);
 
         referalReasons = (TextView) findViewById(R.id.sababu_ya_rufaa_value);
 
@@ -295,21 +321,22 @@ public class TbReferralDetailsActivity extends BaseActivity {
                 if (!clientCtcNumber.getText().toString().isEmpty()){
                     currentPatient.setCtcNumber(clientCtcNumber.getText().toString());
                 }
+                currentPatient.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
                 database.patientModel().updatePatient(currentPatient);
 
                 PostOffice patientPost = new PostOffice();
-                patientPost.setPost_id(referal.getReferral_id());
+                patientPost.setPost_id(currentPatient.getPatientId());
                 patientPost.setPost_data_type(POST_DATA_TYPE_PATIENT);
                 patientPost.setSyncStatus(ENTRY_NOT_SYNCED);
 
                 //TODO: Create a new TbClient Object with basic parameters
                 TbPatient tbPatient = new TbPatient();
-                tbPatient.setPatientId(Long.parseLong(currentPatient.getPatientId()));
+                tbPatient.setHealthFacilityPatientId(Long.parseLong(currentPatient.getPatientId()));
                 tbPatient.setTempID(UUID.randomUUID()+"");
                 database.tbPatientModelDao().addPatient(tbPatient);
 
                 PostOffice tbPatientPost = new PostOffice();
-                tbPatientPost.setPost_id(referal.getReferral_id());
+                tbPatientPost.setPost_id(currentPatient.getPatientId());
                 tbPatientPost.setPost_data_type(POST_DATA_TYPE_TB_PATIENT);
                 tbPatientPost.setSyncStatus(ENTRY_NOT_SYNCED);
 
@@ -325,8 +352,8 @@ public class TbReferralDetailsActivity extends BaseActivity {
             saveButton.setVisibility(View.VISIBLE);
             if (tbStatus.isChecked()){
                 Intent intent = new Intent(TbReferralDetailsActivity.this, TbClientDetailsActivity.class);
-                intent.putExtra("patient", currentPatient);
-                intent.putExtra("isPatientNew", true);
+                intent.putExtra(TbClientDetailsActivity.CURRENT_PATIENT, currentPatient);
+                intent.putExtra(TbClientDetailsActivity.ORIGIN_STATUS, TbClientDetailsActivity.FROM_REFERRALS);
                 startActivity(intent);
             }else {
                 finish();
@@ -353,13 +380,14 @@ public class TbReferralDetailsActivity extends BaseActivity {
             patient = db.patientModel().getPatientById(patientId);
             currentPatient = patient;
 
-            List<Long> ids = currentReferral.getServiceIndicatorIds();
-
-            //Call Patient Referral Indicators
-            for (int i=0; i<ids.size(); i++){
-                long id = Long.parseLong(ids.get(i)+"");
-                ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
-                indicators.add(referralIndicator);
+            if (currentReferral.getServiceIndicatorIds() != null){
+                List<Long> ids = currentReferral.getServiceIndicatorIds();
+                //Call Patient Referral Indicators
+                for (int i=0; i<ids.size(); i++){
+                    long id = Long.parseLong(ids.get(i)+"");
+                    ReferralIndicator referralIndicator = db.referralIndicatorDao().getReferralIndicatorById(id);
+                    indicators.add(referralIndicator);
+                }
             }
 
             return null;
@@ -371,10 +399,37 @@ public class TbReferralDetailsActivity extends BaseActivity {
             Log.d("reckless", "Done background!"+patientNames);
             clientNames.setText(patientNames);
             if (patient != null){
+
+                try {
+                    Calendar cal = Calendar.getInstance();
+                    Calendar today = Calendar.getInstance();
+                    cal.setTimeInMillis(patient.getDateOfBirth());
+
+                    int age = today.get(Calendar.YEAR) - cal.get(Calendar.YEAR);
+                    Integer ageInt = new Integer(age);
+                    clientAge.setText(ageInt.toString());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (BaseActivity.getLocaleString().endsWith(ENGLISH_LOCALE)){
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                        patientGender.setText(MALE);
+                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                        patientGender.setText(FEMALE);
+                    }
+                }else {
+                    if (patient.getGender().equals(MALE) || patient.getGender().equals(MALE_VALUE)){
+                        patientGender.setText(MALE_SW);
+                    }else if (patient.getGender().equals(FEMALE) || patient.getGender().equals(FEMALE_VALUE)){
+                        patientGender.setText(FEMALE_SW);
+                    }
+                }
+
                 wardText.setText(patient.getWard() == null ? "" : patient.getWard());
                 villageText.setText(patient.getVillage() == null ? "" : patient.getVillage());
                 hamletText.setText(patient.getHamlet() == null ? "" : patient.getHamlet());
-                patientGender.setText(patient.getGender());
                 clientCtcNumber.setText(patient.getCtcNumber());
             }
 

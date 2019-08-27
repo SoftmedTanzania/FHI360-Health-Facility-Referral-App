@@ -23,13 +23,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @TypeConverters(DateConverter.class)
 public interface PatientModelDao {
 
-    @Query("select * from Patient")
+    @Query("select * from Patient order by updatedAt asc")
     LiveData<List<Patient>> getAllPatients();
 
-    @Query("select * from Patient where currentOnTbTreatment = :flag")
+    @Query("select * from Patient where currentOnTbTreatment = :flag order by updatedAt asc")
     LiveData<List<Patient>> getTbPatients(boolean flag);
 
-    @Query("select * from Patient where hivStatus = :flag")
+    @Query("select * from Patient where hivStatus = :flag order by updatedAt asc")
     LiveData<List<Patient>> getHivClients(boolean flag);
 
     @Query("select * from Patient where patientId = :id")

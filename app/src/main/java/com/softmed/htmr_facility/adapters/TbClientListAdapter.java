@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +12,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
+import com.irozon.alertview.AlertActionStyle;
+import com.irozon.alertview.AlertStyle;
+import com.irozon.alertview.AlertView;
+import com.irozon.alertview.objects.AlertAction;
 import com.softmed.htmr_facility.R;
+import com.softmed.htmr_facility.activities.PatientDetailsActivity;
 import com.softmed.htmr_facility.activities.TbClientDetailsActivity;
 import com.softmed.htmr_facility.activities.TbClientListActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
 import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
+import com.softmed.htmr_facility.utils.PatientsDiffCallback;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by issy on 12/28/17.
@@ -30,16 +45,13 @@ import com.softmed.htmr_facility.fragments.IssueReferralDialogueFragment;
 
 public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.ViewHolder> {
 
-    List<Patient> items;
+    List<Patient> items = Collections.emptyList();
     private Context context;
     private int serviceID;
 
-    public TbClientListAdapter(List<Patient> mItems, Context context, int serviceId){
-        this.items = mItems;
+    public TbClientListAdapter(Context context, int serviceId){
         this.serviceID = serviceId;
     }
-
-    public TbClientListAdapter(){}
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
@@ -58,21 +70,23 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int itemPosition){
 
         final Patient patient = getItem(itemPosition);
+
         TbClientListAdapter.ListViewItemViewHolder holder = (TbClientListAdapter.ListViewItemViewHolder) viewHolder;
 
-        holder.clientFirstName.setText(patient.getPatientFirstName());
-        holder.clientLastName.setText(patient.getPatientSurname());
+        //holder.clientTreatment.setText(tbPatient.getTreatment_type());
+        holder.clientNames.setText(patient.getPatientFirstName()+" "+patient.getPatientSurname());
         holder.clientVillage.setText(patient.getVillage());
         holder.clientPhoneNumber.setText(patient.getPhone_number());
-        holder.clientGender.setText(patient.getGender());
+
+        new GetPatientDetails(AppDatabase.getDatabase(context), holder).execute(patient);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //UpdatePatientInformation and save data
                 Intent intent = new Intent(context, TbClientDetailsActivity.class);
-                intent.putExtra("patient", patient);
-                intent.putExtra("isPatientNew", false);
+                intent.putExtra(TbClientDetailsActivity.CURRENT_PATIENT, patient);
+                intent.putExtra(TbClientDetailsActivity.ORIGIN_STATUS , TbClientDetailsActivity.FROM_CLIENTS);
                 context.startActivity(intent);
             }
         });
@@ -80,11 +94,19 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         holder.rufaaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callReferralFragmentDialogue(patient);
+
+                AlertView alert = new AlertView(context.getResources().getString(R.string.issue_referral), context.getResources().getString(R.string.issue_referral_prompt), AlertStyle.DIALOG);
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_no), AlertActionStyle.DEFAULT, action -> {
+                    // Action 1 callback
+                }));
+                alert.addAction(new AlertAction(context.getResources().getString(R.string.answer_yes), AlertActionStyle.NEGATIVE, action -> {
+                    // Action 2 callback
+                    callReferralFragmentDialogue(patient);
+                }));
+                alert.show((TbClientListActivity)context);
             }
         });
 
-        new GetTbDetails(AppDatabase.getDatabase(context), holder).execute(patient.getPatientId());
 
     }
 
@@ -92,7 +114,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         TbClientListActivity activity = (TbClientListActivity) context;
         FragmentManager fm = activity.getSupportFragmentManager();
 
-        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, serviceID);
+        IssueReferralDialogueFragment issueReferralDialogueFragment = IssueReferralDialogueFragment.newInstance(patient, serviceID, UUID.randomUUID()+"");
         issueReferralDialogueFragment.show(fm, "referral_fragment_from_adapter");
 
     }
@@ -100,6 +122,26 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
     public void addItems (List<Patient> pat){
         this.items = pat;
         notifyDataSetChanged();
+    }
+
+    private String getTreatment(int position){
+
+        String treatment = "";
+
+        switch (position){
+            case 1:
+                treatment = "1 Treat";
+                break;
+            case 2:
+                treatment = "2 Treat";
+                break;
+            case 3:
+                treatment = "3 Treat";
+                break;
+        }
+
+        return treatment;
+
     }
 
     @Override
@@ -113,7 +155,7 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
 
     private class ListViewItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView clientFirstName, clientLastName, clientVillage, clientPhoneNumber, clientGender, clientTreatment;
+        TextView clientNames, clientVillage, clientPhoneNumber, clientTreatment;
         View viewItem;
         Button rufaaButton;
 
@@ -121,27 +163,25 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
             super(itemView);
             this.viewItem   = itemView;
 
-            rufaaButton = (Button) itemView.findViewById(R.id.rufaa_button);
+            rufaaButton =  itemView.findViewById(R.id.rufaa_button);
 
-            clientFirstName = (TextView) itemView.findViewById(R.id.client_f_name);
-            clientLastName = (TextView) itemView.findViewById(R.id.client_l_name);
-            clientVillage = (TextView) itemView.findViewById(R.id.client_village);
-            clientPhoneNumber = (TextView) itemView.findViewById(R.id.client_phone_number);
-            clientGender =  (TextView) itemView.findViewById(R.id.client_gender);
-            clientTreatment = (TextView) itemView.findViewById(R.id.client_treatment);
+            clientNames =  itemView.findViewById(R.id.client_f_name);
+            clientVillage =  itemView.findViewById(R.id.client_village);
+            clientPhoneNumber =  itemView.findViewById(R.id.client_phone_number);
+            clientTreatment =  itemView.findViewById(R.id.client_treatment);
 
         }
 
     }
 
-    class GetTbDetails extends AsyncTask<String, Void, Void>{
+    class GetPatientDetails extends AsyncTask<Patient, Void, Void>{
 
         TbPatient tbPatient;
         AppDatabase database;
         TbClientListAdapter.ListViewItemViewHolder holder;
                 //= (TbClientListAdapter.ListViewItemViewHolder) viewHolder;
 
-        GetTbDetails(AppDatabase db, TbClientListAdapter.ListViewItemViewHolder vh){
+        GetPatientDetails(AppDatabase db, TbClientListAdapter.ListViewItemViewHolder vh){
             this.database = db;
             this.holder = vh;
         }
@@ -157,11 +197,23 @@ public class TbClientListAdapter extends RecyclerView.Adapter <RecyclerView.View
         }
 
         @Override
-        protected Void doInBackground(String... args) {
-            tbPatient = database.tbPatientModelDao().getTbPatientById(args[0]);
+        protected Void doInBackground(Patient... args) {
+            tbPatient = database.tbPatientModelDao().getCurrentTbPatientByPatientId(args[0].getPatientId());
             return null;
         }
     }
 
+    public void setPatient (List<Patient> newList ){
+
+        PatientsDiffCallback patientsDiffCallback = new PatientsDiffCallback(this.items, newList);
+
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(patientsDiffCallback);
+
+        this.items = Collections.emptyList();
+        this.items = newList;
+
+        diffResult.dispatchUpdatesTo(this);
+
+    }
 
 }

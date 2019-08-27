@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -25,6 +26,9 @@ public interface PostOfficeModelDao {
     @Query("select * from PostOffice")
     LiveData<List<PostOffice>> getPostOfficeEntries();
 
+    @Query("select * from PostOffice where post_id = :postID")
+    List<PostOffice> getPostOfficeEntriesByID(String postID);
+
     @Query("select COUNT(*) from PostOffice where syncStatus = 0 ")
     int getUnpostedDataCount();
 
@@ -42,6 +46,9 @@ public interface PostOfficeModelDao {
 
     @Insert(onConflict = REPLACE)
     void addPostEntry(PostOffice postOffice);
+
+    @Update
+    void updatePostData(PostOffice postData);
 
     @Delete
     void deletePostData(PostOffice postOffice);

@@ -57,7 +57,7 @@ public class TbReferralListFragment extends Fragment {
     private Toolbar toolbar;
     private RecyclerView clientRecyclerView;
     private MaterialSpinner statusSpinner;
-    private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
+    private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText;
     private ProgressView progressView;
     private Button filterButton;
 
@@ -127,7 +127,7 @@ public class TbReferralListFragment extends Fragment {
             }
         });
 
-        filterButton.setOnClickListener(new View.OnClickListener() {
+        /*filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getInputs()){
@@ -141,7 +141,7 @@ public class TbReferralListFragment extends Fragment {
                     Toast.makeText(TbReferralListFragment.this.getActivity(),"Please Fill in any field ", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
 
         fromDateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +212,6 @@ public class TbReferralListFragment extends Fragment {
         if (
                 clientNameText.getText().toString().isEmpty() &
                         clientCtcNumberText.getText().toString().isEmpty() &
-                        clientLastName.getText().toString().isEmpty() &
                         notSelectedFromDate &
                         notSelectedTodate &
                         notSelectedStatus){
@@ -220,7 +219,6 @@ public class TbReferralListFragment extends Fragment {
         }else {
             clientName = clientNameText.getText().toString().isEmpty() ? "" : clientNameText.getText().toString();
             clientCtcNumber = clientCtcNumberText.getText().toString().isEmpty()? "" : clientCtcNumberText.getText().toString();
-            lastName = clientLastName.getText().toString().isEmpty()? "" : clientLastName.getText().toString();
             return true;
         }
 
@@ -228,23 +226,19 @@ public class TbReferralListFragment extends Fragment {
 
     private void setupviews(View view){
 
-        filterButton = (Button) view.findViewById(R.id.filter_button);
+        filterButton = view.findViewById(R.id.filter_button);
 
-        progressView = (ProgressView) view.findViewById(R.id.progress_bar);
-        progressView.setVisibility(View.INVISIBLE);
-
-        fromDateText = (EditText) view.findViewById(R.id.from_date);
-        toDateText = (EditText) view.findViewById(R.id.to_date);
-        clientNameText = (EditText) view.findViewById(R.id.client_name_et);
-        clientCtcNumberText = (EditText) view.findViewById(R.id.client_ctc_number_et);
-        clientLastName = (EditText) view.findViewById(R.id.client_last_name_et);
+        fromDateText = view.findViewById(R.id.from_date);
+        toDateText = view.findViewById(R.id.to_date);
+        clientNameText =  view.findViewById(R.id.client_name_et);
+        clientCtcNumberText =  view.findViewById(R.id.client_ctc_number_et);
 
 
-        statusSpinner = (MaterialSpinner) view.findViewById(R.id.spin_status);
+        statusSpinner =  view.findViewById(R.id.spin_status);
 
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar =  view.findViewById(R.id.toolbar);
 
-        clientRecyclerView = (RecyclerView) view.findViewById(R.id.clients_recycler);
+        clientRecyclerView =  view.findViewById(R.id.clients_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(TbReferralListFragment.this.getActivity());
         clientRecyclerView.setLayoutManager(layoutManager);
         clientRecyclerView.setHasFixedSize(true);

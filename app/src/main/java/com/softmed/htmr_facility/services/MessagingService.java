@@ -20,6 +20,7 @@ import com.softmed.htmr_facility.R;
 import com.softmed.htmr_facility.activities.HomeActivity;
 import com.softmed.htmr_facility.base.AppDatabase;
 import com.softmed.htmr_facility.dom.objects.Patient;
+import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.Referral;
 import com.softmed.htmr_facility.utils.Config;
 import com.softmed.htmr_facility.utils.NotificationUtils;
@@ -54,32 +55,21 @@ public class MessagingService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
+            Log.d(TAG, "Data Payload: " + remoteMessage.getData());
 
             try {
-                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                Gson gson = new Gson();
+                String jsonString = gson.toJson(remoteMessage.getData());
+
+                JSONObject json = new JSONObject(jsonString);
                 handleDataMessage(json);
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.e(TAG, "Exception: " + e.getMessage());
             }
         }
 
     }
-
-//    private void handleNotification(String message) {
-//        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-//
-//            Intent resultIntent = new Intent(getApplicationContext(), HomeActivity.class);
-//            showNotificationMessage(getApplicationContext(), "HTMR", message, null, resultIntent);
-//
-//            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-//            pushNotification.putExtra("message",message);
-//            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-//
-//        }else{
-//            // If the app is in background, firebase itself handles the notification
-//        }
-//    }
 
     private void triggerNotification(String msg)
     {
@@ -107,19 +97,23 @@ public class MessagingService extends FirebaseMessagingService {
             JSONObject data = new JSONObject(json.toString());
             String type = data.getString("type");
             if (type.equals("PatientReferral")){
-                triggerNotification("Umepokea Rufaa Mpya");
-                patient = gson.fromJson(data.getJSONObject("patientsDTO").toString(), Patient.class);
+                triggerNotification(getResources().getString(R.string.patient_referral_notification));
+
+                Log.d(TAG,"testing = "+data.getString("patientsDTO"));
+                patient = gson.fromJson(data.getString("patientsDTO"), Patient.class);
                 database.patientModel().addPatient(patient);
                 Log.d("handleNotification", "added a patient");
+                Log.d("handleNotification", "Name : "+patient.getPatientFirstName());
 
-                JSONArray referralsDTOS = data.getJSONArray("patientReferralsList");
+                JSONArray referralsDTOS = new JSONArray(data.getString("patientReferralsList"));
                 for (int i=0; i<referralsDTOS.length(); i++){
                     referral = gson.fromJson(referralsDTOS.getJSONObject(i).toString(), Referral.class);
                     database.referalModel().addReferal(referral);
                     Log.d("handleNotification", "added Patient's Referral");
+                    Log.d("Added Referral ", new Gson().toJson(referral));
                 }
             }else if (type.equals("PatientRegistration")){
-                triggerNotification("Umepokea Mteja Mpya");
+                triggerNotification(getResources().getString(R.string.new_client_notification));
                 JSONObject patientDTOS = new JSONObject(json.toString());
                 patient = gson.fromJson(patientDTOS.toString(), Patient.class);
                 database.patientModel().addPatient(patient);
@@ -127,100 +121,78 @@ public class MessagingService extends FirebaseMessagingService {
 
             }else if (type.equals("ReferralFeedback")){
                 Log.d("handleNotification", "Received Feedback");
-                triggerNotification("Umepokea Mrejesho wa Rufaa");
+                triggerNotification(getResources().getString(R.string.referral_feedback_notification));
                 JSONObject referralDTOS = new JSONObject(json.toString());
                 referral = gson.fromJson(referralDTOS.toString(), Referral.class);
                 database.referalModel().addReferal(referral);
                 Log.d("handleNotification", "added Referral Feedback");
-            }
-
-            /*JSONObject patientDTOS = data.getJSONObject("patientsDTO");
-
-            String patientFirstName = patientDTOS.getString("firstName");
-            String patientPhoneNumber = patientDTOS.getString("phoneNumber");
-            String patientGender = patientDTOS.getString("gender");
-            String patientSurname = patientDTOS.getString("surname");
-            String patientMiddleName = patientDTOS.getString("middleName");
-            int patientId = patientDTOS.getInt("patientId");
-            long patientDateOfBirth = patientDTOS.getLong("dateOfBirth");
-            long patientDateOfDeath = patientDTOS.getLong("dateOfDeath");
-            boolean patientHivStatus = patientDTOS.getBoolean("hivStatus");
-
-            patient.setPatientFirstName(patientFirstName);
-            patient.setPatientMiddleName(patientMiddleName);
-            patient.setPatientSurname(patientSurname);
-            patient.setPhone_number(patientPhoneNumber);
-            patient.setGender(patientGender);
-            patient.setPatientId(patientId+"");
-            patient.setDateOfBirth(patientDateOfBirth);
-            patient.setDateOfDeath(patientDateOfDeath);
-            patient.setHivStatus(patientHivStatus);
-
-            Log.d("FinalTAg", "Patient : "+patient.getPatientId());
-            database.patientModel().addPatient(patient);
-
-            JSONArray referralsDTOS = data.getJSONArray("patientReferralsList");
-            for (int i=0; i<referralsDTOS.length(); i++){
-                JSONObject referralObject = referralsDTOS.getJSONObject(i);
-
-                referral.setReferralReason(referralObject.getString("referralReason"));
-                referral.setFacilityId(referralObject.getString("facilityId"));
-                referral.setServiceProviderUIID(referralObject.getString("serviceProviderUIID"));
-                referral.setServiceProviderGroup(referralObject.getString("serviceProviderGroup"));
-                referral.setCommunityBasedHivService(referralObject.getString("communityBasedHivService"));
-                referral.setVillageLeader(referralObject.getString("villageLeader"));
-                //referral.setCtcNumber(referralObject.getString("ctcNumber")==null?"":referralObject.getString("ctcNumber"));
-
-                referral.setTestResults(referralObject.getBoolean("testResults"));
-
-                referral.setReferralStatus(referralObject.getInt("referralStatus"));
-                referral.setPatient_id(referralObject.getInt("patientId")+"");
+            }else if (type.equals("PatientUpdate")){
+                //Received a patient updated data
+                triggerNotification("Patient Data Updated");
+                JSONObject patientDTOS = new JSONObject(json.toString());
+                patient = gson.fromJson(patientDTOS.toString(), Patient.class);
+                database.patientModel().addPatient(patient);
+            }else if (type.equals("LTFClient")){
+                triggerNotification(getResources().getString(R.string.patient_referral_notification));
                 try {
-                    referral.setFacilityId(referralObject.getInt("fromFacilityId")+"");
+                    patient = gson.fromJson(data.getString("patientsDTO"), Patient.class);
+                    database.patientModel().addPatient(patient);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                referral.setReferral_id(referralObject.getInt("referralId")+"");
-                referral.setReferralSource(referralObject.getInt("referralSource"));
-                referral.setServiceId(referralObject.getInt("serviceId"));
-                referral.setReferralDate(referralObject.getLong("referralDate"));
 
-                Log.d("FinalTAg", "Referral : "+referral.getReferralReason());
+                JSONArray referralsDTOS = new JSONArray(data.getString("patientReferralsList"));
+                for (int i=0; i<referralsDTOS.length(); i++){
+                    try {
+                        referral = gson.fromJson(referralsDTOS.getJSONObject(i).toString(), Referral.class);
+                        database.referalModel().addReferal(referral);
+                        Log.d(TAG, "added Patient's Referral");
+                        Log.d( TAG, new Gson().toJson(referral));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
 
-                database.referalModel().addReferal(referral);
+                JSONArray patientsAppointmentsDTOS = new JSONArray(data.getString("patientsAppointmentsDTOS"));
+                for (int i=0; i<patientsAppointmentsDTOS.length(); i++){
+                    try {
+                        PatientAppointment patientAppointment = gson.fromJson(patientsAppointmentsDTOS.getJSONObject(i).toString(), PatientAppointment.class);
+                        database.appointmentModelDao().addAppointment(patientAppointment);
+                        Log.d(TAG, "added Patient's Appointment");
+                        Log.d(TAG,"Added Appointment : "+new Gson().toJson(patientAppointment));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }else if (type.equals("updateAppointmentStatus")){
+                Log.d(TAG,"updating appointment status");
+                database.appointmentModelDao().resetAppointmentsStatus();
+            }
 
-            }*/
         }catch (Exception e){
             e.printStackTrace();
         }
 
         Log.e(TAG, "push json: " + json.toString());
 
-        try {
+        String msg = "Umepokea Data";
 
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
+            // app is in foreground, broadcast the push message
+            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
+            pushNotification.putExtra("message", msg);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
 
-            String msg = "Umepokea Data";
+            //play notification sound
+            //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
+            //notificationUtils.playNotificationSound();
+        } else {
+            Intent resultIntent = new Intent(getApplicationContext(), HomeActivity.class);
+            resultIntent.putExtra("message", "");
 
-            if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-                // app is in foreground, broadcast the push message
-                Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-                pushNotification.putExtra("message", msg);
-                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
+            showNotificationMessage(getApplicationContext(), "HTMR", msg, null, resultIntent);
 
-                //play notification sound
-                //NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
-                //notificationUtils.playNotificationSound();
-            } else {
-
-                Intent resultIntent = new Intent(getApplicationContext(), HomeActivity.class);
-                resultIntent.putExtra("message", "");
-
-                showNotificationMessage(getApplicationContext(), "HTMR", msg, null, resultIntent);
-
-            }
+        }
 
     }
 
@@ -241,5 +213,6 @@ public class MessagingService extends FirebaseMessagingService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
     }
+
 
 }

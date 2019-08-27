@@ -3,12 +3,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:app_ms="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.softmed.htmr_facility.activities.MainActivity"
     android:background="@color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -89,74 +85,41 @@
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="100dp"
                                     android:background="@color/card_separator_third">
 
                                     <TextView
+                                        android:id="@+id/title"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="32dp"
-                                        android:layout_marginTop="16dp"
-                                        android:textColor="@color/black"
-                                        android:text="Fomu ya usajili mteja mpya"
-                                        android:textSize="42sp"
-                                        android:id="@+id/client_name"
                                         android:layout_centerVertical="true"
-                                        android:fontFamily="@font/avenir_light"/>
-
-                                    <TextView
-                                        android:visibility="invisible"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_below="@id/client_name"
                                         android:layout_marginLeft="32dp"
                                         android:layout_marginTop="16dp"
-                                        android:textSize="14sp"
-                                        android:id="@+id/cbhs_number_title"
-                                        android:fontFamily="@font/avenir_light"
-                                        android:text="CBHS #"
-                                        android:textColor="@color/card_title_text"/>
-
-                                    <TextView
-                                        android:visibility="invisible"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/google_sans_bold"
+                                        android:text="@string/new_client_registration_form"
                                         android:textColor="@color/card_title_text"
-                                        android:layout_below="@id/client_name"
-                                        android:text="0001/0001/000001"
-                                        android:textSize="14sp"
-                                        android:layout_marginLeft="16dp"
-                                        android:layout_marginTop="16dp"
-                                        android:id="@+id/cbhs_number_value"
-                                        android:layout_toRightOf="@+id/cbhs_number_title"
-                                        android:fontFamily="@font/avenir_light"/>
+                                        android:textSize="34sp" />
 
                                 </RelativeLayout>
 
-                                <RelativeLayout
+                                <TextView
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="32dp"
-                                    android:background="@color/card_separator_third">
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:textColor="@color/card_grid_text"
-                                        android:fontFamily="@font/roboto_bold"
-                                        android:text="Taarifa za Awali"/>
-
-
-                                </RelativeLayout>
+                                    android:layout_height="50dp"
+                                    android:fontFamily="@font/google_sans_bold"
+                                    android:text="@string/initial_information"
+                                    android:textColor="@color/card_grid_text"
+                                    android:paddingLeft="32dp"
+                                    android:gravity="center_vertical"
+                                    android:background="@color/card_separator_third"/>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/card_separator_third"
-                                    android:paddingLeft="32dp"
-                                    android:paddingRight="32dp"
+                                    android:orientation="vertical"
                                     android:paddingBottom="16dp"
-                                    android:orientation="vertical">
+                                    android:paddingLeft="32dp"
+                                    android:paddingRight="32dp">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -165,235 +128,249 @@
                                         android:orientation="horizontal">
 
                                         <com.rey.material.widget.EditText
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Jina"
                                             android:id="@+id/fname_et"
-                                            android:textColor="@color/card_title_text"
-                                            android:textColorHint="@color/card_separator"
-                                            android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
                                             android:layout_marginLeft="4dp"
                                             android:layout_marginRight="8dp"
-                                            android:layout_marginBottom="4dp"
-                                            android:inputType="textCapWords"
+                                            android:layout_weight="1"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/first_name"
                                             android:imeOptions="actionNext"
-                                            app:et_dividerHeight="1dp"
+                                            android:inputType="textCapWords"
+                                            app:et_supportTextErrorColor="@color/red_400"
+                                            android:textColor="@color/card_title_text"
+                                            android:textColorHint="@color/card_separator"
+                                            android:textSize="18sp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
+                                            app:et_supportTextSize="14sp"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
                                         <com.rey.material.widget.EditText
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Jina la Pili"
                                             android:id="@+id/mname_et"
-                                            android:textColor="@color/card_title_text"
-                                            android:textColorHint="@color/card_separator"
-                                            android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="8dp"
-                                            android:layout_marginBottom="4dp"
-                                            android:inputType="textCapWords"
+                                            android:layout_weight="1"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/middle_name"
                                             android:imeOptions="actionNext"
-                                            app:et_dividerHeight="1dp"
-                                            app:et_supportTextSize="20sp"
-                                            app:et_supportTextColor="@color/black"
-                                            app:et_dividerColor="@color/card_grid_text"
-                                            app:et_labelEnable="true"
-                                            app:et_labelTextColor="@color/card_grid_text" />
-
-                                        <com.rey.material.widget.EditText
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Ukoo"
-                                            android:id="@+id/surname_et"
+                                            android:inputType="textCapWords"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
+                                            app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
+                                            app:et_labelEnable="true"
+                                            app:et_supportMode="helper"
+                                            app:et_labelTextColor="@color/card_grid_text"
+                                            app:et_supportTextColor="@color/black"
+                                            app:et_supportTextSize="14sp" />
+
+                                        <com.rey.material.widget.EditText
+                                            android:id="@+id/surname_et"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="4dp"
-                                            android:layout_marginBottom="4dp"
-                                            android:inputType="textCapWords"
+                                            app:et_supportTextErrorColor="@color/red_400"
+                                            android:layout_weight="1"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/surname"
                                             android:imeOptions="actionDone"
-                                            app:et_dividerHeight="1dp"
-                                            app:et_supportTextSize="20sp"
-                                            app:et_supportTextColor="@color/black"
+                                            android:inputType="textCapWords"
+                                            android:textColor="@color/card_title_text"
+                                            android:textColorHint="@color/card_separator"
+                                            android:textSize="18sp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
-                                            app:et_labelTextColor="@color/card_grid_text" />
+                                            app:et_labelTextColor="@color/card_grid_text"
+                                            app:et_supportTextColor="@color/black"
+                                            app:et_supportTextSize="14sp" />
 
                                     </LinearLayout>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:orientation="horizontal"
                                         android:layout_marginTop="16dp"
-                                        android:gravity="center_vertical">
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal">
 
                                         <com.rey.material.widget.EditText
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Namba ya CTC"
                                             android:id="@+id/patient_ctc_number"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="8dp"
+                                            android:layout_marginRight="4dp"
+                                            android:layout_weight="1"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/ctc_number"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:layout_marginLeft="8dp"
-                                            android:layout_marginRight="4dp"
-                                            android:inputType="numberDecimal"
-                                            app:et_dividerHeight="1dp"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
+                                            app:et_supportMode="helper"
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
                                         <com.rey.material.widget.EditText
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="CBHS"
                                             android:id="@+id/cbhs_number"
-                                            android:textColor="@color/card_title_text"
-                                            android:textColorHint="@color/card_separator"
-                                            android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="8dp"
-                                            android:inputType="numberDecimal"
-                                            app:et_dividerHeight="1dp"
-                                            app:et_dividerColor="@color/card_grid_text"
-                                            app:et_labelEnable="true"
-                                            app:et_labelTextColor="@color/card_grid_text" />
-
-                                        <com.rey.material.widget.EditText
-                                            android:layout_width="0dp"
                                             android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Simu"
-                                            android:id="@+id/phone_number"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="CBHS"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:drawableRight="@mipmap/ic_phone"
+                                            app:et_supportMode="helper"
+                                            app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
+                                            app:et_labelEnable="true"
+                                            app:et_labelTextColor="@color/card_grid_text" />
+
+
+
+                                        <com.rey.material.widget.EditText
+                                            android:id="@+id/phone_number"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="4dp"
-                                            android:layout_marginBottom="4dp"
+                                            android:layout_weight="1"
+                                            android:drawableRight="@mipmap/ic_phone"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/phone_number"
                                             android:inputType="phone"
-                                            app:et_dividerHeight="1dp"
+                                            android:digits="0123456789"
+                                            app:et_supportMode="helper"
+                                            android:textColor="@color/card_title_text"
+                                            android:textColorHint="@color/card_separator"
+                                            android:textSize="18sp"
+                                            app:et_supportTextErrorColor="@color/red_400"
+                                            app:et_supportMaxChars="0"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
-                                            app:et_labelTextColor="@color/card_grid_text"/>
+                                            app:et_supportTextSize="14sp"
+                                            app:et_labelTextColor="@color/card_grid_text" />
 
                                     </LinearLayout>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:orientation="horizontal"
                                         android:layout_marginTop="16dp"
-                                        android:gravity="center_vertical">
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal">
 
                                         <fr.ganfra.materialspinner.MaterialSpinner
                                             android:id="@+id/spin_gender"
                                             android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_marginLeft="8dp"
                                             android:layout_height="wrap_content"
                                             android:layout_centerVertical="true"
+                                            android:layout_marginLeft="8dp"
+                                            android:layout_weight="1"
                                             android:divider="@null"
                                             android:textSize="14sp"
-                                            app_ms:ms_hintTextSize="14sp"
+                                            app_ms:ms_alignLabels="false"
                                             app_ms:ms_alwaysShowFloatingLabel="true"
-                                            app_ms:ms_multiline="false"
-                                            app_ms:ms_hint="Jinsi"
-                                            app_ms:ms_enableFloatingLabel="true"
-                                            app_ms:ms_enableErrorLabel="false"
-                                            app_ms:ms_floatingLabelText="Jinsi"
-                                            app_ms:ms_baseColor="@color/card_grid_tex"
-                                            app_ms:ms_highlightColor="@color/card_grid_text"
-                                            app_ms:ms_errorColor="@color/red_500"
-                                            app_ms:ms_hintColor="#b3b3b3"
                                             app_ms:ms_arrowColor="@color/black"
                                             app_ms:ms_arrowSize="12dp"
-                                            app_ms:ms_alignLabels="false"
-                                            app_ms:ms_floatingLabelColor="@color/white"/>
+                                            app_ms:ms_baseColor="@color/card_grid_tex"
+                                            app_ms:ms_enableErrorLabel="false"
+                                            app_ms:ms_enableFloatingLabel="true"
+                                            app_ms:ms_errorColor="@color/red_500"
+                                            app_ms:ms_floatingLabelColor="@color/white"
+                                            app_ms:ms_floatingLabelText="@string/sex"
+                                            app_ms:ms_highlightColor="@color/card_grid_text"
+                                            app_ms:ms_hint="@string/sex"
+                                            app_ms:ms_hintColor="#b3b3b3"
+                                            app_ms:ms_hintTextSize="14sp"
+                                            app_ms:ms_multiline="false" />
 
                                         <TextView
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Tarehe ya Kuzaliwa"
                                             android:id="@+id/date_of_birth"
-                                            android:textColor="@color/card_separator"
-                                            android:textColorHint="@color/card_grid_tex"
-                                            android:textSize="14sp"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
                                             android:layout_gravity="bottom"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:drawableRight="@mipmap/ic_date"
-                                            android:paddingLeft="8dp"
                                             android:layout_marginLeft="8dp"
-                                            android:layout_marginRight="4dp"/>
+                                            android:layout_marginRight="4dp"
+                                            android:layout_weight="1"
+                                            android:drawablePadding="16dp"
+                                            android:drawableRight="@mipmap/ic_date"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:gravity="center_vertical"
+                                            android:hint="@string/date_of_birth"
+                                            android:paddingLeft="16dp"
+                                            android:textColor="@color/card_grid_text"
+                                            android:textColorHint="@color/card_grid_tex"
+                                            android:textSize="16sp" />
 
                                         <RelativeLayout
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
                                             android:id="@+id/pregnant_wrap"
-                                            android:layout_marginLeft="8dp"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
                                             android:layout_gravity="bottom"
-                                            android:layout_height="wrap_content">
+                                            android:gravity="center"
+                                            android:layout_marginLeft="8dp"
+                                            android:layout_weight="1">
 
                                             <TextView
+                                                android:id="@+id/pregnancy_title"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:id="@+id/blood_cough_title"
-                                                android:layout_below="@id/flags_title"
                                                 android:layout_centerVertical="true"
-                                                android:text="Mjamzito"
+                                                android:layout_marginLeft="16dp"
                                                 android:enabled="false"
-                                                android:layout_marginLeft="8dp"
-                                                android:textSize="14sp"
-                                                android:fontFamily="@font/roboto_bold"
-                                                android:textColor="@color/card_separator"/>
+                                                android:layout_alignParentLeft="true"
+                                                android:fontFamily="@font/google_sans_regular"
+                                                android:text="@string/pregnant"
+                                                android:textColor="@color/card_grid_text"
+                                                android:textSize="16sp" />
 
                                             <CheckBox
                                                 android:id="@+id/is_pregnant"
-                                                android:layout_width="35dp"
-                                                android:layout_height="35dp"
-                                                android:layout_centerVertical="true"
-                                                android:layout_marginLeft="16dp"
-                                                android:layout_marginRight="16dp"
-                                                android:background="@drawable/checkbox"
-                                                android:checked="false"
-                                                android:layout_alignParentRight="true"
-                                                />
+                                                android:layout_width="40dp"
+                                                android:layout_height="40dp"
+                                                android:layout_alignParentEnd="true"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_marginEnd="27dp"
+                                                android:checked="false" />
 
                                         </RelativeLayout>
 
                                         <com.rey.material.widget.EditText
-                                            android:layout_width="0dp"
-                                            android:layout_weight="1"
-                                            android:layout_height="wrap_content"
-                                            android:hint="Uzito"
                                             android:id="@+id/weight"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="4dp"
+                                            android:layout_marginLeft="4dp"
+                                            android:layout_marginRight="8dp"
+                                            android:layout_weight="1"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/weight"
+                                            android:inputType="numberDecimal"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:layout_marginLeft="4dp"
-                                            android:layout_marginRight="8dp"
-                                            android:layout_marginBottom="4dp"
-                                            android:inputType="numberDecimal"
-                                            app:et_dividerHeight="1dp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
@@ -402,97 +379,102 @@
                                 </LinearLayout>
 
                                 <View
-                                    android:visibility="invisible"
                                     android:layout_width="match_parent"
                                     android:layout_height="1dp"
-                                    android:background="@color/cyan_100"
-                                    android:layout_marginTop="8dp"
                                     android:layout_marginLeft="4dp"
-                                    android:layout_marginRight="4dp"/>
+                                    android:layout_marginRight="4dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/cyan_100"
+                                    android:visibility="invisible" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:background="@color/white"
                                     android:layout_marginLeft="32dp"
+                                    android:background="@color/white"
+                                    android:orientation="horizontal"
                                     android:paddingTop="16dp">
 
                                     <RelativeLayout
                                         android:layout_width="0dp"
-                                        android:layout_weight="0.3"
+                                        android:layout_height="wrap_content"
                                         android:layout_marginRight="16dp"
-                                        android:layout_height="wrap_content">
+                                        android:layout_weight="0.3">
 
                                         <TextView
+                                            android:id="@+id/msaidizi_title"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:text="Taarifa za Msaidizi"
-                                            android:id="@+id/msaidizi_title"
+                                            android:fontFamily="@font/google_sans_bold"
+                                            android:text="@string/supporter_information"
                                             android:textColor="@color/card_title_text"
-                                            android:textSize="14sp"
-                                            android:fontFamily="@font/roboto_condensed"/>
+                                            android:textSize="14sp" />
 
                                         <com.rey.material.widget.EditText
+                                            android:id="@+id/care_taker_name"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:hint="Jina La Msaidizi"
-                                            android:id="@+id/care_taker_name"
                                             android:layout_below="@id/msaidizi_title"
+                                            android:layout_marginLeft="4dp"
+                                            android:layout_marginRight="8dp"
                                             android:layout_marginTop="8dp"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/supporters_name"
+                                            android:inputType="textCapWords"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:layout_marginLeft="4dp"
-                                            android:layout_marginRight="8dp"
-                                            android:inputType="textCapWords"
-                                            app:et_dividerHeight="1dp"
+                                            app:et_supportMode="helper"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="60dp"
-                                            android:orientation="horizontal"
-                                            android:gravity="center_vertical"
+                                            android:layout_below="@id/care_taker_name"
                                             android:layout_marginTop="8dp"
-                                            android:layout_below="@id/care_taker_name">
+                                            android:gravity="center_vertical"
+                                            android:orientation="horizontal">
 
                                             <com.rey.material.widget.EditText
-                                                android:layout_width="0dp"
-                                                android:layout_weight="1"
-                                                android:layout_height="wrap_content"
-                                                android:hint="Namba ya Simu"
                                                 android:id="@+id/care_taker_phone"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="4dp"
+                                                android:layout_marginRight="8dp"
+                                                android:layout_weight="1"
+                                                android:fontFamily="@font/google_sans_regular"
+                                                android:hint="@string/phone_number"
+                                                android:inputType="phone"
                                                 android:textColor="@color/card_title_text"
                                                 android:textColorHint="@color/card_separator"
                                                 android:textSize="18sp"
-                                                android:fontFamily="@font/roboto_bold"
-                                                android:layout_marginLeft="4dp"
-                                                android:layout_marginRight="8dp"
-                                                android:inputType="phone"
-                                                app:et_dividerHeight="1dp"
                                                 app:et_dividerColor="@color/card_grid_text"
+                                                app:et_dividerHeight="1dp"
+                                                app:et_supportMode="helper"
                                                 app:et_labelEnable="true"
+                                                app:et_supportTextSize="14sp"
                                                 app:et_labelTextColor="@color/card_grid_text" />
 
                                             <com.rey.material.widget.EditText
-                                                android:layout_width="0dp"
-                                                android:layout_weight="1"
-                                                android:layout_height="wrap_content"
-                                                android:hint="Mahusiano"
                                                 android:id="@+id/care_taker_relationship"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="4dp"
+                                                android:layout_marginRight="8dp"
+                                                android:layout_weight="1"
+                                                android:visibility="gone"
+                                                app:et_supportTextSize="14sp"
+                                                android:fontFamily="@font/google_sans_regular"
+                                                android:hint="@string/relationship"
+                                                android:inputType="textCapWords"
                                                 android:textColor="@color/card_title_text"
                                                 android:textColorHint="@color/card_separator"
                                                 android:textSize="18sp"
-                                                android:fontFamily="@font/roboto_bold"
-                                                android:layout_marginLeft="4dp"
-                                                android:layout_marginRight="8dp"
-                                                android:inputType="textCapWords"
-                                                app:et_dividerHeight="1dp"
                                                 app:et_dividerColor="@color/card_grid_text"
+                                                app:et_dividerHeight="1dp"
                                                 app:et_labelEnable="true"
                                                 app:et_labelTextColor="@color/card_grid_text" />
 
@@ -504,106 +486,110 @@
                                     <View
                                         android:layout_width="1dp"
                                         android:layout_height="match_parent"
-                                        android:background="@color/card_separator"
-                                        android:layout_marginTop="16dp"
                                         android:layout_marginBottom="16dp"
-                                        android:layout_marginRight="16dp"/>
+                                        android:layout_marginRight="16dp"
+                                        android:layout_marginTop="16dp"
+                                        android:background="@color/card_separator" />
 
                                     <RelativeLayout
                                         android:layout_width="0dp"
-                                        android:layout_weight="0.3"
+                                        android:layout_height="wrap_content"
                                         android:layout_marginLeft="16dp"
                                         android:layout_marginRight="32dp"
-                                        android:layout_height="wrap_content">
+                                        android:layout_weight="0.3">
 
                                         <TextView
+                                            android:id="@+id/other_details_title"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:id="@+id/other_details_title"
-                                            android:textSize="14sp"
-                                            android:text="Taarifa Nyingine"
-                                            android:fontFamily="@font/roboto_condensed"
-                                            android:textColor="@color/card_title_text"/>
+                                            android:fontFamily="@font/google_sans_bold"
+                                            android:text="@string/other_details"
+                                            android:textColor="@color/card_title_text"
+                                            android:textSize="14sp" />
 
                                         <LinearLayout
+                                            android:id="@+id/location_wrap"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            android:gravity="bottom"
-                                            android:id="@+id/location_wrap"
                                             android:layout_below="@id/other_details_title"
-                                            android:layout_marginTop="8dp">
+                                            android:layout_marginTop="8dp"
+                                            android:gravity="bottom"
+                                            android:orientation="horizontal">
 
                                             <com.rey.material.widget.EditText
-                                                android:layout_width="0dp"
-                                                android:layout_weight="1"
-                                                android:layout_height="wrap_content"
-                                                android:hint="Kata"
                                                 android:id="@+id/ward"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="4dp"
+                                                android:layout_marginRight="8dp"
+                                                android:layout_weight="1"
+                                                android:fontFamily="@font/google_sans_regular"
+                                                android:hint="@string/ward"
                                                 android:textColor="@color/card_title_text"
                                                 android:textColorHint="@color/card_separator"
                                                 android:textSize="18sp"
-                                                android:fontFamily="@font/roboto_bold"
-                                                android:layout_marginLeft="4dp"
-                                                android:layout_marginRight="8dp"
-                                                app:et_dividerHeight="1dp"
                                                 app:et_dividerColor="@color/card_grid_text"
+                                                app:et_dividerHeight="1dp"
+                                                app:et_supportMode="helper"
                                                 app:et_labelEnable="true"
                                                 app:et_labelTextColor="@color/card_grid_text" />
 
 
                                             <com.rey.material.widget.EditText
-                                                android:layout_width="0dp"
-                                                android:layout_weight="1"
-                                                android:layout_height="wrap_content"
-                                                android:hint="Kijiji"
                                                 android:id="@+id/village"
+                                                android:layout_width="0dp"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="4dp"
+                                                android:layout_marginRight="8dp"
+                                                android:layout_weight="1"
+                                                android:fontFamily="@font/google_sans_regular"
+                                                android:hint="@string/village"
                                                 android:textColor="@color/card_title_text"
                                                 android:textColorHint="@color/card_separator"
                                                 android:textSize="18sp"
-                                                android:fontFamily="@font/roboto_bold"
-                                                android:layout_marginLeft="4dp"
-                                                android:layout_marginRight="8dp"
-                                                app:et_dividerHeight="1dp"
                                                 app:et_dividerColor="@color/card_grid_text"
+                                                app:et_dividerHeight="1dp"
+                                                app:et_supportMode="helper"
                                                 app:et_labelEnable="true"
                                                 app:et_labelTextColor="@color/card_grid_text" />
 
                                         </LinearLayout>
 
                                         <com.rey.material.widget.EditText
+                                            android:id="@+id/hamlet"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_below="@id/location_wrap"
+                                            android:layout_marginLeft="4dp"
                                             android:layout_marginTop="8dp"
-                                            android:hint="Anapokaa"
-                                            android:id="@+id/hamlet"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/where_they_stay"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:layout_marginLeft="4dp"
-                                            app:et_dividerHeight="1dp"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
                                             app:et_labelEnable="true"
+                                            app:et_supportMode="helper"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
                                         <com.rey.material.widget.EditText
+                                            android:id="@+id/mwenyekiti"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:hint="Mwenyekiti wa mtaa"
                                             android:layout_below="@id/hamlet"
+                                            android:layout_marginLeft="4dp"
+                                            android:layout_marginRight="8dp"
                                             android:layout_marginTop="8dp"
-                                            android:id="@+id/mwenyekiti"
+                                            android:fontFamily="@font/google_sans_regular"
+                                            android:hint="@string/veo"
+                                            android:inputType="textCapWords"
                                             android:textColor="@color/card_title_text"
                                             android:textColorHint="@color/card_separator"
                                             android:textSize="18sp"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:layout_marginLeft="4dp"
-                                            android:layout_marginRight="8dp"
-                                            android:inputType="textCapWords"
-                                            app:et_dividerHeight="1dp"
                                             app:et_dividerColor="@color/card_grid_text"
+                                            app:et_dividerHeight="1dp"
+                                            app:et_supportMode="helper"
                                             app:et_labelEnable="true"
                                             app:et_labelTextColor="@color/card_grid_text" />
 
@@ -613,51 +599,58 @@
 
                                 </LinearLayout>
 
-
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="80dp"
+                                    android:paddingRight="32dp"
+                                    android:paddingLeft="32dp"
                                     android:layout_marginTop="16dp"
-                                    android:layout_marginRight="32dp"
                                     android:background="@color/card_separator_third">
 
-                                    <Button
+                                    <RelativeLayout
                                         android:layout_width="150dp"
                                         android:layout_height="50dp"
+                                        android:id="@+id/save_button_container"
                                         android:layout_alignParentRight="true"
-                                        android:text="Hifadhi"
                                         android:layout_centerVertical="true"
-                                        android:id="@+id/save_button"
-                                        android:textColor="@color/white"
-                                        android:background="@drawable/border_three"
-                                        android:fontFamily="@font/julius_sans_one" />
+                                        android:background="@drawable/border_three">
+
+                                        <TextView
+                                            android:id="@+id/save_button_text"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textSize="16sp"
+                                            android:fontFamily="@font/avenir_light"
+                                            android:text="@string/btn_save"
+                                            android:textStyle="bold"
+                                            android:layout_centerInParent="true"
+                                            android:textColor="@color/white"/>
+
+                                        <com.github.rahatarmanahmed.cpv.CircularProgressView
+                                            android:id="@+id/progress_view"
+                                            android:layout_width="40dp"
+                                            android:layout_height="40dp"
+                                            android:layout_centerInParent="true"
+                                            app:cpv_animAutostart="true"
+                                            app:cpv_indeterminate="true"
+                                            app:cpv_color="@color/white" />
+
+                                    </RelativeLayout>
 
                                     <Button
+                                        android:id="@+id/cancel_button"
                                         android:layout_width="150dp"
                                         android:layout_height="50dp"
-                                        android:id="@+id/cancel_button"
                                         android:layout_centerVertical="true"
+                                        android:layout_marginRight="16dp"
+                                        android:textAllCaps="false"
+                                        android:layout_toLeftOf="@id/save_button_container"
                                         android:background="@drawable/border_one"
-                                        android:layout_toLeftOf="@id/save_button"
-                                        android:fontFamily="@font/julius_sans_one"
-                                        android:layout_marginRight="16dp"
-                                        android:textColor="@color/card_title_text"
-                                        android:text="Sitisha"/>
-
-                                    <com.rey.material.widget.ProgressView
-                                        android:layout_width="150dp"
-                                        android:layout_height="48dp"
-                                        android:paddingLeft="75dp"
-                                        android:paddingRight="75dp"
-                                        android:layout_marginRight="16dp"
-                                        android:layout_centerVertical="true"
-                                        android:id="@+id/save_progress"
-                                        android:layout_toLeftOf="@id/referal_button"
-                                        android:visibility="invisible"
-                                        app:pv_autostart="true"
-                                        app:pv_circular="true"
-                                        app:pv_progressStyle="@style/Material.Drawable.CircularProgress"
-                                        app:pv_progressMode="indeterminate"/>
+                                        android:fontFamily="@font/avenir_light"
+                                        android:textStyle="bold"
+                                        android:textSize="16sp"
+                                        android:text="@string/btn_cancel"
+                                        android:textColor="@color/card_title_text" />
 
                                 </RelativeLayout>
 

@@ -20,6 +20,9 @@ public class ReferralServiceIndicatorsResponse implements Serializable {
     @SerializedName("serviceName")
     private String serviceName;
 
+    @SerializedName("serviceNameSw")
+    private String serviceNameSw;
+
     @SerializedName("category")
     private String category;
 
@@ -67,6 +70,14 @@ public class ReferralServiceIndicatorsResponse implements Serializable {
 
     public void setIndicators(List<ReferralIndicator> indicators) {
         this.indicators = indicators;
+    }
+
+    public String getServiceNameSw() {
+        return serviceNameSw;
+    }
+
+    public void setServiceNameSw(String serviceNameSw) {
+        this.serviceNameSw = serviceNameSw;
     }
 
 }

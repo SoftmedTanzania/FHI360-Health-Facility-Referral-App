@@ -1,5 +1,6 @@
 package com.softmed.htmr_facility.activities;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.AsyncTask;
@@ -9,11 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rey.material.widget.ProgressView;
@@ -33,6 +36,8 @@ import com.softmed.htmr_facility.viewmodels.ReferalListViewModel;
 import fr.ganfra.materialspinner.MaterialSpinner;
 
 import static com.softmed.htmr_facility.utils.constants.HIV_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.LAB_SERVICE_ID;
+import static com.softmed.htmr_facility.utils.constants.OPD_SERVICE_ID;
 import static com.softmed.htmr_facility.utils.constants.STATUS_COMPLETED;
 import static com.softmed.htmr_facility.utils.constants.STATUS_NEW;
 import static com.softmed.htmr_facility.utils.constants.TB_SERVICE_ID;
@@ -52,10 +57,11 @@ public class ReferedClientsActivity extends BaseActivity {
     private EditText fromDateText, toDateText, clientNameText, clientCtcNumberText, clientLastName;
     private ProgressView progressView;
     private Button filterButton;
+    TextView activityTitle;
 
     private Date fromDate, toDate;
     private String clientName, clientCtcNumber, lastName;
-    private int selectedStatus, serviceID;
+    private int selectedStatus, serviceID, serviceCategory;
     private boolean notSelectedStatus, notSelectedFromDate, notSelectedTodate;
 
     private AppDatabase database;
@@ -75,10 +81,44 @@ public class ReferedClientsActivity extends BaseActivity {
 
         if (getIntent().getExtras() != null){
             serviceID = getIntent().getIntExtra("service_id", 0);
-            Log.d("MIMI", serviceID+"" );
+            serviceCategory = getIntent().getIntExtra("category", 0);
+
+            String title = "";
+
+            switch (serviceID){
+                case OPD_SERVICE_ID:
+                    if(serviceCategory==-1){
+                        title = getResources().getString(R.string.community_referrals_label);
+                    }else if(serviceCategory==HIV_SERVICE_ID){
+                        title = getResources().getString(R.string.ctc_referrals);
+                    }
+                    break;
+                case HIV_SERVICE_ID:
+                    title = getResources().getString(R.string.referrals_issued)+" | "+getResources().getString(R.string.hiv);
+                    break;
+                case TB_SERVICE_ID:
+                    title = getResources().getString(R.string.referrals_issued)+" | "+getResources().getString(R.string.tb);
+                    break;
+                default:
+                    title = getResources().getString(R.string.referrals_issued);
+            }
+
+            activityTitle.setText(title);
+
         }
 
-        final String[] status = {STATUS_COMPLETED, STATUS_NEW};
+        String completedStatus = "";
+        String newStatus = "";
+
+        if (BaseActivity.getLocaleString().equals(ENGLISH_LOCALE)){
+            newStatus = "New";
+            completedStatus = "Attended";
+        }else {
+            newStatus = "Mpya";
+            completedStatus = "Tayari";
+        }
+
+        final String[] status = {completedStatus, newStatus};
         ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, status);
         spinAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(spinAdapter);
@@ -129,14 +169,6 @@ public class ReferedClientsActivity extends BaseActivity {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
-
                         fromDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar fromCalendar = Calendar.getInstance();
                         fromCalendar.set(year, monthOfYear, dayOfMonth);
@@ -158,14 +190,6 @@ public class ReferedClientsActivity extends BaseActivity {
                     @Override
                     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-                        /*
-                        Cursor vacinationCursor = mydb.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM " + SQLHandler.Tables.VACCINATION_EVENT +
-                                        " where " + SQLHandler.VaccinationEventColumns.CHILD_ID + "=? and " +
-                                        SQLHandler.VaccinationEventColumns.VACCINATION_STATUS + "= 'true'",
-                                new String[]{currentChild.getId()});
-                        vacinationCursor.moveToFirst();
-                        */
-
                         toDateText.setText((dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth) + "-" + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : monthOfYear + 1) + "-" + year);
                         Calendar toCalendar = Calendar.getInstance();
                         toCalendar.set(year, monthOfYear, dayOfMonth);
@@ -181,25 +205,37 @@ public class ReferedClientsActivity extends BaseActivity {
         listViewModel = ViewModelProviders.of(this).get(ReferalListViewModel.class);
         clientsRecycler.setAdapter(adapter);
 
-        if (serviceID == TB_SERVICE_ID){
-            listViewModel.getTbReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+        if (serviceCategory == -1){ //Other Referrals Category
+
+            //Get all non basic service Ids
+            LiveData<List<Integer>> nonBasicServiceIds = baseDatabase.referralServiceIndicatorsDao().getAllNonBasicServiceIds();
+            nonBasicServiceIds.observe(this, new Observer<List<Integer>>() {
                 @Override
-                public void onChanged(@Nullable List<Referral> referrals) {
-                    adapter.addItems(referrals);
+                public void onChanged(@Nullable List<Integer> integers) {
+                    int size = integers == null ? 0:integers.size();
+                    int[] categoryIds = new int[size];
+                    try {
+                        categoryIds[0] = -1;
+                    }catch (Exception e){
+                        categoryIds = new int[1];
+                        categoryIds[0] = -1;
+                    }
+
+                    //Get referred clients from a particular service to a specific service
+                    LiveData<List<Referral>> referredClients = baseDatabase.referalModel().getReferredClients(serviceID, session.getKeyHfid(), categoryIds);
+                    referredClients.observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+                        @Override
+                        public void onChanged(@Nullable List<Referral> referrals) {
+                            adapter.addItems(referrals);
+                        }
+                    });
+
                 }
             });
-        }else if (serviceID == HIV_SERVICE_ID){
-            Log.d("MIMI", "Calling Hiv referred list of referrals");
-            listViewModel.getHivReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
-                @Override
-                public void onChanged(@Nullable List<Referral> referrals) {
-                    Log.d("MIMI", "Adding items to adapter with size : "+referrals.size());
-                    adapter.addItems(referrals);
-                }
-            });
-        } else {
-            //Get Malaria referred client list
-            listViewModel.getReferredClientsList().observe(ReferedClientsActivity.this, new Observer<List<Referral>>() {
+        }else{
+            //Get referred clients from a particular service to a specific service
+            LiveData<List<Referral>> referredClients = baseDatabase.referalModel().getReferredClients(serviceID, session.getKeyHfid(), new int[] {serviceCategory});
+            referredClients.observe(this, new Observer<List<Referral>>() {
                 @Override
                 public void onChanged(@Nullable List<Referral> referrals) {
                     adapter.addItems(referrals);
@@ -207,10 +243,23 @@ public class ReferedClientsActivity extends BaseActivity {
             });
         }
 
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupview(){
+
+        activityTitle = findViewById(R.id.activity_title);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         filterButton = (Button) findViewById(R.id.filter_button);
@@ -229,10 +278,10 @@ public class ReferedClientsActivity extends BaseActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        clientsRecycler = (RecyclerView) findViewById(R.id.clients_recycler);
+        clientsRecycler =  findViewById(R.id.clients_recycler);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         clientsRecycler.setLayoutManager(layoutManager);
-        clientsRecycler.setHasFixedSize(true);
+        clientsRecycler.setHasFixedSize(false);
 
     }
 
@@ -284,7 +333,7 @@ public class ReferedClientsActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            fReferrals = db.referalModel().getFilteredReferal(clientName, lastName, referalStatus, HIV_SERVICE_ID);
+            //fReferrals = db.referalModel().getFilteredReferal(clientName, lastName, referalStatus, HIV_SERVICE_ID);
             return null;
         }
     }

@@ -7,12 +7,14 @@ import android.content.Context;
 
 import com.softmed.htmr_facility.dom.dao.AppDataModelDao;
 import com.softmed.htmr_facility.dom.dao.HealthFacilitiesModelDao;
+import com.softmed.htmr_facility.dom.dao.LoggedInSessionsModelDao;
 import com.softmed.htmr_facility.dom.dao.PatientAppointmentModelDao;
 import com.softmed.htmr_facility.dom.dao.PatientModelDao;
 import com.softmed.htmr_facility.dom.dao.PatientNotificationModelDao;
 import com.softmed.htmr_facility.dom.dao.PatientServicesModelDao;
 import com.softmed.htmr_facility.dom.dao.PostOfficeModelDao;
 import com.softmed.htmr_facility.dom.dao.ReferalModelDao;
+import com.softmed.htmr_facility.dom.dao.ReferralFeedbackModelDao;
 import com.softmed.htmr_facility.dom.dao.ReferralIndicatorDao;
 import com.softmed.htmr_facility.dom.dao.ReferralServiceIndicatorsDao;
 import com.softmed.htmr_facility.dom.dao.TbEncounterModelDao;
@@ -20,16 +22,19 @@ import com.softmed.htmr_facility.dom.dao.TbPatientModelDao;
 import com.softmed.htmr_facility.dom.dao.UserDataModelDao;
 import com.softmed.htmr_facility.dom.objects.AppData;
 import com.softmed.htmr_facility.dom.objects.HealthFacilities;
+import com.softmed.htmr_facility.dom.objects.LoggedInSessions;
 import com.softmed.htmr_facility.dom.objects.Patient;
 import com.softmed.htmr_facility.dom.objects.PatientAppointment;
 import com.softmed.htmr_facility.dom.objects.HealthFacilityServices;
 import com.softmed.htmr_facility.dom.objects.PatientsNotification;
 import com.softmed.htmr_facility.dom.objects.PostOffice;
 import com.softmed.htmr_facility.dom.objects.Referral;
+import com.softmed.htmr_facility.dom.objects.ReferralFeedback;
 import com.softmed.htmr_facility.dom.objects.ReferralIndicator;
 import com.softmed.htmr_facility.dom.objects.ReferralServiceIndicators;
 import com.softmed.htmr_facility.dom.objects.TbEncounters;
 import com.softmed.htmr_facility.dom.objects.TbPatient;
+import com.softmed.htmr_facility.dom.objects.FacilityChws;
 import com.softmed.htmr_facility.dom.objects.UserData;
 
 /**
@@ -50,7 +55,10 @@ import com.softmed.htmr_facility.dom.objects.UserData;
                 HealthFacilities.class,
                 UserData.class,
                 ReferralIndicator.class,
-                ReferralServiceIndicators.class
+                ReferralServiceIndicators.class,
+                LoggedInSessions.class,
+                FacilityChws.class,
+                ReferralFeedback.class
         },
         version = 1)
 
@@ -92,5 +100,9 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract ReferralIndicatorDao referralIndicatorDao();
 
     public abstract ReferralServiceIndicatorsDao referralServiceIndicatorsDao();
+
+    public abstract LoggedInSessionsModelDao loggedInSessionsModelDao();
+
+    public abstract ReferralFeedbackModelDao referralFeedbackModelDao();
 
 }

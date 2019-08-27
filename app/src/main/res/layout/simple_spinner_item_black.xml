@@ -21,10 +21,11 @@
     android:id="@android:id/text1"
     style="?android:attr/spinnerItemStyle"
     android:background="@color/white"
-    android:textColor="@color/card_grid_text"
+    android:textColor="@color/card_grid_tex"
     android:singleLine="true"
+    android:gravity="center_vertical"
     android:fontFamily="@font/roboto_bold"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:ellipsize="marquee"
     android:textAlignment="inherit"/>
